@@ -6,6 +6,11 @@ async function bootstrap() {
   const logger = new Logger('NestApplication');
   const app = await NestFactory.create(AppModule);
 
+  // Global configuration
+  app.enableCors();
+  app.setGlobalPrefix('api/v1');
+  app.useGlobalPipes(new ValidationPipe());
+
   // Swagger configuration
   const config = new DocumentBuilder()
     .setTitle('NestJS API')
@@ -31,10 +36,6 @@ async function bootstrap() {
     },
     customSiteTitle: 'API Documentation',
   });
-
-  // Global configuration
-  app.enableCors();
-  app.useGlobalPipes(new ValidationPipe());
 
   // Start server
   await app.listen(process.env.API_PORT ?? 3000);
