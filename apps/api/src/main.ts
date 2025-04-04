@@ -11,9 +11,6 @@ async function bootstrap() {
     .setTitle('NestJS API')
     .setDescription('RESTful API built with NestJS framework')
     .setVersion('1.0')
-    .addTag('auth', 'Authentication endpoints')
-    .addTag('users', 'User management endpoints')
-    .addTag('stripe', 'Stripe payment integration endpoints')
     .addBearerAuth(
       {
         type: 'http',
@@ -44,5 +41,6 @@ async function bootstrap() {
   await app.listen(process.env.API_PORT ?? 3000);
   const appUrl = await app.getUrl();
   logger.log(`🚀 Server ready at ${appUrl}`);
+  logger.log(`🚀 API Documentation: ${appUrl}/docs`);
 }
 bootstrap();

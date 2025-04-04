@@ -8,7 +8,7 @@ export class StripeService {
   private stripe: Stripe;
   private logger: Logger;
   constructor(private configService: ConfigService) {
-    this.stripe = new Stripe(this.configService.get<string>('STRIPE_SECRET_KEY'), {
+    this.stripe = new Stripe(this.configService.get<string>('STRIPE_API_KEY'), {
       apiVersion: '2025-03-31.basil',
     });
     this.logger = new Logger(StripeService.name);

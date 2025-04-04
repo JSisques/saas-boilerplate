@@ -6,7 +6,7 @@ import { PrismaModule } from './prisma/prisma.module';
 import { StripeModule } from './stripe/stripe.module';
 import { ConfigModule } from '@nestjs/config';
 @Module({
-  imports: [ConfigModule.forRoot({ isGlobal: true }), PrismaModule, StripeModule.forRootAsync()],
+  imports: [ConfigModule.forRoot({ isGlobal: true }), PrismaModule, StripeModule],
   controllers: [AppController],
   providers: [AppService, PrismaService],
 })
