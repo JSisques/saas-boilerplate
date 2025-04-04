@@ -13,7 +13,7 @@ module.exports = {
     sourceType: 'module',
     project: './tsconfig.json',
   },
-  plugins: ['@typescript-eslint', 'react', 'react-hooks', 'jsx-a11y'],
+  plugins: ['@typescript-eslint', 'react', 'react-hooks', 'jsx-a11y', 'unused-imports'],
   env: {
     browser: true,
     node: true,
@@ -41,5 +41,6 @@ module.exports = {
     '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
     'react/prop-types': 'off',
     'react/react-in-jsx-scope': 'off',
+    'unused-imports/no-unused-imports': 'warn',
   },
 };
