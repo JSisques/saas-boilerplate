@@ -1,0 +1,36 @@
+name: API Build
+
+on:
+  push:
+    branches: [master, dev]
+    paths:
+      - 'apps/api/**'
+  pull_request:
+    branches: [master, dev]
+    paths:
+      - 'apps/api/**'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'yarn'
+
+      - name: Install dependencies
+        working-directory: ./apps/api
+        run: yarn install --frozen-lockfile
+
+      - name: Generate Prisma client
+        working-directory: ./apps/api
+        run: yarn prisma generate --schema=src/prisma/schema.prisma
+
+      - name: Build
+        working-directory: ./apps/api
+        run: yarn build

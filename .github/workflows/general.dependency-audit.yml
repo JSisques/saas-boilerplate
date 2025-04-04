@@ -1,0 +1,35 @@
+name: 'Dependency Audit'
+
+on:
+  push:
+    branches: [master, dev]
+  schedule:
+    - cron: '0 8 * * 6' # Ejecutar todos los sábados a las 08:00 UTC
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'yarn'
+
+      - name: Audit API dependencies
+        working-directory: ./apps/api
+        run: |
+          yarn install --frozen-lockfile
+          yarn audit
+
+      - name: Audit Web dependencies
+        working-directory: ./apps/web
+        run: |
+          yarn install --frozen-lockfile
+          yarn audit
+
+      - name: Run Dependency Review
+        uses: actions/dependency-review-action@v3
