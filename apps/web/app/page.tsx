@@ -1,9 +1,9 @@
 'use client';
 
 import Image from 'next/image';
-import { Button } from '@repo/shadcn/components/ui/button';
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@repo/shadcn/components/ui/accordion';
-import { Card, CardContent, CardHeader, CardTitle } from '@repo/shadcn/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 export default function Home() {
   return (
@@ -11,7 +11,7 @@ export default function Home() {
       <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
         <Image className="dark:invert" src="/next.svg" alt="Next.js logo" width={180} height={38} priority />
         <Button onClick={() => alert('Hello')}>Click me</Button>
-        <Accordion>
+        <Accordion type="single">
           <AccordionItem value="item-1">
             <AccordionTrigger>Is it accessible?</AccordionTrigger>
             <AccordionContent>Yes. It adheres to the WAI-ARIA design pattern.</AccordionContent>
