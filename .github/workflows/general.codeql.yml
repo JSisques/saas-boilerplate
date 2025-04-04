@@ -1,12 +1,8 @@
 name: 'CodeQL'
 
 on:
-  push:
-    branches: [master, dev]
-  pull_request:
-    branches: [master, dev]
   schedule:
-    - cron: '0 8 * * 6' # Ejecutar todos los sábados a las 08:00 UTC
+    - cron: '0 8 * * 6' # Run every Saturday at 08:00 UTC
 
 jobs:
   analyze:

@@ -1,8 +1,6 @@
 name: 'Dependency Audit'
 
 on:
-  push:
-    branches: [master, dev]
   schedule:
     - cron: '0 8 * * 6' # Ejecutar todos los sábados a las 08:00 UTC
 
