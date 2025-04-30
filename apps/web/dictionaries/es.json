@@ -44,5 +44,11 @@
   "molecules": {},
   "organisms": {},
   "templates": {},
-  "pages": {}
+  "pages": {
+    "notFound": {
+      "title": "Página no encontrada",
+      "description": "La página que estás buscando no existe.",
+      "goHome": "Ir al inicio"
+    }
+  }
 }

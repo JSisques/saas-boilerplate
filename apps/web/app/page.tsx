@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/atoms/button/button';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
