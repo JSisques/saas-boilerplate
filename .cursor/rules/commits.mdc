@@ -1,0 +1,6 @@
+---
+description: When you have to commit something
+globs: 
+alwaysApply: false
+---
+Follow Conventional Commits (feat:, fix:, chore:, etc.) and enforce it using commitlint and husky pre-commit hooks.

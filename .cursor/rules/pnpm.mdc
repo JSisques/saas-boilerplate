@@ -1,0 +1,6 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+Use pnpm to manage shared dependencies and avoid duplication across projects.
