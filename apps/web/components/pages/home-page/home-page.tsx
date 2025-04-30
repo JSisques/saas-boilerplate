@@ -6,7 +6,7 @@ import { HomePageProps } from './home-page.interface';
 const HomePage = ({ dictionary }: HomePageProps) => {
   return (
     <RootTemplate dictionary={dictionary}>
-      <div>Home</div>
+      <div>{dictionary.pages.home.title}</div>
     </RootTemplate>
   );
 };

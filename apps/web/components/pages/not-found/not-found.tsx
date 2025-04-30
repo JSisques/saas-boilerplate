@@ -3,7 +3,7 @@ import React from 'react';
 import { NotFoundPageProps } from './not-found.interface';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/atoms/button/button';
-import { routes } from '@/config/routes';
+import { routes } from '@/config/routes/routes';
 import AuthTemplate from '@/components/templates/auth-template/auth-template';
 
 const NotFoundPage = ({ dictionary }: NotFoundPageProps) => {

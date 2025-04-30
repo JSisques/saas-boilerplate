@@ -1,0 +1,18 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+// Rule: Each component must be placed in its own folder and include the following three files:
+// - component.tsx
+// - component.service.ts (contains logic)
+// - component.interface.ts (contains interfaces or types)
+//
+// For example, if the component is called "button", the structure should look like:
+//
+// /components/button/
+// ├── button.tsx
+// ├── button.service.ts
+// └── button.interface.ts
+//
+// This ensures that the UI, business logic, and types are clearly separated and well organized.

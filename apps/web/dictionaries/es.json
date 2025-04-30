@@ -45,6 +45,10 @@
   "organisms": {},
   "templates": {},
   "pages": {
+    "home": {
+      "title": "Inicio",
+      "description": "Página de inicio"
+    },
     "notFound": {
       "title": "Página no encontrada",
       "description": "La página que estás buscando no existe.",

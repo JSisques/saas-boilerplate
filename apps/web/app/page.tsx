@@ -2,8 +2,8 @@
 
 import Image from 'next/image';
 import { Button } from '@/components/atoms/button/button';
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/molecules/accordion/accordion';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/molecules/card/card';
 
 export default function Home() {
   return (
