@@ -1,14 +1,10 @@
-name: Landing Page Build
+name: Web Page Build
 
 on:
-  push:
-    branches: [master, dev]
-    paths:
-      - 'apps/landing/**'
   pull_request:
     branches: [master, dev]
     paths:
-      - 'apps/landing/**'
+      - 'apps/web/**'
 
 jobs:
   build:
@@ -24,9 +20,9 @@ jobs:
           cache: 'yarn'
 
       - name: Install dependencies
-        working-directory: ./apps/landing
+        working-directory: ./apps/web
         run: yarn install --frozen-lockfile
 
       - name: Build
-        working-directory: ./apps/landing
+        working-directory: ./apps/web
         run: yarn build
