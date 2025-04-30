@@ -1,0 +1,48 @@
+{
+  "common": {
+    "appName": "Nombre de la aplicación",
+    "appDescription": "Descripción de la aplicación",
+    "loading": "Cargando...",
+    "loadingDescription": "Cargando la aplicación...",
+    "accept": "Aceptar",
+    "cancel": "Cancelar",
+    "save": "Guardar",
+    "saving": "Guardando...",
+    "delete": "Eliminar",
+    "edit": "Editar",
+    "close": "Cerrar",
+    "social": {
+      "github": "Github",
+      "linkedin": "Linkedin",
+      "twitter": "Twitter",
+      "facebook": "Facebook",
+      "instagram": "Instagram",
+      "youtube": "Youtube",
+      "tiktok": "Tiktok",
+      "pinterest": "Pinterest"
+    }
+  },
+  "auth": {
+    "login": "Iniciar sesión",
+    "signUp": "Registrarse",
+    "email": "Correo electrónico",
+    "password": "Contraseña",
+    "logout": "Cerrar sesión",
+    "welcomeBack": "Bienvenido de nuevo",
+    "loginToYourAccount": "Iniciar sesión en tu cuenta de Acme Inc",
+    "forgotPassword": "¿Olvidaste tu contraseña?",
+    "forgotPasswordDescription": "¿Olvidaste tu contraseña? Ingresa tu correo electrónico abajo y te enviaremos un enlace para restablecer tu contraseña.",
+    "forgotPasswordButton": "Restablecer contraseña",
+    "orContinueWith": "O continuar con"
+  },
+  "navigation": {
+    "home": "Inicio",
+    "settings": "Configuración",
+    "help": "Ayuda"
+  },
+  "atoms": {},
+  "molecules": {},
+  "organisms": {},
+  "templates": {},
+  "pages": {}
+}
