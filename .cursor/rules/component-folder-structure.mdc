@@ -7,12 +7,14 @@ alwaysApply: true
 // - component.tsx
 // - component.service.ts (contains logic)
 // - component.interface.ts (contains interfaces or types)
+// - component.styles.ts (contains styles)
 //
 // For example, if the component is called "button", the structure should look like:
 //
 // /components/button/
-// ├── button.tsx
-// ├── button.service.ts
-// └── button.interface.ts
+// ├── Button.tsx
+// ├── Button.service.ts
+// └── Button.interface.ts
+// └── Button.styles.ts
 //
 // This ensures that the UI, business logic, and types are clearly separated and well organized.
