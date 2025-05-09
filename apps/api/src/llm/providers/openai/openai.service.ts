@@ -1,6 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { LlmProvider } from '../llm-provider.interface';
 import { OpenAiOptions } from './openai.interface';
+import OpenAI from 'openai';
 
 @Injectable()
 export class OpenAiService implements LlmProvider {
@@ -23,7 +24,25 @@ export class OpenAiService implements LlmProvider {
       throw new Error('OpenAI API key not set');
     }
 
-    // Aquí iría la llamada real a la API de OpenAI usando mergedOptions
-    return `OpenAI response for prompt: ${prompt} (model: ${mergedOptions.model})`;
+    try {
+      const openai = new OpenAI({ apiKey });
+
+      const messages = mergedOptions.messages ?? [
+        { role: 'system', content: mergedOptions.systemPrompt },
+        { role: 'user', content: prompt },
+      ];
+
+      const completion = await openai.chat.completions.create({
+        model: mergedOptions.model,
+        messages,
+        temperature: mergedOptions.temperature,
+        max_tokens: mergedOptions.max_tokens,
+      });
+
+      return completion.choices[0]?.message?.content ?? '';
+    } catch (error) {
+      this.logger.error('Error calling OpenAI API', error);
+      throw error;
+    }
   }
 }
