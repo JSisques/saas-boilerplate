@@ -10,18 +10,20 @@ const llmProviderFactory: Provider = {
   provide: 'LLM_PROVIDER',
   useFactory: () => {
     const provider = process.env.LLM_PROVIDER;
-    if (provider === 'OPENAI') {
-      return new OpenAiService();
-    } else if (provider === 'GEMINI') {
-      return new GeminiService();
-    } else if (provider === 'DEEPSEEK') {
-      return new DeepSeekService();
-    } else if (provider === 'GROQ') {
-      return new GroqService();
-    } else if (provider === 'MIXTRAL') {
-      return new MixtralService();
+    switch (provider) {
+      case 'OPENAI':
+        return new OpenAiService();
+      case 'GEMINI':
+        return new GeminiService();
+      case 'DEEPSEEK':
+        return new DeepSeekService();
+      case 'GROQ':
+        return new GroqService();
+      case 'MIXTRAL':
+        return new MixtralService();
+      default:
+        throw new Error('Invalid LLM provider');
     }
-    throw new Error('Invalid LLM provider');
   },
 };
 
