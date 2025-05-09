@@ -32,12 +32,16 @@ export class OpenAiService implements LlmProvider {
         { role: 'user', content: prompt },
       ];
 
+      this.logger.debug(`Messages: ${JSON.stringify(messages)}`);
+
       const completion = await openai.chat.completions.create({
         model: mergedOptions.model,
         messages,
         temperature: mergedOptions.temperature,
         max_tokens: mergedOptions.max_tokens,
       });
+
+      this.logger.debug(`Completion: ${JSON.stringify(completion)}`);
 
       return completion.choices[0]?.message?.content ?? '';
     } catch (error) {
