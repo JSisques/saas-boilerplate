@@ -7,8 +7,9 @@ import { StripeModule } from './stripe/stripe.module';
 import { ConfigModule } from '@nestjs/config';
 import { SupabaseModule } from './supabase/supabase.module';
 import { AuthModule } from './auth/auth.module';
+import { LlmModule } from './llm/llm.module';
 @Module({
-  imports: [ConfigModule.forRoot({ isGlobal: true }), PrismaModule, StripeModule, SupabaseModule, AuthModule],
+  imports: [ConfigModule.forRoot({ isGlobal: true }), PrismaModule, StripeModule, SupabaseModule, AuthModule, LlmModule],
   controllers: [AppController],
   providers: [AppService, PrismaService],
 })
