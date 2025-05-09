@@ -21,16 +21,19 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20'
-          cache: 'yarn'
+          cache: 'pnpm'
+
+      - name: Install pnpm
+        run: npm install -g pnpm
 
       - name: Install dependencies
         working-directory: ./apps/api
-        run: yarn install --frozen-lockfile
+        run: pnpm install --frozen-lockfile
 
       - name: Generate Prisma client
         working-directory: ./apps/api
-        run: yarn prisma generate --schema=src/prisma/schema.prisma
+        run: pnpm prisma generate --schema=src/prisma/schema.prisma
 
       - name: Build
         working-directory: ./apps/api
-        run: yarn build
+        run: pnpm build
