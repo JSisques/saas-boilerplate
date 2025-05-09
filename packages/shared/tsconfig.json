@@ -1,0 +1,20 @@
+{
+  "extends": "@repo/typescript-config/tsconfig.base.json",
+  "compilerOptions": {
+    "outDir": "dist",
+    "declaration": true,
+    "declarationMap": true,
+    "emitDeclarationOnly": false,
+    "esModuleInterop": true,
+    "module": "ESNext",
+    "moduleResolution": "Node",
+    "jsx": "react-jsx",
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./*"],
+      "@shared-types/*": ["../../shared-types/*"]
+    }
+  },
+  "include": ["atoms/**/*", "molecules/**/*", "organisms/**/*", "templates/**/*", "pages/**/*"],
+  "exclude": ["dist", "node_modules"]
+}
