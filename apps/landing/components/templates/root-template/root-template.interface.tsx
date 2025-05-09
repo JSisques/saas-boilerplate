@@ -1,4 +1,3 @@
-export interface RootTemplateProps {
-  children: React.ReactNode;
-  dictionary: Record<string, any>;
-}
+import { RootProps } from '@/interfaces/root/root.interface';
+
+export interface RootTemplateProps extends RootProps {}

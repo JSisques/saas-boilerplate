@@ -4,13 +4,13 @@ import { NotFoundPageProps } from './not-found.interface';
 import { useRouter } from 'next/navigation';
 import { Button } from '@repo/ui';
 import { routes } from '@/config/routes/routes';
-import RootTemplate from '@/components/templates/root-template/root-template';
+import AuthTemplate from '@/components/templates/auth-template/auth-template';
 
 const NotFoundPage = ({ dictionary }: NotFoundPageProps) => {
   const router = useRouter();
 
   return (
-    <RootTemplate dictionary={dictionary}>
+    <AuthTemplate dictionary={dictionary}>
       <div className="flex flex-col items-center justify-center h-screen gap-6">
         <div className="text-9xl font-extrabold text-primary-900 dark:text-primary-100">404</div>
         <h1 className="text-4xl font-bold text-primary-800 dark:text-primary-200">{dictionary.pages.notFound.title}</h1>
@@ -19,7 +19,7 @@ const NotFoundPage = ({ dictionary }: NotFoundPageProps) => {
           {dictionary.pages.notFound.goHome}
         </Button>
       </div>
-    </RootTemplate>
+    </AuthTemplate>
   );
 };
 

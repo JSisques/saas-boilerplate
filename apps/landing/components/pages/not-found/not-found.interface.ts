@@ -1,3 +1,3 @@
-export interface NotFoundPageProps {
-  dictionary: Record<string, any>;
-}
+import { RootProps } from '@/interfaces/root/root.interface';
+
+export interface NotFoundPageProps extends RootProps {}
