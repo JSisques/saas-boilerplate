@@ -1,0 +1,58 @@
+{
+  "common": {
+    "appName": "App name",
+    "appDescription": "App description",
+    "loading": "Loading...",
+    "loadingDescription": "Loading the application...",
+    "accept": "Accept",
+    "cancel": "Cancel",
+    "save": "Save",
+    "saving": "Saving...",
+    "delete": "Delete",
+    "edit": "Edit",
+    "close": "Close",
+    "social": {
+      "github": "Github",
+      "linkedin": "Linkedin",
+      "twitter": "Twitter",
+      "facebook": "Facebook",
+      "instagram": "Instagram",
+      "youtube": "Youtube",
+      "tiktok": "Tiktok",
+      "pinterest": "Pinterest"
+    }
+  },
+  "auth": {
+    "login": "Login",
+    "signUp": "Sign Up",
+    "email": "Email",
+    "password": "Password",
+    "logout": "Logout",
+    "welcomeBack": "Welcomeeeee",
+    "loginToYourAccount": "Login to your Acme Inc",
+    "forgotPassword": "Forgot your password?",
+    "forgotPasswordDescription": "Forgot your password? Enter your email address below and we'll send you a link to reset your password.",
+    "forgotPasswordButton": "Reset Password",
+    "orContinueWith": "Or continue with"
+  },
+  "navigation": {
+    "home": "Home",
+    "settings": "Settings",
+    "help": "Help"
+  },
+  "atoms": {},
+  "molecules": {},
+  "organisms": {},
+  "templates": {},
+  "pages": {
+    "home": {
+      "title": "Home",
+      "description": "Home page"
+    },
+    "notFound": {
+      "title": "Page not found",
+      "description": "The page you are looking for does not exist.",
+      "goHome": "Go to home"
+    }
+  }
+}
