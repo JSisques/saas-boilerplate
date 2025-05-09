@@ -1,6 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { LlmProvider } from '../llm-provider.interface';
 import { DeepSeekOptions } from './deepseek.interface';
+import OpenAI from 'openai';
 
 @Injectable()
 export class DeepSeekService implements LlmProvider {
@@ -23,7 +24,32 @@ export class DeepSeekService implements LlmProvider {
       throw new Error('DeepSeek API key not set');
     }
 
-    // Aquí iría la llamada real a la API de DeepSeek usando mergedOptions
-    return `DeepSeek response for prompt: ${prompt} (model: ${mergedOptions.model})`;
+    try {
+      const deepseek = new OpenAI({
+        baseURL: 'https://api.deepseek.com',
+        apiKey: apiKey,
+      });
+
+      const messages = mergedOptions.messages ?? [
+        { role: 'system', content: mergedOptions.systemPrompt },
+        { role: 'user', content: prompt },
+      ];
+
+      this.logger.debug(`Messages: ${JSON.stringify(messages)}`);
+
+      const completion = await deepseek.chat.completions.create({
+        model: mergedOptions.model,
+        messages,
+        temperature: mergedOptions.temperature,
+        max_tokens: mergedOptions.max_tokens,
+      });
+
+      this.logger.debug(`Completion: ${JSON.stringify(completion)}`);
+
+      return completion.choices[0]?.message?.content ?? '';
+    } catch (error) {
+      this.logger.error('Error calling DeepSeek API', error);
+      throw error;
+    }
   }
 }
