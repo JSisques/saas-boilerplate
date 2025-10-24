@@ -6,7 +6,7 @@ export type UserMongoDbDto = {
   name: string | null;
   role: string;
   status: string;
-  userName: string | null;
+  userName: string;
   createdAt: Date;
   updatedAt: Date;
 };

@@ -5,7 +5,7 @@
  *
  * @interface IUserCreateViewModelDto
  * @property {string} id - The unique, immutable identifier of the user.
- * @property {string | null} userName - The username of the user (nullable).
+ * @property {string} userName - The username of the user.
  * @property {string | null} name - The first name of the user (nullable).
  * @property {string | null} lastName - The last name of the user (nullable).
  * @property {string | null} bio - The user's biography (nullable).
@@ -23,7 +23,7 @@ export interface IUserCreateViewModelDto {
   name: string | null;
   role: string;
   status: string;
-  userName: string | null;
+  userName: string;
   createdAt: Date;
   updatedAt: Date;
 }

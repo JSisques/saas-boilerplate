@@ -37,6 +37,7 @@
     "@nestjs/platform-express": "^10.0.0",
     "@prisma/client": "^6.18.0",
     "class-validator": "^0.14.2",
+    "graphql": "^16.11.0",
     "mongodb": "^6.20.0",
     "prisma": "^6.18.0",
     "reflect-metadata": "^0.2.0",

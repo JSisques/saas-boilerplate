@@ -16,7 +16,7 @@ export class UserCreateCommand {
   readonly name: UserNameValueObject | null;
   readonly role: UserRoleValueObject;
   readonly status: UserStatusValueObject;
-  readonly userName: UserUserNameValueObject | null;
+  readonly userName: UserUserNameValueObject;
 
   constructor(props: IUserCreateCommandDto) {
     this.id = new UserUuidValueObject();

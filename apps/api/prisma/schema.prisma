@@ -24,9 +24,11 @@ enum StatusEnum {
   INACTIVE
   BLOCKED
 }
+
+
 model User {
   id        String  @id @default(uuid())
-  userName  String?
+  userName  String? @unique 
   name      String?
   lastName  String?
   bio       String?
@@ -35,6 +37,10 @@ model User {
   status    StatusEnum
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  auth Auth[]
+
+  @@index([userName])
 }
 
 model Audit {
@@ -44,4 +50,27 @@ model Audit {
   aggregateId String
   payload Json? 
   timestamp DateTime @default(now())
+}
+
+
+enum AuthProviderEnum {
+  LOCAL
+  GOOGLE
+  GITHUB
+  APPLE
+}
+model Auth {
+  id               String         @id @default(uuid())
+  provider         AuthProviderEnum
+  providerId       String?
+  email            String?
+  passwordHash     String?
+  emailVerified    Boolean        @default(false)
+  twoFactorEnabled Boolean        @default(false)
+  lastLoginAt      DateTime?
+  createdAt        DateTime       @default(now())
+  updatedAt        DateTime       @updatedAt
+
+  userId           String
+  user             User           @relation(fields: [userId], references: [id])
 }

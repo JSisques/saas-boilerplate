@@ -12,7 +12,7 @@ export class UserViewModel {
   private _name: string | null;
   private _role: string;
   private _status: string;
-  private _userName: string | null;
+  private _userName: string;
   private _createdAt: Date;
   private _updatedAt: Date;
 

@@ -24,7 +24,7 @@ export class UserAggregate extends AggregateRoot {
   private _name: UserNameValueObject | null;
   private _role: UserRoleValueObject;
   private _status: UserStatusValueObject;
-  private _userName: UserUserNameValueObject | null;
+  private _userName: UserUserNameValueObject;
 
   constructor(props: IUserCreateDto, generateEvent: boolean = true) {
     super();

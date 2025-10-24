@@ -11,9 +11,6 @@ export const USER_VIEW_MODEL_FACTORY_TOKEN = Symbol('UserViewModelFactory');
  */
 @Injectable()
 export class UserViewModelFactory implements IReadFactory<UserViewModel> {
-  fromDto?(dto: any): UserViewModel {
-    throw new Error('Method not implemented.');
-  }
   /**
    * Creates a new user view model from a user aggregate.
    *
@@ -47,7 +44,7 @@ export class UserViewModelFactory implements IReadFactory<UserViewModel> {
 
     return new UserViewModel({
       id: userAggregate.id.value,
-      userName: userAggregate.userName?.value || null,
+      userName: userAggregate.userName?.value,
       name: userAggregate.name?.value || null,
       lastName: userAggregate.lastName?.value || null,
       role: userAggregate.role?.value || null,

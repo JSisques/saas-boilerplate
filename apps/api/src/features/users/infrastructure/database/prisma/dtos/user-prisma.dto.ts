@@ -8,5 +8,5 @@ export type UserPrismaDto = {
   name: string | null;
   role: RoleEnum;
   status: StatusEnum;
-  userName: string | null;
+  userName: string;
 };

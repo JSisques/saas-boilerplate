@@ -41,6 +41,24 @@ export class PrismaUserRepository
   }
 
   /**
+   * Finds a user by their user name
+   *
+   * @param userName - The user name of the user to find
+   * @returns The user if found, null otherwise
+   */
+  async findByUserName(userName: string): Promise<UserAggregate | null> {
+    const userData = await this.prismaService.user.findUnique({
+      where: { userName },
+    });
+
+    if (!userData) {
+      return null;
+    }
+
+    return this.userPrismaMapper.toDomainEntity(userData);
+  }
+
+  /**
    * Saves a user
    *
    * @param user - The user to save

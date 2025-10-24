@@ -5,8 +5,8 @@ import { Module } from '@nestjs/common';
 const FEATURES = [UserModule];
 
 @Module({
-  imports: [SharedModule],
+  imports: [SharedModule, ...FEATURES],
   controllers: [],
-  providers: [...FEATURES],
+  providers: [],
 })
 export class FeaturesModule {}

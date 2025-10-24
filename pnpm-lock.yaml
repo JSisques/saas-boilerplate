@@ -53,6 +53,9 @@ importers:
       class-validator:
         specifier: ^0.14.2
         version: 0.14.2
+      graphql:
+        specifier: ^16.11.0
+        version: 16.11.0
       mongodb:
         specifier: ^6.20.0
         version: 6.20.0

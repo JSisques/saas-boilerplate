@@ -8,7 +8,7 @@
  * @property {string | null} name - The user's first name. Can be null if not provided.
  * @property {string} role - The user's role. Must be provided.
  * @property {string} status - The user's status. Must be provided.
- * @property {string | null} userName - The user's username. Can be null if not provided.
+ * @property {string} userName - The user's username. Must be provided.
  */
 export interface IUserCreateCommandDto {
   avatarUrl: string | null;
@@ -17,5 +17,5 @@ export interface IUserCreateCommandDto {
   name: string | null;
   role: string;
   status: string;
-  userName: string | null;
+  userName: string;
 }

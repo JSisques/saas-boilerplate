@@ -12,7 +12,7 @@ import { UserUuidValueObject } from '@/features/users/domain/value-objects/user-
  *
  * @interface IUserCreateDto
  * @property {UserUuidValueObject} id - The unique identifier for the user.
- * @property {UserUserNameValueObject} [userName] - The user's user name. Optional.
+ * @property {UserUserNameValueObject} userName - The user's user name.
  * @property {UserNameValueObject} [name] - The user's name. Optional.
  * @property {UserLastNameValueObject} [lastName] - The user's last name. Optional.
  * @property {UserBioValueObject} [bio] - The user's biography. Optional.
@@ -28,5 +28,5 @@ export interface IUserCreateDto {
   name?: UserNameValueObject;
   role?: UserRoleValueObject;
   status?: UserStatusValueObject;
-  userName?: UserUserNameValueObject;
+  userName: UserUserNameValueObject;
 }

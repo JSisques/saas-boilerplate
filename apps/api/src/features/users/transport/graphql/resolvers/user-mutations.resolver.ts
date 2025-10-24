@@ -3,7 +3,7 @@ import { UserCreateCommand } from '@/features/users/application/commands/user-cr
 import { UserUpdateCommand } from '@/features/users/application/commands/user-update/user-update.command';
 import { CreateUserRequestDto } from '@/features/users/transport/graphql/dtos/requests/create-user.request.dto';
 import { DeleteUserRequestDto } from '@/features/users/transport/graphql/dtos/requests/delete-user.request.dto';
-import { UpdateUserRequestDto } from '@/features/users/transport/graphql/dtos/requests/update-user.request.dto copy';
+import { UpdateUserRequestDto } from '@/features/users/transport/graphql/dtos/requests/update-user.request.dto';
 import { MutationResponseDto } from '@/shared/transport/graphql/dtos/success-response.dto';
 import {
   MUTATION_RESPONSE_GRAPHQL_MAPPER_TOKEN,

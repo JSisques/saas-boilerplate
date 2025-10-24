@@ -1,3 +1,4 @@
+import { AssertUserUsernameIsUniqueService } from '@/features/users/application/services/assert-user-username-is-unique/assert-user-username-is-unique.service';
 import {
   USER_AGGREGATE_FACTORY_TOKEN,
   UserAggregateFactory,
@@ -21,6 +22,7 @@ export class UserCreateCommandHandler
     private readonly eventBus: EventBus,
     @Inject(USER_AGGREGATE_FACTORY_TOKEN)
     private readonly userAggregateFactory: UserAggregateFactory,
+    private readonly assertUserUsernameIsUniqueService: AssertUserUsernameIsUniqueService,
   ) {}
 
   /**
@@ -30,6 +32,10 @@ export class UserCreateCommandHandler
    * @returns The created user id
    */
   async execute(command: UserCreateCommand): Promise<string> {
+    // 00: Assert the user username is unique
+    await this.assertUserUsernameIsUniqueService.execute(
+      command.userName.value,
+    );
     // 01: Create the user entity
     const user = this.userAggregateFactory.create({
       id: UserUuidValueObject.generate().value,

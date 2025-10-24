@@ -17,7 +17,7 @@ export class UserUpdateCommand {
   readonly name: UserNameValueObject | null;
   readonly role: UserRoleValueObject;
   readonly status: UserStatusValueObject;
-  readonly userName: UserUserNameValueObject | null;
+  readonly userName: UserUserNameValueObject;
 
   constructor(props: IUserUpdateCommandDto) {
     this.id = new UserUuidValueObject(props.id);

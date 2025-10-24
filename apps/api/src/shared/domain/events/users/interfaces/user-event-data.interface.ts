@@ -6,5 +6,5 @@ export interface IUserEventData {
   name: string | null;
   role: string;
   status: string;
-  userName: string | null;
+  userName: string;
 }
