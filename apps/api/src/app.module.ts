@@ -1,6 +1,6 @@
 import { AppResolver } from '@/app.resolver';
 import { AuditModule } from '@/audit/audit.module';
-import { UserModule } from '@/features/users/user.module';
+import { FeaturesModule } from '@/features/features.module';
 import { SharedModule } from '@/shared/shared.module';
 import '@/shared/transport/graphql/registered-enums.graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
@@ -11,7 +11,6 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { join } from 'path';
 
 const MODULES = [AuditModule, SharedModule];
-const FEATURES = [UserModule];
 
 @Module({
   imports: [
@@ -26,8 +25,8 @@ const FEATURES = [UserModule];
       playground: true,
       introspection: true,
     }),
+    FeaturesModule,
     ...MODULES,
-    ...FEATURES,
   ],
   providers: [AppResolver],
 })

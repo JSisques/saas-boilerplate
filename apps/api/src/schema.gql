@@ -44,12 +44,6 @@ type PaginatedAuditResultDto {
   items: [AuditResponseDto!]!
 }
 
-type MutationResponseDto {
-  success: Boolean!
-  message: String
-  id: String
-}
-
 type UserResponseDto {
   """The id of the user"""
   id: String!
@@ -76,28 +70,10 @@ type UserResponseDto {
   name: String
 }
 
-type PaginatedUserResultDto {
-  """The total number of items"""
-  total: Int!
-
-  """The page number"""
-  page: Int!
-
-  """The number of items per page"""
-  perPage: Int!
-
-  """The total number of pages"""
-  totalPages: Int!
-
-  """The users in the current page"""
-  items: [UserResponseDto!]!
-}
-
 type Query {
   hello: String!
   health: String!
   findAuditsByCriteria(input: AuditFindByCriteriaRequestDto): PaginatedAuditResultDto!
-  findUsersByCriteria(input: UserFindByCriteriaRequestDto): PaginatedUserResultDto!
 }
 
 input AuditFindByCriteriaRequestDto {
@@ -154,88 +130,4 @@ input BasePaginationInput {
 
   """The per page to paginate by"""
   perPage: Int!
-}
-
-input UserFindByCriteriaRequestDto {
-  """The filters to find by"""
-  filters: [BaseFilterInput!] = []
-
-  """The sorts to find by"""
-  sorts: [BaseSortInput!] = []
-
-  """The pagination to find by"""
-  pagination: BasePaginationInput = {page: 1, perPage: 10}
-}
-
-type Mutation {
-  createUser(input: CreateUserRequestDto!): MutationResponseDto!
-  updateUser(input: UpdateUserRequestDto!): MutationResponseDto!
-  deleteUser(input: DeleteUserRequestDto!): MutationResponseDto!
-}
-
-input CreateUserRequestDto {
-  """The name of the user"""
-  name: String
-
-  """The bio of the user"""
-  bio: String
-
-  """The avatar url of the user"""
-  avatarUrl: String
-
-  """The last name of the user"""
-  lastName: String
-
-  """The user name of the user"""
-  userName: String
-
-  """The role of the user"""
-  role: RoleEnum
-
-  """The status of the user"""
-  status: StatusEnum
-}
-
-"""The role of the user"""
-enum RoleEnum {
-  ADMIN
-  USER
-}
-
-"""The status of the user"""
-enum StatusEnum {
-  ACTIVE
-  INACTIVE
-  BLOCKED
-}
-
-input UpdateUserRequestDto {
-  """The name of the user"""
-  name: String
-
-  """The bio of the user"""
-  bio: String
-
-  """The avatar url of the user"""
-  avatarUrl: String
-
-  """The last name of the user"""
-  lastName: String
-
-  """The user name of the user"""
-  userName: String
-
-  """The role of the user"""
-  role: RoleEnum
-
-  """The status of the user"""
-  status: StatusEnum
-
-  """The unique identifier of the user"""
-  id: String!
-}
-
-input DeleteUserRequestDto {
-  """The unique identifier of the user"""
-  id: String!
 }
