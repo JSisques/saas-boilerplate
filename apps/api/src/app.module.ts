@@ -1,3 +1,4 @@
+import { AppResolver } from '@/app.resolver';
 import { SharedModule } from '@/shared/shared.module';
 import '@/shared/transport/graphql/registered-enums.graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
@@ -22,5 +23,6 @@ import { join } from 'path';
     SharedModule,
     CqrsModule.forRoot(),
   ],
+  providers: [AppResolver],
 })
 export class AppModule {}
