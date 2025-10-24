@@ -14,15 +14,11 @@ export class MutationResponseGraphQLMapper {
    * @param id - The id of the entity that was created, deleted or updated
    * @returns The mutation response DTO
    */
-  toResponseDto(
-    success: boolean,
-    message?: string,
-    id?: string,
-  ): MutationResponseDto {
+  toResponseDto(props: MutationResponseDto): MutationResponseDto {
     return {
-      success,
-      message,
-      id,
+      success: props.success,
+      message: props.message,
+      id: props.id,
     };
   }
 }

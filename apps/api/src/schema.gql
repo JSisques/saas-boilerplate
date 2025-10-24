@@ -2,7 +2,136 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type MutationResponseDto {
+  success: Boolean!
+  message: String
+  id: String
+}
+
+type UserResponseDto {
+  """The id of the user"""
+  id: String!
+
+  """The name of the user"""
+  name: String
+
+  """The bio of the user"""
+  bio: String
+
+  """The avatar of the user"""
+  avatar: String
+}
+
+type PaginatedUserResultDto {
+  items: [UserResponseDto!]!
+
+  """The total number of users"""
+  total: Int!
+
+  """The page number"""
+  page: Int!
+
+  """The number of users per page"""
+  perPage: Int!
+
+  """The total number of pages"""
+  totalPages: Int!
+}
+
 type Query {
   hello: String!
   health: String!
+  findUsersByCriteria(input: UserFindByCriteriaRequestDto): PaginatedUserResultDto!
+}
+
+input UserFindByCriteriaRequestDto {
+  """The filters to find by"""
+  filters: [UserFilterInput!] = []
+
+  """The sorts to find by"""
+  sorts: [UserSortInput!] = []
+
+  """The pagination to find by"""
+  pagination: UserPaginationInput = {page: 1, perPage: 10}
+}
+
+input UserFilterInput {
+  """The field to filter by"""
+  field: String!
+
+  """The operator to filter by"""
+  operator: FilterOperator!
+
+  """The value to filter by"""
+  value: String!
+}
+
+"""The operator to filter by"""
+enum FilterOperator {
+  EQUALS
+  NOT_EQUALS
+  LIKE
+  IN
+  GREATER_THAN
+  LESS_THAN
+  GREATER_THAN_OR_EQUAL
+  LESS_THAN_OR_EQUAL
+}
+
+input UserSortInput {
+  """The field to sort by"""
+  field: String!
+
+  """The direction to sort by"""
+  direction: SortDirection!
+}
+
+"""The direction to sort by"""
+enum SortDirection {
+  ASC
+  DESC
+}
+
+input UserPaginationInput {
+  """The page to paginate by"""
+  page: Int!
+
+  """The per page to paginate by"""
+  perPage: Int!
+}
+
+type Mutation {
+  createUser(input: CreateUserRequestDto!): MutationResponseDto!
+  updateUser(input: UpdateUserRequestDto!): MutationResponseDto!
+  deleteUser(input: DeleteUserRequestDto!): MutationResponseDto!
+}
+
+input CreateUserRequestDto {
+  """The name of the user"""
+  name: String
+
+  """The bio of the user"""
+  bio: String
+
+  """The avatar url of the user"""
+  avatar: String
+}
+
+input UpdateUserRequestDto {
+  """The name of the user"""
+  name: String
+
+  """The bio of the user"""
+  bio: String
+
+  """The avatar url of the user"""
+  avatar: String
+
+  """The id of the user"""
+  userId: String!
+}
+
+input DeleteUserRequestDto {
+  """The id of the user"""
+  userId: String!
 }

@@ -1,0 +1,50 @@
+import {
+  USER_AGGREGATE_FACTORY_TOKEN,
+  UserAggregateFactory,
+} from '@/features/users/domain/factories/user.factory';
+import {
+  USER_WRITE_REPOSITORY_TOKEN,
+  UserWriteRepository,
+} from '@/features/users/domain/repositories/user-write.repository';
+import { UserUuidValueObject } from '@/features/users/domain/value-objects/user-uuid/user-uuid.vo';
+import { Inject } from '@nestjs/common';
+import { CommandHandler, EventBus, ICommandHandler } from '@nestjs/cqrs';
+import { CreateUserCommand } from './create-user.command';
+
+@CommandHandler(CreateUserCommand)
+export class CreateUserCommandHandler
+  implements ICommandHandler<CreateUserCommand>
+{
+  constructor(
+    @Inject(USER_WRITE_REPOSITORY_TOKEN)
+    private readonly userWriteRepository: UserWriteRepository,
+    private readonly eventBus: EventBus,
+    @Inject(USER_AGGREGATE_FACTORY_TOKEN)
+    private readonly userAggregateFactory: UserAggregateFactory,
+  ) {}
+
+  /**
+   * Executes the create user command
+   *
+   * @param command - The command to execute
+   * @returns The created user id
+   */
+  async execute(command: CreateUserCommand): Promise<string> {
+    // 01: Create the user entity
+    const user = this.userAggregateFactory.create({
+      id: UserUuidValueObject.generate().value,
+      name: command.name,
+      bio: command.bio,
+      avatar: command.avatar,
+    });
+
+    // 02: Save the user entity
+    await this.userWriteRepository.save(user);
+
+    // 03: Publish all events
+    await this.eventBus.publishAll(user.getUncommittedEvents());
+
+    // 04: Return the user id
+    return user.id.value;
+  }
+}

@@ -1,4 +1,5 @@
 import { AppResolver } from '@/app.resolver';
+import { UserModule } from '@/features/users/user.module';
 import { SharedModule } from '@/shared/shared.module';
 import '@/shared/transport/graphql/registered-enums.graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
@@ -7,6 +8,8 @@ import { ConfigModule } from '@nestjs/config';
 import { CqrsModule } from '@nestjs/cqrs';
 import { GraphQLModule } from '@nestjs/graphql';
 import { join } from 'path';
+
+const FEATURES = [UserModule];
 
 @Module({
   imports: [
@@ -22,6 +25,7 @@ import { join } from 'path';
     }),
     SharedModule,
     CqrsModule.forRoot(),
+    ...FEATURES,
   ],
   providers: [AppResolver],
 })

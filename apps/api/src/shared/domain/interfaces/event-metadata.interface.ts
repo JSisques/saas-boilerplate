@@ -1,4 +1,4 @@
-export interface EventMetadata {
+export interface IEventMetadata {
   aggregateId: string;
   aggregateType: string;
   eventType: string;
