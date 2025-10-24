@@ -13,6 +13,7 @@ const FEATURES = [UserModule];
 
 @Module({
   imports: [
+    CqrsModule.forRoot(),
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath: '.env',
@@ -24,7 +25,6 @@ const FEATURES = [UserModule];
       introspection: true,
     }),
     SharedModule,
-    CqrsModule.forRoot(),
     ...FEATURES,
   ],
   providers: [AppResolver],
