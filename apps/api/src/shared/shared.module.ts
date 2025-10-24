@@ -1,8 +1,8 @@
-import { Global, Module } from '@nestjs/common';
 import {
   MUTATION_RESPONSE_GRAPHQL_MAPPER_TOKEN,
   MutationResponseGraphQLMapper,
-} from '@shared/transport/graphql/mappers/mutation-response.mapper';
+} from '@/shared/transport/graphql/mappers/mutation-response.mapper';
+import { Global, Module } from '@nestjs/common';
 import { MongoModule } from './infrastructure/database/mongodb/mongodb.module';
 import { PrismaModule } from './infrastructure/database/prisma/prisma.module';
 
