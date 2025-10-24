@@ -1,7 +1,45 @@
 {
-  "eslint.workingDirectories": [
-    {
-      "mode": "auto"
+  // 🔧 Automatically format files on save
+  "editor.formatOnSave": true,
+
+  // 🔧 Automatically format pasted code
+  "editor.formatOnPaste": true,
+
+  // 📦 Force auto-imports to use aliases (e.g. "@/..." instead of relative paths like "../../../")
+  "typescript.preferences.importModuleSpecifier": "non-relative",
+  "javascript.preferences.importModuleSpecifier": "non-relative",
+
+  // ⚡ Settings for JavaScript files
+  "[javascript]": {
+    // Use Prettier as the default formatter
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    // Actions applied automatically on save
+    "editor.codeActionsOnSave": {
+      // Organize imports automatically (sort and remove unused)
+      "source.organizeImports": "always",
+      // Apply quick fixes like removing unused variables
+      "source.fixAll": "always"
     }
-  ]
+  },
+
+  // ⚡ Settings for TypeScript files
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.codeActionsOnSave": {
+      "source.organizeImports": "always",
+      "source.fixAll": "always",
+      "source.fixAll.eslint": "always"
+    }
+  },
+
+  // 🌐 Enforce Prettier for JSON, HTML, and CSS as well
+  "[json]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[html]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[css]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  }
 }
