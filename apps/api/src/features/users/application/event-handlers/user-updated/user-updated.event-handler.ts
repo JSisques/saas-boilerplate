@@ -19,6 +19,11 @@ export class UserUpdatedEventHandler
     private readonly userReadRepository: UserReadRepository,
   ) {}
 
+  /**
+   * Handles the UserUpdatedEvent event by updating the existing user view model.
+   *
+   * @param event - The UserUpdatedEvent event to handle.
+   */
   async handle(event: UserUpdatedEvent) {
     this.logger.log(`Handling user updated event: ${event.aggregateId}`);
 
@@ -26,19 +31,16 @@ export class UserUpdatedEventHandler
     const existingUserViewModel: UserViewModel | null =
       await this.userReadRepository.findById(event.aggregateId);
 
+    // 02: If the user does not exist, throw an error
     if (!existingUserViewModel) {
       this.logger.error(`User not found by id: ${event.aggregateId}`);
       throw new UserNotFoundException(event.aggregateId);
     }
 
-    // 02: Update the existing view model with new data
-    existingUserViewModel.update({
-      name: event.data.name,
-      bio: event.data.bio,
-      avatar: event.data.avatar,
-    });
+    // 03: Update the existing view model with new data
+    existingUserViewModel.update(event.data);
 
-    // 03: Save the updated user view model
+    // 04: Save the updated user view model
     await this.userReadRepository.save(existingUserViewModel);
   }
 }

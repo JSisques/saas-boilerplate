@@ -6,17 +6,23 @@ import { IUserUpdateViewModelDto } from '@/features/users/domain/dtos/view-model
  */
 export class UserViewModel {
   private readonly _id: string;
-  private _name: string;
+  private _avatarUrl: string | null;
   private _bio: string | null;
-  private _avatar: string | null;
-  private readonly _createdAt: Date;
+  private _lastName: string | null;
+  private _name: string | null;
+  private _role: string;
+  private _status: string;
+  private _userName: string | null;
+  private _createdAt: Date;
   private _updatedAt: Date;
 
   constructor(props: IUserCreateViewModelDto) {
     this._id = props.id;
+    this._userName = props.userName;
     this._name = props.name;
+    this._lastName = props.lastName;
     this._bio = props.bio;
-    this._avatar = props.avatar;
+    this._avatarUrl = props.avatarUrl;
     this._createdAt = props.createdAt;
     this._updatedAt = props.updatedAt;
   }
@@ -25,16 +31,32 @@ export class UserViewModel {
     return this._id;
   }
 
+  public get userName(): string | null {
+    return this._userName;
+  }
+
+  public get lastName(): string | null {
+    return this._lastName;
+  }
+
   public get name(): string | null {
     return this._name;
+  }
+
+  public get role(): string {
+    return this._role;
+  }
+
+  public get status(): string {
+    return this._status;
   }
 
   public get bio(): string | null {
     return this._bio;
   }
 
-  public get avatar(): string | null {
-    return this._avatar;
+  public get avatarUrl(): string | null {
+    return this._avatarUrl;
   }
 
   public get createdAt(): Date {
@@ -52,9 +74,13 @@ export class UserViewModel {
    * @returns A new UserViewModel instance with updated data
    */
   public update(updateData: IUserUpdateViewModelDto) {
+    this._userName = updateData.userName ?? this._userName;
     this._name = updateData.name ?? this._name;
+    this._lastName = updateData.lastName ?? this._lastName;
     this._bio = updateData.bio ?? this._bio;
-    this._avatar = updateData.avatar ?? this._avatar;
+    this._avatarUrl = updateData.avatarUrl ?? this._avatarUrl;
+    this._role = updateData.role ?? this._role;
+    this._status = updateData.status ?? this._status;
     this._updatedAt = new Date();
   }
 }

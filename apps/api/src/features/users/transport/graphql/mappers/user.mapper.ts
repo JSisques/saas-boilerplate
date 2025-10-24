@@ -15,7 +15,11 @@ export class UserGraphQLMapper {
       id: user.id,
       name: user.name,
       bio: user.bio,
-      avatar: user.avatar,
+      avatarUrl: user.avatarUrl,
+      lastName: user.lastName,
+      role: user.role,
+      status: user.status,
+      userName: user.userName,
     };
   }
 

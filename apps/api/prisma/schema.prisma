@@ -16,9 +16,13 @@ datasource db {
 
 model User {
   id        String  @id @default(uuid())
+  userName  String?
   name      String?
+  lastName  String?
   bio       String?
-  avatar    String?
+  avatarUrl String?
+  role      String
+  status    String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }

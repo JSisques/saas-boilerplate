@@ -41,9 +41,13 @@ export class MongoUserRepository
     return userViewModel
       ? this.userMongoDBMapper.toViewModel({
           id: userViewModel.id,
-          name: userViewModel.name,
+          avatarUrl: userViewModel.avatarUrl,
           bio: userViewModel.bio,
-          avatar: userViewModel.avatar,
+          lastName: userViewModel.lastName,
+          name: userViewModel.name,
+          role: userViewModel.role,
+          status: userViewModel.status,
+          userName: userViewModel.userName,
           createdAt: userViewModel.createdAt,
           updatedAt: userViewModel.updatedAt,
         })
@@ -88,9 +92,13 @@ export class MongoUserRepository
     const users = data.map((doc) =>
       this.userMongoDBMapper.toViewModel({
         id: doc.id,
-        name: doc.name,
+        avatarUrl: doc.avatarUrl,
         bio: doc.bio,
-        avatar: doc.avatar,
+        lastName: doc.lastName,
+        name: doc.name,
+        role: doc.role,
+        status: doc.status,
+        userName: doc.userName,
         createdAt: doc.createdAt,
         updatedAt: doc.updatedAt,
       }),

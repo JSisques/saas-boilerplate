@@ -4,8 +4,8 @@ import { IsNotEmpty, IsUUID } from 'class-validator';
 
 @InputType('UpdateUserRequestDto')
 export class UpdateUserRequestDto extends PartialType(CreateUserRequestDto) {
-  @Field(() => String, { description: 'The id of the user' })
+  @Field(() => String, { description: 'The unique identifier of the user' })
   @IsUUID()
   @IsNotEmpty()
-  userId: string;
+  id: string;
 }

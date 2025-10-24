@@ -1,4 +1,4 @@
-import { UserAggregate } from '@/features/users/domain/entities/user.aggregate';
+import { UserAggregate } from '@/features/users/domain/aggregates/user.aggregate';
 import { UserWriteRepository } from '@/features/users/domain/repositories/user-write.repository';
 import {
   USER_PRISMA_MAPPER_TOKEN,

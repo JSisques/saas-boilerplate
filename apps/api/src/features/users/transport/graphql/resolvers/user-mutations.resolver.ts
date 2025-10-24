@@ -1,6 +1,6 @@
-import { CreateUserCommand } from '@/features/users/application/commands/create-user/create-user.command';
-import { DeleteUserCommand } from '@/features/users/application/commands/delete-user/delete-user.command';
-import { UpdateUserCommand } from '@/features/users/application/commands/update-user/update-user.command';
+import { UserDeleteCommand } from '@/features/users/application/commands/delete-user/delete-user.command';
+import { UserCreateCommand } from '@/features/users/application/commands/user-create/user-create.command';
+import { UserUpdateCommand } from '@/features/users/application/commands/user-update/user-update.command';
 import { CreateUserRequestDto } from '@/features/users/transport/graphql/dtos/requests/create-user.request.dto';
 import { DeleteUserRequestDto } from '@/features/users/transport/graphql/dtos/requests/delete-user.request.dto';
 import { UpdateUserRequestDto } from '@/features/users/transport/graphql/dtos/requests/update-user.request.dto copy';
@@ -27,7 +27,15 @@ export class UserMutationsResolver {
   ): Promise<MutationResponseDto> {
     // 01: Send the command to the command bus
     const createdUserId = await this.commandBus.execute(
-      new CreateUserCommand(input.name, input.bio, input.avatar),
+      new UserCreateCommand({
+        name: input.name,
+        bio: input.bio,
+        avatarUrl: input.avatarUrl,
+        lastName: input.lastName,
+        role: input.role,
+        status: input.status,
+        userName: input.userName,
+      }),
     );
 
     // 02: Return success response
@@ -44,10 +52,15 @@ export class UserMutationsResolver {
   ): Promise<MutationResponseDto> {
     // 01: Send the command to the command bus
     await this.commandBus.execute(
-      new UpdateUserCommand(input.userId, {
+      new UserUpdateCommand({
+        id: input.id,
         name: input.name,
         bio: input.bio,
-        avatar: input.avatar,
+        avatarUrl: input.avatarUrl,
+        lastName: input.lastName,
+        role: input.role,
+        status: input.status,
+        userName: input.userName,
       }),
     );
 
@@ -55,7 +68,7 @@ export class UserMutationsResolver {
     return this.mutationResponseGraphQLMapper.toResponseDto({
       success: true,
       message: 'User updated successfully',
-      id: input.userId,
+      id: input.id,
     });
   }
 
@@ -64,13 +77,13 @@ export class UserMutationsResolver {
     @Args('input') input: DeleteUserRequestDto,
   ): Promise<MutationResponseDto> {
     // 01: Send the command to the command bus
-    await this.commandBus.execute(new DeleteUserCommand(input.userId));
+    await this.commandBus.execute(new UserDeleteCommand({ id: input.id }));
 
     // 02: Return success response
     return this.mutationResponseGraphQLMapper.toResponseDto({
       success: true,
       message: 'User deleted successfully',
-      id: input.userId,
+      id: input.id,
     });
   }
 }

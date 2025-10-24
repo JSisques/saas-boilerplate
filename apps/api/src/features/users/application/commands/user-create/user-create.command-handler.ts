@@ -9,11 +9,11 @@ import {
 import { UserUuidValueObject } from '@/features/users/domain/value-objects/user-uuid/user-uuid.vo';
 import { Inject } from '@nestjs/common';
 import { CommandHandler, EventBus, ICommandHandler } from '@nestjs/cqrs';
-import { CreateUserCommand } from './create-user.command';
+import { UserCreateCommand } from './user-create.command';
 
-@CommandHandler(CreateUserCommand)
-export class CreateUserCommandHandler
-  implements ICommandHandler<CreateUserCommand>
+@CommandHandler(UserCreateCommand)
+export class UserCreateCommandHandler
+  implements ICommandHandler<UserCreateCommand>
 {
   constructor(
     @Inject(USER_WRITE_REPOSITORY_TOKEN)
@@ -24,18 +24,16 @@ export class CreateUserCommandHandler
   ) {}
 
   /**
-   * Executes the create user command
+   * Executes the user create command
    *
    * @param command - The command to execute
    * @returns The created user id
    */
-  async execute(command: CreateUserCommand): Promise<string> {
+  async execute(command: UserCreateCommand): Promise<string> {
     // 01: Create the user entity
     const user = this.userAggregateFactory.create({
       id: UserUuidValueObject.generate().value,
-      name: command.name,
-      bio: command.bio,
-      avatar: command.avatar,
+      ...command,
     });
 
     // 02: Save the user entity

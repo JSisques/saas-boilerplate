@@ -1,10 +1,11 @@
-import { CreateUserCommandHandler } from '@/features/users/application/commands/create-user/create-user.command-handler';
-import { DeleteUserCommandHandler } from '@/features/users/application/commands/delete-user/delete-user.command-handler';
-import { UpdateUserCommandHandler } from '@/features/users/application/commands/update-user/update-user.command-handler';
+import { UserDeleteCommandHandler } from '@/features/users/application/commands/delete-user/delete-user.command-handler';
+import { UserCreateCommandHandler } from '@/features/users/application/commands/user-create/user-create.command-handler';
+import { UserUpdateCommandHandler } from '@/features/users/application/commands/user-update/user-update.command-handler';
 import { UserCreatedEventHandler } from '@/features/users/application/event-handlers/user-created/user-created.event-handler';
 import { UserDeletedEventHandler } from '@/features/users/application/event-handlers/user-deleted/user-deleted.event-handler';
 import { UserUpdatedEventHandler } from '@/features/users/application/event-handlers/user-updated/user-updated.event-handler';
 import { FindUsersByCriteriaQueryHandler } from '@/features/users/application/queries/find-users-by-criteria/find-users-by-criteria.query-handler';
+import { AssertUserExistsService } from '@/features/users/application/services/assert-user-exsits/assert-user-exsits.service';
 import {
   USER_VIEW_MODEL_FACTORY_TOKEN,
   UserViewModelFactory,
@@ -36,14 +37,14 @@ import { Module } from '@nestjs/common';
 
 const RESOLVERS = [UserQueryResolver, UserMutationsResolver];
 
-const SERVICES = [];
+const SERVICES = [AssertUserExistsService];
 
 const QUERY_HANDLERS = [FindUsersByCriteriaQueryHandler];
 
 const COMMAND_HANDLERS = [
-  CreateUserCommandHandler,
-  UpdateUserCommandHandler,
-  DeleteUserCommandHandler,
+  UserCreateCommandHandler,
+  UserUpdateCommandHandler,
+  UserDeleteCommandHandler,
 ];
 
 const EVENT_HANDLERS = [

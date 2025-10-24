@@ -1,6 +1,10 @@
 export interface IUserEventData {
   id: string;
-  name: string;
-  bio: string;
-  avatar: string;
+  avatarUrl: string | null;
+  bio: string | null;
+  lastName: string | null;
+  name: string | null;
+  role: string;
+  status: string;
+  userName: string | null;
 }

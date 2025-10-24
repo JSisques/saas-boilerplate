@@ -1,4 +1,4 @@
-import { UserAggregate } from '@/features/users/domain/entities/user.aggregate';
+import { UserAggregate } from '@/features/users/domain/aggregates/user.aggregate';
 import { UserPrimitives } from '@/features/users/domain/primitives/user.primitives';
 import { UserViewModel } from '@/features/users/domain/view-models/user.view-model';
 import { IReadFactory } from '@/shared/domain/interfaces/read-factory.interface';
@@ -11,6 +11,9 @@ export const USER_VIEW_MODEL_FACTORY_TOKEN = Symbol('UserViewModelFactory');
  */
 @Injectable()
 export class UserViewModelFactory implements IReadFactory<UserViewModel> {
+  fromDto?(dto: any): UserViewModel {
+    throw new Error('Method not implemented.');
+  }
   /**
    * Creates a new user view model from a user aggregate.
    *
@@ -22,9 +25,13 @@ export class UserViewModelFactory implements IReadFactory<UserViewModel> {
 
     return new UserViewModel({
       id: userPrimitives.id,
+      userName: userPrimitives.userName,
       name: userPrimitives.name,
+      lastName: userPrimitives.lastName,
+      role: userPrimitives.role,
+      status: userPrimitives.status,
       bio: userPrimitives.bio,
-      avatar: userPrimitives.avatar,
+      avatarUrl: userPrimitives.avatarUrl,
       createdAt: now,
       updatedAt: now,
     });
@@ -40,9 +47,13 @@ export class UserViewModelFactory implements IReadFactory<UserViewModel> {
 
     return new UserViewModel({
       id: userAggregate.id.value,
+      userName: userAggregate.userName?.value || null,
       name: userAggregate.name?.value || null,
+      lastName: userAggregate.lastName?.value || null,
+      role: userAggregate.role?.value || null,
+      status: userAggregate.status?.value || null,
       bio: userAggregate.bio?.value || null,
-      avatar: userAggregate.avatar?.value || null,
+      avatarUrl: userAggregate.avatarUrl?.value || null,
       createdAt: now,
       updatedAt: now,
     });

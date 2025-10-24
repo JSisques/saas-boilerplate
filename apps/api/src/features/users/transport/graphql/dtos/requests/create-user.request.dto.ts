@@ -20,8 +20,39 @@ export class CreateUserRequestDto {
     description: 'The avatar url of the user',
     nullable: true,
   })
+  @IsUrl()
+  @IsOptional()
+  avatarUrl: string;
+
+  @Field(() => String, {
+    description: 'The last name of the user',
+    nullable: true,
+  })
   @IsString()
   @IsOptional()
-  @IsUrl()
-  avatar: string;
+  lastName: string;
+
+  @Field(() => String, {
+    description: 'The user name of the user',
+    nullable: true,
+  })
+  @IsString()
+  @IsOptional()
+  userName: string;
+
+  @Field(() => String, {
+    description: 'The role of the user',
+    nullable: true,
+  })
+  @IsString()
+  @IsOptional()
+  role: string;
+
+  @Field(() => String, {
+    description: 'The status of the user',
+    nullable: true,
+  })
+  @IsString()
+  @IsOptional()
+  status: string;
 }

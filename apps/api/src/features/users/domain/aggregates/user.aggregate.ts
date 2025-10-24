@@ -1,9 +1,15 @@
 import { IUserCreateDto } from '@/features/users/domain/dtos/entities/user-create/user-create.dto';
 import { IUserUpdateDto } from '@/features/users/domain/dtos/entities/user-update/user-update.dto';
+import { UserRoleEnum } from '@/features/users/domain/enums/user-role/user-role.enum';
+import { UserStatusEnum } from '@/features/users/domain/enums/user-status/user-status.enum';
 import { UserPrimitives } from '@/features/users/domain/primitives/user.primitives';
-import { UserAvatarValueObject } from '@/features/users/domain/value-objects/user-avatar/user-avatar.vo';
+import { UserAvatarUrlValueObject } from '@/features/users/domain/value-objects/user-avatar-url/user-avatar-url.vo';
 import { UserBioValueObject } from '@/features/users/domain/value-objects/user-bio/user-bio.vo';
+import { UserLastNameValueObject } from '@/features/users/domain/value-objects/user-last-name/user-last-name.vo';
 import { UserNameValueObject } from '@/features/users/domain/value-objects/user-name/user-name.vo';
+import { UserRoleValueObject } from '@/features/users/domain/value-objects/user-role/user-role.vo';
+import { UserStatusValueObject } from '@/features/users/domain/value-objects/user-status/user-status.vo';
+import { UserUserNameValueObject } from '@/features/users/domain/value-objects/user-user-name/user-user-name.vo';
 import { UserUuidValueObject } from '@/features/users/domain/value-objects/user-uuid/user-uuid.vo';
 import { UserCreatedEvent } from '@/shared/domain/events/users/user-created/user-created.event';
 import { UserDeletedEvent } from '@/shared/domain/events/users/user-deleted/user-deleted.event';
@@ -12,18 +18,26 @@ import { AggregateRoot } from '@nestjs/cqrs';
 
 export class UserAggregate extends AggregateRoot {
   private readonly _id: UserUuidValueObject;
-  private _name: UserNameValueObject | null;
+  private _avatarUrl: UserAvatarUrlValueObject | null;
   private _bio: UserBioValueObject | null;
-  private _avatar: UserAvatarValueObject | null;
+  private _lastName: UserLastNameValueObject | null;
+  private _name: UserNameValueObject | null;
+  private _role: UserRoleValueObject;
+  private _status: UserStatusValueObject;
+  private _userName: UserUserNameValueObject | null;
 
   constructor(props: IUserCreateDto, generateEvent: boolean = true) {
     super();
 
     // 01: Set the properties
     this._id = props.id;
-    this._name = props.name;
+    this._avatarUrl = props.avatarUrl;
     this._bio = props.bio;
-    this._avatar = props.avatar;
+    this._lastName = props.lastName;
+    this._name = props.name;
+    this._role = props.role;
+    this._status = props.status;
+    this._userName = props.userName;
 
     // 02: Apply the creation event
     if (generateEvent) {
@@ -34,12 +48,7 @@ export class UserAggregate extends AggregateRoot {
             aggregateType: UserAggregate.name,
             eventType: UserCreatedEvent.name,
           },
-          {
-            id: this._id.value,
-            name: this._name?.value ?? null,
-            bio: this._bio?.value ?? null,
-            avatar: this._avatar?.value ?? null,
-          },
+          this.toPrimitives(),
         ),
       );
     }
@@ -55,9 +64,13 @@ export class UserAggregate extends AggregateRoot {
    */
   public update(props: IUserUpdateDto, generateEvent: boolean = true) {
     // 01: Update the properties
-    this._name = props.name;
+    this._avatarUrl = props.avatarUrl;
     this._bio = props.bio;
-    this._avatar = props.avatar;
+    this._lastName = props.lastName;
+    this._name = props.name;
+    this._role = props.role;
+    this._status = props.status;
+    this._userName = props.userName;
 
     if (generateEvent) {
       this.apply(
@@ -103,6 +116,23 @@ export class UserAggregate extends AggregateRoot {
   }
 
   /**
+   * Get the user name of the user.
+   *
+   * @returns The user name of the user.
+   */
+  public get userName(): UserUserNameValueObject | null {
+    return this._userName;
+  }
+
+  /**
+   * Get the last name of the user.
+   *
+   * @returns The last name of the user.
+   */
+  public get lastName(): UserLastNameValueObject | null {
+    return this._lastName;
+  }
+  /**
    * Get the name of the user.
    *
    * @returns The name of the user.
@@ -125,16 +155,43 @@ export class UserAggregate extends AggregateRoot {
    *
    * @returns The avatar of the user.
    */
-  public get avatar(): UserAvatarValueObject | null {
-    return this._avatar;
+  public get avatarUrl(): UserAvatarUrlValueObject | null {
+    return this._avatarUrl;
   }
 
+  /**
+   * Get the role of the user.
+   *
+   * @returns The role of the user.
+   */
+  public get role(): UserRoleValueObject {
+    return this._role;
+  }
+
+  /**
+   * Get the status of the user.
+   *
+   * @returns The status of the user.
+   */
+  public get status(): UserStatusValueObject {
+    return this._status;
+  }
+
+  /**
+   * Convert the user aggregate to primitives.
+   *
+   * @returns The primitives of the user.
+   */
   public toPrimitives(): UserPrimitives {
     return {
       id: this._id.value,
-      name: this._name?.value ?? null,
+      avatarUrl: this._avatarUrl?.value ?? null,
       bio: this._bio?.value ?? null,
-      avatar: this._avatar?.value ?? null,
+      lastName: this._lastName?.value ?? null,
+      name: this._name?.value ?? null,
+      role: this._role?.value ?? UserRoleEnum.USER,
+      status: this._status?.value ?? UserStatusEnum.ACTIVE,
+      userName: this._userName?.value ?? null,
     };
   }
 }

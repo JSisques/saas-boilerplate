@@ -1,4 +1,4 @@
-import { UserAggregate } from '@/features/users/domain/entities/user.aggregate';
+import { UserAggregate } from '@/features/users/domain/aggregates/user.aggregate';
 import {
   USER_AGGREGATE_FACTORY_TOKEN,
   UserAggregateFactory,
@@ -22,11 +22,15 @@ export class UserPrismaMapper {
       `Converting Prisma data to domain entity with id ${userData.id}`,
     );
 
-    return this.userAggregateFactory.create({
+    return this.userAggregateFactory.fromPrimitives({
       id: userData.id,
+      userName: userData.userName,
       name: userData.name,
+      lastName: userData.lastName,
       bio: userData.bio,
-      avatar: userData.avatar,
+      avatarUrl: userData.avatarUrl,
+      role: userData.role,
+      status: userData.status,
     });
   }
 
@@ -37,9 +41,13 @@ export class UserPrismaMapper {
 
     return {
       id: user.id.value,
-      name: user.name?.value,
+      avatarUrl: user.avatarUrl?.value,
       bio: user.bio?.value,
-      avatar: user.avatar?.value,
+      lastName: user.lastName?.value,
+      name: user.name?.value,
+      role: user.role?.value,
+      status: user.status?.value,
+      userName: user.userName?.value,
     };
   }
 }

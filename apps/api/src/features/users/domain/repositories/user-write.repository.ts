@@ -1,4 +1,4 @@
-import { UserAggregate } from '@/features/users/domain/entities/user.aggregate';
+import { UserAggregate } from '@/features/users/domain/aggregates/user.aggregate';
 
 export const USER_WRITE_REPOSITORY_TOKEN = Symbol('UserWriteRepository');
 

@@ -1,19 +1,29 @@
 /**
- * Data Transfer Object for creating a user view model.
+ * User creation view model Data Transfer Object.
+ *
+ * Represents the structure of data returned when a user is created, tailored for presentation layers.
  *
  * @interface IUserCreateViewModelDto
- * @property {string} id - The immutable identifier of the user.
- * @property {string} name - The name of the user.
- * @property {string} bio - The bio of the user.
- * @property {string} avatar - The avatar of the user.
- * @property {Date} createdAt - The date and time the user was created.
- * @property {Date} updatedAt - The date and time the user was last updated.
+ * @property {string} id - The unique, immutable identifier of the user.
+ * @property {string | null} userName - The username of the user (nullable).
+ * @property {string | null} name - The first name of the user (nullable).
+ * @property {string | null} lastName - The last name of the user (nullable).
+ * @property {string | null} bio - The user's biography (nullable).
+ * @property {string | null} avatarUrl - The URL to the user's avatar image (nullable).
+ * @property {string} role - The role assigned to the user.
+ * @property {string} status - The current status of the user.
+ * @property {Date} createdAt - Timestamp when the user was created.
+ * @property {Date} updatedAt - Timestamp when the user was last updated.
  */
 export interface IUserCreateViewModelDto {
   id: string;
-  name: string;
+  avatarUrl: string | null;
   bio: string | null;
-  avatar: string | null;
+  lastName: string | null;
+  name: string | null;
+  role: string;
+  status: string;
+  userName: string | null;
   createdAt: Date;
   updatedAt: Date;
 }

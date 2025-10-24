@@ -12,14 +12,26 @@ type UserResponseDto {
   """The id of the user"""
   id: String!
 
-  """The name of the user"""
-  name: String
+  """The user name of the user"""
+  userName: String
+
+  """The last name of the user"""
+  lastName: String
+
+  """The role of the user"""
+  role: String
+
+  """The status of the user"""
+  status: String
+
+  """The avatar url of the user"""
+  avatarUrl: String
 
   """The bio of the user"""
   bio: String
 
-  """The avatar of the user"""
-  avatar: String
+  """The name of the user"""
+  name: String
 }
 
 type PaginatedUserResultDto {
@@ -114,7 +126,19 @@ input CreateUserRequestDto {
   bio: String
 
   """The avatar url of the user"""
-  avatar: String
+  avatarUrl: String
+
+  """The last name of the user"""
+  lastName: String
+
+  """The user name of the user"""
+  userName: String
+
+  """The role of the user"""
+  role: String
+
+  """The status of the user"""
+  status: String
 }
 
 input UpdateUserRequestDto {
@@ -125,13 +149,25 @@ input UpdateUserRequestDto {
   bio: String
 
   """The avatar url of the user"""
-  avatar: String
+  avatarUrl: String
 
-  """The id of the user"""
-  userId: String!
+  """The last name of the user"""
+  lastName: String
+
+  """The user name of the user"""
+  userName: String
+
+  """The role of the user"""
+  role: String
+
+  """The status of the user"""
+  status: String
+
+  """The unique identifier of the user"""
+  id: String!
 }
 
 input DeleteUserRequestDto {
-  """The id of the user"""
-  userId: String!
+  """The unique identifier of the user"""
+  id: String!
 }

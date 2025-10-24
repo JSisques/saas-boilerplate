@@ -20,9 +20,13 @@ export class UserMongoDBMapper {
 
     return new UserViewModel({
       id: doc.id,
+      userName: doc.userName,
       name: doc.name,
+      lastName: doc.lastName,
+      role: doc.role,
+      status: doc.status,
       bio: doc.bio,
-      avatar: doc.avatar,
+      avatarUrl: doc.avatarUrl,
       createdAt: doc.createdAt,
       updatedAt: doc.updatedAt,
     });
@@ -41,9 +45,13 @@ export class UserMongoDBMapper {
 
     return {
       id: userViewModel.id,
-      name: userViewModel.name,
+      avatarUrl: userViewModel.avatarUrl,
       bio: userViewModel.bio,
-      avatar: userViewModel.avatar,
+      name: userViewModel.name,
+      lastName: userViewModel.lastName,
+      role: userViewModel.role,
+      status: userViewModel.status,
+      userName: userViewModel.userName,
       createdAt: userViewModel.createdAt,
       updatedAt: userViewModel.updatedAt,
     };

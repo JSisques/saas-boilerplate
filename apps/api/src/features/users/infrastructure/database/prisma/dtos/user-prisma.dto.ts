@@ -1,6 +1,10 @@
 export type UserPrismaDto = {
   id: string;
-  name: string;
+  avatarUrl: string | null;
   bio: string | null;
-  avatar: string | null;
+  lastName: string | null;
+  name: string | null;
+  role: string;
+  status: string;
+  userName: string | null;
 };

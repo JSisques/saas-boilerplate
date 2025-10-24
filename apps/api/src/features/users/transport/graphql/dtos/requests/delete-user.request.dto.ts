@@ -3,8 +3,8 @@ import { IsNotEmpty, IsUUID } from 'class-validator';
 
 @InputType('DeleteUserRequestDto')
 export class DeleteUserRequestDto {
-  @Field(() => String, { description: 'The id of the user' })
+  @Field(() => String, { description: 'The unique identifier of the user' })
   @IsUUID()
   @IsNotEmpty()
-  userId: string;
+  id: string;
 }

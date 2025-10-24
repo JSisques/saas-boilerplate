@@ -4,9 +4,15 @@ import { IUserCreateViewModelDto } from '@/features/users/domain/dtos/view-model
  * Data Transfer Object for updating a user view model.
  *
  * @interface IUserUpdateViewModelDto
- * @property {string} name - The name of the user.
- * @property {string} bio - The bio of the user.
- * @property {string} avatar - The avatar of the user.
+ * @property {string | null} userName - The username of the user (nullable).
+ * @property {string | null} name - The first name of the user (nullable).
+ * @property {string | null} lastName - The last name of the user (nullable).
+ * @property {string | null} bio - The user's biography (nullable).
+ * @property {string | null} avatarUrl - The URL to the user's avatar image (nullable).
+ * @property {string} role - The role assigned to the user.
+ * @property {string} status - The current status of the user.
+ * @property {Date} createdAt - Timestamp when the user was created.
+ * @property {Date} updatedAt - Timestamp when the user was last updated.
  */
 export interface IUserUpdateViewModelDto
   extends Partial<
