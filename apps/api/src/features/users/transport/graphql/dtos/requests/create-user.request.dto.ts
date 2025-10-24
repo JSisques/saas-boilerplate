@@ -1,5 +1,6 @@
 import { Field, InputType } from '@nestjs/graphql';
-import { IsOptional, IsString, IsUrl } from 'class-validator';
+import { RoleEnum, StatusEnum } from '@prisma/client';
+import { IsEnum, IsOptional, IsString, IsUrl } from 'class-validator';
 
 @InputType('CreateUserRequestDto')
 export class CreateUserRequestDto {
@@ -40,19 +41,19 @@ export class CreateUserRequestDto {
   @IsOptional()
   userName: string;
 
-  @Field(() => String, {
+  @Field(() => RoleEnum, {
     description: 'The role of the user',
     nullable: true,
   })
-  @IsString()
   @IsOptional()
-  role: string;
+  @IsEnum(RoleEnum)
+  role: RoleEnum;
 
-  @Field(() => String, {
+  @Field(() => StatusEnum, {
     description: 'The status of the user',
     nullable: true,
   })
-  @IsString()
+  @IsEnum(StatusEnum)
   @IsOptional()
-  status: string;
+  status: StatusEnum;
 }

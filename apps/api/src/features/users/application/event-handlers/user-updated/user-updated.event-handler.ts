@@ -4,7 +4,7 @@ import {
   UserReadRepository,
 } from '@/features/users/domain/repositories/user-read.repository';
 import { UserViewModel } from '@/features/users/domain/view-models/user.view-model';
-import { UserUpdatedEvent } from "@/shared/domain/events/users/user-updated-import { UserIntegrationEventData } from '@/shared/application/integration-events/users/interfaces/user-updated/user-updated.event";
+import { UserUpdatedEvent } from '@/shared/domain/events/users/user-updated/user-updated.event';
 import { Inject, Logger } from '@nestjs/common';
 import { EventsHandler, IEventHandler } from '@nestjs/cqrs';
 

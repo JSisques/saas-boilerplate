@@ -13,7 +13,7 @@ import { UserUserNameValueObject } from '@/features/users/domain/value-objects/u
 import { UserUuidValueObject } from '@/features/users/domain/value-objects/user-uuid/user-uuid.vo';
 import { UserCreatedEvent } from '@/shared/domain/events/users/user-created/user-created.event';
 import { UserDeletedEvent } from '@/shared/domain/events/users/user-deleted/user-deleted.event';
-import { UserUpdatedEvent } from "@/shared/domain/events/users/user-updated-import { UserIntegrationEventData } from '@/shared/application/integration-events/users/interfaces/user-updated/user-updated.event";
+import { UserUpdatedEvent } from '@/shared/domain/events/users/user-updated/user-updated.event';
 import { AggregateRoot } from '@nestjs/cqrs';
 
 export class UserAggregate extends AggregateRoot {

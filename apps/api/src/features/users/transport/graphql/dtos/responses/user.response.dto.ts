@@ -1,4 +1,5 @@
-import { Field, Int, ObjectType } from '@nestjs/graphql';
+import { BasePaginatedResultDto } from '@/shared/transport/graphql/dtos/responses';
+import { Field, ObjectType } from '@nestjs/graphql';
 
 @ObjectType('UserResponseDto')
 export class UserResponseDto {
@@ -40,19 +41,9 @@ export class UserResponseDto {
 }
 
 @ObjectType('PaginatedUserResultDto')
-export class PaginatedUserResultDto {
-  @Field(() => [UserResponseDto])
+export class PaginatedUserResultDto extends BasePaginatedResultDto {
+  @Field(() => [UserResponseDto], {
+    description: 'The users in the current page',
+  })
   items: UserResponseDto[];
-
-  @Field(() => Int, { description: 'The total number of users' })
-  total: number;
-
-  @Field(() => Int, { description: 'The page number' })
-  page: number;
-
-  @Field(() => Int, { description: 'The number of users per page' })
-  perPage: number;
-
-  @Field(() => Int, { description: 'The total number of pages' })
-  totalPages: number;
 }

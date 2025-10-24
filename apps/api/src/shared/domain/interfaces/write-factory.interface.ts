@@ -3,14 +3,14 @@
  * These factories are responsible for creating aggregates and entities
  * from primitive data or command data.
  */
-export interface IWriteFactory<TEntity, TCreateProps = any> {
+export interface IWriteFactory<TEntity, TCreateProps = any, TPrimitives = any> {
   /**
    * Creates a new entity from the given properties.
    *
-   * @param props - The properties to create the entity from
+   * @param data - The data to create the entity from
    * @returns The created entity
    */
-  create(props: TCreateProps): TEntity;
+  create(data: TCreateProps): TEntity;
 
   /**
    * Creates an entity from primitive data (usually from database).
@@ -18,5 +18,5 @@ export interface IWriteFactory<TEntity, TCreateProps = any> {
    * @param primitives - The primitive data to create the entity from
    * @returns The created entity
    */
-  fromPrimitives?(primitives: any): TEntity;
+  fromPrimitives(primitives: TPrimitives): TEntity;
 }

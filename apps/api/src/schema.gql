@@ -2,6 +2,48 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type AuditResponseDto {
+  """The id of the user"""
+  id: String!
+
+  """The name of the audit"""
+  eventType: String
+
+  """The bio of the user"""
+  aggregateType: String
+
+  """The aggregate id of the audit"""
+  aggregateId: String
+
+  """The payload of the audit"""
+  payload: String
+
+  """The timestamp of the audit"""
+  timestamp: DateTime
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type PaginatedAuditResultDto {
+  """The total number of items"""
+  total: Int!
+
+  """The page number"""
+  page: Int!
+
+  """The number of items per page"""
+  perPage: Int!
+
+  """The total number of pages"""
+  totalPages: Int!
+
+  """The audits in the current page"""
+  items: [AuditResponseDto!]!
+}
+
 type MutationResponseDto {
   success: Boolean!
   message: String
@@ -35,39 +77,41 @@ type UserResponseDto {
 }
 
 type PaginatedUserResultDto {
-  items: [UserResponseDto!]!
-
-  """The total number of users"""
+  """The total number of items"""
   total: Int!
 
   """The page number"""
   page: Int!
 
-  """The number of users per page"""
+  """The number of items per page"""
   perPage: Int!
 
   """The total number of pages"""
   totalPages: Int!
+
+  """The users in the current page"""
+  items: [UserResponseDto!]!
 }
 
 type Query {
   hello: String!
   health: String!
+  findAuditsByCriteria(input: AuditFindByCriteriaRequestDto): PaginatedAuditResultDto!
   findUsersByCriteria(input: UserFindByCriteriaRequestDto): PaginatedUserResultDto!
 }
 
-input UserFindByCriteriaRequestDto {
+input AuditFindByCriteriaRequestDto {
   """The filters to find by"""
-  filters: [UserFilterInput!] = []
+  filters: [BaseFilterInput!] = []
 
   """The sorts to find by"""
-  sorts: [UserSortInput!] = []
+  sorts: [BaseSortInput!] = []
 
   """The pagination to find by"""
-  pagination: UserPaginationInput = {page: 1, perPage: 10}
+  pagination: BasePaginationInput = {page: 1, perPage: 10}
 }
 
-input UserFilterInput {
+input BaseFilterInput {
   """The field to filter by"""
   field: String!
 
@@ -90,7 +134,7 @@ enum FilterOperator {
   LESS_THAN_OR_EQUAL
 }
 
-input UserSortInput {
+input BaseSortInput {
   """The field to sort by"""
   field: String!
 
@@ -104,12 +148,23 @@ enum SortDirection {
   DESC
 }
 
-input UserPaginationInput {
+input BasePaginationInput {
   """The page to paginate by"""
   page: Int!
 
   """The per page to paginate by"""
   perPage: Int!
+}
+
+input UserFindByCriteriaRequestDto {
+  """The filters to find by"""
+  filters: [BaseFilterInput!] = []
+
+  """The sorts to find by"""
+  sorts: [BaseSortInput!] = []
+
+  """The pagination to find by"""
+  pagination: BasePaginationInput = {page: 1, perPage: 10}
 }
 
 type Mutation {
@@ -135,10 +190,23 @@ input CreateUserRequestDto {
   userName: String
 
   """The role of the user"""
-  role: String
+  role: RoleEnum
 
   """The status of the user"""
-  status: String
+  status: StatusEnum
+}
+
+"""The role of the user"""
+enum RoleEnum {
+  ADMIN
+  USER
+}
+
+"""The status of the user"""
+enum StatusEnum {
+  ACTIVE
+  INACTIVE
+  BLOCKED
 }
 
 input UpdateUserRequestDto {
@@ -158,10 +226,10 @@ input UpdateUserRequestDto {
   userName: String
 
   """The role of the user"""
-  role: String
+  role: RoleEnum
 
   """The status of the user"""
-  status: String
+  status: StatusEnum
 
   """The unique identifier of the user"""
   id: String!

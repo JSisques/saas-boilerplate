@@ -14,6 +14,16 @@ datasource db {
   url      = env("DATABASE_URL")
 } 
 
+enum RoleEnum {
+  ADMIN
+  USER
+}
+
+enum StatusEnum {
+  ACTIVE
+  INACTIVE
+  BLOCKED
+}
 model User {
   id        String  @id @default(uuid())
   userName  String?
@@ -21,8 +31,17 @@ model User {
   lastName  String?
   bio       String?
   avatarUrl String?
-  role      String
-  status    String
+  role      RoleEnum
+  status    StatusEnum
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+model Audit {
+  id        String  @id @default(uuid())
+  eventType String
+  aggregateType String
+  aggregateId String
+  payload Json? 
+  timestamp DateTime @default(now())
 }
