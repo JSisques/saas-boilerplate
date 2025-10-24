@@ -18,11 +18,13 @@ export class UserViewModel {
 
   constructor(props: IUserCreateViewModelDto) {
     this._id = props.id;
-    this._userName = props.userName;
-    this._name = props.name;
-    this._lastName = props.lastName;
-    this._bio = props.bio;
     this._avatarUrl = props.avatarUrl;
+    this._bio = props.bio;
+    this._lastName = props.lastName;
+    this._name = props.name;
+    this._role = props.role;
+    this._status = props.status;
+    this._userName = props.userName;
     this._createdAt = props.createdAt;
     this._updatedAt = props.updatedAt;
   }

@@ -2,7 +2,7 @@ import { UserAggregate } from '@/features/users/domain/aggregates/user.aggregate
 import { UserPrimitives } from '@/features/users/domain/primitives/user.primitives';
 import { UserViewModel } from '@/features/users/domain/view-models/user.view-model';
 import { IReadFactory } from '@/shared/domain/interfaces/read-factory.interface';
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 
 export const USER_VIEW_MODEL_FACTORY_TOKEN = Symbol('UserViewModelFactory');
 
@@ -11,6 +11,8 @@ export const USER_VIEW_MODEL_FACTORY_TOKEN = Symbol('UserViewModelFactory');
  */
 @Injectable()
 export class UserViewModelFactory implements IReadFactory<UserViewModel> {
+  private readonly logger = new Logger(UserViewModelFactory.name);
+
   /**
    * Creates a new user view model from a user aggregate.
    *
@@ -18,6 +20,10 @@ export class UserViewModelFactory implements IReadFactory<UserViewModel> {
    * @returns The user view model.
    */
   fromPrimitives(userPrimitives: UserPrimitives): UserViewModel {
+    this.logger.log(
+      `Creating user view model from primitives: ${userPrimitives}`,
+    );
+
     const now = new Date();
 
     return new UserViewModel({
@@ -40,6 +46,10 @@ export class UserViewModelFactory implements IReadFactory<UserViewModel> {
    * @returns The user view model.
    */
   fromAggregate(userAggregate: UserAggregate): UserViewModel {
+    this.logger.log(
+      `Creating user view model from aggregate: ${userAggregate}`,
+    );
+
     const now = new Date();
 
     return new UserViewModel({

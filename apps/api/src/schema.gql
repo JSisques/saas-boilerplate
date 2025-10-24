@@ -190,10 +190,10 @@ input CreateUserRequestDto {
   userName: String!
 
   """The role of the user"""
-  role: RoleEnum
+  role: RoleEnum!
 
   """The status of the user"""
-  status: StatusEnum
+  status: StatusEnum!
 }
 
 """The role of the user"""

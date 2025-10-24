@@ -49,17 +49,15 @@ export class CreateUserRequestDto {
 
   @Field(() => RoleEnum, {
     description: 'The role of the user',
-    nullable: true,
+    nullable: false,
   })
-  @IsOptional()
   @IsEnum(RoleEnum)
   role: RoleEnum;
 
   @Field(() => StatusEnum, {
     description: 'The status of the user',
-    nullable: true,
+    nullable: false,
   })
   @IsEnum(StatusEnum)
-  @IsOptional()
   status: StatusEnum;
 }
