@@ -6,8 +6,6 @@ import { ConfigModule } from '@nestjs/config';
 import { CqrsModule } from '@nestjs/cqrs';
 import { GraphQLModule } from '@nestjs/graphql';
 import { join } from 'path';
-import { AppController } from 'src/app.controller';
-import { AppService } from 'src/app.service';
 
 @Module({
   imports: [
@@ -24,7 +22,5 @@ import { AppService } from 'src/app.service';
     SharedModule,
     CqrsModule.forRoot(),
   ],
-  controllers: [AppController],
-  providers: [AppService],
 })
 export class AppModule {}
