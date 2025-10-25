@@ -22,10 +22,10 @@ import { UserUuidValueObject } from '@/features/users/domain/value-objects/user-
  */
 export interface IUserCreateDto {
   id: UserUuidValueObject;
-  avatarUrl?: UserAvatarUrlValueObject;
-  bio?: UserBioValueObject;
-  lastName?: UserLastNameValueObject;
-  name?: UserNameValueObject;
+  avatarUrl?: UserAvatarUrlValueObject | null;
+  bio?: UserBioValueObject | null;
+  lastName?: UserLastNameValueObject | null;
+  name?: UserNameValueObject | null;
   role?: UserRoleValueObject;
   status?: UserStatusValueObject;
   userName: UserUserNameValueObject;

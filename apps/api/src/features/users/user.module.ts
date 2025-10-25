@@ -7,6 +7,7 @@ import { UserUpdatedEventHandler } from '@/features/users/application/event-hand
 import { FindUsersByCriteriaQueryHandler } from '@/features/users/application/queries/find-users-by-criteria/find-users-by-criteria.query-handler';
 import { AssertUserExistsService } from '@/features/users/application/services/assert-user-exsits/assert-user-exsits.service';
 import { AssertUserUsernameIsUniqueService } from '@/features/users/application/services/assert-user-username-is-unique/assert-user-username-is-unique.service';
+import { AssertUserViewModelExistsService } from '@/features/users/application/services/assert-user-view-model-exsits/assert-user-view-model-exsits.service';
 import {
   USER_VIEW_MODEL_FACTORY_TOKEN,
   UserViewModelFactory,
@@ -38,7 +39,11 @@ import { Module } from '@nestjs/common';
 
 const RESOLVERS = [UserQueryResolver, UserMutationsResolver];
 
-const SERVICES = [AssertUserExistsService, AssertUserUsernameIsUniqueService];
+const SERVICES = [
+  AssertUserExistsService,
+  AssertUserUsernameIsUniqueService,
+  AssertUserViewModelExistsService,
+];
 
 const QUERY_HANDLERS = [FindUsersByCriteriaQueryHandler];
 

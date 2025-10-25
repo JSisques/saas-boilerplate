@@ -1,6 +1,4 @@
 import { IUserUpdateCommandDto } from '@/features/users/application/dtos/commands/user-update/user-update-command.dto';
-import { UserUuidValueObject } from '@/features/users/domain/value-objects/user-uuid/user-uuid.vo';
-
 import { UserAvatarUrlValueObject } from '@/features/users/domain/value-objects/user-avatar-url/user-avatar-url.vo';
 import { UserBioValueObject } from '@/features/users/domain/value-objects/user-bio/user-bio.vo';
 import { UserLastNameValueObject } from '@/features/users/domain/value-objects/user-last-name/user-last-name.vo';
@@ -8,38 +6,53 @@ import { UserNameValueObject } from '@/features/users/domain/value-objects/user-
 import { UserRoleValueObject } from '@/features/users/domain/value-objects/user-role/user-role.vo';
 import { UserStatusValueObject } from '@/features/users/domain/value-objects/user-status/user-status.vo';
 import { UserUserNameValueObject } from '@/features/users/domain/value-objects/user-user-name/user-user-name.vo';
+import { UserUuidValueObject } from '@/features/users/domain/value-objects/user-uuid/user-uuid.vo';
 
 export class UserUpdateCommand {
   readonly id: UserUuidValueObject;
-  readonly avatarUrl: UserAvatarUrlValueObject | null;
-  readonly bio: UserBioValueObject | null;
-  readonly lastName: UserLastNameValueObject | null;
-  readonly name: UserNameValueObject | null;
-  readonly role: UserRoleValueObject;
-  readonly status: UserStatusValueObject;
-  readonly userName: UserUserNameValueObject;
+  readonly avatarUrl?: UserAvatarUrlValueObject | null;
+  readonly bio?: UserBioValueObject | null;
+  readonly lastName?: UserLastNameValueObject | null;
+  readonly name?: UserNameValueObject | null;
+  readonly role?: UserRoleValueObject;
+  readonly status?: UserStatusValueObject;
+  readonly userName?: UserUserNameValueObject;
 
   constructor(props: IUserUpdateCommandDto) {
     this.id = new UserUuidValueObject(props.id);
 
-    this.avatarUrl = props.avatarUrl
-      ? new UserAvatarUrlValueObject(props.avatarUrl)
-      : null;
+    if (props.avatarUrl !== undefined) {
+      this.avatarUrl = props.avatarUrl
+        ? new UserAvatarUrlValueObject(props.avatarUrl)
+        : null;
+    }
 
-    this.bio = props.bio ? new UserBioValueObject(props.bio) : null;
+    if (props.bio !== undefined) {
+      this.bio = props.bio ? new UserBioValueObject(props.bio) : null;
+    }
 
-    this.lastName = props.lastName
-      ? new UserLastNameValueObject(props.lastName)
-      : null;
+    if (props.lastName !== undefined) {
+      this.lastName = props.lastName
+        ? new UserLastNameValueObject(props.lastName)
+        : null;
+    }
 
-    this.name = props.name ? new UserNameValueObject(props.name) : null;
+    if (props.name !== undefined) {
+      this.name = props.name ? new UserNameValueObject(props.name) : null;
+    }
 
-    this.role = new UserRoleValueObject(props.role);
+    if (props.role !== undefined) {
+      this.role = new UserRoleValueObject(props.role);
+    }
 
-    this.status = new UserStatusValueObject(props.status);
+    if (props.status !== undefined) {
+      this.status = new UserStatusValueObject(props.status);
+    }
 
-    this.userName = props.userName
-      ? new UserUserNameValueObject(props.userName)
-      : null;
+    if (props.userName !== undefined) {
+      this.userName = props.userName
+        ? new UserUserNameValueObject(props.userName)
+        : null;
+    }
   }
 }

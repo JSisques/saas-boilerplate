@@ -1,7 +1,5 @@
 import { IUserCreateDto } from '@/features/users/domain/dtos/entities/user-create/user-create.dto';
 import { IUserUpdateDto } from '@/features/users/domain/dtos/entities/user-update/user-update.dto';
-import { UserRoleEnum } from '@/features/users/domain/enums/user-role/user-role.enum';
-import { UserStatusEnum } from '@/features/users/domain/enums/user-status/user-status.enum';
 import { UserPrimitives } from '@/features/users/domain/primitives/user.primitives';
 import { UserAvatarUrlValueObject } from '@/features/users/domain/value-objects/user-avatar-url/user-avatar-url.vo';
 import { UserBioValueObject } from '@/features/users/domain/value-objects/user-bio/user-bio.vo';
@@ -64,13 +62,17 @@ export class UserAggregate extends AggregateRoot {
    */
   public update(props: IUserUpdateDto, generateEvent: boolean = true) {
     // 01: Update the properties
-    this._avatarUrl = props.avatarUrl;
-    this._bio = props.bio;
-    this._lastName = props.lastName;
-    this._name = props.name;
-    this._role = props.role;
-    this._status = props.status;
-    this._userName = props.userName;
+    // Use explicit null/undefined check: if value is explicitly passed (including null), update it
+    this._avatarUrl =
+      props.avatarUrl !== undefined ? props.avatarUrl : this._avatarUrl;
+    this._bio = props.bio !== undefined ? props.bio : this._bio;
+    this._lastName =
+      props.lastName !== undefined ? props.lastName : this._lastName;
+    this._name = props.name !== undefined ? props.name : this._name;
+    this._role = props.role !== undefined ? props.role : this._role;
+    this._status = props.status !== undefined ? props.status : this._status;
+    this._userName =
+      props.userName !== undefined ? props.userName : this._userName;
 
     if (generateEvent) {
       this.apply(
@@ -120,7 +122,7 @@ export class UserAggregate extends AggregateRoot {
    *
    * @returns The user name of the user.
    */
-  public get userName(): UserUserNameValueObject | null {
+  public get userName(): UserUserNameValueObject {
     return this._userName;
   }
 
@@ -185,13 +187,13 @@ export class UserAggregate extends AggregateRoot {
   public toPrimitives(): UserPrimitives {
     return {
       id: this._id.value,
-      avatarUrl: this._avatarUrl?.value ?? null,
-      bio: this._bio?.value ?? null,
-      lastName: this._lastName?.value ?? null,
-      name: this._name?.value ?? null,
-      role: this._role?.value ?? UserRoleEnum.USER,
-      status: this._status?.value ?? UserStatusEnum.ACTIVE,
-      userName: this._userName?.value ?? null,
+      avatarUrl: this._avatarUrl ? this._avatarUrl.value : null,
+      bio: this._bio ? this._bio.value : null,
+      lastName: this._lastName ? this._lastName.value : null,
+      name: this._name ? this._name.value : null,
+      role: this._role.value,
+      status: this._status.value,
+      userName: this._userName.value,
     };
   }
 }

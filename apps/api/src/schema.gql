@@ -210,6 +210,9 @@ enum StatusEnum {
 }
 
 input UpdateUserRequestDto {
+  """The unique identifier of the user"""
+  id: String!
+
   """The name of the user"""
   name: String
 
@@ -230,9 +233,6 @@ input UpdateUserRequestDto {
 
   """The status of the user"""
   status: StatusEnum
-
-  """The unique identifier of the user"""
-  id: String!
 }
 
 input DeleteUserRequestDto {

@@ -76,13 +76,19 @@ export class UserViewModel {
    * @returns A new UserViewModel instance with updated data
    */
   public update(updateData: IUserUpdateViewModelDto) {
-    this._userName = updateData.userName ?? this._userName;
-    this._name = updateData.name ?? this._name;
-    this._lastName = updateData.lastName ?? this._lastName;
-    this._bio = updateData.bio ?? this._bio;
-    this._avatarUrl = updateData.avatarUrl ?? this._avatarUrl;
-    this._role = updateData.role ?? this._role;
-    this._status = updateData.status ?? this._status;
+    this._avatarUrl =
+      updateData.avatarUrl !== undefined
+        ? updateData.avatarUrl
+        : this._avatarUrl;
+    this._bio = updateData.bio !== undefined ? updateData.bio : this._bio;
+    this._lastName =
+      updateData.lastName !== undefined ? updateData.lastName : this._lastName;
+    this._name = updateData.name !== undefined ? updateData.name : this._name;
+    this._role = updateData.role !== undefined ? updateData.role : this._role;
+    this._status =
+      updateData.status !== undefined ? updateData.status : this._status;
+    this._userName =
+      updateData.userName !== undefined ? updateData.userName : this._userName;
     this._updatedAt = new Date();
   }
 }

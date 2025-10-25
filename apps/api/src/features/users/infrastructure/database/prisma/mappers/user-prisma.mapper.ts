@@ -32,10 +32,10 @@ export class UserPrismaMapper {
     return this.userAggregateFactory.fromPrimitives({
       id: userData.id,
       userName: userData.userName,
-      name: userData.name,
-      lastName: userData.lastName,
-      bio: userData.bio,
-      avatarUrl: userData.avatarUrl,
+      name: userData.name ?? null,
+      lastName: userData.lastName ?? null,
+      bio: userData.bio ?? null,
+      avatarUrl: userData.avatarUrl ?? null,
       role: userData.role,
       status: userData.status,
     });
@@ -52,15 +52,18 @@ export class UserPrismaMapper {
       `Converting domain entity with id ${user.id.value} to Prisma data`,
     );
 
+    // Get primitives from aggregate
+    const primitives = user.toPrimitives();
+
     return {
-      id: user.id.value,
-      avatarUrl: user.avatarUrl?.value,
-      bio: user.bio?.value,
-      lastName: user.lastName?.value,
-      name: user.name?.value,
-      role: user.role?.value as RoleEnum,
-      status: user.status?.value as StatusEnum,
-      userName: user.userName?.value,
+      id: primitives.id,
+      avatarUrl: primitives.avatarUrl,
+      bio: primitives.bio,
+      lastName: primitives.lastName,
+      name: primitives.name,
+      role: primitives.role as RoleEnum,
+      status: primitives.status as StatusEnum,
+      userName: primitives.userName,
     };
   }
 }

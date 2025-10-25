@@ -1,9 +1,8 @@
-import { UserNotFoundException } from '@/features/users/application/exceptions/user-not-found/user-not-found.exception';
+import { AssertUserViewModelExistsService } from '@/features/users/application/services/assert-user-view-model-exsits/assert-user-view-model-exsits.service';
 import {
   USER_READ_REPOSITORY_TOKEN,
   UserReadRepository,
 } from '@/features/users/domain/repositories/user-read.repository';
-import { UserViewModel } from '@/features/users/domain/view-models/user.view-model';
 import { UserUpdatedEvent } from '@/shared/domain/events/users/user-updated/user-updated.event';
 import { Inject, Logger } from '@nestjs/common';
 import { EventsHandler, IEventHandler } from '@nestjs/cqrs';
@@ -17,6 +16,7 @@ export class UserUpdatedEventHandler
   constructor(
     @Inject(USER_READ_REPOSITORY_TOKEN)
     private readonly userReadRepository: UserReadRepository,
+    private readonly assertUserViewModelExistsService: AssertUserViewModelExistsService,
   ) {}
 
   /**
@@ -27,20 +27,14 @@ export class UserUpdatedEventHandler
   async handle(event: UserUpdatedEvent) {
     this.logger.log(`Handling user updated event: ${event.aggregateId}`);
 
-    // 01: Find the existing user view model
-    const existingUserViewModel: UserViewModel | null =
-      await this.userReadRepository.findById(event.aggregateId);
+    // 01: Assert the user view model exists
+    const existingUserViewModel =
+      await this.assertUserViewModelExistsService.execute(event.aggregateId);
 
-    // 02: If the user does not exist, throw an error
-    if (!existingUserViewModel) {
-      this.logger.error(`User not found by id: ${event.aggregateId}`);
-      throw new UserNotFoundException(event.aggregateId);
-    }
-
-    // 03: Update the existing view model with new data
+    // 02: Update the existing view model with new data
     existingUserViewModel.update(event.data);
 
-    // 04: Save the updated user view model
+    // 03: Save the updated user view model
     await this.userReadRepository.save(existingUserViewModel);
   }
 }
