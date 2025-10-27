@@ -1,8 +1,9 @@
 import { AuditAggregate } from '@/audit/domain/aggregates/audit.aggregate';
+import { IAuditCreateViewModelDto } from '@/audit/domain/dtos/view-models/audit-create/audit-create-view-model.dto';
 import { AuditPrimitives } from '@/audit/domain/primitives/audit.primitives';
 import { AuditViewModel } from '@/audit/domain/view-models/audit.view-model';
 import { IReadFactory } from '@/shared/domain/interfaces/read-factory.interface';
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 
 export const AUDIT_VIEW_MODEL_FACTORY_TOKEN = Symbol('AuditViewModelFactory');
 
@@ -10,7 +11,27 @@ export const AUDIT_VIEW_MODEL_FACTORY_TOKEN = Symbol('AuditViewModelFactory');
  * This factory class is used to create a new audit view model.
  */
 @Injectable()
-export class AuditViewModelFactory implements IReadFactory<AuditViewModel> {
+export class AuditViewModelFactory
+  implements
+    IReadFactory<
+      AuditViewModel,
+      IAuditCreateViewModelDto,
+      AuditAggregate,
+      AuditPrimitives
+    >
+{
+  private readonly logger = new Logger(AuditViewModelFactory.name);
+
+  /**
+   * Creates a new audit view model from a DTO.
+   * @param data - The data to create the view model from.
+   * @returns The created view model.
+   */
+  public create(data: IAuditCreateViewModelDto): AuditViewModel {
+    this.logger.log(`Creating audit view model from DTO: ${data}`);
+    return new AuditViewModel(data);
+  }
+
   /**
    * Creates a new audit view model from a audit primitives.
    *

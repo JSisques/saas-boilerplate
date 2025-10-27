@@ -1,8 +1,8 @@
 import { AuditAggregate } from '@/audit/domain/aggregates/audit.aggregate';
 import {
-  AUDIT_FACTORY_TOKEN,
-  AuditFactory,
-} from '@/audit/domain/factories/audit.factory';
+  AUDIT_AGGREGATE_FACTORY_TOKEN,
+  AuditAggregateFactory,
+} from '@/audit/domain/factories/audit-aggregate.factory';
 import { AuditPrismaDto } from '@/audit/infrastructure/prisma/dtos/audit-prisma.dto';
 import { Inject, Injectable, Logger } from '@nestjs/common';
 
@@ -13,8 +13,8 @@ export class AuditPrismaMapper {
   private readonly logger = new Logger(AuditPrismaMapper.name);
 
   constructor(
-    @Inject(AUDIT_FACTORY_TOKEN)
-    private readonly auditFactory: AuditFactory,
+    @Inject(AUDIT_AGGREGATE_FACTORY_TOKEN)
+    private readonly auditAggregateFactory: AuditAggregateFactory,
   ) {}
 
   /**
@@ -28,7 +28,7 @@ export class AuditPrismaMapper {
       `Converting Prisma data to domain entity with id ${auditData.id}`,
     );
 
-    return this.auditFactory.fromPrimitives({
+    return this.auditAggregateFactory.fromPrimitives({
       id: auditData.id,
       eventType: auditData.eventType,
       aggregateType: auditData.aggregateType,

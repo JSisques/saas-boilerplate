@@ -1,9 +1,9 @@
-import { AuditAggregateIdValueObject } from '@/audit/domain/value-objects/audit-aggregate-id.vo';
-import { AuditAggregateTypeValueObject } from '@/audit/domain/value-objects/audit-aggregate-type.vo';
-import { AuditEventTypeValueObject } from '@/audit/domain/value-objects/audit-event-type.vo';
-import { AuditPayloadValueObject } from '@/audit/domain/value-objects/audit-payload.vo';
-import { AuditTimestampValueObject } from '@/audit/domain/value-objects/audit-timestamp.vo';
-import { AuditUuidValueObject } from '@/audit/domain/value-objects/audit-uuid.vo';
+import { AuditAggregateIdValueObject } from '@/audit/domain/value-objects/audit-aggregate-id/audit-aggregate-id.vo';
+import { AuditAggregateTypeValueObject } from '@/audit/domain/value-objects/audit-aggregate-type/audit-aggregate-type.vo';
+import { AuditEventTypeValueObject } from '@/audit/domain/value-objects/audit-event-type/audit-event-type.vo';
+import { AuditPayloadValueObject } from '@/audit/domain/value-objects/audit-payload/audit-payload.vo';
+import { AuditTimestampValueObject } from '@/audit/domain/value-objects/audit-timestamp/audit-timestamp.vo';
+import { AuditUuidValueObject } from '@/shared/domain/value-objects/identifiers/audit-uuid/audit-uuid.vo';
 
 /**
  * Data Transfer Object for creating a new audit entity.

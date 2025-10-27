@@ -5,13 +5,13 @@ import { UserUpdatedEventHandler } from '@/audit/application/event-handlers/user
 import { FindAuditsByCriteriaQueryHandler } from '@/audit/application/queries/find-audits-by-criteria/find-audits-by-criteria.command-handler';
 import { AuditTrackingService } from '@/audit/application/services/audit-tracking/audit-tracking.service';
 import {
+  AUDIT_AGGREGATE_FACTORY_TOKEN,
+  AuditAggregateFactory,
+} from '@/audit/domain/factories/audit-aggregate.factory';
+import {
   AUDIT_VIEW_MODEL_FACTORY_TOKEN,
   AuditViewModelFactory,
 } from '@/audit/domain/factories/audit-view-model.factory';
-import {
-  AUDIT_FACTORY_TOKEN,
-  AuditFactory,
-} from '@/audit/domain/factories/audit.factory';
 import { AUDIT_READ_REPOSITORY_TOKEN } from '@/audit/domain/repositories/audit-read.repository';
 import { AUDIT_WRITE_REPOSITORY_TOKEN } from '@/audit/domain/repositories/audit-write.repository';
 import {
@@ -49,8 +49,8 @@ const EVENT_HANDLERS = [
 
 const FACTORIES = [
   {
-    provide: AUDIT_FACTORY_TOKEN,
-    useClass: AuditFactory,
+    provide: AUDIT_AGGREGATE_FACTORY_TOKEN,
+    useClass: AuditAggregateFactory,
   },
   {
     provide: AUDIT_VIEW_MODEL_FACTORY_TOKEN,

@@ -2,7 +2,7 @@ import { UserAggregate } from '@/features/users/domain/aggregates/user.aggregate
 import {
   USER_AGGREGATE_FACTORY_TOKEN,
   UserAggregateFactory,
-} from '@/features/users/domain/factories/user.factory';
+} from '@/features/users/domain/factories/user-aggregate.factory';
 import { UserPrismaDto } from '@/features/users/infrastructure/database/prisma/dtos/user-prisma.dto';
 import { Inject, Injectable, Logger } from '@nestjs/common';
 import { RoleEnum, StatusEnum } from '@prisma/client';

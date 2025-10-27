@@ -50,6 +50,52 @@ type MutationResponseDto {
   id: String
 }
 
+type AuthResponseDto {
+  """The id of the auth"""
+  id: String!
+
+  """The user id of the auth"""
+  userId: String!
+
+  """The email of the auth"""
+  email: String
+
+  """The email verified of the auth"""
+  emailVerified: Boolean
+
+  """The last login at of the auth"""
+  lastLoginAt: DateTime
+
+  """The password hash of the auth"""
+  passwordHash: String
+
+  """The provider of the auth"""
+  provider: String
+
+  """The provider id of the auth"""
+  providerId: String
+
+  """The two factor enabled of the auth"""
+  twoFactorEnabled: Boolean
+}
+
+type PaginatedAuthResultDto {
+  """The total number of items"""
+  total: Int!
+
+  """The page number"""
+  page: Int!
+
+  """The number of items per page"""
+  perPage: Int!
+
+  """The total number of pages"""
+  totalPages: Int!
+
+  """The auths in the current page"""
+  items: [AuthResponseDto!]!
+}
+
 type UserResponseDto {
   """The id of the user"""
   id: String!
@@ -98,6 +144,7 @@ type Query {
   health: String!
   findUsersByCriteria(input: UserFindByCriteriaRequestDto): PaginatedUserResultDto!
   findAuditsByCriteria(input: AuditFindByCriteriaRequestDto): PaginatedAuditResultDto!
+  findAuthsByCriteria(input: AuthFindByCriteriaRequestDto): PaginatedAuthResultDto!
 }
 
 input UserFindByCriteriaRequestDto {
@@ -167,10 +214,24 @@ input AuditFindByCriteriaRequestDto {
   pagination: BasePaginationInput = {page: 1, perPage: 10}
 }
 
+input AuthFindByCriteriaRequestDto {
+  """The filters to find by"""
+  filters: [BaseFilterInput!] = []
+
+  """The sorts to find by"""
+  sorts: [BaseSortInput!] = []
+
+  """The pagination to find by"""
+  pagination: BasePaginationInput = {page: 1, perPage: 10}
+}
+
 type Mutation {
   createUser(input: CreateUserRequestDto!): MutationResponseDto!
   updateUser(input: UpdateUserRequestDto!): MutationResponseDto!
   deleteUser(input: DeleteUserRequestDto!): MutationResponseDto!
+  loginByEmail(input: AuthLoginByEmailRequestDto!): MutationResponseDto!
+  registerByEmail(input: AuthRegisterByEmailRequestDto!): MutationResponseDto!
+  logout(input: UpdateUserRequestDto!): MutationResponseDto!
 }
 
 input CreateUserRequestDto {
@@ -187,7 +248,7 @@ input CreateUserRequestDto {
   lastName: String
 
   """The user name of the user"""
-  userName: String!
+  userName: String
 
   """The role of the user"""
   role: RoleEnum!
@@ -238,4 +299,20 @@ input UpdateUserRequestDto {
 input DeleteUserRequestDto {
   """The unique identifier of the user"""
   id: String!
+}
+
+input AuthLoginByEmailRequestDto {
+  """The email of the auth"""
+  email: String!
+
+  """The password of the auth"""
+  password: String!
+}
+
+input AuthRegisterByEmailRequestDto {
+  """The email of the auth"""
+  email: String!
+
+  """The password of the auth"""
+  password: String!
 }

@@ -2,12 +2,12 @@ import { AssertUserUsernameIsUniqueService } from '@/features/users/application/
 import {
   USER_AGGREGATE_FACTORY_TOKEN,
   UserAggregateFactory,
-} from '@/features/users/domain/factories/user.factory';
+} from '@/features/users/domain/factories/user-aggregate.factory';
 import {
   USER_WRITE_REPOSITORY_TOKEN,
   UserWriteRepository,
 } from '@/features/users/domain/repositories/user-write.repository';
-import { UserUuidValueObject } from '@/features/users/domain/value-objects/user-uuid/user-uuid.vo';
+import { UserUuidValueObject } from '@/shared/domain/value-objects/identifiers/user-uuid/user-uuid.vo';
 import { Inject } from '@nestjs/common';
 import { CommandHandler, EventBus, ICommandHandler } from '@nestjs/cqrs';
 import { UserCreateCommand } from './user-create.command';

@@ -1,5 +1,5 @@
 import { UserDeleteCommand } from '@/features/users/application/commands/delete-user/delete-user.command';
-import { AssertUserExistsService } from '@/features/users/application/services/assert-user-exsits/assert-user-exsits.service';
+import { AssertUserExsistsService } from '@/features/users/application/services/assert-user-exsits/assert-user-exsits.service';
 import {
   USER_WRITE_REPOSITORY_TOKEN,
   UserWriteRepository,
@@ -17,14 +17,16 @@ export class UserDeleteCommandHandler
     @Inject(USER_WRITE_REPOSITORY_TOKEN)
     private readonly userWriteRepository: UserWriteRepository,
     private readonly eventBus: EventBus,
-    private readonly assertUserExistsService: AssertUserExistsService,
+    private readonly assertUserExsistsService: AssertUserExsistsService,
   ) {}
 
   async execute(command: UserDeleteCommand): Promise<void> {
     this.logger.log(`Executing delete user command by id: ${command.id}`);
 
     // 01: Check if the user exists
-    const existingUser = await this.assertUserExistsService.execute(command.id);
+    const existingUser = await this.assertUserExsistsService.execute(
+      command.id,
+    );
 
     // 02: Delete the user
     await existingUser.delete();

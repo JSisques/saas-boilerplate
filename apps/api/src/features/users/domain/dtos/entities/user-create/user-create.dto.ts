@@ -5,7 +5,7 @@ import { UserNameValueObject } from '@/features/users/domain/value-objects/user-
 import { UserRoleValueObject } from '@/features/users/domain/value-objects/user-role/user-role.vo';
 import { UserStatusValueObject } from '@/features/users/domain/value-objects/user-status/user-status.vo';
 import { UserUserNameValueObject } from '@/features/users/domain/value-objects/user-user-name/user-user-name.vo';
-import { UserUuidValueObject } from '@/features/users/domain/value-objects/user-uuid/user-uuid.vo';
+import { UserUuidValueObject } from '@/shared/domain/value-objects/identifiers/user-uuid/user-uuid.vo';
 
 /**
  * Interface representing the structure required to create a new user entity.
@@ -28,5 +28,5 @@ export interface IUserCreateDto {
   name?: UserNameValueObject | null;
   role?: UserRoleValueObject;
   status?: UserStatusValueObject;
-  userName: UserUserNameValueObject;
+  userName?: UserUserNameValueObject | null;
 }

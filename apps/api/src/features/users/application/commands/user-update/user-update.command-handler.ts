@@ -1,5 +1,5 @@
 import { UserUpdateCommand } from '@/features/users/application/commands/user-update/user-update.command';
-import { AssertUserExistsService } from '@/features/users/application/services/assert-user-exsits/assert-user-exsits.service';
+import { AssertUserExsistsService } from '@/features/users/application/services/assert-user-exsits/assert-user-exsits.service';
 import { IUserUpdateDto } from '@/features/users/domain/dtos/entities/user-update/user-update.dto';
 import {
   USER_WRITE_REPOSITORY_TOKEN,
@@ -20,7 +20,7 @@ export class UserUpdateCommandHandler
     @Inject(USER_WRITE_REPOSITORY_TOKEN)
     private readonly userWriteRepository: UserWriteRepository,
     private readonly eventBus: EventBus,
-    private readonly assertUserExistsService: AssertUserExistsService,
+    private readonly assertUserExsistsService: AssertUserExsistsService,
   ) {
     super();
   }
@@ -34,7 +34,7 @@ export class UserUpdateCommandHandler
     this.logger.log(`Executing update user command by id: ${command.id}`);
 
     // 01: Check if the user exists
-    const existingUser = await this.assertUserExistsService.execute(
+    const existingUser = await this.assertUserExsistsService.execute(
       command.id.value,
     );
 

@@ -6,7 +6,7 @@ import { UserNameValueObject } from '@/features/users/domain/value-objects/user-
 import { UserRoleValueObject } from '@/features/users/domain/value-objects/user-role/user-role.vo';
 import { UserStatusValueObject } from '@/features/users/domain/value-objects/user-status/user-status.vo';
 import { UserUserNameValueObject } from '@/features/users/domain/value-objects/user-user-name/user-user-name.vo';
-import { UserUuidValueObject } from '@/features/users/domain/value-objects/user-uuid/user-uuid.vo';
+import { UserUuidValueObject } from '@/shared/domain/value-objects/identifiers/user-uuid/user-uuid.vo';
 
 export class UserUpdateCommand {
   readonly id: UserUuidValueObject;

@@ -3,7 +3,19 @@
  * These factories are responsible for creating read models from
  * domain entities or primitive data for presentation purposes.
  */
-export interface IReadFactory<TViewModel, TSource = any> {
+export interface IReadFactory<
+  TViewModel,
+  TCreateProps = any,
+  TSource = any,
+  TPrimitives = any,
+> {
+  /**
+   * Creates a new view model from the given data.
+   *
+   * @param data - The data to create the view model from
+   * @returns The created view model
+   */
+  create(data: TCreateProps): TViewModel;
   /**
    * Creates a view model from domain entity/aggregate.
    *
@@ -18,13 +30,5 @@ export interface IReadFactory<TViewModel, TSource = any> {
    * @param primitives - The primitive data
    * @returns The created view model
    */
-  fromPrimitives(primitives: any): TViewModel;
-
-  /**
-   * Creates a view model from DTO or request data.
-   *
-   * @param dto - The DTO or request data
-   * @returns The created view model
-   */
-  fromDto?(dto: any): TViewModel;
+  fromPrimitives(primitives: TPrimitives): TViewModel;
 }

@@ -1,4 +1,5 @@
 import { UserAggregate } from '@/features/users/domain/aggregates/user.aggregate';
+import { IUserCreateViewModelDto } from '@/features/users/domain/dtos/view-models/user-create/user-create-view-model.dto';
 import { UserPrimitives } from '@/features/users/domain/primitives/user.primitives';
 import { UserViewModel } from '@/features/users/domain/view-models/user.view-model';
 import { IReadFactory } from '@/shared/domain/interfaces/read-factory.interface';
@@ -10,11 +11,29 @@ export const USER_VIEW_MODEL_FACTORY_TOKEN = Symbol('UserViewModelFactory');
  * This factory class is used to create a new user entity.
  */
 @Injectable()
-export class UserViewModelFactory implements IReadFactory<UserViewModel> {
+export class UserViewModelFactory
+  implements
+    IReadFactory<
+      UserViewModel,
+      IUserCreateViewModelDto,
+      UserAggregate,
+      UserPrimitives
+    >
+{
   private readonly logger = new Logger(UserViewModelFactory.name);
 
   /**
-   * Creates a new user view model from a user aggregate.
+   * Creates a new user view model from a DTO.
+   * @param data - The data to create the view model from.
+   * @returns The created view model.
+   */
+  public create(data: IUserCreateViewModelDto): UserViewModel {
+    this.logger.log(`Creating user view model from DTO: ${data}`);
+    return new UserViewModel(data);
+  }
+
+  /**
+   * Creates a new user view model from a user primitive.
    *
    * @param userPrimitives - The user primitive to create the view model from.
    * @returns The user view model.

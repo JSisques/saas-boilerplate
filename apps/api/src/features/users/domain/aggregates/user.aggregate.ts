@@ -8,10 +8,10 @@ import { UserNameValueObject } from '@/features/users/domain/value-objects/user-
 import { UserRoleValueObject } from '@/features/users/domain/value-objects/user-role/user-role.vo';
 import { UserStatusValueObject } from '@/features/users/domain/value-objects/user-status/user-status.vo';
 import { UserUserNameValueObject } from '@/features/users/domain/value-objects/user-user-name/user-user-name.vo';
-import { UserUuidValueObject } from '@/features/users/domain/value-objects/user-uuid/user-uuid.vo';
 import { UserCreatedEvent } from '@/shared/domain/events/users/user-created/user-created.event';
 import { UserDeletedEvent } from '@/shared/domain/events/users/user-deleted/user-deleted.event';
 import { UserUpdatedEvent } from '@/shared/domain/events/users/user-updated/user-updated.event';
+import { UserUuidValueObject } from '@/shared/domain/value-objects/identifiers/user-uuid/user-uuid.vo';
 import { AggregateRoot } from '@nestjs/cqrs';
 
 export class UserAggregate extends AggregateRoot {
@@ -22,7 +22,7 @@ export class UserAggregate extends AggregateRoot {
   private _name: UserNameValueObject | null;
   private _role: UserRoleValueObject;
   private _status: UserStatusValueObject;
-  private _userName: UserUserNameValueObject;
+  private _userName: UserUserNameValueObject | null;
 
   constructor(props: IUserCreateDto, generateEvent: boolean = true) {
     super();

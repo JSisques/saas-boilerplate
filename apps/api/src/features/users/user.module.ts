@@ -5,17 +5,17 @@ import { UserCreatedEventHandler } from '@/features/users/application/event-hand
 import { UserDeletedEventHandler } from '@/features/users/application/event-handlers/user-deleted/user-deleted.event-handler';
 import { UserUpdatedEventHandler } from '@/features/users/application/event-handlers/user-updated/user-updated.event-handler';
 import { FindUsersByCriteriaQueryHandler } from '@/features/users/application/queries/find-users-by-criteria/find-users-by-criteria.query-handler';
-import { AssertUserExistsService } from '@/features/users/application/services/assert-user-exsits/assert-user-exsits.service';
+import { AssertUserExsistsService } from '@/features/users/application/services/assert-user-exsits/assert-user-exsits.service';
 import { AssertUserUsernameIsUniqueService } from '@/features/users/application/services/assert-user-username-is-unique/assert-user-username-is-unique.service';
-import { AssertUserViewModelExistsService } from '@/features/users/application/services/assert-user-view-model-exsits/assert-user-view-model-exsits.service';
+import { AssertUserViewModelExsistsService } from '@/features/users/application/services/assert-user-view-model-exsits/assert-user-view-model-exsits.service';
+import {
+  USER_AGGREGATE_FACTORY_TOKEN,
+  UserAggregateFactory,
+} from '@/features/users/domain/factories/user-aggregate.factory';
 import {
   USER_VIEW_MODEL_FACTORY_TOKEN,
   UserViewModelFactory,
 } from '@/features/users/domain/factories/user-view-model.factory';
-import {
-  USER_AGGREGATE_FACTORY_TOKEN,
-  UserAggregateFactory,
-} from '@/features/users/domain/factories/user.factory';
 import { USER_READ_REPOSITORY_TOKEN } from '@/features/users/domain/repositories/user-read.repository';
 import { USER_WRITE_REPOSITORY_TOKEN } from '@/features/users/domain/repositories/user-write.repository';
 import {
@@ -40,9 +40,9 @@ import { Module } from '@nestjs/common';
 const RESOLVERS = [UserQueryResolver, UserMutationsResolver];
 
 const SERVICES = [
-  AssertUserExistsService,
+  AssertUserExsistsService,
   AssertUserUsernameIsUniqueService,
-  AssertUserViewModelExistsService,
+  AssertUserViewModelExsistsService,
 ];
 
 const QUERY_HANDLERS = [FindUsersByCriteriaQueryHandler];

@@ -17,5 +17,5 @@ export interface IUserCreateCommandDto {
   name: string | null;
   role: string;
   status: string;
-  userName: string;
+  userName: string | null;
 }

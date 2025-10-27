@@ -8,10 +8,10 @@ import { IBaseService } from '@/shared/application/services/base-service.interfa
 import { Inject, Injectable, Logger } from '@nestjs/common';
 
 @Injectable()
-export class AssertUserViewModelExistsService
+export class AssertUserViewModelExsistsService
   implements IBaseService<string, UserViewModel>
 {
-  private readonly logger = new Logger(AssertUserViewModelExistsService.name);
+  private readonly logger = new Logger(AssertUserViewModelExsistsService.name);
 
   constructor(
     @Inject(USER_READ_REPOSITORY_TOKEN)

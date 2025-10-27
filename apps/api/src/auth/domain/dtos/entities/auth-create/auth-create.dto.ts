@@ -1,0 +1,38 @@
+import { AuthEmailVerifiedValueObject } from '@/auth/domain/value-objects/auth-email-verified/auth-email-verified.vo';
+import { AuthEmailValueObject } from '@/auth/domain/value-objects/auth-email/auth-email.vo';
+import { AuthLastLoginAtValueObject } from '@/auth/domain/value-objects/auth-last-login-at/auth-last-login-at.vo';
+import { AuthPasswordHashValueObject } from '@/auth/domain/value-objects/auth-password-hash/auth-password-hash.vo';
+import { AuthPhoneNumberValueObject } from '@/auth/domain/value-objects/auth-phone-number/auth-phone-number.vo';
+import { AuthProviderIdValueObject } from '@/auth/domain/value-objects/auth-provider-id/auth-provider-id.vo';
+import { AuthProviderValueObject } from '@/auth/domain/value-objects/auth-provider/auth-provider.vo';
+import { AuthTwoFactorEnabledValueObject } from '@/auth/domain/value-objects/auth-two-factor-enabled/auth-two-factor-enabled.vo';
+import { AuthUuidValueObject } from '@/shared/domain/value-objects/identifiers/auth-uuid/auth-uuid.vo';
+import { UserUuidValueObject } from '@/shared/domain/value-objects/identifiers/user-uuid/user-uuid.vo';
+
+/**
+ * Interface representing the structure required to create a new auth entity.
+ *
+ * @interface IAuthCreateDto
+ * @property {AuthUuidValueObject} id - The unique identifier for the auth.
+ * @property {UserUuidValueObject} userId - The unique identifier for the user.
+ * @property {AuthEmailValueObject} email - The email of the auth.
+ * @property {AuthEmailVerifiedValueObject} emailVerified - The email verified of the auth.
+ * @property {AuthLastLoginAtValueObject} lastLoginAt - The last login at of the auth.
+ * @property {AuthPasswordHashValueObject} passwordHash - The password hash of the auth.
+ * @property {AuthPhoneNumberValueObject} phoneNumber - The phone number of the auth.
+ * @property {AuthProviderValueObject} provider - The provider of the auth.
+ * @property {AuthProviderIdValueObject} providerId - The provider id of the auth.
+ * @property {AuthTwoFactorEnabledValueObject} twoFactorEnabled - The two factor enabled of the auth.
+ */
+export interface IAuthCreateDto {
+  id: AuthUuidValueObject;
+  userId: UserUuidValueObject;
+  email: AuthEmailValueObject | null;
+  emailVerified: AuthEmailVerifiedValueObject;
+  lastLoginAt: AuthLastLoginAtValueObject | null;
+  passwordHash: AuthPasswordHashValueObject | null;
+  phoneNumber: AuthPhoneNumberValueObject | null;
+  provider: AuthProviderValueObject;
+  providerId: AuthProviderIdValueObject | null;
+  twoFactorEnabled: AuthTwoFactorEnabledValueObject;
+}

@@ -1,4 +1,4 @@
-import { AssertUserViewModelExistsService } from '@/features/users/application/services/assert-user-view-model-exsits/assert-user-view-model-exsits.service';
+import { AssertUserViewModelExsistsService } from '@/features/users/application/services/assert-user-view-model-exsits/assert-user-view-model-exsits.service';
 import {
   USER_READ_REPOSITORY_TOKEN,
   UserReadRepository,
@@ -16,7 +16,7 @@ export class UserUpdatedEventHandler
   constructor(
     @Inject(USER_READ_REPOSITORY_TOKEN)
     private readonly userReadRepository: UserReadRepository,
-    private readonly assertUserViewModelExistsService: AssertUserViewModelExistsService,
+    private readonly assertUserViewModelExsistsService: AssertUserViewModelExsistsService,
   ) {}
 
   /**
@@ -29,7 +29,7 @@ export class UserUpdatedEventHandler
 
     // 01: Assert the user view model exists
     const existingUserViewModel =
-      await this.assertUserViewModelExistsService.execute(event.aggregateId);
+      await this.assertUserViewModelExsistsService.execute(event.aggregateId);
 
     // 02: Update the existing view model with new data
     existingUserViewModel.update(event.data);

@@ -8,10 +8,10 @@ import { IBaseService } from '@/shared/application/services/base-service.interfa
 import { Inject, Injectable, Logger } from '@nestjs/common';
 
 @Injectable()
-export class AssertUserExistsService
+export class AssertUserExsistsService
   implements IBaseService<string, UserAggregate>
 {
-  private readonly logger = new Logger(AssertUserExistsService.name);
+  private readonly logger = new Logger(AssertUserExsistsService.name);
 
   constructor(
     @Inject(USER_WRITE_REPOSITORY_TOKEN)

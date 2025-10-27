@@ -1,7 +1,7 @@
 import {
-  AUDIT_FACTORY_TOKEN,
-  AuditFactory,
-} from '@/audit/domain/factories/audit.factory';
+  AUDIT_AGGREGATE_FACTORY_TOKEN,
+  AuditAggregateFactory,
+} from '@/audit/domain/factories/audit-aggregate.factory';
 import {
   AUDIT_WRITE_REPOSITORY_TOKEN,
   AuditWriteRepository,
@@ -21,8 +21,8 @@ export class AuditTrackingService
   constructor(
     @Inject(AUDIT_WRITE_REPOSITORY_TOKEN)
     private readonly auditWriteRepository: AuditWriteRepository,
-    @Inject(AUDIT_FACTORY_TOKEN)
-    private readonly auditFactory: AuditFactory,
+    @Inject(AUDIT_AGGREGATE_FACTORY_TOKEN)
+    private readonly auditAggregateFactory: AuditAggregateFactory,
     private readonly eventBus: EventBus,
   ) {}
 
@@ -43,7 +43,7 @@ export class AuditTrackingService
     this.logger.log(`Tracking audit event: ${event.eventType}`);
 
     // 01: Create the audit entity
-    const newAudit = this.auditFactory.fromPrimitives({
+    const newAudit = this.auditAggregateFactory.fromPrimitives({
       id: UuidValueObject.generate().value,
       eventType: event.eventType,
       aggregateType: event.aggregateType,

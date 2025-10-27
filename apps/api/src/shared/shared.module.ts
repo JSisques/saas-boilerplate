@@ -1,3 +1,4 @@
+import { PasswordHashingService } from '@/shared/application/services/password-hashing/password-hashing.service';
 import {
   MUTATION_RESPONSE_GRAPHQL_MAPPER_TOKEN,
   MutationResponseGraphQLMapper,
@@ -8,7 +9,7 @@ import { PrismaModule } from './infrastructure/database/prisma/prisma.module';
 
 const RESOLVERS = [];
 
-const SERVICES = [];
+const SERVICES = [PasswordHashingService];
 
 const QUERY_HANDLERS = [];
 

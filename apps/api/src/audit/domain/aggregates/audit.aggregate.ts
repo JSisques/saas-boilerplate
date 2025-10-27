@@ -1,11 +1,11 @@
 import { AuditPrimitives } from '@/audit/domain/primitives/audit.primitives';
-import { AuditAggregateIdValueObject } from '@/audit/domain/value-objects/audit-aggregate-id.vo';
-import { AuditAggregateTypeValueObject } from '@/audit/domain/value-objects/audit-aggregate-type.vo';
-import { AuditEventTypeValueObject } from '@/audit/domain/value-objects/audit-event-type.vo';
-import { AuditPayloadValueObject } from '@/audit/domain/value-objects/audit-payload.vo';
-import { AuditTimestampValueObject } from '@/audit/domain/value-objects/audit-timestamp.vo';
-import { AuditUuidValueObject } from '@/audit/domain/value-objects/audit-uuid.vo';
+import { AuditAggregateIdValueObject } from '@/audit/domain/value-objects/audit-aggregate-id/audit-aggregate-id.vo';
+import { AuditAggregateTypeValueObject } from '@/audit/domain/value-objects/audit-aggregate-type/audit-aggregate-type.vo';
+import { AuditEventTypeValueObject } from '@/audit/domain/value-objects/audit-event-type/audit-event-type.vo';
+import { AuditPayloadValueObject } from '@/audit/domain/value-objects/audit-payload/audit-payload.vo';
+import { AuditTimestampValueObject } from '@/audit/domain/value-objects/audit-timestamp/audit-timestamp.vo';
 import { AuditCreatedEvent } from '@/shared/domain/events/audit/audit-created/audit-created.event';
+import { AuditUuidValueObject } from '@/shared/domain/value-objects/identifiers/audit-uuid/audit-uuid.vo';
 import { AggregateRoot } from '@nestjs/cqrs';
 
 export class AuditAggregate extends AggregateRoot {

@@ -36,6 +36,8 @@
     "@nestjs/graphql": "^13.2.0",
     "@nestjs/platform-express": "^10.0.0",
     "@prisma/client": "^6.18.0",
+    "@types/bcrypt": "^6.0.0",
+    "bcrypt": "^6.0.0",
     "class-validator": "^0.14.2",
     "graphql": "^16.11.0",
     "mongodb": "^6.20.0",
