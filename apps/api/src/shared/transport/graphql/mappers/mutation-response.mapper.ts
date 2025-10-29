@@ -1,9 +1,6 @@
 import { MutationResponseDto } from '@/shared/transport/graphql/dtos/success-response.dto';
 import { Injectable } from '@nestjs/common';
 
-export const MUTATION_RESPONSE_GRAPHQL_MAPPER_TOKEN = Symbol(
-  'MutationResponseGraphQLMapper',
-);
 @Injectable()
 export class MutationResponseGraphQLMapper {
   /**

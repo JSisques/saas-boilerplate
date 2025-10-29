@@ -1,9 +1,11 @@
 import { AppResolver } from '@/app.resolver';
-import { AuditModule } from '@/audit/audit.module';
-import { AuthModule } from '@/auth/auth.module';
+import { AuditContextModule } from '@/audit-context/audit-context.module';
+import { AuthContextModule } from '@/auth-context/auth-context.module';
 import { FeaturesModule } from '@/features/features.module';
 import { SharedModule } from '@/shared/shared.module';
 import '@/shared/transport/graphql/registered-enums.graphql';
+import { TenantContextModule } from '@/tenant-context/tenant-context.module';
+import { UserContextModule } from '@/user-context/user-context.module';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
@@ -11,7 +13,14 @@ import { CqrsModule } from '@nestjs/cqrs';
 import { GraphQLModule } from '@nestjs/graphql';
 import { join } from 'path';
 
-const MODULES = [AuditModule, SharedModule, AuthModule];
+const CONTEXT_MODULES = [
+  AuditContextModule,
+  AuthContextModule,
+  TenantContextModule,
+  UserContextModule,
+];
+
+const MODULES = [FeaturesModule, SharedModule];
 
 @Module({
   imports: [
@@ -26,8 +35,8 @@ const MODULES = [AuditModule, SharedModule, AuthModule];
       playground: true,
       introspection: true,
     }),
-    FeaturesModule,
     ...MODULES,
+    ...CONTEXT_MODULES,
   ],
   providers: [AppResolver],
 })

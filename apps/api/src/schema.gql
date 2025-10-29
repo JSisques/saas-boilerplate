@@ -96,6 +96,100 @@ type PaginatedAuthResultDto {
   items: [AuthResponseDto!]!
 }
 
+type TenantResponseDto {
+  """The id of the tenant"""
+  id: String!
+
+  """The tenant name of the tenant"""
+  name: String
+
+  """The tenant slug of the tenant"""
+  slug: String
+
+  """The description of the tenant"""
+  description: String
+
+  """The website url of the tenant"""
+  websiteUrl: String
+
+  """The logo url of the tenant"""
+  logoUrl: String
+
+  """The favicon url of the tenant"""
+  faviconUrl: String
+
+  """The primary color of the tenant"""
+  primaryColor: String
+
+  """The secondary color of the tenant"""
+  secondaryColor: String
+
+  """The status of the tenant"""
+  status: String
+
+  """The email of the tenant"""
+  email: String
+
+  """The phone number of the tenant"""
+  phoneNumber: String
+
+  """The phone code of the tenant"""
+  phoneCode: String
+
+  """The address of the tenant"""
+  address: String
+
+  """The city of the tenant"""
+  city: String
+
+  """The state of the tenant"""
+  state: String
+
+  """The country of the tenant"""
+  country: String
+
+  """The postal code of the tenant"""
+  postalCode: String
+
+  """The timezone of the tenant"""
+  timezone: String
+
+  """The locale of the tenant"""
+  locale: String
+
+  """The max users of the tenant"""
+  maxUsers: Float
+
+  """The max storage of the tenant"""
+  maxStorage: Float
+
+  """The max API calls of the tenant"""
+  maxApiCalls: Float
+
+  """The created at of the tenant"""
+  createdAt: DateTime
+
+  """The updated at of the tenant"""
+  updatedAt: DateTime
+}
+
+type PaginatedTenantResultDto {
+  """The total number of items"""
+  total: Int!
+
+  """The page number"""
+  page: Int!
+
+  """The number of items per page"""
+  perPage: Int!
+
+  """The total number of pages"""
+  totalPages: Int!
+
+  """The tenants in the current page"""
+  items: [TenantResponseDto!]!
+}
+
 type UserResponseDto {
   """The id of the user"""
   id: String!
@@ -142,12 +236,13 @@ type PaginatedUserResultDto {
 type Query {
   hello: String!
   health: String!
-  findUsersByCriteria(input: UserFindByCriteriaRequestDto): PaginatedUserResultDto!
   findAuditsByCriteria(input: AuditFindByCriteriaRequestDto): PaginatedAuditResultDto!
   findAuthsByCriteria(input: AuthFindByCriteriaRequestDto): PaginatedAuthResultDto!
+  tenantFindByCriteria(input: TenantFindByCriteriaRequestDto): PaginatedTenantResultDto!
+  findUsersByCriteria(input: UserFindByCriteriaRequestDto): PaginatedUserResultDto!
 }
 
-input UserFindByCriteriaRequestDto {
+input AuditFindByCriteriaRequestDto {
   """The filters to find by"""
   filters: [BaseFilterInput!] = []
 
@@ -203,17 +298,6 @@ input BasePaginationInput {
   perPage: Int!
 }
 
-input AuditFindByCriteriaRequestDto {
-  """The filters to find by"""
-  filters: [BaseFilterInput!] = []
-
-  """The sorts to find by"""
-  sorts: [BaseSortInput!] = []
-
-  """The pagination to find by"""
-  pagination: BasePaginationInput = {page: 1, perPage: 10}
-}
-
 input AuthFindByCriteriaRequestDto {
   """The filters to find by"""
   filters: [BaseFilterInput!] = []
@@ -225,49 +309,54 @@ input AuthFindByCriteriaRequestDto {
   pagination: BasePaginationInput = {page: 1, perPage: 10}
 }
 
+input TenantFindByCriteriaRequestDto {
+  """The filters to find by"""
+  filters: [BaseFilterInput!] = []
+
+  """The sorts to find by"""
+  sorts: [BaseSortInput!] = []
+
+  """The pagination to find by"""
+  pagination: BasePaginationInput = {page: 1, perPage: 10}
+}
+
+input UserFindByCriteriaRequestDto {
+  """The filters to find by"""
+  filters: [BaseFilterInput!] = []
+
+  """The sorts to find by"""
+  sorts: [BaseSortInput!] = []
+
+  """The pagination to find by"""
+  pagination: BasePaginationInput = {page: 1, perPage: 10}
+}
+
 type Mutation {
-  createUser(input: CreateUserRequestDto!): MutationResponseDto!
-  updateUser(input: UpdateUserRequestDto!): MutationResponseDto!
-  deleteUser(input: DeleteUserRequestDto!): MutationResponseDto!
   loginByEmail(input: AuthLoginByEmailRequestDto!): MutationResponseDto!
   registerByEmail(input: AuthRegisterByEmailRequestDto!): MutationResponseDto!
   logout(input: UpdateUserRequestDto!): MutationResponseDto!
+  deleteUser(input: DeleteUserRequestDto!): MutationResponseDto!
+  tenantCreate(input: TenantCreateRequestDto!): MutationResponseDto!
+  tenantUpdate(input: TenantUpdateRequestDto!): MutationResponseDto!
+  tenantDelete(input: TenantDeleteRequestDto!): MutationResponseDto!
+  createUser(input: CreateUserRequestDto!): MutationResponseDto!
+  updateUser(input: UpdateUserRequestDto!): MutationResponseDto!
 }
 
-input CreateUserRequestDto {
-  """The name of the user"""
-  name: String
+input AuthLoginByEmailRequestDto {
+  """The email of the auth"""
+  email: String!
 
-  """The bio of the user"""
-  bio: String
-
-  """The avatar url of the user"""
-  avatarUrl: String
-
-  """The last name of the user"""
-  lastName: String
-
-  """The user name of the user"""
-  userName: String
-
-  """The role of the user"""
-  role: RoleEnum!
-
-  """The status of the user"""
-  status: StatusEnum!
+  """The password of the auth"""
+  password: String!
 }
 
-"""The role of the user"""
-enum RoleEnum {
-  ADMIN
-  USER
-}
+input AuthRegisterByEmailRequestDto {
+  """The email of the auth"""
+  email: String!
 
-"""The status of the user"""
-enum StatusEnum {
-  ACTIVE
-  INACTIVE
-  BLOCKED
+  """The password of the auth"""
+  password: String!
 }
 
 input UpdateUserRequestDto {
@@ -296,23 +385,178 @@ input UpdateUserRequestDto {
   status: StatusEnum
 }
 
+"""The role of the user"""
+enum RoleEnum {
+  ADMIN
+  USER
+}
+
+"""The status of the user"""
+enum StatusEnum {
+  ACTIVE
+  INACTIVE
+  BLOCKED
+}
+
 input DeleteUserRequestDto {
   """The unique identifier of the user"""
   id: String!
 }
 
-input AuthLoginByEmailRequestDto {
-  """The email of the auth"""
-  email: String!
+input TenantCreateRequestDto {
+  """The name of the tenant"""
+  name: String!
 
-  """The password of the auth"""
-  password: String!
+  """The description of the tenant"""
+  description: String
+
+  """The website url of the tenant"""
+  websiteUrl: String
+
+  """The logo url of the tenant"""
+  logoUrl: String
+
+  """The favicon url of the tenant"""
+  faviconUrl: String
+
+  """The primary color of the tenant"""
+  primaryColor: String
+
+  """The secondary color of the tenant"""
+  secondaryColor: String
+
+  """The email of the tenant"""
+  email: String
+
+  """The phone number of the tenant"""
+  phoneNumber: String
+
+  """The phone code of the tenant"""
+  phoneCode: String
+
+  """The address of the tenant"""
+  address: String
+
+  """The city of the tenant"""
+  city: String
+
+  """The state of the tenant"""
+  state: String
+
+  """The country of the tenant"""
+  country: String
+
+  """The postal code of the tenant"""
+  postalCode: String
+
+  """The timezone of the tenant"""
+  timezone: String
+
+  """The locale of the tenant"""
+  locale: String
+
+  """The max users of the tenant"""
+  maxUsers: Float
+
+  """The max storage of the tenant"""
+  maxStorage: Float
+
+  """The max API calls of the tenant"""
+  maxApiCalls: Float
 }
 
-input AuthRegisterByEmailRequestDto {
-  """The email of the auth"""
-  email: String!
+input TenantUpdateRequestDto {
+  """The unique identifier of the tenant"""
+  id: String!
 
-  """The password of the auth"""
-  password: String!
+  """The name of the tenant"""
+  name: String
+
+  """The description of the tenant"""
+  description: String
+
+  """The website url of the tenant"""
+  websiteUrl: String
+
+  """The logo url of the tenant"""
+  logoUrl: String
+
+  """The favicon url of the tenant"""
+  faviconUrl: String
+
+  """The primary color of the tenant"""
+  primaryColor: String
+
+  """The secondary color of the tenant"""
+  secondaryColor: String
+
+  """The status of the tenant"""
+  status: String
+
+  """The email of the tenant"""
+  email: String
+
+  """The phone number of the tenant"""
+  phoneNumber: String
+
+  """The phone code of the tenant"""
+  phoneCode: String
+
+  """The address of the tenant"""
+  address: String
+
+  """The city of the tenant"""
+  city: String
+
+  """The state of the tenant"""
+  state: String
+
+  """The country of the tenant"""
+  country: String
+
+  """The postal code of the tenant"""
+  postalCode: String
+
+  """The country of the tenant"""
+  timezone: String
+
+  """The locale of the tenant"""
+  locale: Float
+
+  """The max users of the tenant"""
+  maxUsers: String
+
+  """The max storage of the tenant"""
+  maxStorage: Float
+
+  """The max API calls of the tenant"""
+  maxApiCalls: Float
+}
+
+input TenantDeleteRequestDto {
+  """The unique identifier of the tenant"""
+  id: String!
+}
+
+input CreateUserRequestDto {
+  """The name of the user"""
+  name: String
+
+  """The bio of the user"""
+  bio: String
+
+  """The avatar url of the user"""
+  avatarUrl: String
+
+  """The last name of the user"""
+  lastName: String
+
+  """The user name of the user"""
+  userName: String
+
+  """The role of the user"""
+  role: RoleEnum!
+
+  """The status of the user"""
+  status: StatusEnum!
 }

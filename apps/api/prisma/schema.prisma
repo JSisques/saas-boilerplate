@@ -29,29 +29,90 @@ enum StatusEnum {
 model User {
   id        String  @id @default(uuid())
   userName  String  @unique  
-  name      String?
-  lastName  String?
-  bio       String?
-  avatarUrl String?
-  role      RoleEnum
+  name      String? // Name of the user
+  lastName  String? // Last name of the user
+  bio       String? // Bio of the user
+  avatarUrl String? // Avatar URL of the user
+  role      RoleEnum // Role of the user
   status    StatusEnum
   
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   auth Auth[]
-
+  tenants TenantMember[]
   @@index([userName])
+}
+
+enum TenantMemberRoleEnum {
+  OWNER
+  ADMIN
+  MEMBER
+  GUEST
+}
+
+model TenantMember {
+  id        String  @id @default(uuid())
+  tenantId String // Tenant ID
+  userId String // User ID
+  role TenantMemberRoleEnum // Role of the tenant member
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id])
+  tenant Tenant @relation(fields: [tenantId], references: [id])
+}
+
+enum TenantStatusEnum {
+  ACTIVE
+  INACTIVE
+  BLOCKED
+}
+
+model Tenant {
+  id        String  @id @default(uuid())
+  name      String // Name of the tenant
+  slug      String @unique // Slug of the tenant
+  description String? // Description of the tenant
+  websiteUrl String? // Website URL of the tenant
+  logoUrl String? // Logo URL of the tenant
+  faviconUrl String? // Favicon URL of the tenant
+  primaryColor String? // Primary color of the tenant
+  secondaryColor String? // Secondary color of the tenant
+  status TenantStatusEnum @default(ACTIVE) // Status of the tenant
+  // Contact information
+  email String? // Email of the tenant
+  phoneNumber String? // Phone number of the tenant
+  phoneCode String? // Phone code of the tenant
+  address String? // Address of the tenant
+  city String? // City of the tenant
+  state String? // State of the tenant
+  country String? // Country of the tenant
+postalCode String? // Postal code of the tenant
+  timezone    String  @default("UTC") // Timezone
+  locale      String  @default("en") // Language/region
+
+  // Limits and quotas
+  maxUsers        Int? // Max users
+  maxStorage      Int? // Max storage (bytes)
+  maxApiCalls     Int? // Max API calls per month
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relationships
+  members TenantMember[]
 }
 
 
 model Audit {
   id        String  @id @default(uuid())
-  eventType String
-  aggregateType String
-  aggregateId String
-  payload Json? 
-  timestamp DateTime @default(now())
+  eventType String // Event type
+  aggregateType String // Aggregate type
+  aggregateId String // Aggregate ID
+  payload Json? // Payload
+  timestamp DateTime @default(now()) // Timestamp
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -65,14 +126,14 @@ enum AuthProviderEnum {
 }
 model Auth {
   id               String         @id @default(uuid())
-  provider         AuthProviderEnum
-  providerId       String?
-  email            String?
-  phoneNumber      String?
-  passwordHash     String?
-  emailVerified    Boolean        @default(false)
-  twoFactorEnabled Boolean        @default(false)
-  lastLoginAt      DateTime?
+  provider         AuthProviderEnum // Provider of the auth
+  providerId       String? // Provider ID
+  email            String? // Email of the auth
+  phoneNumber      String? // Phone number of the auth
+  passwordHash     String? // Password hash of the auth
+  emailVerified    Boolean        @default(false) // Email verified
+  twoFactorEnabled Boolean        @default(false) // Two factor enabled
+  lastLoginAt      DateTime? // Last login at
 
   createdAt        DateTime       @default(now())
   updatedAt        DateTime       @updatedAt
