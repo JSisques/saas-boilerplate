@@ -1,3 +1,4 @@
+import { TenantViewModelFactory } from '@/tenant-context/tenants/domain/factories/tenant-view-model.factory';
 import { TenantViewModel } from '@/tenant-context/tenants/domain/view-models/tenant.view-model';
 import { TenantMongoDbDto } from '@/tenant-context/tenants/infrastructure/database/mongodb/dtos/tenant-mongodb.dto';
 import { Injectable, Logger } from '@nestjs/common';
@@ -5,6 +6,10 @@ import { Injectable, Logger } from '@nestjs/common';
 @Injectable()
 export class TenantMongoDBMapper {
   private readonly logger = new Logger(TenantMongoDBMapper.name);
+
+  constructor(
+    private readonly tenantViewModelFactory: TenantViewModelFactory,
+  ) {}
   /**
    * Converts a MongoDB document to a tenant view model
    *
@@ -16,7 +21,7 @@ export class TenantMongoDBMapper {
       `Converting MongoDB document to tenant view model with id ${doc.id}`,
     );
 
-    return new TenantViewModel(doc);
+    return this.tenantViewModelFactory.create(doc);
   }
 
   /**

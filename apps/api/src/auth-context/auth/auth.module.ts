@@ -7,30 +7,15 @@ import { AssertAuthEmailExistsService } from '@/auth-context/auth/application/se
 import { AssertAuthEmailNotExistsService } from '@/auth-context/auth/application/services/assert-auth-email-not-exists/assert-auth-email-not-exists.service';
 import { AssertAuthExistsService } from '@/auth-context/auth/application/services/assert-auth-exsists/assert-auth-exsists.service';
 import { AssertAuthViewModelExsistsService } from '@/auth-context/auth/application/services/assert-auth-view-model-exsists/assert-auth-view-model-exsists.service';
-import {
-  AUTH_AGGREGATE_FACTORY_TOKEN,
-  AuthAggregateFactory,
-} from '@/auth-context/auth/domain/factories/auth-aggregate.factory';
-import {
-  AUTH_VIEW_MODEL_FACTORY_TOKEN,
-  AuthViewModelFactory,
-} from '@/auth-context/auth/domain/factories/auth-view-model.factory';
+import { AuthAggregateFactory } from '@/auth-context/auth/domain/factories/auth-aggregate.factory';
+import { AuthViewModelFactory } from '@/auth-context/auth/domain/factories/auth-view-model.factory';
 import { AUTH_READ_REPOSITORY_TOKEN } from '@/auth-context/auth/domain/repositories/auth-read.repository';
 import { AUTH_WRITE_REPOSITORY_TOKEN } from '@/auth-context/auth/domain/repositories/auth-write.repository';
-import {
-  AUTH_MONGODB_MAPPER_TOKEN,
-  AuthMongoDBMapper,
-} from '@/auth-context/auth/infrastructure/database/mongodb/mappers/auth-mongodb.mapper';
+import { AuthMongoDBMapper } from '@/auth-context/auth/infrastructure/database/mongodb/mappers/auth-mongodb.mapper';
 import { AuthMongoRepository } from '@/auth-context/auth/infrastructure/database/mongodb/repositories/auth-mongodb.repository';
-import {
-  AUTH_PRISMA_MAPPER_TOKEN,
-  AuthPrismaMapper,
-} from '@/auth-context/auth/infrastructure/database/prisma/mappers/auth-prisma.mapper';
+import { AuthPrismaMapper } from '@/auth-context/auth/infrastructure/database/prisma/mappers/auth-prisma.mapper';
 import { AuthPrismaRepository } from '@/auth-context/auth/infrastructure/database/prisma/repositories/auth-prisma.repository';
-import {
-  AUTH_GRAPHQL_MAPPER_TOKEN,
-  AuthGraphQLMapper,
-} from '@/auth-context/auth/transport/graphql/mappers/auth.mapper';
+import { AuthGraphQLMapper } from '@/auth-context/auth/transport/graphql/mappers/auth.mapper';
 import { AuthMutationsResolver } from '@/auth-context/auth/transport/graphql/resolvers/auth-mutations.resolver';
 import { AuthQueryResolver } from '@/auth-context/auth/transport/graphql/resolvers/auth-queries.resolver';
 import { SharedModule } from '@/shared/shared.module';
@@ -57,31 +42,9 @@ const EVENT_HANDLERS = [
   AuthRegisteredByEmailEventHandler,
 ];
 
-const FACTORIES = [
-  {
-    provide: AUTH_AGGREGATE_FACTORY_TOKEN,
-    useClass: AuthAggregateFactory,
-  },
-  {
-    provide: AUTH_VIEW_MODEL_FACTORY_TOKEN,
-    useClass: AuthViewModelFactory,
-  },
-];
+const FACTORIES = [AuthAggregateFactory, AuthViewModelFactory];
 
-const MAPPERS = [
-  {
-    provide: AUTH_PRISMA_MAPPER_TOKEN,
-    useClass: AuthPrismaMapper,
-  },
-  {
-    provide: AUTH_MONGODB_MAPPER_TOKEN,
-    useClass: AuthMongoDBMapper,
-  },
-  {
-    provide: AUTH_GRAPHQL_MAPPER_TOKEN,
-    useClass: AuthGraphQLMapper,
-  },
-];
+const MAPPERS = [AuthPrismaMapper, AuthMongoDBMapper, AuthGraphQLMapper];
 
 const REPOSITORIES = [
   {

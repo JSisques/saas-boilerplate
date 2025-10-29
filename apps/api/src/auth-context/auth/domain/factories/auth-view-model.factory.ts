@@ -5,8 +5,6 @@ import { AuthViewModel } from '@/auth-context/auth/domain/view-models/auth.view-
 import { IReadFactory } from '@/shared/domain/interfaces/read-factory.interface';
 import { Injectable, Logger } from '@nestjs/common';
 
-export const AUTH_VIEW_MODEL_FACTORY_TOKEN = Symbol('AuthViewModelFactory');
-
 /**
  * This factory class is used to create a new auth entity.
  */

@@ -1,14 +1,11 @@
 import { AuthReadRepository } from '@/auth-context/auth/domain/repositories/auth-read.repository';
 import { AuthViewModel } from '@/auth-context/auth/domain/view-models/auth.view-model';
-import {
-  AUTH_MONGODB_MAPPER_TOKEN,
-  AuthMongoDBMapper,
-} from '@/auth-context/auth/infrastructure/database/mongodb/mappers/auth-mongodb.mapper';
+import { AuthMongoDBMapper } from '@/auth-context/auth/infrastructure/database/mongodb/mappers/auth-mongodb.mapper';
 import { Criteria } from '@/shared/domain/entities/criteria';
 import { PaginatedResult } from '@/shared/domain/entities/paginated-result.entity';
 import { BaseMongoRepository } from '@/shared/infrastructure/database/mongodb/base-mongo.repository';
 import { MongoService } from '@/shared/infrastructure/database/mongodb/mongo.service';
-import { Inject, Injectable, Logger } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 
 @Injectable()
 export class AuthMongoRepository
@@ -19,7 +16,6 @@ export class AuthMongoRepository
 
   constructor(
     mongoService: MongoService,
-    @Inject(AUTH_MONGODB_MAPPER_TOKEN)
     private readonly authMongoDBMapper: AuthMongoDBMapper,
   ) {
     super(mongoService);

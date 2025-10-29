@@ -6,8 +6,6 @@ import {
 import { PaginatedResult } from '@/shared/domain/entities/paginated-result.entity';
 import { Injectable } from '@nestjs/common';
 
-export const AUTH_GRAPHQL_MAPPER_TOKEN = Symbol('AuthGraphQLMapper');
-
 @Injectable()
 export class AuthGraphQLMapper {
   toResponseDto(auth: AuthViewModel): AuthResponseDto {

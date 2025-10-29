@@ -1,21 +1,13 @@
-import {
-  AUTH_VIEW_MODEL_FACTORY_TOKEN,
-  AuthViewModelFactory,
-} from '@/auth-context/auth/domain/factories/auth-view-model.factory';
+import { AuthViewModelFactory } from '@/auth-context/auth/domain/factories/auth-view-model.factory';
 import { AuthViewModel } from '@/auth-context/auth/domain/view-models/auth.view-model';
 import { AuthMongoDbDto } from '@/auth-context/auth/infrastructure/database/mongodb/dtos/auth-mongodb.dto';
-import { Inject, Injectable, Logger } from '@nestjs/common';
-
-export const AUTH_MONGODB_MAPPER_TOKEN = Symbol('AuthMongoDBMapper');
+import { Injectable, Logger } from '@nestjs/common';
 
 @Injectable()
 export class AuthMongoDBMapper {
   private readonly logger = new Logger(AuthMongoDBMapper.name);
 
-  constructor(
-    @Inject(AUTH_VIEW_MODEL_FACTORY_TOKEN)
-    private readonly authViewModelFactory: AuthViewModelFactory,
-  ) {}
+  constructor(private readonly authViewModelFactory: AuthViewModelFactory) {}
   /**
    * Converts a MongoDB document to a auth view model
    *

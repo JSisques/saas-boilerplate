@@ -15,11 +15,6 @@ import { UserUuidValueObject } from '@/shared/domain/value-objects/identifiers/u
 import { Injectable } from '@nestjs/common';
 
 /**
- * Factory token for auth aggregate creation.
- */
-export const AUTH_AGGREGATE_FACTORY_TOKEN = Symbol('AuthAggregateFactory');
-
-/**
  * Factory class responsible for creating AuthAggregate entities.
  *
  * @remarks

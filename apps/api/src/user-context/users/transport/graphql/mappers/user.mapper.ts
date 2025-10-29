@@ -6,8 +6,6 @@ import {
 } from '@/user-context/users/transport/graphql/dtos/responses/user.response.dto';
 import { Injectable } from '@nestjs/common';
 
-export const USER_GRAPHQL_MAPPER_TOKEN = Symbol('UserGraphQLMapper');
-
 @Injectable()
 export class UserGraphQLMapper {
   toResponseDto(user: UserViewModel): UserResponseDto {

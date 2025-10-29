@@ -1,9 +1,6 @@
 import { UserUuidValueObject } from '@/shared/domain/value-objects/identifiers/user-uuid/user-uuid.vo';
 import { AssertUserUsernameIsUniqueService } from '@/user-context/users/application/services/assert-user-username-is-unique/assert-user-username-is-unique.service';
-import {
-  USER_AGGREGATE_FACTORY_TOKEN,
-  UserAggregateFactory,
-} from '@/user-context/users/domain/factories/user-aggregate.factory';
+import { UserAggregateFactory } from '@/user-context/users/domain/factories/user-aggregate.factory';
 import {
   USER_WRITE_REPOSITORY_TOKEN,
   UserWriteRepository,
@@ -20,7 +17,6 @@ export class UserCreateCommandHandler
     @Inject(USER_WRITE_REPOSITORY_TOKEN)
     private readonly userWriteRepository: UserWriteRepository,
     private readonly eventBus: EventBus,
-    @Inject(USER_AGGREGATE_FACTORY_TOKEN)
     private readonly userAggregateFactory: UserAggregateFactory,
     private readonly assertUserUsernameIsUniqueService: AssertUserUsernameIsUniqueService,
   ) {}

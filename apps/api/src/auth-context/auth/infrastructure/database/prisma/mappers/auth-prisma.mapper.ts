@@ -1,22 +1,14 @@
 import { AuthAggregate } from '@/auth-context/auth/domain/aggregate/auth.aggregate';
-import {
-  AUTH_AGGREGATE_FACTORY_TOKEN,
-  AuthAggregateFactory,
-} from '@/auth-context/auth/domain/factories/auth-aggregate.factory';
-import { Inject, Injectable, Logger } from '@nestjs/common';
+import { AuthAggregateFactory } from '@/auth-context/auth/domain/factories/auth-aggregate.factory';
+import { Injectable, Logger } from '@nestjs/common';
 import { AuthProviderEnum } from '@prisma/client';
 import { AuthPrismaDto } from '../dtos/auth-prisma.dto';
-
-export const AUTH_PRISMA_MAPPER_TOKEN = Symbol('AuthPrismaMapper');
 
 @Injectable()
 export class AuthPrismaMapper {
   private readonly logger = new Logger(AuthPrismaMapper.name);
 
-  constructor(
-    @Inject(AUTH_AGGREGATE_FACTORY_TOKEN)
-    private readonly authAggregateFactory: AuthAggregateFactory,
-  ) {}
+  constructor(private readonly authAggregateFactory: AuthAggregateFactory) {}
 
   /**
    * Converts a Prisma data to a auth aggregate

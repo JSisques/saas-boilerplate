@@ -1,8 +1,5 @@
 import { UserCreatedEvent } from '@/shared/domain/events/users/user-created/user-created.event';
-import {
-  USER_VIEW_MODEL_FACTORY_TOKEN,
-  UserViewModelFactory,
-} from '@/user-context/users/domain/factories/user-view-model.factory';
+import { UserViewModelFactory } from '@/user-context/users/domain/factories/user-view-model.factory';
 import {
   USER_READ_REPOSITORY_TOKEN,
   UserReadRepository,
@@ -20,7 +17,6 @@ export class UserCreatedEventHandler
   constructor(
     @Inject(USER_READ_REPOSITORY_TOKEN)
     private readonly userReadRepository: UserReadRepository,
-    @Inject(USER_VIEW_MODEL_FACTORY_TOKEN)
     private readonly userViewModelFactory: UserViewModelFactory,
   ) {}
 

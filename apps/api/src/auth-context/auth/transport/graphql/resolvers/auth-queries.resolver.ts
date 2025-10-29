@@ -1,12 +1,8 @@
 import { FindAuthsByCriteriaQuery } from '@/auth-context/auth/application/queries/find-auths-by-criteria/find-auths-by-criteria.query';
 import { AuthFindByCriteriaRequestDto } from '@/auth-context/auth/transport/graphql/dtos/requests/auth-find-by-criteria.request.dto';
 import { PaginatedAuthResultDto } from '@/auth-context/auth/transport/graphql/dtos/responses/auth.response.dto';
-import {
-  AUTH_GRAPHQL_MAPPER_TOKEN,
-  AuthGraphQLMapper,
-} from '@/auth-context/auth/transport/graphql/mappers/auth.mapper';
+import { AuthGraphQLMapper } from '@/auth-context/auth/transport/graphql/mappers/auth.mapper';
 import { Criteria } from '@/shared/domain/entities/criteria';
-import { Inject } from '@nestjs/common';
 import { QueryBus } from '@nestjs/cqrs';
 import { Args, Query, Resolver } from '@nestjs/graphql';
 
@@ -14,7 +10,6 @@ import { Args, Query, Resolver } from '@nestjs/graphql';
 export class AuthQueryResolver {
   constructor(
     private readonly queryBus: QueryBus,
-    @Inject(AUTH_GRAPHQL_MAPPER_TOKEN)
     private readonly authGraphQLMapper: AuthGraphQLMapper,
   ) {}
 

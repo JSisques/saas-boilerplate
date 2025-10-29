@@ -13,11 +13,6 @@ import { UserUserNameValueObject } from '@/user-context/users/domain/value-objec
 import { Injectable } from '@nestjs/common';
 
 /**
- * Factory token for user aggregate creation.
- */
-export const USER_AGGREGATE_FACTORY_TOKEN = Symbol('UserAggregateFactory');
-
-/**
  * Factory class responsible for creating UserAggregate entities.
  *
  * @remarks

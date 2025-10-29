@@ -1,12 +1,9 @@
 import { AuthAggregate } from '@/auth-context/auth/domain/aggregate/auth.aggregate';
 import { AuthWriteRepository } from '@/auth-context/auth/domain/repositories/auth-write.repository';
-import {
-  AUTH_PRISMA_MAPPER_TOKEN,
-  AuthPrismaMapper,
-} from '@/auth-context/auth/infrastructure/database/prisma/mappers/auth-prisma.mapper';
+import { AuthPrismaMapper } from '@/auth-context/auth/infrastructure/database/prisma/mappers/auth-prisma.mapper';
 import { BasePrismaRepository } from '@/shared/infrastructure/database/prisma/base-prisma.repository';
 import { PrismaService } from '@/shared/infrastructure/database/prisma/prisma.service';
-import { Inject, Injectable, Logger } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 
 @Injectable()
 export class AuthPrismaRepository
@@ -15,7 +12,6 @@ export class AuthPrismaRepository
 {
   constructor(
     prisma: PrismaService,
-    @Inject(AUTH_PRISMA_MAPPER_TOKEN)
     private readonly authPrismaMapper: AuthPrismaMapper,
   ) {
     super(prisma);

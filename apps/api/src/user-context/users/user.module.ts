@@ -9,30 +9,15 @@ import { FindUsersByCriteriaQueryHandler } from '@/user-context/users/applicatio
 import { AssertUserExsistsService } from '@/user-context/users/application/services/assert-user-exsits/assert-user-exsits.service';
 import { AssertUserUsernameIsUniqueService } from '@/user-context/users/application/services/assert-user-username-is-unique/assert-user-username-is-unique.service';
 import { AssertUserViewModelExsistsService } from '@/user-context/users/application/services/assert-user-view-model-exsits/assert-user-view-model-exsits.service';
-import {
-  USER_AGGREGATE_FACTORY_TOKEN,
-  UserAggregateFactory,
-} from '@/user-context/users/domain/factories/user-aggregate.factory';
-import {
-  USER_VIEW_MODEL_FACTORY_TOKEN,
-  UserViewModelFactory,
-} from '@/user-context/users/domain/factories/user-view-model.factory';
+import { UserAggregateFactory } from '@/user-context/users/domain/factories/user-aggregate.factory';
+import { UserViewModelFactory } from '@/user-context/users/domain/factories/user-view-model.factory';
 import { USER_READ_REPOSITORY_TOKEN } from '@/user-context/users/domain/repositories/user-read.repository';
 import { USER_WRITE_REPOSITORY_TOKEN } from '@/user-context/users/domain/repositories/user-write.repository';
-import {
-  USER_MONGODB_MAPPER_TOKEN,
-  UserMongoDBMapper,
-} from '@/user-context/users/infrastructure/database/mongodb/mappers/user-mongodb.mapper';
-import { MongoUserRepository } from '@/user-context/users/infrastructure/database/mongodb/repositories/user-mongodb.repository';
-import {
-  USER_PRISMA_MAPPER_TOKEN,
-  UserPrismaMapper,
-} from '@/user-context/users/infrastructure/database/prisma/mappers/user-prisma.mapper';
-import { PrismaUserRepository } from '@/user-context/users/infrastructure/database/prisma/repositories/user-prisma.repository';
-import {
-  USER_GRAPHQL_MAPPER_TOKEN,
-  UserGraphQLMapper,
-} from '@/user-context/users/transport/graphql/mappers/user.mapper';
+import { UserMongoDBMapper } from '@/user-context/users/infrastructure/database/mongodb/mappers/user-mongodb.mapper';
+import { UserMongoRepository } from '@/user-context/users/infrastructure/database/mongodb/repositories/user-mongodb.repository';
+import { UserPrismaMapper } from '@/user-context/users/infrastructure/database/prisma/mappers/user-prisma.mapper';
+import { UserPrismaRepository } from '@/user-context/users/infrastructure/database/prisma/repositories/user-prisma.repository';
+import { UserGraphQLMapper } from '@/user-context/users/transport/graphql/mappers/user.mapper';
 import { UserMutationsResolver } from '@/user-context/users/transport/graphql/resolvers/user-mutations.resolver';
 import { UserQueryResolver } from '@/user-context/users/transport/graphql/resolvers/user-queries.resolver';
 import { Module } from '@nestjs/common';
@@ -59,40 +44,18 @@ const EVENT_HANDLERS = [
   UserDeletedEventHandler,
 ];
 
-const FACTORIES = [
-  {
-    provide: USER_AGGREGATE_FACTORY_TOKEN,
-    useClass: UserAggregateFactory,
-  },
-  {
-    provide: USER_VIEW_MODEL_FACTORY_TOKEN,
-    useClass: UserViewModelFactory,
-  },
-];
+const FACTORIES = [UserAggregateFactory, UserViewModelFactory];
 
-const MAPPERS = [
-  {
-    provide: USER_PRISMA_MAPPER_TOKEN,
-    useClass: UserPrismaMapper,
-  },
-  {
-    provide: USER_MONGODB_MAPPER_TOKEN,
-    useClass: UserMongoDBMapper,
-  },
-  {
-    provide: USER_GRAPHQL_MAPPER_TOKEN,
-    useClass: UserGraphQLMapper,
-  },
-];
+const MAPPERS = [UserPrismaMapper, UserMongoDBMapper, UserGraphQLMapper];
 
 const REPOSITORIES = [
   {
     provide: USER_WRITE_REPOSITORY_TOKEN,
-    useClass: PrismaUserRepository,
+    useClass: UserPrismaRepository,
   },
   {
     provide: USER_READ_REPOSITORY_TOKEN,
-    useClass: MongoUserRepository,
+    useClass: UserMongoRepository,
   },
 ];
 

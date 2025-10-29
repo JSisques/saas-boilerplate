@@ -1,12 +1,13 @@
+import { UserViewModelFactory } from '@/user-context/users/domain/factories/user-view-model.factory';
 import { UserViewModel } from '@/user-context/users/domain/view-models/user.view-model';
 import { UserMongoDbDto } from '@/user-context/users/infrastructure/database/mongodb/dtos/user-mongodb.dto';
 import { Injectable, Logger } from '@nestjs/common';
 
-export const USER_MONGODB_MAPPER_TOKEN = Symbol('UserMongoDBMapper');
-
 @Injectable()
 export class UserMongoDBMapper {
   private readonly logger = new Logger(UserMongoDBMapper.name);
+
+  constructor(private readonly userViewModelFactory: UserViewModelFactory) {}
   /**
    * Converts a MongoDB document to a user view model
    *
@@ -18,7 +19,7 @@ export class UserMongoDBMapper {
       `Converting MongoDB document to user view model with id ${doc.id}`,
     );
 
-    return new UserViewModel({
+    return this.userViewModelFactory.create({
       id: doc.id,
       userName: doc.userName,
       name: doc.name,

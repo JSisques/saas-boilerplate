@@ -2,24 +2,20 @@ import { BasePrismaRepository } from '@/shared/infrastructure/database/prisma/ba
 import { PrismaService } from '@/shared/infrastructure/database/prisma/prisma.service';
 import { UserAggregate } from '@/user-context/users/domain/aggregates/user.aggregate';
 import { UserWriteRepository } from '@/user-context/users/domain/repositories/user-write.repository';
-import {
-  USER_PRISMA_MAPPER_TOKEN,
-  UserPrismaMapper,
-} from '@/user-context/users/infrastructure/database/prisma/mappers/user-prisma.mapper';
-import { Inject, Injectable, Logger } from '@nestjs/common';
+import { UserPrismaMapper } from '@/user-context/users/infrastructure/database/prisma/mappers/user-prisma.mapper';
+import { Injectable, Logger } from '@nestjs/common';
 
 @Injectable()
-export class PrismaUserRepository
+export class UserPrismaRepository
   extends BasePrismaRepository
   implements UserWriteRepository
 {
   constructor(
     prisma: PrismaService,
-    @Inject(USER_PRISMA_MAPPER_TOKEN)
     private readonly userPrismaMapper: UserPrismaMapper,
   ) {
     super(prisma);
-    this.logger = new Logger(PrismaUserRepository.name);
+    this.logger = new Logger(UserPrismaRepository.name);
   }
 
   /**

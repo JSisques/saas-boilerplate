@@ -1,8 +1,5 @@
 import { AssertAuthEmailNotExistsService } from '@/auth-context/auth/application/services/assert-auth-email-not-exists/assert-auth-email-not-exists.service';
-import {
-  AUTH_AGGREGATE_FACTORY_TOKEN,
-  AuthAggregateFactory,
-} from '@/auth-context/auth/domain/factories/auth-aggregate.factory';
+import { AuthAggregateFactory } from '@/auth-context/auth/domain/factories/auth-aggregate.factory';
 import {
   AUTH_WRITE_REPOSITORY_TOKEN,
   AuthWriteRepository,
@@ -33,7 +30,6 @@ export class AuthRegisterByEmailCommandHandler
   constructor(
     @Inject(AUTH_WRITE_REPOSITORY_TOKEN)
     private readonly authWriteRepository: AuthWriteRepository,
-    @Inject(AUTH_AGGREGATE_FACTORY_TOKEN)
     private readonly authAggregateFactory: AuthAggregateFactory,
     private readonly passwordHashingService: PasswordHashingService,
     private readonly assertAuthEmailNotExistsService: AssertAuthEmailNotExistsService,

@@ -4,14 +4,11 @@ import { BaseMongoRepository } from '@/shared/infrastructure/database/mongodb/ba
 import { MongoService } from '@/shared/infrastructure/database/mongodb/mongo.service';
 import { UserReadRepository } from '@/user-context/users/domain/repositories/user-read.repository';
 import { UserViewModel } from '@/user-context/users/domain/view-models/user.view-model';
-import {
-  USER_MONGODB_MAPPER_TOKEN,
-  UserMongoDBMapper,
-} from '@/user-context/users/infrastructure/database/mongodb/mappers/user-mongodb.mapper';
-import { Inject, Injectable, Logger } from '@nestjs/common';
+import { UserMongoDBMapper } from '@/user-context/users/infrastructure/database/mongodb/mappers/user-mongodb.mapper';
+import { Injectable, Logger } from '@nestjs/common';
 
 @Injectable()
-export class MongoUserRepository
+export class UserMongoRepository
   extends BaseMongoRepository
   implements UserReadRepository
 {
@@ -19,11 +16,10 @@ export class MongoUserRepository
 
   constructor(
     mongoService: MongoService,
-    @Inject(USER_MONGODB_MAPPER_TOKEN)
     private readonly userMongoDBMapper: UserMongoDBMapper,
   ) {
     super(mongoService);
-    this.logger = new Logger(MongoUserRepository.name);
+    this.logger = new Logger(UserMongoRepository.name);
   }
 
   /**

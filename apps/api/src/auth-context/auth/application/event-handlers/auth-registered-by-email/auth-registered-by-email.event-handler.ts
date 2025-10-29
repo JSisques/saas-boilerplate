@@ -1,7 +1,4 @@
-import {
-  AUTH_VIEW_MODEL_FACTORY_TOKEN,
-  AuthViewModelFactory,
-} from '@/auth-context/auth/domain/factories/auth-view-model.factory';
+import { AuthViewModelFactory } from '@/auth-context/auth/domain/factories/auth-view-model.factory';
 import {
   AUTH_READ_REPOSITORY_TOKEN,
   AuthReadRepository,
@@ -20,7 +17,6 @@ export class AuthRegisteredByEmailEventHandler
   constructor(
     @Inject(AUTH_READ_REPOSITORY_TOKEN)
     private readonly authReadRepository: AuthReadRepository,
-    @Inject(AUTH_VIEW_MODEL_FACTORY_TOKEN)
     private readonly authViewModelFactory: AuthViewModelFactory,
   ) {}
 

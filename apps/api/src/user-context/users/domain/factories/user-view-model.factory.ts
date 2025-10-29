@@ -5,8 +5,6 @@ import { UserPrimitives } from '@/user-context/users/domain/primitives/user.prim
 import { UserViewModel } from '@/user-context/users/domain/view-models/user.view-model';
 import { Injectable, Logger } from '@nestjs/common';
 
-export const USER_VIEW_MODEL_FACTORY_TOKEN = Symbol('UserViewModelFactory');
-
 /**
  * This factory class is used to create a new user entity.
  */

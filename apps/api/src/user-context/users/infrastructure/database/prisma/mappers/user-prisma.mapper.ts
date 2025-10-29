@@ -1,22 +1,14 @@
 import { UserAggregate } from '@/user-context/users/domain/aggregates/user.aggregate';
-import {
-  USER_AGGREGATE_FACTORY_TOKEN,
-  UserAggregateFactory,
-} from '@/user-context/users/domain/factories/user-aggregate.factory';
+import { UserAggregateFactory } from '@/user-context/users/domain/factories/user-aggregate.factory';
 import { UserPrismaDto } from '@/user-context/users/infrastructure/database/prisma/dtos/user-prisma.dto';
-import { Inject, Injectable, Logger } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { RoleEnum, StatusEnum } from '@prisma/client';
-
-export const USER_PRISMA_MAPPER_TOKEN = Symbol('UserPrismaMapper');
 
 @Injectable()
 export class UserPrismaMapper {
   private readonly logger = new Logger(UserPrismaMapper.name);
 
-  constructor(
-    @Inject(USER_AGGREGATE_FACTORY_TOKEN)
-    private readonly userAggregateFactory: UserAggregateFactory,
-  ) {}
+  constructor(private readonly userAggregateFactory: UserAggregateFactory) {}
 
   /**
    * Converts a Prisma data to a user aggregate

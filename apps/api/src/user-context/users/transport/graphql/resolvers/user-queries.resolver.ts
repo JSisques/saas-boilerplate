@@ -2,11 +2,7 @@ import { Criteria } from '@/shared/domain/entities/criteria';
 import { FindUsersByCriteriaQuery } from '@/user-context/users/application/queries/find-users-by-criteria/find-users-by-criteria.query';
 import { UserFindByCriteriaRequestDto } from '@/user-context/users/transport/graphql/dtos/requests/user-find-by-criteria.request.dto';
 import { PaginatedUserResultDto } from '@/user-context/users/transport/graphql/dtos/responses/user.response.dto';
-import {
-  USER_GRAPHQL_MAPPER_TOKEN,
-  UserGraphQLMapper,
-} from '@/user-context/users/transport/graphql/mappers/user.mapper';
-import { Inject } from '@nestjs/common';
+import { UserGraphQLMapper } from '@/user-context/users/transport/graphql/mappers/user.mapper';
 import { QueryBus } from '@nestjs/cqrs';
 import { Args, Query, Resolver } from '@nestjs/graphql';
 
@@ -14,7 +10,6 @@ import { Args, Query, Resolver } from '@nestjs/graphql';
 export class UserQueryResolver {
   constructor(
     private readonly queryBus: QueryBus,
-    @Inject(USER_GRAPHQL_MAPPER_TOKEN)
     private readonly userGraphQLMapper: UserGraphQLMapper,
   ) {}
 
