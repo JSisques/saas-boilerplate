@@ -1,16 +1,8 @@
 import { BaseEvent } from '@/shared/domain/events/base-event.interface';
-import { ITenantEventData } from '@/shared/domain/events/tenants/interfaces/tenant-event-data.interface';
+import { ITenantEventData } from '@/shared/domain/events/tenant-context/tenants/interfaces/tenant-event-data.interface';
 import { IEventMetadata } from '@/shared/domain/interfaces/event-metadata.interface';
 
-/**
- * User deleted event
- *
- * @class TenantDeletedEvent
- * @extends {BaseEvent<ITenantEventData>}
- * @param metadata - The metadata of the event
- * @param data - The data of the event
- */
-export class TenantDeletedEvent extends BaseEvent<ITenantEventData> {
+export class TenantCreatedEvent extends BaseEvent<ITenantEventData> {
   /**
    * Constructor
    *

@@ -1,0 +1,14 @@
+import { EnumValueObject } from '@/shared/domain/value-objects/enum.vo';
+import { TenantMemberRoleEnum } from '@prisma/client';
+
+/**
+ * TenantMemberRoleValueObject represents the role of a tenant member.
+ * It extends the EnumValueObject to leverage common enum functionalities.
+ */
+export class TenantMemberRoleValueObject extends EnumValueObject<
+  typeof TenantMemberRoleEnum
+> {
+  protected get enumObject(): typeof TenantMemberRoleEnum {
+    return TenantMemberRoleEnum;
+  }
+}

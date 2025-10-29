@@ -1,4 +1,4 @@
-import { TenantCreatedEvent } from '@/shared/domain/events/tenants/tenant-created/tenant-created.event';
+import { TenantCreatedEvent } from '@/shared/domain/events/tenant-context/tenants/tenant-created/tenant-created.event';
 import { TenantViewModelFactory } from '@/tenant-context/tenants/domain/factories/tenant-view-model.factory';
 import {
   TENANT_READ_REPOSITORY_TOKEN,

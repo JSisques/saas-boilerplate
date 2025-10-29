@@ -1,4 +1,4 @@
-import { TenantDeletedEvent } from '@/shared/domain/events/tenants/tenant-deleted/tenant-deleted.event';
+import { TenantDeletedEvent } from '@/shared/domain/events/tenant-context/tenants/tenant-deleted/tenant-deleted.event';
 import { AssertTenantViewModelExsistsService } from '@/tenant-context/tenants/application/services/assert-tenant-view-model-exsits/assert-tenant-view-model-exsits.service';
 import {
   TENANT_READ_REPOSITORY_TOKEN,
