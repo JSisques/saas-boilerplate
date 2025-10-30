@@ -1,4 +1,10 @@
 import { AuditCreatedEventHandler } from '@/audit-context/audit/application/event-handlers/audit/audit-created/audit-created.event-handler';
+import { TenantMemberAddedEventHandler } from '@/audit-context/audit/application/event-handlers/tenant-context/tenant-members/tenant-members-added/tenant-members-added.event-handler';
+import { TenantMemberRemovedEventHandler } from '@/audit-context/audit/application/event-handlers/tenant-context/tenant-members/tenant-members-removed/tenant-members-removed.event-handler';
+import { TenantMemberUpdatedEventHandler } from '@/audit-context/audit/application/event-handlers/tenant-context/tenant-members/tenant-members-updated/tenant-members-updated.event-handler';
+import { TenantCreatedEventHandler } from '@/audit-context/audit/application/event-handlers/tenant-context/tenants/tenant-created/tenant-created.event-handler';
+import { TenantDeletedEventHandler } from '@/audit-context/audit/application/event-handlers/tenant-context/tenants/tenant-deleted/tenant-deleted.event-handler';
+import { TenantUpdatedEventHandler } from '@/audit-context/audit/application/event-handlers/tenant-context/tenants/tenant-updated/tenant-updated.event-handler';
 import { UserCreatedEventHandler } from '@/audit-context/audit/application/event-handlers/users/user-created/user-created.event-handler';
 import { UserDeletedEventHandler } from '@/audit-context/audit/application/event-handlers/users/user-deleted/user-deleted.event-handler';
 import { UserUpdatedEventHandler } from '@/audit-context/audit/application/event-handlers/users/user-updated/user-updated.event-handler';
@@ -27,9 +33,21 @@ const COMMAND_HANDLERS = [];
 
 const EVENT_HANDLERS = [
   AuditCreatedEventHandler,
+
+  // Users
   UserCreatedEventHandler,
   UserDeletedEventHandler,
   UserUpdatedEventHandler,
+
+  // Tenants
+  TenantCreatedEventHandler,
+  TenantDeletedEventHandler,
+  TenantUpdatedEventHandler,
+
+  // Tenant members
+  TenantMemberAddedEventHandler,
+  TenantMemberUpdatedEventHandler,
+  TenantMemberRemovedEventHandler,
 ];
 
 const FACTORIES = [AuditAggregateFactory, AuditViewModelFactory];
