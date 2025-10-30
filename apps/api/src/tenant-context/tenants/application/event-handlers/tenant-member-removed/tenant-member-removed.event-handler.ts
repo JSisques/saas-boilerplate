@@ -32,6 +32,8 @@ export class TenantMemberRemovedEventHandler
       `Updating tenant member removed in tenant event: ${event.aggregateId}`,
     );
 
+    // TODO: Extrat in a service cause is the same as the tenant member added event handler
+
     // 01: Find the tenant members by tenant id
     const tenantMembers = await this.queryBus.execute(
       new FindTenantMemberByTenantIdQuery({
