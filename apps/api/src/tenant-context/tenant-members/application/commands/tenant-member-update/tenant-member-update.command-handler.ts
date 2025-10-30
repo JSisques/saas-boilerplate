@@ -6,11 +6,10 @@ import {
   TENANT_MEMBER_WRITE_REPOSITORY_TOKEN,
   TenantMemberWriteRepository,
 } from '@/tenant-context/tenant-members/domain/repositories/tenant-member-write.repository';
-import { TenantUpdateCommand } from '@/tenant-context/tenants/application/commands/tenant-update/tenant-update.command';
 import { Inject, Logger } from '@nestjs/common';
 import { CommandHandler, EventBus, ICommandHandler } from '@nestjs/cqrs';
 
-@CommandHandler(TenantUpdateCommand)
+@CommandHandler(TenantMemberUpdateCommand)
 export class TenantMemberUpdateCommandHandler
   extends BaseUpdateCommandHandler<
     TenantMemberUpdateCommand,
@@ -34,7 +33,7 @@ export class TenantMemberUpdateCommandHandler
    *
    * @param command - The command to execute
    */
-  async execute(command: TenantUpdateCommand): Promise<void> {
+  async execute(command: TenantMemberUpdateCommand): Promise<void> {
     this.logger.log(`Executing update tenant command by id: ${command.id}`);
 
     // 01: Check if the tenant exists
