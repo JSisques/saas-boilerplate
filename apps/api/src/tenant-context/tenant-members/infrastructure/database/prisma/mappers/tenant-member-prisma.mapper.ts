@@ -39,7 +39,9 @@ export class TenantMemberPrismaMapper {
    * @param tenantMember - The tenant member aggregate to convert
    * @returns The Prisma data
    */
-  toPrismaData(tenantMember: TenantMemberAggregate): TenantMemberPrismaDto {
+  public toPrismaData(
+    tenantMember: TenantMemberAggregate,
+  ): TenantMemberPrismaDto {
     this.logger.log(
       `Converting domain entity with id ${tenantMember.id.value} to Prisma data`,
     );

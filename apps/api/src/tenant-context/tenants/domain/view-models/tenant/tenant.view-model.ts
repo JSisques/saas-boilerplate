@@ -1,5 +1,6 @@
 import { ITenantCreateViewModelDto } from '@/tenant-context/tenants/domain/dtos/view-models/tenant-create/tenant-create-view-model.dto';
 import { ITenantUpdateViewModelDto } from '@/tenant-context/tenants/domain/dtos/view-models/tenant-update/tenant-update-view-model.dto';
+import { TenantMemberViewModel } from '@/tenant-context/tenants/domain/view-models/tenant-member/tenant-member.view-model';
 
 /**
  * This class is used to represent a tenant view model.
@@ -28,6 +29,9 @@ export class TenantViewModel {
   private _maxUsers: number | null;
   private _maxStorage: number | null;
   private _maxApiCalls: number | null;
+
+  private _tenantMembers: TenantMemberViewModel[];
+
   private _createdAt: Date;
   private _updatedAt: Date;
 
@@ -55,8 +59,9 @@ export class TenantViewModel {
     this._maxUsers = props.maxUsers;
     this._maxStorage = props.maxStorage;
     this._maxApiCalls = props.maxApiCalls;
-    this._createdAt = props.createdAt;
-    this._updatedAt = props.updatedAt;
+    this._tenantMembers = props.tenantMembers;
+    this._createdAt = props.createdAt || new Date();
+    this._updatedAt = props.updatedAt || new Date();
   }
 
   /**
@@ -127,6 +132,10 @@ export class TenantViewModel {
       updateData.maxApiCalls !== undefined
         ? updateData.maxApiCalls
         : this._maxApiCalls;
+    this._tenantMembers =
+      updateData.tenantMembers !== undefined
+        ? updateData.tenantMembers
+        : this._tenantMembers;
     this._updatedAt = new Date();
   }
   /**
@@ -311,6 +320,14 @@ export class TenantViewModel {
    */
   get maxApiCalls(): number | null {
     return this._maxApiCalls;
+  }
+
+  /**
+   * Gets the tenant members of the tenant.
+   * @returns {TenantMemberViewModel[]}
+   */
+  get tenantMembers(): TenantMemberViewModel[] {
+    return this._tenantMembers;
   }
 
   /**

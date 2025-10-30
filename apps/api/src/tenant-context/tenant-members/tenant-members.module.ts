@@ -7,6 +7,9 @@ import { TenantMemberRemovedEventHandler } from '@/tenant-context/tenant-members
 import { TenantMemberUpdatedEventHandler } from '@/tenant-context/tenant-members/application/event-handlers/tenant-member-updated/tenant-member-updated.event-handler';
 import { FindTenantMembersByCriteriaQueryHandler } from '@/tenant-context/tenant-members/application/queries/tenant-member-find-by-criteria/tenant-member-find-by-criteria.query-handler';
 import { FindTenantMemberByIdQueryHandler } from '@/tenant-context/tenant-members/application/queries/tenant-member-find-by-id/tenant-member-find-by-id.query-handler';
+import { FindTenantMemberByTenantIdQueryHandler } from '@/tenant-context/tenant-members/application/queries/tenant-member-find-by-tenant-id/tenant-member-find-by-tenant-id.query-handler';
+import { FindTenantMemberViewModelByIdQueryHandler } from '@/tenant-context/tenant-members/application/queries/tenant-member-find-view-model-by-id/tenant-member-find-view-model-by-id.query-handler';
+import { FindTenantMemberViewModelByTenantIdQueryHandler } from '@/tenant-context/tenant-members/application/queries/tenant-member-find-view-model-by-tenant-id/tenant-member-find-view-model-by-tenant-id.query-handler';
 import { AssertTenantMemberExsistsService } from '@/tenant-context/tenant-members/application/services/assert-tenant-member-exsits/assert-tenant-member-exsits.service';
 import { AssertTenantMemberNotExsistsService } from '@/tenant-context/tenant-members/application/services/assert-tenant-member-not-exsits/assert-tenant-member-not-exsits.service';
 import { AssertTenantMemberViewModelExsistsService } from '@/tenant-context/tenant-members/application/services/assert-tenant-member-view-model-exsits/assert-tenant-member-view-model-exsits.service';
@@ -34,6 +37,11 @@ const SERVICES = [
 const QUERY_HANDLERS = [
   FindTenantMembersByCriteriaQueryHandler,
   FindTenantMemberByIdQueryHandler,
+  FindTenantMemberByTenantIdQueryHandler,
+
+  // View models
+  FindTenantMemberViewModelByTenantIdQueryHandler,
+  FindTenantMemberViewModelByIdQueryHandler,
 ];
 
 const COMMAND_HANDLERS = [

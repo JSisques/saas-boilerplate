@@ -4,7 +4,6 @@ import {
   TENANT_READ_REPOSITORY_TOKEN,
   TenantReadRepository,
 } from '@/tenant-context/tenants/domain/repositories/tenant-read.repository';
-import { TenantViewModel } from '@/tenant-context/tenants/domain/view-models/tenant.view-model';
 import { Inject, Logger } from '@nestjs/common';
 import { EventsHandler, IEventHandler } from '@nestjs/cqrs';
 
@@ -29,8 +28,9 @@ export class TenantCreatedEventHandler
     this.logger.log(`Handling tenant created event: ${event.aggregateId}`);
 
     // 01: Create the tenant view model
-    const tenantCreatedViewModel: TenantViewModel =
-      this.tenantViewModelFactory.fromPrimitives(event.data);
+    const tenantCreatedViewModel = this.tenantViewModelFactory.fromPrimitives(
+      event.data,
+    );
 
     // 02: Save the tenant view model
     await this.tenantReadRepository.save(tenantCreatedViewModel);

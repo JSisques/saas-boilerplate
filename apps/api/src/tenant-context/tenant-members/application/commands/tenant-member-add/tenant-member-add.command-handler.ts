@@ -5,18 +5,28 @@ import {
   TENANT_MEMBER_WRITE_REPOSITORY_TOKEN,
   TenantMemberWriteRepository,
 } from '@/tenant-context/tenant-members/domain/repositories/tenant-member-write.repository';
-import { Inject } from '@nestjs/common';
-import { CommandHandler, EventBus, ICommandHandler } from '@nestjs/cqrs';
+import { FindTenantByIdQuery } from '@/tenant-context/tenants/application/queries/find-tenant-by-id/find-tenant-by-id.query';
+import { UserFindByIdQuery } from '@/user-context/users/application/queries/user-find-by-id/user-find-by-id.query';
+import { Inject, Logger } from '@nestjs/common';
+import {
+  CommandHandler,
+  EventBus,
+  ICommandHandler,
+  QueryBus,
+} from '@nestjs/cqrs';
 import { TenantMemberAddCommand } from './tenant-member-add.command';
 
 @CommandHandler(TenantMemberAddCommand)
 export class TenantMemberAddCommandHandler
   implements ICommandHandler<TenantMemberAddCommand>
 {
+  private readonly logger = new Logger(TenantMemberAddCommandHandler.name);
+
   constructor(
     @Inject(TENANT_MEMBER_WRITE_REPOSITORY_TOKEN)
     private readonly tenantMemberWriteRepository: TenantMemberWriteRepository,
     private readonly eventBus: EventBus,
+    private readonly queryBus: QueryBus,
     private readonly tenantMemberAggregateFactory: TenantMemberAggregateFactory,
     private readonly assertTenantMemberNotExsistsService: AssertTenantMemberNotExsistsService,
   ) {}
@@ -28,26 +38,40 @@ export class TenantMemberAddCommandHandler
    * @returns The created tenant id
    */
   async execute(command: TenantMemberAddCommand): Promise<string> {
-    // 01: Assert the tenant slug is unique
+    this.logger.log(
+      `Executing tenant member add command with tenant id ${command.tenantId.value} and user id ${command.userId.value}`,
+    );
+
+    // 01: Assert the tenant member is not exsists
     await this.assertTenantMemberNotExsistsService.execute({
       tenantId: command.tenantId.value,
       userId: command.userId.value,
     });
 
-    // 02: Create the tenant entity
+    // 02: Assert the tenant exists
+    await this.queryBus.execute(
+      new FindTenantByIdQuery({ id: command.tenantId.value }),
+    );
+
+    // 03: Assert the user exists
+    await this.queryBus.execute(
+      new UserFindByIdQuery({ id: command.userId.value }),
+    );
+
+    // 04: Create the tenant member entity
     const tenantMember = this.tenantMemberAggregateFactory.create({
       id: TenantUuidValueObject.generate().value,
       ...command,
     });
 
-    // 03: Save the tenant entity
+    // 05: Save the tenant member entity
     await this.tenantMemberWriteRepository.save(tenantMember);
 
-    // 04: Publish all events
+    // 06: Publish all events
     await this.eventBus.publishAll(tenantMember.getUncommittedEvents());
     await tenantMember.commit();
 
-    // 05: Return the tenant id
+    // 07: Return the tenant member id
     return tenantMember.id.value;
   }
 }

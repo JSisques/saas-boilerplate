@@ -4,7 +4,7 @@ import {
   TENANT_READ_REPOSITORY_TOKEN,
   TenantReadRepository,
 } from '@/tenant-context/tenants/domain/repositories/tenant-read.repository';
-import { TenantViewModel } from '@/tenant-context/tenants/domain/view-models/tenant.view-model';
+import { TenantViewModel } from '@/tenant-context/tenants/domain/view-models/tenant/tenant.view-model';
 import { Inject, Injectable, Logger } from '@nestjs/common';
 
 @Injectable()

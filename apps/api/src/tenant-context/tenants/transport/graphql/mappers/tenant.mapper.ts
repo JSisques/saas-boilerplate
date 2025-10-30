@@ -1,9 +1,9 @@
 import { PaginatedResult } from '@/shared/domain/entities/paginated-result.entity';
-import { TenantViewModel } from '@/tenant-context/tenants/domain/view-models/tenant.view-model';
+import { TenantViewModel } from '@/tenant-context/tenants/domain/view-models/tenant/tenant.view-model';
 import {
   PaginatedTenantResultDto,
   TenantResponseDto,
-} from '@/tenant-context/tenants/transport/graphql/dtos/responses/tenant.response.dto';
+} from '@/tenant-context/tenants/transport/graphql/dtos/responses/tenant/tenant.response.dto';
 import { Injectable } from '@nestjs/common';
 
 @Injectable()
@@ -33,6 +33,7 @@ export class TenantGraphQLMapper {
       maxUsers: tenant.maxUsers,
       maxStorage: tenant.maxStorage,
       maxApiCalls: tenant.maxApiCalls,
+      tenantMembers: tenant.tenantMembers,
       createdAt: tenant.createdAt,
       updatedAt: tenant.updatedAt,
     };

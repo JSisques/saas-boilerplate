@@ -3,7 +3,7 @@ import { PaginatedResult } from '@/shared/domain/entities/paginated-result.entit
 import { BaseMongoRepository } from '@/shared/infrastructure/database/mongodb/base-mongo.repository';
 import { MongoService } from '@/shared/infrastructure/database/mongodb/mongo.service';
 import { TenantReadRepository } from '@/tenant-context/tenants/domain/repositories/tenant-read.repository';
-import { TenantViewModel } from '@/tenant-context/tenants/domain/view-models/tenant.view-model';
+import { TenantViewModel } from '@/tenant-context/tenants/domain/view-models/tenant/tenant.view-model';
 import { TenantMongoDBMapper } from '@/tenant-context/tenants/infrastructure/database/mongodb/mappers/tenant-mongodb.mapper';
 import { Injectable, Logger } from '@nestjs/common';
 
@@ -59,6 +59,7 @@ export class TenantMongoRepository
           maxUsers: tenantViewModel.maxUsers,
           maxStorage: tenantViewModel.maxStorage,
           maxApiCalls: tenantViewModel.maxApiCalls,
+          tenantMembers: tenantViewModel.tenantMembers,
           createdAt: tenantViewModel.createdAt,
           updatedAt: tenantViewModel.updatedAt,
         })
@@ -125,6 +126,7 @@ export class TenantMongoRepository
         maxUsers: doc.maxUsers,
         maxStorage: doc.maxStorage,
         maxApiCalls: doc.maxApiCalls,
+        tenantMembers: doc.tenantMembers,
         createdAt: doc.createdAt,
         updatedAt: doc.updatedAt,
       }),
@@ -142,7 +144,8 @@ export class TenantMongoRepository
     this.logger.log(`Saving tenant view model with id: ${tenantViewModel.id}`);
 
     const collection = this.mongoService.getCollection(this.collectionName);
-    const mongoData = this.tenantMongoDBMapper.toMongoData(tenantViewModel);
+    const mongoData =
+      await this.tenantMongoDBMapper.toMongoData(tenantViewModel);
 
     // 01: Use upsert to either insert or update the tenant view model
     await collection.replaceOne({ id: tenantViewModel.id }, mongoData, {

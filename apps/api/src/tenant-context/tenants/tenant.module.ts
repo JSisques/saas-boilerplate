@@ -4,6 +4,7 @@ import { TenantDeleteCommandHandler } from '@/tenant-context/tenants/application
 import { TenantUpdateCommandHandler } from '@/tenant-context/tenants/application/commands/tenant-update/tenant-update.command-handler';
 import { TenantCreatedEventHandler } from '@/tenant-context/tenants/application/event-handlers/tenant-created/tenant-created.event-handler';
 import { TenantDeletedEventHandler } from '@/tenant-context/tenants/application/event-handlers/tenant-deleted/tenant-deleted.event-handler';
+import { TenantMemberAddedEventHandler } from '@/tenant-context/tenants/application/event-handlers/tenant-member-added/tenant-member-added.event-handler';
 import { TenantUpdatedEventHandler } from '@/tenant-context/tenants/application/event-handlers/tenant-updated/tenant-updated.event-handler';
 import { FindTenantByIdQueryHandler } from '@/tenant-context/tenants/application/queries/find-tenant-by-id/find-tenant-by-id.query-handler';
 import { FindTenantsByCriteriaQueryHandler } from '@/tenant-context/tenants/application/queries/find-tenants-by-criteria/find-tenants-by-criteria.query-handler';
@@ -46,6 +47,8 @@ const EVENT_HANDLERS = [
   TenantCreatedEventHandler,
   TenantUpdatedEventHandler,
   TenantDeletedEventHandler,
+
+  TenantMemberAddedEventHandler,
 ];
 
 const FACTORIES = [TenantAggregateFactory, TenantViewModelFactory];

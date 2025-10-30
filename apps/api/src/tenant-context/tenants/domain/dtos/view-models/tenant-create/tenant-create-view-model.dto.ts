@@ -1,3 +1,5 @@
+import { TenantMemberViewModel } from '@/tenant-context/tenants/domain/view-models/tenant-member/tenant-member.view-model';
+
 /**
  * Tenant creation view model Data Transfer Object.
  *
@@ -27,6 +29,7 @@
  * @property {number | null} maxUsers - The max users of the tenant (nullable).
  * @property {number | null} maxStorage - The max storage of the tenant (nullable).
  * @property {number | null} maxApiCalls - The max API calls of the tenant (nullable).
+ * @property {TenantMemberViewModel[]} tenantMembers - The tenant members of the tenant.
  * @property {Date} createdAt - Timestamp when the tenant was created.
  * @property {Date} updatedAt - Timestamp when the tenant was last updated.
  */
@@ -54,6 +57,9 @@ export interface ITenantCreateViewModelDto {
   maxUsers: number | null;
   maxStorage: number | null;
   maxApiCalls: number | null;
-  createdAt: Date;
-  updatedAt: Date;
+
+  tenantMembers: TenantMemberViewModel[];
+
+  createdAt?: Date;
+  updatedAt?: Date;
 }

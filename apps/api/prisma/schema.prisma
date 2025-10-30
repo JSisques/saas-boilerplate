@@ -62,6 +62,8 @@ model TenantMember {
 
   user User @relation(fields: [userId], references: [id])
   tenant Tenant @relation(fields: [tenantId], references: [id])
+
+  @@index([tenantId, userId])
 }
 
 enum TenantStatusEnum {

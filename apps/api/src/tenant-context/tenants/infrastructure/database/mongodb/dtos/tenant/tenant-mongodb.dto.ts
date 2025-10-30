@@ -1,3 +1,5 @@
+import { TenantMemberViewModel } from '@/tenant-context/tenants/domain/view-models/tenant-member/tenant-member.view-model';
+
 export type TenantMongoDbDto = {
   id: string;
   name: string;
@@ -22,6 +24,9 @@ export type TenantMongoDbDto = {
   maxUsers: number | null;
   maxStorage: number | null;
   maxApiCalls: number | null;
+
+  tenantMembers: TenantMemberViewModel[];
+
   createdAt: Date;
   updatedAt: Date;
 };

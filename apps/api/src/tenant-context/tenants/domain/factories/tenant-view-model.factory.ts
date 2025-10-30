@@ -2,7 +2,7 @@ import { IReadFactory } from '@/shared/domain/interfaces/read-factory.interface'
 import { TenantAggregate } from '@/tenant-context/tenants/domain/aggregates/tenant.aggregate';
 import { ITenantCreateViewModelDto } from '@/tenant-context/tenants/domain/dtos/view-models/tenant-create/tenant-create-view-model.dto';
 import { TenantPrimitives } from '@/tenant-context/tenants/domain/primitives/tenant.primitives';
-import { TenantViewModel } from '@/tenant-context/tenants/domain/view-models/tenant.view-model';
+import { TenantViewModel } from '@/tenant-context/tenants/domain/view-models/tenant/tenant.view-model';
 import { Injectable, Logger } from '@nestjs/common';
 
 /**
@@ -67,6 +67,7 @@ export class TenantViewModelFactory
       maxUsers: tenantPrimitives.maxUsers,
       maxStorage: tenantPrimitives.maxStorage,
       maxApiCalls: tenantPrimitives.maxApiCalls,
+      tenantMembers: [],
       createdAt: now,
       updatedAt: now,
     });
@@ -108,6 +109,7 @@ export class TenantViewModelFactory
       maxUsers: tenantAggregate.maxUsers?.value || null,
       maxStorage: tenantAggregate.maxStorage?.value || null,
       maxApiCalls: tenantAggregate.maxApiCalls?.value || null,
+      tenantMembers: [],
       createdAt: now,
       updatedAt: now,
     });

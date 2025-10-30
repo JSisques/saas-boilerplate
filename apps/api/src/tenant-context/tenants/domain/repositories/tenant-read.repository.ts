@@ -1,6 +1,6 @@
 import { Criteria } from '@/shared/domain/entities/criteria';
 import { PaginatedResult } from '@/shared/domain/entities/paginated-result.entity';
-import { TenantViewModel } from '@/tenant-context/tenants/domain/view-models/tenant.view-model';
+import { TenantViewModel } from '@/tenant-context/tenants/domain/view-models/tenant/tenant.view-model';
 
 export const TENANT_READ_REPOSITORY_TOKEN = Symbol('TenantReadRepository');
 

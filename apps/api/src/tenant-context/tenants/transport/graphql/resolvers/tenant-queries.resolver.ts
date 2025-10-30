@@ -1,7 +1,7 @@
 import { Criteria } from '@/shared/domain/entities/criteria';
 import { FindTenantsByCriteriaQuery } from '@/tenant-context/tenants/application/queries/find-tenants-by-criteria/find-tenants-by-criteria.query';
 import { TenantFindByCriteriaRequestDto } from '@/tenant-context/tenants/transport/graphql/dtos/requests/tenant-find-by-criteria.request.dto';
-import { PaginatedTenantResultDto } from '@/tenant-context/tenants/transport/graphql/dtos/responses/tenant.response.dto';
+import { PaginatedTenantResultDto } from '@/tenant-context/tenants/transport/graphql/dtos/responses/tenant/tenant.response.dto';
 import { TenantGraphQLMapper } from '@/tenant-context/tenants/transport/graphql/mappers/tenant.mapper';
 import { QueryBus } from '@nestjs/cqrs';
 import { Args, Query, Resolver } from '@nestjs/graphql';

@@ -197,6 +197,9 @@ type TenantResponseDto {
   """The max API calls of the tenant"""
   maxApiCalls: Float
 
+  """The tenant members of the tenant"""
+  tenantMembers: [TenantMemberResponseDto!]
+
   """The created at of the tenant"""
   createdAt: DateTime
 

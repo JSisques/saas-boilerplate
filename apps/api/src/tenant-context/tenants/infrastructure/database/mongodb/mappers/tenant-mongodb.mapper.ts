@@ -1,7 +1,8 @@
 import { TenantViewModelFactory } from '@/tenant-context/tenants/domain/factories/tenant-view-model.factory';
-import { TenantViewModel } from '@/tenant-context/tenants/domain/view-models/tenant.view-model';
-import { TenantMongoDbDto } from '@/tenant-context/tenants/infrastructure/database/mongodb/dtos/tenant-mongodb.dto';
+import { TenantViewModel } from '@/tenant-context/tenants/domain/view-models/tenant/tenant.view-model';
+import { TenantMongoDbDto } from '@/tenant-context/tenants/infrastructure/database/mongodb/dtos/tenant/tenant-mongodb.dto';
 import { Injectable, Logger } from '@nestjs/common';
+import { QueryBus } from '@nestjs/cqrs';
 
 @Injectable()
 export class TenantMongoDBMapper {
@@ -9,6 +10,7 @@ export class TenantMongoDBMapper {
 
   constructor(
     private readonly tenantViewModelFactory: TenantViewModelFactory,
+    private readonly queryBus: QueryBus,
   ) {}
   /**
    * Converts a MongoDB document to a tenant view model
@@ -30,7 +32,9 @@ export class TenantMongoDBMapper {
    * @param tenantViewModel - The tenant view model to convert
    * @returns The MongoDB document
    */
-  public toMongoData(tenantViewModel: TenantViewModel): TenantMongoDbDto {
+  public async toMongoData(
+    tenantViewModel: TenantViewModel,
+  ): Promise<TenantMongoDbDto> {
     this.logger.log(
       `Converting tenant view model with id ${tenantViewModel.id} to MongoDB document`,
     );
@@ -59,6 +63,7 @@ export class TenantMongoDBMapper {
       maxUsers: tenantViewModel.maxUsers,
       maxStorage: tenantViewModel.maxStorage,
       maxApiCalls: tenantViewModel.maxApiCalls,
+      tenantMembers: tenantViewModel.tenantMembers,
       createdAt: tenantViewModel.createdAt,
       updatedAt: tenantViewModel.updatedAt,
     };
