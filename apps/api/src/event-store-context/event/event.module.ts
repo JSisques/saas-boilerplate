@@ -1,3 +1,4 @@
+import { EventReplayCommandHandler } from '@/event-store-context/event/application/commands/event-replay/event-replay.command-handler';
 import { EventCreatedEventHandler } from '@/event-store-context/event/application/event-handlers/event/event-created/event-created.event-handler';
 import { TenantMemberAddedEventHandler } from '@/event-store-context/event/application/event-handlers/tenant-context/tenant-members/tenant-members-added/tenant-members-added.event-handler';
 import { TenantMemberRemovedEventHandler } from '@/event-store-context/event/application/event-handlers/tenant-context/tenant-members/tenant-members-removed/tenant-members-removed.event-handler';
@@ -9,8 +10,11 @@ import { UserCreatedEventHandler } from '@/event-store-context/event/application
 import { UserDeletedEventHandler } from '@/event-store-context/event/application/event-handlers/users/user-deleted/user-deleted.event-handler';
 import { UserUpdatedEventHandler } from '@/event-store-context/event/application/event-handlers/users/user-updated/user-updated.event-handler';
 import { FindEventsByCriteriaQueryHandler } from '@/event-store-context/event/application/queries/event-find-by-criteria/event-find-by-criteria.command-handler';
+import { EventPublishService } from '@/event-store-context/event/application/services/event-publish/event-publish.service';
+import { EventReplayService } from '@/event-store-context/event/application/services/event-replay/event-replay.service';
 import { EventTrackingService } from '@/event-store-context/event/application/services/event-tracking/event-tracking.service';
 import { EventAggregateFactory } from '@/event-store-context/event/domain/factories/event-aggregate.factory';
+import { DomainEventFactory } from '@/event-store-context/event/domain/factories/event-domain.factory';
 import { EventViewModelFactory } from '@/event-store-context/event/domain/factories/event-view-model.factory';
 import { EVENT_READ_REPOSITORY_TOKEN } from '@/event-store-context/event/domain/repositories/event-read.repository';
 import { EVENT_WRITE_REPOSITORY_TOKEN } from '@/event-store-context/event/domain/repositories/event-write.repository';
@@ -19,17 +23,22 @@ import { EventMongoRepository } from '@/event-store-context/event/infrastructure
 import { EventPrismaMapper } from '@/event-store-context/event/infrastructure/prisma/mappers/event-prisma.mapper';
 import { EventPrismaRepository } from '@/event-store-context/event/infrastructure/prisma/repositories/event-prisma.repository';
 import { EventGraphQLMapper } from '@/event-store-context/event/transport/graphql/mappers/event.mapper';
+import { EventMutationResolver } from '@/event-store-context/event/transport/graphql/resolvers/event-mutations.resolver';
 import { EventQueryResolver } from '@/event-store-context/event/transport/graphql/resolvers/event-queries.resolver';
 import { SharedModule } from '@/shared/shared.module';
 import { Module } from '@nestjs/common';
 
-const RESOLVERS = [EventQueryResolver];
+const RESOLVERS = [EventQueryResolver, EventMutationResolver];
 
-const SERVICES = [EventTrackingService];
+const SERVICES = [
+  EventTrackingService,
+  EventReplayService,
+  EventPublishService,
+];
 
 const QUERY_HANDLERS = [FindEventsByCriteriaQueryHandler];
 
-const COMMAND_HANDLERS = [];
+const COMMAND_HANDLERS = [EventReplayCommandHandler];
 
 const EVENT_HANDLERS = [
   EventCreatedEventHandler,
@@ -50,7 +59,11 @@ const EVENT_HANDLERS = [
   TenantMemberRemovedEventHandler,
 ];
 
-const FACTORIES = [EventAggregateFactory, EventViewModelFactory];
+const FACTORIES = [
+  EventAggregateFactory,
+  EventViewModelFactory,
+  DomainEventFactory,
+];
 
 const MAPPERS = [EventPrismaMapper, EventMongoMapper, EventGraphQLMapper];
 

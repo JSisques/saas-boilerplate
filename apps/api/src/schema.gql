@@ -378,6 +378,7 @@ input UserFindByCriteriaRequestDto {
 }
 
 type Mutation {
+  eventsReplay(input: EventReplayRequestDto!): MutationResponseDto!
   loginByEmail(input: AuthLoginByEmailRequestDto!): MutationResponseDto!
   registerByEmail(input: AuthRegisterByEmailRequestDto!): MutationResponseDto!
   logout(input: UpdateUserRequestDto!): MutationResponseDto!
@@ -390,6 +391,29 @@ type Mutation {
   tenantMemberRemove(input: TenantMemberRemoveRequestDto!): MutationResponseDto!
   createUser(input: CreateUserRequestDto!): MutationResponseDto!
   updateUser(input: UpdateUserRequestDto!): MutationResponseDto!
+}
+
+input EventReplayRequestDto {
+  """The id of the event to replay"""
+  id: String
+
+  """The type of the event to replay"""
+  eventType: String!
+
+  """The aggregate id"""
+  aggregateId: String
+
+  """The aggregate type"""
+  aggregateType: String
+
+  """The start date of the event to replay"""
+  from: DateTime!
+
+  """The end date of the event to replay"""
+  to: DateTime!
+
+  """Batch size for replay"""
+  batchSize: Int
 }
 
 input AuthLoginByEmailRequestDto {

@@ -1,4 +1,5 @@
 import { EventAggregate } from '@/event-store-context/event/domain/aggregates/event.aggregate';
+import { IEventFilterDto } from '@/event-store-context/event/domain/dtos/filters/event-filter.dto';
 import { EventWriteRepository } from '@/event-store-context/event/domain/repositories/event-write.repository';
 import { EventPrismaMapper } from '@/event-store-context/event/infrastructure/prisma/mappers/event-prisma.mapper';
 import { BasePrismaRepository } from '@/shared/infrastructure/database/prisma/base-prisma.repository';
@@ -36,6 +37,29 @@ export class EventPrismaRepository
     }
 
     return this.eventPrismaMapper.toDomainEntity(EventData);
+  }
+
+  async findByCriteria(filters: IEventFilterDto): Promise<EventAggregate[]> {
+    this.logger.log(`Finding events by criteria: ${JSON.stringify(filters)}`);
+
+    const events = await this.prismaService.event.findMany({
+      where: {
+        eventType: filters.eventType,
+        aggregateId: filters.aggregateId,
+        aggregateType: filters.aggregateType,
+        timestamp: {
+          gte: filters.from,
+          lte: filters.to,
+        },
+      },
+      orderBy: {
+        timestamp: 'asc',
+      },
+      take: filters.pagination?.perPage,
+      skip: filters.pagination?.page,
+    });
+
+    return events.map((event) => this.eventPrismaMapper.toDomainEntity(event));
   }
 
   /**

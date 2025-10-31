@@ -7,6 +7,7 @@ export abstract class BaseEvent<TData> {
   readonly aggregateId: string;
   readonly aggregateType: string;
   readonly ocurredAt: Date;
+  readonly isReplay?: boolean;
   protected readonly _data: TData;
 
   constructor(metadata: IEventMetadata, data: TData) {
@@ -15,6 +16,7 @@ export abstract class BaseEvent<TData> {
     this.aggregateId = metadata.aggregateId;
     this.aggregateType = metadata.aggregateType;
     this.ocurredAt = new Date();
+    this.isReplay = metadata.isReplay;
     this._data = data;
   }
 

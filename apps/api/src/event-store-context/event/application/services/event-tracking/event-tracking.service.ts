@@ -36,6 +36,13 @@ export class EventTrackingService
    * 4. Mark the event events as committed.
    */
   async execute(event: BaseEvent<any>): Promise<void> {
+    if (event.isReplay) {
+      this.logger.debug(
+        `Skipping tracking for replayed event: ${event.eventType} (${event.aggregateId})`,
+      );
+      return;
+    }
+
     this.logger.log(`Tracking event event: ${event.eventType}`);
 
     // 01: Create the event entity

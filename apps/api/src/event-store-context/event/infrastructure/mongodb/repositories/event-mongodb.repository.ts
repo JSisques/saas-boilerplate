@@ -98,6 +98,8 @@ export class EventMongoRepository
   /**
    * Saves a event view model
    *
+   * Uses upsert by id to ensure idempotency during replays.
+   *
    * @param EventViewModel - The event view model to save
    */
   async save(EventViewModel: EventViewModel): Promise<void> {
@@ -105,9 +107,25 @@ export class EventMongoRepository
 
     const collection = this.mongoService.getCollection(this.collectionName);
 
-    // 01: Insert the event view model into the collection
-    await collection.insertOne(
-      this.eventMongoMapper.toMongoData(EventViewModel),
+    const doc = this.eventMongoMapper.toMongoData(EventViewModel);
+
+    await collection.updateOne(
+      { id: doc.id },
+      {
+        $set: {
+          eventType: doc.eventType,
+          aggregateType: doc.aggregateType,
+          aggregateId: doc.aggregateId,
+          payload: doc.payload,
+          timestamp: doc.timestamp,
+          updatedAt: new Date(),
+        },
+        $setOnInsert: {
+          id: doc.id,
+          createdAt: doc.createdAt ?? new Date(),
+        },
+      },
+      { upsert: true },
     );
   }
 
