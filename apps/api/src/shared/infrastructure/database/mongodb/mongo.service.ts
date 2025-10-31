@@ -15,8 +15,8 @@ export class MongoService implements OnModuleInit, OnModuleDestroy {
   async onModuleInit() {
     this.logger.log(`🚀 Initializing MongoDB`);
 
-    const mongoUrl = process.env.MONGODB_URI || 'mongodb://localhost:27017';
-    const dbName = process.env.MONGODB_DATABASE || 'nestjs-ddd';
+    const mongoUrl = process.env.MONGODB_URI;
+    const dbName = process.env.MONGODB_DATABASE;
 
     try {
       this.client = new MongoClient(mongoUrl, {

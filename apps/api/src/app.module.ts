@@ -1,6 +1,6 @@
 import { AppResolver } from '@/app.resolver';
-import { AuditContextModule } from '@/audit-context/audit-context.module';
 import { AuthContextModule } from '@/auth-context/auth-context.module';
+import { EventContextModule } from '@/event-store-context/event-store-context.module';
 import { FeaturesModule } from '@/features/features.module';
 import { SharedModule } from '@/shared/shared.module';
 import '@/shared/transport/graphql/registered-enums.graphql';
@@ -14,7 +14,7 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { join } from 'path';
 
 const CONTEXT_MODULES = [
-  AuditContextModule,
+  EventContextModule,
   AuthContextModule,
   TenantContextModule,
   UserContextModule,

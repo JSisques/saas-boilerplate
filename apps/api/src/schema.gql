@@ -2,48 +2,6 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type AuditResponseDto {
-  """The id of the user"""
-  id: String!
-
-  """The name of the audit"""
-  eventType: String
-
-  """The bio of the user"""
-  aggregateType: String
-
-  """The aggregate id of the audit"""
-  aggregateId: String
-
-  """The payload of the audit"""
-  payload: String
-
-  """The timestamp of the audit"""
-  timestamp: DateTime
-}
-
-"""
-A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
-"""
-scalar DateTime
-
-type PaginatedAuditResultDto {
-  """The total number of items"""
-  total: Int!
-
-  """The page number"""
-  page: Int!
-
-  """The number of items per page"""
-  perPage: Int!
-
-  """The total number of pages"""
-  totalPages: Int!
-
-  """The audits in the current page"""
-  items: [AuditResponseDto!]!
-}
-
 type MutationResponseDto {
   success: Boolean!
   message: String
@@ -79,6 +37,11 @@ type AuthResponseDto {
   twoFactorEnabled: Boolean
 }
 
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
 type PaginatedAuthResultDto {
   """The total number of items"""
   total: Int!
@@ -94,6 +57,43 @@ type PaginatedAuthResultDto {
 
   """The auths in the current page"""
   items: [AuthResponseDto!]!
+}
+
+type EventResponseDto {
+  """The id of the event"""
+  id: String!
+
+  """The name of the event"""
+  eventType: String
+
+  """The bio of the event"""
+  aggregateType: String
+
+  """The aggregate id of the event"""
+  aggregateId: String
+
+  """The payload of the event"""
+  payload: String
+
+  """The timestamp of the event"""
+  timestamp: DateTime
+}
+
+type PaginatedEventResultDto {
+  """The total number of items"""
+  total: Int!
+
+  """The page number"""
+  page: Int!
+
+  """The number of items per page"""
+  perPage: Int!
+
+  """The total number of pages"""
+  totalPages: Int!
+
+  """The events in the current page"""
+  items: [EventResponseDto!]!
 }
 
 type TenantMemberResponseDto {
@@ -270,14 +270,14 @@ type PaginatedUserResultDto {
 type Query {
   hello: String!
   health: String!
-  findAuditsByCriteria(input: AuditFindByCriteriaRequestDto): PaginatedAuditResultDto!
+  eventsFindByCriteria(input: EventFindByCriteriaRequestDto): PaginatedEventResultDto!
   findAuthsByCriteria(input: AuthFindByCriteriaRequestDto): PaginatedAuthResultDto!
   tenantFindByCriteria(input: TenantFindByCriteriaRequestDto): PaginatedTenantResultDto!
   tenantMemberFindByCriteria(input: TenantMemberFindByCriteriaRequestDto): PaginatedTenantMemberResultDto!
   findUsersByCriteria(input: UserFindByCriteriaRequestDto): PaginatedUserResultDto!
 }
 
-input AuditFindByCriteriaRequestDto {
+input EventFindByCriteriaRequestDto {
   """The filters to find by"""
   filters: [BaseFilterInput!] = []
 

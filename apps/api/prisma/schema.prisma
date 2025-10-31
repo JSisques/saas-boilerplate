@@ -108,7 +108,7 @@ postalCode String? // Postal code of the tenant
 }
 
 
-model Audit {
+model Event {
   id        String  @id @default(uuid())
   eventType String // Event type
   aggregateType String // Aggregate type
