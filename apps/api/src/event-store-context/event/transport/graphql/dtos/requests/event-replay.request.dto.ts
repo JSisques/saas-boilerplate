@@ -11,9 +11,13 @@ export class EventReplayRequestDto {
   @IsNotEmpty()
   id?: string;
 
-  @Field(() => String, { description: 'The type of the event to replay' })
-  @IsNotEmpty()
-  eventType: string;
+  @Field(() => String, {
+    description:
+      'The type of the event to replay. If not provided, all events within the date range will be replayed.',
+    nullable: true,
+  })
+  @IsOptional()
+  eventType?: string;
 
   @Field(() => String, { description: 'The aggregate id', nullable: true })
   @IsUUID()

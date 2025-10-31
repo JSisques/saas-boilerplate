@@ -397,8 +397,10 @@ input EventReplayRequestDto {
   """The id of the event to replay"""
   id: String
 
-  """The type of the event to replay"""
-  eventType: String!
+  """
+  The type of the event to replay. If not provided, all events within the date range will be replayed.
+  """
+  eventType: String
 
   """The aggregate id"""
   aggregateId: String

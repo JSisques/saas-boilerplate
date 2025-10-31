@@ -6,7 +6,7 @@ import { EventUuidValueObject } from '@/shared/domain/value-objects/identifiers/
 
 export class EventReplayCommand {
   readonly id?: EventUuidValueObject;
-  readonly eventType: EventTypeValueObject;
+  readonly eventType?: EventTypeValueObject;
   readonly aggregateId?: EventAggregateIdValueObject;
   readonly aggregateType?: EventAggregateTypeValueObject;
   readonly from: Date;
@@ -15,7 +15,9 @@ export class EventReplayCommand {
 
   constructor(props: IEventReplayCommandDto) {
     this.id = props.id ? new EventUuidValueObject(props.id) : undefined;
-    this.eventType = new EventTypeValueObject(props.eventType);
+    this.eventType = props.eventType
+      ? new EventTypeValueObject(props.eventType)
+      : undefined;
     this.aggregateId = props.aggregateId
       ? new EventAggregateIdValueObject(props.aggregateId)
       : undefined;
@@ -24,6 +26,6 @@ export class EventReplayCommand {
       : undefined;
     this.from = props.from;
     this.to = props.to;
-    this.batchSize = props.batchSize;
+    this.batchSize = props.batchSize ?? 500;
   }
 }

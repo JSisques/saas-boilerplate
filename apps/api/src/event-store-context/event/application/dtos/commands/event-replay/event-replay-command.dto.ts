@@ -9,7 +9,7 @@
  */
 export interface IEventReplayCommandDto {
   id?: string;
-  eventType: string;
+  eventType?: string;
   aggregateId?: string;
   aggregateType?: string;
   from: Date;

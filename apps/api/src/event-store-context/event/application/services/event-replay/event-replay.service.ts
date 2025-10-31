@@ -53,7 +53,7 @@ export class EventReplayService
     do {
       events = await this.eventWriteRepository.findByCriteria({
         id: input.id?.value,
-        eventType: input.eventType.value,
+        eventType: input.eventType ? input.eventType.value : undefined,
         aggregateId: input.aggregateId?.value,
         aggregateType: input.aggregateType?.value,
         from: input.from,
