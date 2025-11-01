@@ -26,7 +26,9 @@ export class UserViewModelFactory
    * @returns The created view model.
    */
   public create(data: IUserCreateViewModelDto): UserViewModel {
-    this.logger.log(`Creating user view model from DTO: ${data}`);
+    this.logger.log(
+      `Creating user view model from DTO: ${JSON.stringify(data)}`,
+    );
     return new UserViewModel(data);
   }
 

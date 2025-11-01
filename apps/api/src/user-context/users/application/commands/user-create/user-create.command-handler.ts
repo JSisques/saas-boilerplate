@@ -1,6 +1,6 @@
 import { UserUuidValueObject } from '@/shared/domain/value-objects/identifiers/user-uuid/user-uuid.vo';
 import { AssertUserUsernameIsUniqueService } from '@/user-context/users/application/services/assert-user-username-is-unique/assert-user-username-is-unique.service';
-import { UserAggregateFactory } from '@/user-context/users/domain/factories/user-aggregate.factory';
+import { UserAggregateFactory } from '@/user-context/users/domain/factories/user-aggregate/user-aggregate.factory';
 import {
   USER_WRITE_REPOSITORY_TOKEN,
   UserWriteRepository,

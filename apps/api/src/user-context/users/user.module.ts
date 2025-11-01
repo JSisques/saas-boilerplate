@@ -10,8 +10,8 @@ import { UserFindByIdQueryHandler } from '@/user-context/users/application/queri
 import { AssertUserExsistsService } from '@/user-context/users/application/services/assert-user-exsits/assert-user-exsits.service';
 import { AssertUserUsernameIsUniqueService } from '@/user-context/users/application/services/assert-user-username-is-unique/assert-user-username-is-unique.service';
 import { AssertUserViewModelExsistsService } from '@/user-context/users/application/services/assert-user-view-model-exsits/assert-user-view-model-exsits.service';
-import { UserAggregateFactory } from '@/user-context/users/domain/factories/user-aggregate.factory';
-import { UserViewModelFactory } from '@/user-context/users/domain/factories/user-view-model.factory';
+import { UserAggregateFactory } from '@/user-context/users/domain/factories/user-aggregate/user-aggregate.factory';
+import { UserViewModelFactory } from '@/user-context/users/domain/factories/user-view-model/user-view-model.factory';
 import { USER_READ_REPOSITORY_TOKEN } from '@/user-context/users/domain/repositories/user-read.repository';
 import { USER_WRITE_REPOSITORY_TOKEN } from '@/user-context/users/domain/repositories/user-write.repository';
 import { UserMongoDBMapper } from '@/user-context/users/infrastructure/database/mongodb/mappers/user-mongodb.mapper';

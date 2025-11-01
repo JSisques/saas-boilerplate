@@ -1,5 +1,5 @@
 import { UserAggregate } from '@/user-context/users/domain/aggregates/user.aggregate';
-import { UserAggregateFactory } from '@/user-context/users/domain/factories/user-aggregate.factory';
+import { UserAggregateFactory } from '@/user-context/users/domain/factories/user-aggregate/user-aggregate.factory';
 import { UserPrismaDto } from '@/user-context/users/infrastructure/database/prisma/dtos/user-prisma.dto';
 import { Injectable, Logger } from '@nestjs/common';
 import { RoleEnum, StatusEnum } from '@prisma/client';

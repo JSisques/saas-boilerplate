@@ -1,4 +1,4 @@
-import { UserViewModelFactory } from '@/user-context/users/domain/factories/user-view-model.factory';
+import { UserViewModelFactory } from '@/user-context/users/domain/factories/user-view-model/user-view-model.factory';
 import { UserViewModel } from '@/user-context/users/domain/view-models/user.view-model';
 import { UserMongoDbDto } from '@/user-context/users/infrastructure/database/mongodb/dtos/user-mongodb.dto';
 import { Injectable, Logger } from '@nestjs/common';

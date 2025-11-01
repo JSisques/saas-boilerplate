@@ -1,5 +1,5 @@
 import { UserCreatedEvent } from '@/shared/domain/events/users/user-created/user-created.event';
-import { UserViewModelFactory } from '@/user-context/users/domain/factories/user-view-model.factory';
+import { UserViewModelFactory } from '@/user-context/users/domain/factories/user-view-model/user-view-model.factory';
 import {
   USER_READ_REPOSITORY_TOKEN,
   UserReadRepository,
