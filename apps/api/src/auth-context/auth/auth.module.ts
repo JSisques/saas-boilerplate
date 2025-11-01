@@ -19,6 +19,7 @@ import { AuthMongoDBMapper } from '@/auth-context/auth/infrastructure/database/m
 import { AuthMongoRepository } from '@/auth-context/auth/infrastructure/database/mongodb/repositories/auth-mongodb.repository';
 import { AuthPrismaMapper } from '@/auth-context/auth/infrastructure/database/prisma/mappers/auth-prisma.mapper';
 import { AuthPrismaRepository } from '@/auth-context/auth/infrastructure/database/prisma/repositories/auth-prisma.repository';
+import { OwnerGuard } from '@/auth-context/auth/infrastructure/guards/owner.guard';
 import { RolesGuard } from '@/auth-context/auth/infrastructure/guards/roles.guard';
 import { JwtStrategy } from '@/auth-context/auth/infrastructure/strategies/jwt/jwt.strategy';
 import { AuthGraphQLMapper } from '@/auth-context/auth/transport/graphql/mappers/auth.mapper';
@@ -60,7 +61,7 @@ const MAPPERS = [AuthPrismaMapper, AuthMongoDBMapper, AuthGraphQLMapper];
 
 const STRATEGIES = [JwtStrategy];
 
-const GUARDS = [JwtAuthGuard, RolesGuard];
+const GUARDS = [JwtAuthGuard, RolesGuard, OwnerGuard];
 
 const REPOSITORIES = [
   {
@@ -104,6 +105,6 @@ const REPOSITORIES = [
     ...STRATEGIES,
     ...GUARDS,
   ],
-  exports: [JwtAuthService, JwtAuthGuard, RolesGuard],
+  exports: [JwtAuthService, JwtAuthGuard, RolesGuard, OwnerGuard],
 })
 export class AuthModule {}

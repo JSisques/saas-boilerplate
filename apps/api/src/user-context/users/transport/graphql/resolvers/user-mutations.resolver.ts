@@ -1,3 +1,7 @@
+import { JwtAuthGuard } from '@/auth-context/auth/infrastructure/auth/jwt-auth.guard';
+import { Roles } from '@/auth-context/auth/infrastructure/decorators/roles/roles.decorator';
+import { OwnerGuard } from '@/auth-context/auth/infrastructure/guards/owner.guard';
+import { RolesGuard } from '@/auth-context/auth/infrastructure/guards/roles.guard';
 import { MutationResponseDto } from '@/shared/transport/graphql/dtos/success-response.dto';
 import { MutationResponseGraphQLMapper } from '@/shared/transport/graphql/mappers/mutation-response.mapper';
 import { UserDeleteCommand } from '@/user-context/users/application/commands/delete-user/delete-user.command';
@@ -6,10 +10,13 @@ import { UserUpdateCommand } from '@/user-context/users/application/commands/use
 import { CreateUserRequestDto } from '@/user-context/users/transport/graphql/dtos/requests/create-user.request.dto';
 import { DeleteUserRequestDto } from '@/user-context/users/transport/graphql/dtos/requests/delete-user.request.dto';
 import { UpdateUserRequestDto } from '@/user-context/users/transport/graphql/dtos/requests/update-user.request.dto';
+import { UseGuards } from '@nestjs/common';
 import { CommandBus } from '@nestjs/cqrs';
 import { Args, Mutation, Resolver } from '@nestjs/graphql';
+import { UserRoleEnum } from '@prisma/client';
 
 @Resolver()
+@UseGuards(JwtAuthGuard, RolesGuard)
 export class UserMutationsResolver {
   constructor(
     private readonly commandBus: CommandBus,
@@ -17,6 +24,7 @@ export class UserMutationsResolver {
   ) {}
 
   @Mutation(() => MutationResponseDto)
+  @Roles(UserRoleEnum.ADMIN)
   async createUser(
     @Args('input') input: CreateUserRequestDto,
   ): Promise<MutationResponseDto> {
@@ -41,6 +49,7 @@ export class UserMutationsResolver {
   }
 
   @Mutation(() => MutationResponseDto)
+  @UseGuards(OwnerGuard)
   async updateUser(
     @Args('input') input: UpdateUserRequestDto,
   ): Promise<MutationResponseDto> {
@@ -67,6 +76,7 @@ export class UserMutationsResolver {
   }
 
   @Mutation(() => MutationResponseDto)
+  @Roles(UserRoleEnum.ADMIN)
   async deleteUser(
     @Args('input') input: DeleteUserRequestDto,
   ): Promise<MutationResponseDto> {
