@@ -1,4 +1,5 @@
 import { AssertAuthEmailNotExistsService } from '@/auth-context/auth/application/services/assert-auth-email-not-exists/assert-auth-email-not-exists.service';
+import { PasswordHashingService } from '@/auth-context/auth/application/services/password-hashing/password-hashing.service';
 import { AuthAggregateFactory } from '@/auth-context/auth/domain/factories/auth-aggregate.factory';
 import {
   AUTH_WRITE_REPOSITORY_TOKEN,
@@ -8,7 +9,6 @@ import { AuthEmailVerifiedValueObject } from '@/auth-context/auth/domain/value-o
 import { AuthPasswordHashValueObject } from '@/auth-context/auth/domain/value-objects/auth-password-hash/auth-password-hash.vo';
 import { AuthProviderValueObject } from '@/auth-context/auth/domain/value-objects/auth-provider/auth-provider.vo';
 import { AuthTwoFactorEnabledValueObject } from '@/auth-context/auth/domain/value-objects/auth-two-factor-enabled/auth-two-factor-enabled.vo';
-import { PasswordHashingService } from '@/shared/application/services/password-hashing/password-hashing.service';
 import { AuthUuidValueObject } from '@/shared/domain/value-objects/identifiers/auth-uuid/auth-uuid.vo';
 import { UserUuidValueObject } from '@/shared/domain/value-objects/identifiers/user-uuid/user-uuid.vo';
 import { UserCreateCommand } from '@/user-context/users/application/commands/user-create/user-create.command';
