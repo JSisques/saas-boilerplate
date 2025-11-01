@@ -2,7 +2,7 @@ import { UserAggregate } from '@/user-context/users/domain/aggregates/user.aggre
 import { UserAggregateFactory } from '@/user-context/users/domain/factories/user-aggregate/user-aggregate.factory';
 import { UserPrismaDto } from '@/user-context/users/infrastructure/database/prisma/dtos/user-prisma.dto';
 import { Injectable, Logger } from '@nestjs/common';
-import { RoleEnum, StatusEnum } from '@prisma/client';
+import { StatusEnum, UserRoleEnum } from '@prisma/client';
 
 @Injectable()
 export class UserPrismaMapper {
@@ -53,7 +53,7 @@ export class UserPrismaMapper {
       bio: primitives.bio,
       lastName: primitives.lastName,
       name: primitives.name,
-      role: primitives.role as RoleEnum,
+      role: primitives.role as UserRoleEnum,
       status: primitives.status as StatusEnum,
       userName: primitives.userName,
     };

@@ -14,7 +14,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-enum RoleEnum {
+enum UserRoleEnum {
   ADMIN
   USER
 }
@@ -26,13 +26,13 @@ enum StatusEnum {
 }
 
 model User {
-  id        String     @id @default(uuid())
-  userName  String?     @unique
+  id        String       @id @default(uuid())
+  userName  String?      @unique
   name      String? // Name of the user
   lastName  String? // Last name of the user
   bio       String? // Bio of the user
   avatarUrl String? // Avatar URL of the user
-  role      RoleEnum // Role of the user
+  role      UserRoleEnum // Role of the user
   status    StatusEnum
 
   createdAt DateTime @default(now())
@@ -129,7 +129,7 @@ model Auth {
   id               String           @id @default(uuid())
   provider         AuthProviderEnum // Provider of the auth
   providerId       String? // Provider ID
-  email            String? // Email of the auth
+  email            String?          @unique // Email of the auth
   phoneNumber      String? // Phone number of the auth
   password         String? // Password of the auth
   emailVerified    Boolean          @default(false) // Email verified

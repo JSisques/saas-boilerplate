@@ -89,6 +89,7 @@ export class AuthLoginByEmailCommandHandler
       userId: auth.userId.value,
       email: auth.email?.value || undefined,
       username: user?.userName?.value ?? undefined,
+      role: user?.role?.value ?? undefined,
     });
 
     this.logger.log(`Login successful for auth: ${auth.id.value}`);

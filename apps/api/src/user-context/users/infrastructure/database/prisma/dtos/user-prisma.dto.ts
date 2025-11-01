@@ -1,4 +1,4 @@
-import { RoleEnum, StatusEnum } from '@prisma/client';
+import { StatusEnum, UserRoleEnum } from '@prisma/client';
 
 export type UserPrismaDto = {
   id: string;
@@ -6,7 +6,7 @@ export type UserPrismaDto = {
   bio: string | null;
   lastName: string | null;
   name: string | null;
-  role: RoleEnum;
+  role: UserRoleEnum;
   status: StatusEnum;
   userName: string;
 };

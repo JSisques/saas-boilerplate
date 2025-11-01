@@ -2,10 +2,10 @@ import { FilterOperator } from '@/shared/domain/enums/filter-operator.enum';
 import { SortDirection } from '@/shared/domain/enums/sort-direction.enum';
 import { registerEnumType } from '@nestjs/graphql';
 import {
-  RoleEnum,
   StatusEnum,
   TenantMemberRoleEnum,
   TenantStatusEnum,
+  UserRoleEnum,
 } from '@prisma/client';
 
 registerEnumType(FilterOperator, {
@@ -18,8 +18,8 @@ registerEnumType(SortDirection, {
   description: 'The direction to sort by',
 });
 
-registerEnumType(RoleEnum, {
-  name: 'RoleEnum',
+registerEnumType(UserRoleEnum, {
+  name: 'UserRoleEnum',
   description: 'The role of the user',
 });
 

@@ -2,6 +2,20 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type LoginResponseDto {
+  """The access token"""
+  accessToken: String!
+
+  """The refresh token"""
+  refreshToken: String!
+}
+
+type MutationResponseDto {
+  success: Boolean!
+  message: String
+  id: String
+}
+
 type AuthResponseDto {
   """The id of the auth"""
   id: String!
@@ -48,20 +62,6 @@ type PaginatedAuthResultDto {
 
   """The auths in the current page"""
   items: [AuthResponseDto!]!
-}
-
-type LoginResponseDto {
-  """The access token"""
-  accessToken: String!
-
-  """The refresh token"""
-  refreshToken: String!
-}
-
-type MutationResponseDto {
-  success: Boolean!
-  message: String
-  id: String
 }
 
 type EventResponseDto {
@@ -393,7 +393,6 @@ type Mutation {
   loginByEmail(input: AuthLoginByEmailRequestDto!): LoginResponseDto!
   registerByEmail(input: AuthRegisterByEmailRequestDto!): MutationResponseDto!
   logout(input: UpdateUserRequestDto!): MutationResponseDto!
-  deleteUser(input: DeleteUserRequestDto!): MutationResponseDto!
   tenantCreate(input: TenantCreateRequestDto!): MutationResponseDto!
   tenantUpdate(input: TenantUpdateRequestDto!): MutationResponseDto!
   tenantDelete(input: TenantDeleteRequestDto!): MutationResponseDto!
@@ -402,6 +401,7 @@ type Mutation {
   tenantMemberRemove(input: TenantMemberRemoveRequestDto!): MutationResponseDto!
   createUser(input: CreateUserRequestDto!): MutationResponseDto!
   updateUser(input: UpdateUserRequestDto!): MutationResponseDto!
+  deleteUser(input: DeleteUserRequestDto!): MutationResponseDto!
 }
 
 input EventReplayRequestDto {
@@ -465,14 +465,14 @@ input UpdateUserRequestDto {
   userName: String
 
   """The role of the user"""
-  role: RoleEnum
+  role: UserRoleEnum
 
   """The status of the user"""
   status: StatusEnum
 }
 
 """The role of the user"""
-enum RoleEnum {
+enum UserRoleEnum {
   ADMIN
   USER
 }
@@ -482,11 +482,6 @@ enum StatusEnum {
   ACTIVE
   INACTIVE
   BLOCKED
-}
-
-input DeleteUserRequestDto {
-  """The unique identifier of the user"""
-  id: String!
 }
 
 input TenantCreateRequestDto {
@@ -673,8 +668,13 @@ input CreateUserRequestDto {
   userName: String
 
   """The role of the user"""
-  role: RoleEnum!
+  role: UserRoleEnum!
 
   """The status of the user"""
   status: StatusEnum!
+}
+
+input DeleteUserRequestDto {
+  """The unique identifier of the user"""
+  id: String!
 }

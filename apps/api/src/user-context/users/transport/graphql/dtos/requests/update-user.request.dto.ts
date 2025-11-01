@@ -1,5 +1,5 @@
 import { Field, InputType } from '@nestjs/graphql';
-import { RoleEnum, StatusEnum } from '@prisma/client';
+import { StatusEnum, UserRoleEnum } from '@prisma/client';
 import {
   IsEnum,
   IsNotEmpty,
@@ -53,13 +53,13 @@ export class UpdateUserRequestDto {
   @IsOptional()
   userName?: string;
 
-  @Field(() => RoleEnum, {
+  @Field(() => UserRoleEnum, {
     description: 'The role of the user',
     nullable: true,
   })
-  @IsEnum(RoleEnum)
+  @IsEnum(UserRoleEnum)
   @IsOptional()
-  role?: RoleEnum;
+  role?: UserRoleEnum;
 
   @Field(() => StatusEnum, {
     description: 'The status of the user',

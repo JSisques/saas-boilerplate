@@ -1,4 +1,3 @@
-import { AuthAggregate } from '@/auth-context/auth/domain/aggregate/auth.aggregate';
 import { IJwtPayload } from '@/auth-context/auth/domain/interfaces/jwt-payload.interface';
 import {
   AUTH_WRITE_REPOSITORY_TOKEN,
@@ -40,7 +39,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
    * @param payload - Decoded JWT payload
    * @returns User authentication data
    */
-  async validate(payload: IJwtPayload): Promise<AuthAggregate> {
+  async validate(payload: IJwtPayload): Promise<any> {
     this.logger.log(`Validating JWT payload: ${JSON.stringify(payload)}`);
 
     // Find auth by auth ID
@@ -50,7 +49,11 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
       throw new UnauthorizedException('User not found');
     }
 
-    // Return the auth aggregate that will be attached to request.user
-    return auth;
+    // Return the auth aggregate with role from JWT payload
+    // This allows the RolesGuard to access the user's role
+    return {
+      ...auth,
+      role: payload.role,
+    };
   }
 }

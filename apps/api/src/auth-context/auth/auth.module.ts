@@ -19,12 +19,13 @@ import { AuthMongoDBMapper } from '@/auth-context/auth/infrastructure/database/m
 import { AuthMongoRepository } from '@/auth-context/auth/infrastructure/database/mongodb/repositories/auth-mongodb.repository';
 import { AuthPrismaMapper } from '@/auth-context/auth/infrastructure/database/prisma/mappers/auth-prisma.mapper';
 import { AuthPrismaRepository } from '@/auth-context/auth/infrastructure/database/prisma/repositories/auth-prisma.repository';
+import { RolesGuard } from '@/auth-context/auth/infrastructure/guards/roles.guard';
 import { JwtStrategy } from '@/auth-context/auth/infrastructure/strategies/jwt/jwt.strategy';
 import { AuthGraphQLMapper } from '@/auth-context/auth/transport/graphql/mappers/auth.mapper';
 import { AuthMutationsResolver } from '@/auth-context/auth/transport/graphql/resolvers/auth-mutations.resolver';
 import { AuthQueryResolver } from '@/auth-context/auth/transport/graphql/resolvers/auth-queries.resolver';
 import { SharedModule } from '@/shared/shared.module';
-import { Module } from '@nestjs/common';
+import { Global, Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
@@ -59,7 +60,7 @@ const MAPPERS = [AuthPrismaMapper, AuthMongoDBMapper, AuthGraphQLMapper];
 
 const STRATEGIES = [JwtStrategy];
 
-const GUARDS = [JwtAuthGuard];
+const GUARDS = [JwtAuthGuard, RolesGuard];
 
 const REPOSITORIES = [
   {
@@ -72,6 +73,7 @@ const REPOSITORIES = [
   },
 ];
 
+@Global()
 @Module({
   imports: [
     SharedModule,
@@ -102,6 +104,6 @@ const REPOSITORIES = [
     ...STRATEGIES,
     ...GUARDS,
   ],
-  exports: [JwtAuthService, JwtAuthGuard],
+  exports: [JwtAuthService, JwtAuthGuard, RolesGuard],
 })
 export class AuthModule {}

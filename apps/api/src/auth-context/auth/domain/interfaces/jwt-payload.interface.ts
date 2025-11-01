@@ -3,4 +3,5 @@ export interface IJwtPayload {
   userId: string;
   email?: string;
   username?: string;
+  role: string;
 }

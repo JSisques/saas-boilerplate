@@ -1,18 +1,21 @@
 import { AuthLoginByEmailCommand } from '@/auth-context/auth/application/commands/auth-login-by-email/auth-login-by-email.command';
 import { AuthRegisterByEmailCommand } from '@/auth-context/auth/application/commands/auth-register-by-email/auth-register-by-email.command';
+import { Public } from '@/auth-context/auth/infrastructure/decorators/public/public.decorator';
 import { AuthLoginByEmailRequestDto } from '@/auth-context/auth/transport/graphql/dtos/requests/auth-login-by-email.request.dto';
 import { AuthRegisterByEmailRequestDto } from '@/auth-context/auth/transport/graphql/dtos/requests/auth-register-by-email.request.dto';
-import { LoginResponseDto } from '@/auth-context/auth/transport/graphql/dtos/responses/auth.response.dto';
+import { LoginResponseDto } from '@/auth-context/auth/transport/graphql/dtos/responses/login.response.dto';
 import { MutationResponseDto } from '@/shared/transport/graphql/dtos/success-response.dto';
 import { MutationResponseGraphQLMapper } from '@/shared/transport/graphql/mappers/mutation-response.mapper';
-import { UserDeleteCommand } from '@/user-context/users/application/commands/delete-user/delete-user.command';
-import { DeleteUserRequestDto } from '@/user-context/users/transport/graphql/dtos/requests/delete-user.request.dto';
 import { UpdateUserRequestDto } from '@/user-context/users/transport/graphql/dtos/requests/update-user.request.dto';
+import { Logger } from '@nestjs/common';
 import { CommandBus } from '@nestjs/cqrs';
 import { Args, Mutation, Resolver } from '@nestjs/graphql';
 
 @Resolver()
+@Public()
 export class AuthMutationsResolver {
+  private readonly logger = new Logger(AuthMutationsResolver.name);
+
   constructor(
     private readonly commandBus: CommandBus,
     private readonly mutationResponseGraphQLMapper: MutationResponseGraphQLMapper,
@@ -22,6 +25,8 @@ export class AuthMutationsResolver {
   async loginByEmail(
     @Args('input') input: AuthLoginByEmailRequestDto,
   ): Promise<LoginResponseDto> {
+    this.logger.log(`Login by email for email: ${input.email}`);
+
     // 01: Send the command to the command bus
     const tokens = await this.commandBus.execute(
       new AuthLoginByEmailCommand({
@@ -38,6 +43,8 @@ export class AuthMutationsResolver {
   async registerByEmail(
     @Args('input') input: AuthRegisterByEmailRequestDto,
   ): Promise<MutationResponseDto> {
+    this.logger.log(`Register by email for email: ${input.email}`);
+
     // 01: Send the command to the command bus
     const registeredAuthId = await this.commandBus.execute(
       new AuthRegisterByEmailCommand({
@@ -58,6 +65,8 @@ export class AuthMutationsResolver {
   async logout(
     @Args('input') input: UpdateUserRequestDto,
   ): Promise<MutationResponseDto> {
+    this.logger.log(`Logout for id: ${input.id}`);
+
     // 01: Send the command to the command bus
     // await this.commandBus.execute(
     //   new AuthLogoutCommand({
@@ -76,21 +85,6 @@ export class AuthMutationsResolver {
     return this.mutationResponseGraphQLMapper.toResponseDto({
       success: true,
       message: 'User updated successfully',
-      id: input.id,
-    });
-  }
-
-  @Mutation(() => MutationResponseDto)
-  async deleteUser(
-    @Args('input') input: DeleteUserRequestDto,
-  ): Promise<MutationResponseDto> {
-    // 01: Send the command to the command bus
-    await this.commandBus.execute(new UserDeleteCommand({ id: input.id }));
-
-    // 02: Return success response
-    return this.mutationResponseGraphQLMapper.toResponseDto({
-      success: true,
-      message: 'User deleted successfully',
       id: input.id,
     });
   }
