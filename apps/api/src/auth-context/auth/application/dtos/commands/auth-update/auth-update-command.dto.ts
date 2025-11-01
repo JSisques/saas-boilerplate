@@ -7,7 +7,7 @@
  * @property {string} [email] - The email of the auth.
  * @property {boolean} [emailVerified] - The email verified of the auth.
  * @property {Date | null} [lastLoginAt] - The last login at of the auth.
- * @property {string | null} [passwordHash] - The password hash of the auth.
+ * @property {string | null} [password] - The password of the auth.
  * @property {string} [provider] - The provider of the auth.
  * @property {string | null} [providerId] - The provider id of the auth.
  * @property {boolean} [twoFactorEnabled] - The two factor enabled of the auth.
@@ -17,7 +17,7 @@ export interface IAuthUpdateCommandDto {
   email?: string;
   emailVerified?: boolean;
   lastLoginAt?: Date | null;
-  passwordHash?: string | null;
+  password?: string | null;
   phoneNumber?: string;
   provider?: string;
   providerId?: string | null;

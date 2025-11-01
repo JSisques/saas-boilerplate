@@ -5,7 +5,7 @@ export interface IAuthEventData {
   emailVerified: boolean;
   phoneNumber: string | null;
   lastLoginAt: Date | null;
-  passwordHash: string | null;
+  password: string | null;
   provider: string;
   providerId: string | null;
   twoFactorEnabled: boolean;

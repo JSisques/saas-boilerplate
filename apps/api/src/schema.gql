@@ -2,12 +2,6 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type MutationResponseDto {
-  success: Boolean!
-  message: String
-  id: String
-}
-
 type AuthResponseDto {
   """The id of the auth"""
   id: String!
@@ -23,9 +17,6 @@ type AuthResponseDto {
 
   """The last login at of the auth"""
   lastLoginAt: DateTime
-
-  """The password hash of the auth"""
-  passwordHash: String
 
   """The provider of the auth"""
   provider: String
@@ -57,6 +48,20 @@ type PaginatedAuthResultDto {
 
   """The auths in the current page"""
   items: [AuthResponseDto!]!
+}
+
+type LoginResponseDto {
+  """The access token"""
+  accessToken: String!
+
+  """The refresh token"""
+  refreshToken: String!
+}
+
+type MutationResponseDto {
+  success: Boolean!
+  message: String
+  id: String
 }
 
 type EventResponseDto {
@@ -385,7 +390,7 @@ input UserFindByCriteriaRequestDto {
 
 type Mutation {
   eventsReplay(input: EventReplayRequestDto!): MutationResponseDto!
-  loginByEmail(input: AuthLoginByEmailRequestDto!): MutationResponseDto!
+  loginByEmail(input: AuthLoginByEmailRequestDto!): LoginResponseDto!
   registerByEmail(input: AuthRegisterByEmailRequestDto!): MutationResponseDto!
   logout(input: UpdateUserRequestDto!): MutationResponseDto!
   deleteUser(input: DeleteUserRequestDto!): MutationResponseDto!

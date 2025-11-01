@@ -4,7 +4,7 @@ import { AuthPrimitives } from '@/auth-context/auth/domain/primitives/auth.primi
 import { AuthEmailVerifiedValueObject } from '@/auth-context/auth/domain/value-objects/auth-email-verified/auth-email-verified.vo';
 import { AuthEmailValueObject } from '@/auth-context/auth/domain/value-objects/auth-email/auth-email.vo';
 import { AuthLastLoginAtValueObject } from '@/auth-context/auth/domain/value-objects/auth-last-login-at/auth-last-login-at.vo';
-import { AuthPasswordHashValueObject } from '@/auth-context/auth/domain/value-objects/auth-password-hash/auth-password-hash.vo';
+import { AuthPasswordValueObject } from '@/auth-context/auth/domain/value-objects/auth-password/auth-password.vo';
 import { AuthPhoneNumberValueObject } from '@/auth-context/auth/domain/value-objects/auth-phone-number/auth-phone-number.vo';
 import { AuthProviderIdValueObject } from '@/auth-context/auth/domain/value-objects/auth-provider-id/auth-provider-id.vo';
 import { AuthProviderValueObject } from '@/auth-context/auth/domain/value-objects/auth-provider/auth-provider.vo';
@@ -33,7 +33,7 @@ export class AuthAggregateFactory
    * @param data.email - The email of the auth.
    * @param data.emailVerified - The email verified of the auth.
    * @param data.lastLoginAt - The last login at of the auth.
-   * @param data.passwordHash - The password hash of the auth.
+   * @param data.password - The password of the auth.
    * @param data.provider - The provider of the auth.
    * @param data.providerId - The provider id of the auth.
    * @param data.twoFactorEnabled - The two factor enabled of the auth.
@@ -56,7 +56,7 @@ export class AuthAggregateFactory
    * @param data.email - The email of the auth.
    * @param data.emailVerified - The email verified of the auth.
    * @param data.lastLoginAt - The last login at of the auth.
-   * @param data.passwordHash - The password hash of the auth.
+   * @param data.password - The password of the auth.
    * @param data.provider - The provider of the auth.
    * @param data.providerId - The provider id of the auth.
    * @param data.twoFactorEnabled - The two factor enabled of the auth.
@@ -73,8 +73,8 @@ export class AuthAggregateFactory
       lastLoginAt: data.lastLoginAt
         ? new AuthLastLoginAtValueObject(data.lastLoginAt)
         : null,
-      passwordHash: data.passwordHash
-        ? new AuthPasswordHashValueObject(data.passwordHash)
+      password: data.password
+        ? new AuthPasswordValueObject(data.password)
         : null,
       provider: new AuthProviderValueObject(data.provider),
       providerId: data.providerId

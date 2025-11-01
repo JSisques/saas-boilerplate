@@ -4,7 +4,7 @@ export type AuthPrimitives = {
   email: string | null;
   emailVerified: boolean;
   lastLoginAt: Date | null;
-  passwordHash: string | null;
+  password: string | null;
   phoneNumber: string | null;
   provider: string;
   providerId: string | null;

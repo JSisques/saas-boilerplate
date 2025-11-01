@@ -29,9 +29,11 @@ export class UserCreateCommandHandler
    */
   async execute(command: UserCreateCommand): Promise<string> {
     // 00: Assert the user username is unique
-    await this.assertUserUsernameIsUniqueService.execute(
-      command.userName.value,
-    );
+    if (command.userName) {
+      await this.assertUserUsernameIsUniqueService.execute(
+        command.userName.value,
+      );
+    }
     // 01: Create the user entity
     const user = this.userAggregateFactory.create({
       id: UserUuidValueObject.generate().value,

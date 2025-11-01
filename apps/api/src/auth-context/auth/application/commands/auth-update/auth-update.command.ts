@@ -2,7 +2,7 @@ import { IAuthUpdateCommandDto } from '@/auth-context/auth/application/dtos/comm
 import { AuthEmailVerifiedValueObject } from '@/auth-context/auth/domain/value-objects/auth-email-verified/auth-email-verified.vo';
 import { AuthEmailValueObject } from '@/auth-context/auth/domain/value-objects/auth-email/auth-email.vo';
 import { AuthLastLoginAtValueObject } from '@/auth-context/auth/domain/value-objects/auth-last-login-at/auth-last-login-at.vo';
-import { AuthPasswordHashValueObject } from '@/auth-context/auth/domain/value-objects/auth-password-hash/auth-password-hash.vo';
+import { AuthPasswordValueObject } from '@/auth-context/auth/domain/value-objects/auth-password/auth-password.vo';
 import { AuthProviderIdValueObject } from '@/auth-context/auth/domain/value-objects/auth-provider-id/auth-provider-id.vo';
 import { AuthProviderValueObject } from '@/auth-context/auth/domain/value-objects/auth-provider/auth-provider.vo';
 import { AuthTwoFactorEnabledValueObject } from '@/auth-context/auth/domain/value-objects/auth-two-factor-enabled/auth-two-factor-enabled.vo';
@@ -13,7 +13,7 @@ export class AuthUpdateCommand {
   readonly email?: AuthEmailValueObject | null;
   readonly emailVerified?: AuthEmailVerifiedValueObject;
   readonly lastLoginAt: AuthLastLoginAtValueObject | null;
-  readonly passwordHash?: AuthPasswordHashValueObject | null;
+  readonly password?: AuthPasswordValueObject | null;
   readonly provider?: AuthProviderValueObject;
   readonly providerId?: AuthProviderIdValueObject | null;
   readonly twoFactorEnabled?: AuthTwoFactorEnabledValueObject;
@@ -37,9 +37,9 @@ export class AuthUpdateCommand {
         : null;
     }
 
-    if (props.passwordHash !== undefined) {
-      this.passwordHash = props.passwordHash
-        ? new AuthPasswordHashValueObject(props.passwordHash)
+    if (props.password !== undefined) {
+      this.password = props.password
+        ? new AuthPasswordValueObject(props.password)
         : null;
     }
 

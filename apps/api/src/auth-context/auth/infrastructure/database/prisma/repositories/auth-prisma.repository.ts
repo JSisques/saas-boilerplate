@@ -55,6 +55,24 @@ export class AuthPrismaRepository
   }
 
   /**
+   * Finds a auth by their user id
+   *
+   * @param userId - The user id of the auth to find
+   * @returns The auth if found, null otherwise
+   */
+  async findByUserId(userId: string): Promise<AuthAggregate | null> {
+    const authData = await this.prismaService.auth.findFirst({
+      where: { userId },
+    });
+
+    if (!authData) {
+      return null;
+    }
+
+    return this.authPrismaMapper.toDomainEntity(authData);
+  }
+
+  /**
    * Saves a auth
    *
    * @param auth - The auth to save

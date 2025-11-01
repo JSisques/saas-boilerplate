@@ -6,19 +6,18 @@ import {
   AuthWriteRepository,
 } from '@/auth-context/auth/domain/repositories/auth-write.repository';
 import { AuthEmailVerifiedValueObject } from '@/auth-context/auth/domain/value-objects/auth-email-verified/auth-email-verified.vo';
-import { AuthPasswordHashValueObject } from '@/auth-context/auth/domain/value-objects/auth-password-hash/auth-password-hash.vo';
+import { AuthPasswordValueObject } from '@/auth-context/auth/domain/value-objects/auth-password/auth-password.vo';
 import { AuthProviderValueObject } from '@/auth-context/auth/domain/value-objects/auth-provider/auth-provider.vo';
 import { AuthTwoFactorEnabledValueObject } from '@/auth-context/auth/domain/value-objects/auth-two-factor-enabled/auth-two-factor-enabled.vo';
 import { AuthUuidValueObject } from '@/shared/domain/value-objects/identifiers/auth-uuid/auth-uuid.vo';
 import { UserUuidValueObject } from '@/shared/domain/value-objects/identifiers/user-uuid/user-uuid.vo';
 import { UserCreateCommand } from '@/user-context/users/application/commands/user-create/user-create.command';
-import { Inject } from '@nestjs/common';
+import { Inject, Logger } from '@nestjs/common';
 import {
   CommandBus,
   CommandHandler,
   EventBus,
   ICommandHandler,
-  QueryBus,
 } from '@nestjs/cqrs';
 import { AuthProviderEnum } from '@prisma/client';
 import { AuthRegisterByEmailCommand } from './auth-register-by-email.command';
@@ -27,6 +26,8 @@ import { AuthRegisterByEmailCommand } from './auth-register-by-email.command';
 export class AuthRegisterByEmailCommandHandler
   implements ICommandHandler<AuthRegisterByEmailCommand>
 {
+  private readonly logger = new Logger(AuthRegisterByEmailCommandHandler.name);
+
   constructor(
     @Inject(AUTH_WRITE_REPOSITORY_TOKEN)
     private readonly authWriteRepository: AuthWriteRepository,
@@ -34,7 +35,6 @@ export class AuthRegisterByEmailCommandHandler
     private readonly passwordHashingService: PasswordHashingService,
     private readonly assertAuthEmailNotExistsService: AssertAuthEmailNotExistsService,
     private readonly eventBus: EventBus,
-    private readonly queryBus: QueryBus,
     private readonly commandBus: CommandBus,
   ) {}
 
@@ -45,6 +45,9 @@ export class AuthRegisterByEmailCommandHandler
    * @returns The created auth id
    */
   async execute(command: AuthRegisterByEmailCommand): Promise<string> {
+    this.logger.log(
+      `Executing auth register command by email: ${command.email.value}`,
+    );
     // 01: Assert the auth email not exists
     await this.assertAuthEmailNotExistsService.execute(command.email.value);
 
@@ -56,8 +59,6 @@ export class AuthRegisterByEmailCommandHandler
         lastName: null,
         name: null,
         userName: null,
-        role: null,
-        status: null,
       }),
     );
 
@@ -72,7 +73,7 @@ export class AuthRegisterByEmailCommandHandler
       email: command.email,
       emailVerified: new AuthEmailVerifiedValueObject(false),
       lastLoginAt: null,
-      passwordHash: new AuthPasswordHashValueObject(hashedPassword),
+      password: new AuthPasswordValueObject(hashedPassword),
       phoneNumber: null,
       provider: new AuthProviderValueObject(AuthProviderEnum.LOCAL),
       providerId: null,

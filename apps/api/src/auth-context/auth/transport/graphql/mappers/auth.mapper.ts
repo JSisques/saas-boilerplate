@@ -15,7 +15,6 @@ export class AuthGraphQLMapper {
       email: auth.email,
       emailVerified: auth.emailVerified,
       lastLoginAt: auth.lastLoginAt,
-      passwordHash: auth.passwordHash,
       provider: auth.provider,
       providerId: auth.providerId,
       twoFactorEnabled: auth.twoFactorEnabled,

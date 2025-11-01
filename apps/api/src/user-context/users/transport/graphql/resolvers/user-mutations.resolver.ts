@@ -28,7 +28,6 @@ export class UserMutationsResolver {
         avatarUrl: input.avatarUrl,
         lastName: input.lastName,
         role: input.role,
-        status: input.status,
         userName: input.userName,
       }),
     );

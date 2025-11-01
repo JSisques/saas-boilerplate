@@ -152,10 +152,12 @@ describe('UserAggregateFactory', () => {
 
       expect(aggregate).toBeInstanceOf(UserAggregate);
       expect(aggregate.id.value).toBe(primitivesWithValidAvatar.id);
-      expect(aggregate.userName.value).toBe(primitivesWithValidAvatar.userName);
-      expect(aggregate.name?.value).toBe('');
-      expect(aggregate.lastName?.value).toBe('');
-      expect(aggregate.bio?.value).toBe('');
+      expect(aggregate.userName?.value).toBe(
+        primitivesWithValidAvatar.userName,
+      );
+      expect(aggregate.name).toBeNull();
+      expect(aggregate.lastName).toBeNull();
+      expect(aggregate.bio).toBeNull();
       expect(aggregate.avatarUrl?.value).toBe(
         primitivesWithValidAvatar.avatarUrl,
       );

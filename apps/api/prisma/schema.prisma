@@ -27,7 +27,7 @@ enum StatusEnum {
 
 model User {
   id        String     @id @default(uuid())
-  userName  String     @unique
+  userName  String?     @unique
   name      String? // Name of the user
   lastName  String? // Last name of the user
   bio       String? // Bio of the user
@@ -131,7 +131,7 @@ model Auth {
   providerId       String? // Provider ID
   email            String? // Email of the auth
   phoneNumber      String? // Phone number of the auth
-  passwordHash     String? // Password hash of the auth
+  password         String? // Password of the auth
   emailVerified    Boolean          @default(false) // Email verified
   twoFactorEnabled Boolean          @default(false) // Two factor enabled
   lastLoginAt      DateTime? // Last login at

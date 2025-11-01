@@ -1,7 +1,7 @@
 import { AuthEmailVerifiedValueObject } from '@/auth-context/auth/domain/value-objects/auth-email-verified/auth-email-verified.vo';
 import { AuthEmailValueObject } from '@/auth-context/auth/domain/value-objects/auth-email/auth-email.vo';
 import { AuthLastLoginAtValueObject } from '@/auth-context/auth/domain/value-objects/auth-last-login-at/auth-last-login-at.vo';
-import { AuthPasswordHashValueObject } from '@/auth-context/auth/domain/value-objects/auth-password-hash/auth-password-hash.vo';
+import { AuthPasswordValueObject } from '@/auth-context/auth/domain/value-objects/auth-password/auth-password.vo';
 import { AuthPhoneNumberValueObject } from '@/auth-context/auth/domain/value-objects/auth-phone-number/auth-phone-number.vo';
 import { AuthProviderIdValueObject } from '@/auth-context/auth/domain/value-objects/auth-provider-id/auth-provider-id.vo';
 import { AuthProviderValueObject } from '@/auth-context/auth/domain/value-objects/auth-provider/auth-provider.vo';
@@ -18,7 +18,7 @@ import { UserUuidValueObject } from '@/shared/domain/value-objects/identifiers/u
  * @property {AuthEmailValueObject} email - The email of the auth.
  * @property {AuthEmailVerifiedValueObject} emailVerified - The email verified of the auth.
  * @property {AuthLastLoginAtValueObject} lastLoginAt - The last login at of the auth.
- * @property {AuthPasswordHashValueObject} passwordHash - The password hash of the auth.
+ * @property {AuthPasswordValueObject} password - The password of the auth.
  * @property {AuthPhoneNumberValueObject} phoneNumber - The phone number of the auth.
  * @property {AuthProviderValueObject} provider - The provider of the auth.
  * @property {AuthProviderIdValueObject} providerId - The provider id of the auth.
@@ -30,7 +30,7 @@ export interface IAuthCreateDto {
   email: AuthEmailValueObject | null;
   emailVerified: AuthEmailVerifiedValueObject;
   lastLoginAt: AuthLastLoginAtValueObject | null;
-  passwordHash: AuthPasswordHashValueObject | null;
+  password: AuthPasswordValueObject | null;
   phoneNumber: AuthPhoneNumberValueObject | null;
   provider: AuthProviderValueObject;
   providerId: AuthProviderIdValueObject | null;

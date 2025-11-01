@@ -7,7 +7,7 @@ export type AuthPrismaDto = {
   emailVerified: boolean;
   phoneNumber: string | null;
   lastLoginAt: Date | null;
-  passwordHash: string | null;
+  password: string | null;
   provider: AuthProviderEnum;
   providerId: string | null;
   twoFactorEnabled: boolean;

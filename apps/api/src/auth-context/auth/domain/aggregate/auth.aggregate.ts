@@ -4,7 +4,7 @@ import { AuthPrimitives } from '@/auth-context/auth/domain/primitives/auth.primi
 import { AuthEmailVerifiedValueObject } from '@/auth-context/auth/domain/value-objects/auth-email-verified/auth-email-verified.vo';
 import { AuthEmailValueObject } from '@/auth-context/auth/domain/value-objects/auth-email/auth-email.vo';
 import { AuthLastLoginAtValueObject } from '@/auth-context/auth/domain/value-objects/auth-last-login-at/auth-last-login-at.vo';
-import { AuthPasswordHashValueObject } from '@/auth-context/auth/domain/value-objects/auth-password-hash/auth-password-hash.vo';
+import { AuthPasswordValueObject } from '@/auth-context/auth/domain/value-objects/auth-password/auth-password.vo';
 import { AuthPhoneNumberValueObject } from '@/auth-context/auth/domain/value-objects/auth-phone-number/auth-phone-number.vo';
 import { AuthProviderIdValueObject } from '@/auth-context/auth/domain/value-objects/auth-provider-id/auth-provider-id.vo';
 import { AuthProviderValueObject } from '@/auth-context/auth/domain/value-objects/auth-provider/auth-provider.vo';
@@ -24,7 +24,7 @@ export class AuthAggregate extends AggregateRoot {
   private _phoneNumber: AuthPhoneNumberValueObject | null;
   private _emailVerified: AuthEmailVerifiedValueObject;
   private _lastLoginAt: AuthLastLoginAtValueObject | null;
-  private _passwordHash: AuthPasswordHashValueObject | null;
+  private _password: AuthPasswordValueObject | null;
   private _provider: AuthProviderValueObject;
   private _providerId: AuthProviderIdValueObject | null;
   private _twoFactorEnabled: AuthTwoFactorEnabledValueObject;
@@ -39,7 +39,7 @@ export class AuthAggregate extends AggregateRoot {
     this._phoneNumber = props.phoneNumber;
     this._emailVerified = props.emailVerified;
     this._lastLoginAt = props.lastLoginAt;
-    this._passwordHash = props.passwordHash;
+    this._password = props.password;
     this._provider = props.provider;
     this._providerId = props.providerId;
     this._twoFactorEnabled = props.twoFactorEnabled;
@@ -66,7 +66,7 @@ export class AuthAggregate extends AggregateRoot {
    * @param props.email - The email of the auth.
    * @param props.emailVerified - The email verified of the auth.
    * @param props.lastLoginAt - The last login at of the auth.
-   * @param props.passwordHash - The password hash of the auth.
+   * @param props.password - The password of the auth.
    * @param props.provider - The provider of the auth.
    * @param props.providerId - The provider id of the auth.
    * @param props.twoFactorEnabled - The two factor enabled of the auth.
@@ -82,10 +82,8 @@ export class AuthAggregate extends AggregateRoot {
         : this._emailVerified;
     this._lastLoginAt =
       props.lastLoginAt !== undefined ? props.lastLoginAt : this._lastLoginAt;
-    this._passwordHash =
-      props.passwordHash !== undefined
-        ? props.passwordHash
-        : this._passwordHash;
+    this._password =
+      props.password !== undefined ? props.password : this._password;
     this._provider =
       props.provider !== undefined ? props.provider : this._provider;
     this._providerId =
@@ -173,8 +171,8 @@ export class AuthAggregate extends AggregateRoot {
     return this._lastLoginAt;
   }
 
-  public get passwordHash(): AuthPasswordHashValueObject | null {
-    return this._passwordHash;
+  public get password(): AuthPasswordValueObject | null {
+    return this._password;
   }
 
   public get provider(): AuthProviderValueObject {
@@ -202,7 +200,7 @@ export class AuthAggregate extends AggregateRoot {
       emailVerified: this._emailVerified.value,
       phoneNumber: this._phoneNumber ? this._phoneNumber.value : null,
       lastLoginAt: this._lastLoginAt ? this._lastLoginAt.value : null,
-      passwordHash: this._passwordHash ? this._passwordHash.value : null,
+      password: this._password ? this._password.value : null,
       provider: this._provider.value,
       providerId: this._providerId ? this._providerId.value : null,
       twoFactorEnabled: this._twoFactorEnabled.value,

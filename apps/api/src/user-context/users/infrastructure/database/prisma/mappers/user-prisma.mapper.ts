@@ -23,7 +23,7 @@ export class UserPrismaMapper {
 
     return this.userAggregateFactory.fromPrimitives({
       id: userData.id,
-      userName: userData.userName,
+      userName: userData.userName ?? null,
       name: userData.name ?? null,
       lastName: userData.lastName ?? null,
       bio: userData.bio ?? null,

@@ -26,12 +26,6 @@ export class AuthResponseDto {
 
   @Field(() => String, {
     nullable: true,
-    description: 'The password hash of the auth',
-  })
-  passwordHash?: string;
-
-  @Field(() => String, {
-    nullable: true,
     description: 'The provider of the auth',
   })
   provider?: string;
@@ -55,4 +49,13 @@ export class PaginatedAuthResultDto extends BasePaginatedResultDto {
     description: 'The auths in the current page',
   })
   items: AuthResponseDto[];
+}
+
+@ObjectType('LoginResponseDto')
+export class LoginResponseDto {
+  @Field(() => String, { description: 'The access token' })
+  accessToken: string;
+
+  @Field(() => String, { description: 'The refresh token' })
+  refreshToken: string;
 }

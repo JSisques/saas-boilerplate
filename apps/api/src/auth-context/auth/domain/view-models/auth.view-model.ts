@@ -11,7 +11,7 @@ export class AuthViewModel {
   private _emailVerified: boolean;
   private _phoneNumber: string | null;
   private _lastLoginAt: Date | null;
-  private _passwordHash: string | null;
+  private _password: string | null;
   private _provider: string;
   private _providerId: string | null;
   private _twoFactorEnabled: boolean;
@@ -25,7 +25,7 @@ export class AuthViewModel {
     this._emailVerified = props.emailVerified;
     this._phoneNumber = props.phoneNumber;
     this._lastLoginAt = props.lastLoginAt;
-    this._passwordHash = props.passwordHash;
+    this._password = props.password;
     this._provider = props.provider;
     this._providerId = props.providerId;
     this._twoFactorEnabled = props.twoFactorEnabled;
@@ -57,8 +57,8 @@ export class AuthViewModel {
     return this._lastLoginAt;
   }
 
-  public get passwordHash(): string | null {
-    return this._passwordHash;
+  public get password(): string | null {
+    return this._password;
   }
 
   public get provider(): string {
@@ -98,10 +98,8 @@ export class AuthViewModel {
       updateData.lastLoginAt !== undefined
         ? updateData.lastLoginAt
         : this._lastLoginAt;
-    this._passwordHash =
-      updateData.passwordHash !== undefined
-        ? updateData.passwordHash
-        : this._passwordHash;
+    this._password =
+      updateData.password !== undefined ? updateData.password : this._password;
     this._provider =
       updateData.provider !== undefined ? updateData.provider : this._provider;
     this._providerId =

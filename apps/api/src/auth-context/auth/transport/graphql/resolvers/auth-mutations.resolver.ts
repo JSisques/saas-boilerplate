@@ -1,7 +1,8 @@
 import { AuthLoginByEmailCommand } from '@/auth-context/auth/application/commands/auth-login-by-email/auth-login-by-email.command';
 import { AuthRegisterByEmailCommand } from '@/auth-context/auth/application/commands/auth-register-by-email/auth-register-by-email.command';
-import { AuthLoginByEmailRequestDto } from '@/auth-context/auth/transport/graphql/dtos/requests/auth-login-by-email.request.dto copy';
+import { AuthLoginByEmailRequestDto } from '@/auth-context/auth/transport/graphql/dtos/requests/auth-login-by-email.request.dto';
 import { AuthRegisterByEmailRequestDto } from '@/auth-context/auth/transport/graphql/dtos/requests/auth-register-by-email.request.dto';
+import { LoginResponseDto } from '@/auth-context/auth/transport/graphql/dtos/responses/auth.response.dto';
 import { MutationResponseDto } from '@/shared/transport/graphql/dtos/success-response.dto';
 import { MutationResponseGraphQLMapper } from '@/shared/transport/graphql/mappers/mutation-response.mapper';
 import { UserDeleteCommand } from '@/user-context/users/application/commands/delete-user/delete-user.command';
@@ -17,24 +18,20 @@ export class AuthMutationsResolver {
     private readonly mutationResponseGraphQLMapper: MutationResponseGraphQLMapper,
   ) {}
 
-  @Mutation(() => MutationResponseDto)
+  @Mutation(() => LoginResponseDto)
   async loginByEmail(
     @Args('input') input: AuthLoginByEmailRequestDto,
-  ): Promise<MutationResponseDto> {
+  ): Promise<LoginResponseDto> {
     // 01: Send the command to the command bus
-    const loggedInAuthId = await this.commandBus.execute(
+    const tokens = await this.commandBus.execute(
       new AuthLoginByEmailCommand({
         email: input.email,
         password: input.password,
       }),
     );
 
-    // 02: Return success response
-    return this.mutationResponseGraphQLMapper.toResponseDto({
-      success: true,
-      message: 'Auth logged in successfully',
-      id: loggedInAuthId,
-    });
+    // 02: Return tokens
+    return tokens;
   }
 
   @Mutation(() => MutationResponseDto)

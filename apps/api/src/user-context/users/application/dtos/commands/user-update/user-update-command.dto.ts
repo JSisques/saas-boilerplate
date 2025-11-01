@@ -9,4 +9,5 @@ import { IUserCreateCommandDto } from '@/user-context/users/application/dtos/com
  */
 export interface IUserUpdateCommandDto extends Partial<IUserCreateCommandDto> {
   id: string;
+  status?: string;
 }

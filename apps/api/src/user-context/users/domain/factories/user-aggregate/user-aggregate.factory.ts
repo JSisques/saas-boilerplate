@@ -61,13 +61,19 @@ export class UserAggregateFactory
   public fromPrimitives(data: UserPrimitives): UserAggregate {
     return new UserAggregate({
       id: new UserUuidValueObject(data.id),
-      name: new UserNameValueObject(data.name),
-      bio: new UserBioValueObject(data.bio),
-      avatarUrl: new UserAvatarUrlValueObject(data.avatarUrl),
-      lastName: new UserLastNameValueObject(data.lastName),
+      name: data.name ? new UserNameValueObject(data.name) : null,
+      bio: data.bio ? new UserBioValueObject(data.bio) : null,
+      avatarUrl: data.avatarUrl
+        ? new UserAvatarUrlValueObject(data.avatarUrl)
+        : null,
+      lastName: data.lastName
+        ? new UserLastNameValueObject(data.lastName)
+        : null,
       role: new UserRoleValueObject(data.role),
       status: new UserStatusValueObject(data.status),
-      userName: new UserUserNameValueObject(data.userName),
+      userName: data.userName
+        ? new UserUserNameValueObject(data.userName)
+        : null,
     });
   }
 }

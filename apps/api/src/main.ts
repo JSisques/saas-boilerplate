@@ -1,4 +1,4 @@
-import { Logger } from '@nestjs/common';
+import { Logger, ValidationPipe, VersioningType } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 
@@ -8,7 +8,37 @@ async function bootstrap() {
   try {
     const app = await NestFactory.create(AppModule);
 
-    await app.listen(process.env.PORT ?? 4100);
+    // Global prefix
+    app.setGlobalPrefix('api');
+
+    // API versioning
+    app.enableVersioning({
+      type: VersioningType.URI,
+      defaultVersion: '1',
+    });
+
+    // Global validation pipe
+    app.useGlobalPipes(
+      new ValidationPipe({
+        whitelist: true,
+        forbidNonWhitelisted: true,
+        transform: true,
+        transformOptions: {
+          enableImplicitConversion: true,
+        },
+      }),
+    );
+
+    // CORS
+    app.enableCors({
+      origin: process.env.FRONTEND_URL || '*',
+      credentials: true,
+      methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+      allowedHeaders: ['Content-Type', 'Authorization'],
+    });
+
+    const port = process.env.PORT || 4100;
+    await app.listen(port);
 
     const url = await app.getUrl();
     logger.log(`🚀 Server is running on ${url}`);

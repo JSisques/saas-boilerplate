@@ -39,9 +39,7 @@ export class UserCreateCommand {
       props.role !== undefined ? props.role : UserRoleEnum.USER,
     );
 
-    this.status = new UserStatusValueObject(
-      props.status !== undefined ? props.status : UserStatusEnum.ACTIVE,
-    );
+    this.status = new UserStatusValueObject(UserStatusEnum.ACTIVE);
 
     this.userName = props.userName
       ? new UserUserNameValueObject(props.userName)

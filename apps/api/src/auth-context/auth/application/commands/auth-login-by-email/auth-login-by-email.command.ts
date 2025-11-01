@@ -1,13 +1,13 @@
 import { IAuthLoginByEmailCommandDto } from '@/auth-context/auth/application/dtos/commands/auth-login-by-email/auth-login-by-email-command.dto';
 import { AuthEmailValueObject } from '@/auth-context/auth/domain/value-objects/auth-email/auth-email.vo';
-import { AuthPasswordHashValueObject } from '@/auth-context/auth/domain/value-objects/auth-password-hash/auth-password-hash.vo';
+import { AuthPasswordValueObject } from '@/auth-context/auth/domain/value-objects/auth-password/auth-password.vo';
 
 export class AuthLoginByEmailCommand {
   readonly email: AuthEmailValueObject;
-  readonly password: AuthPasswordHashValueObject;
+  readonly password: AuthPasswordValueObject;
 
   constructor(props: IAuthLoginByEmailCommandDto) {
     this.email = new AuthEmailValueObject(props.email);
-    this.password = new AuthPasswordHashValueObject(props.password);
+    this.password = new AuthPasswordValueObject(props.password);
   }
 }

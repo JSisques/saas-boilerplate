@@ -5,7 +5,7 @@ export type AuthMongoDbDto = {
   emailVerified: boolean;
   phoneNumber: string | null;
   lastLoginAt: Date | null;
-  passwordHash: string;
+  password: string;
   provider: string;
   providerId: string | null;
   twoFactorEnabled: boolean;

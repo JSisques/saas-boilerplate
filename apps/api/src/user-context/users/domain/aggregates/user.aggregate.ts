@@ -193,7 +193,7 @@ export class UserAggregate extends AggregateRoot {
       name: this._name ? this._name.value : null,
       role: this._role.value,
       status: this._status.value,
-      userName: this._userName.value,
+      userName: this._userName ? this._userName.value : null,
     };
   }
 }

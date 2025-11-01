@@ -1,10 +1,10 @@
+import { PasswordHashingFailedException } from '@/auth-context/auth/application/exceptions/password-hashing-failed/password-hashing-failed.exception';
+import { PasswordVerificationFailedException } from '@/auth-context/auth/application/exceptions/password-verification-failed/password-verification-failed.exception';
 import { InvalidHashFormatException } from '@/shared/application/exceptions/password-hashing/invalid-hash-format.exception';
 import { InvalidSaltRoundsException } from '@/shared/application/exceptions/password-hashing/invalid-salt-rounds.exception';
-import { PasswordHashingFailedException } from '@/shared/application/exceptions/password-hashing/password-hashing-failed.exception';
-import { PasswordVerificationFailedException } from '@/shared/application/exceptions/password-hashing/password-verification-failed.exception';
 import { PasswordValueObject } from '@/shared/domain/value-objects/password.vo';
-import { Injectable } from '@nestjs/common';
-import bcrypt from 'bcrypt';
+import { Injectable, Logger } from '@nestjs/common';
+import * as bcrypt from 'bcrypt';
 
 /**
  * Password Hashing Service Implementation
@@ -12,6 +12,7 @@ import bcrypt from 'bcrypt';
  */
 @Injectable()
 export class PasswordHashingService {
+  private readonly logger = new Logger(PasswordHashingService.name);
   private saltRounds: number;
 
   constructor() {
@@ -31,7 +32,8 @@ export class PasswordHashingService {
       const salt = await bcrypt.genSalt(this.saltRounds);
       return await bcrypt.hash(passwordString, salt);
     } catch (error) {
-      throw new PasswordHashingFailedException(error.message);
+      this.logger.error('Password hashing failed', error);
+      throw new PasswordHashingFailedException();
     }
   }
 
@@ -56,7 +58,7 @@ export class PasswordHashingService {
       if (error instanceof InvalidHashFormatException) {
         throw error;
       }
-      throw new PasswordVerificationFailedException(error.message);
+      throw new PasswordVerificationFailedException();
     }
   }
 
