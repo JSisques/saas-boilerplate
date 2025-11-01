@@ -3,7 +3,7 @@ import { PasswordVerificationFailedException } from '@/auth-context/auth/applica
 import { InvalidHashFormatException } from '@/shared/application/exceptions/password-hashing/invalid-hash-format.exception';
 import { InvalidSaltRoundsException } from '@/shared/application/exceptions/password-hashing/invalid-salt-rounds.exception';
 import { PasswordValueObject } from '@/shared/domain/value-objects/password.vo';
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable, Logger, UnauthorizedException } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
 
 /**
@@ -53,7 +53,14 @@ export class PasswordHashingService {
       }
 
       const passwordString = password.value;
-      return await bcrypt.compare(passwordString, hash);
+      const isPasswordValid = await bcrypt.compare(passwordString, hash);
+
+      if (!isPasswordValid) {
+        this.logger.error(`Invalid password`);
+        throw new UnauthorizedException('Invalid credentials');
+      }
+
+      return isPasswordValid;
     } catch (error) {
       if (error instanceof InvalidHashFormatException) {
         throw error;

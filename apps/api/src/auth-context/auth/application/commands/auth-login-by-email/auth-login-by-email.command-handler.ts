@@ -62,31 +62,28 @@ export class AuthLoginByEmailCommandHandler
       throw new UnauthorizedException('Invalid credentials');
     }
 
-    const isPasswordValid = await this.passwordHashingService.verifyPassword(
+    // 03: Verify password
+    await this.passwordHashingService.verifyPassword(
       command.password,
       auth.password?.value,
     );
 
-    if (!isPasswordValid) {
-      this.logger.error(`Invalid password for auth: ${auth.id.value}`);
-      throw new UnauthorizedException('Invalid credentials');
-    }
-
+    // 04: Find the user
     const user = await this.queryBus.execute(
       new UserFindByIdQuery({ id: auth.userId.value }),
     );
 
-    // 03: Update last login timestamp
+    // 05: Update last login timestamp
     auth.updateLastLoginAt(new AuthLastLoginAtValueObject(new Date()));
 
-    // 04: Save the updated auth entity
+    // 06: Save the updated auth entity
     await this.authWriteRepository.save(auth);
 
-    // 05: Publish all events
+    // 07: Publish all events
     await this.eventBus.publishAll(auth.getUncommittedEvents());
     await auth.commit();
 
-    // 06: Generate JWT tokens
+    // 08: Generate JWT tokens
     const tokens = this.jwtAuthService.generateTokenPair({
       id: auth.id.value,
       userId: auth.userId.value,
