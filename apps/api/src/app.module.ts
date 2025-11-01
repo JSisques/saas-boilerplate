@@ -2,6 +2,7 @@ import { AppResolver } from '@/app.resolver';
 import { AuthContextModule } from '@/auth-context/auth-context.module';
 import { EventContextModule } from '@/event-store-context/event-store-context.module';
 import { FeaturesModule } from '@/features/features.module';
+import { HealthContextModule } from '@/health-context/health-context.module';
 import { SharedModule } from '@/shared/shared.module';
 import '@/shared/transport/graphql/registered-enums.graphql';
 import { TenantContextModule } from '@/tenant-context/tenant-context.module';
@@ -18,6 +19,7 @@ const CONTEXT_MODULES = [
   AuthContextModule,
   TenantContextModule,
   UserContextModule,
+  HealthContextModule,
 ];
 
 const MODULES = [FeaturesModule, SharedModule];

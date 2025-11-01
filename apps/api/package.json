@@ -36,6 +36,8 @@
     "@nestjs/cqrs": "^11.0.3",
     "@nestjs/graphql": "^13.2.0",
     "@nestjs/platform-express": "^10.0.0",
+    "@nestjs/swagger": "^11.2.1",
+    "@nestjs/terminus": "^11.0.0",
     "@prisma/client": "^6.18.0",
     "@types/bcrypt": "^6.0.0",
     "bcrypt": "^6.0.0",

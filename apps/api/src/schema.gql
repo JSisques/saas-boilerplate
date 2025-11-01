@@ -96,6 +96,11 @@ type PaginatedEventResultDto {
   items: [EventResponseDto!]!
 }
 
+type HealthResponseDto {
+  """The status of the check"""
+  status: String!
+}
+
 type TenantMemberResponseDto {
   """The id of the tenant member"""
   id: String!
@@ -275,6 +280,7 @@ type Query {
   tenantFindByCriteria(input: TenantFindByCriteriaRequestDto): PaginatedTenantResultDto!
   tenantMemberFindByCriteria(input: TenantMemberFindByCriteriaRequestDto): PaginatedTenantMemberResultDto!
   findUsersByCriteria(input: UserFindByCriteriaRequestDto): PaginatedUserResultDto!
+  healthCheck: HealthResponseDto!
 }
 
 input EventFindByCriteriaRequestDto {
