@@ -51,7 +51,9 @@ export class OwnerGuard implements CanActivate {
 
     // Check if the user is trying to modify their own resource
     if (resourceId !== authenticatedUserId) {
-      throw new ForbiddenException('You can only modify your own resources');
+      throw new ForbiddenException(
+        'You can only access/modify your own resources',
+      );
     }
 
     return true;

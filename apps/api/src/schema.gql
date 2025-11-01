@@ -284,7 +284,8 @@ type Query {
   findAuthsByCriteria(input: AuthFindByCriteriaRequestDto): PaginatedAuthResultDto!
   tenantFindByCriteria(input: TenantFindByCriteriaRequestDto): PaginatedTenantResultDto!
   tenantMemberFindByCriteria(input: TenantMemberFindByCriteriaRequestDto): PaginatedTenantMemberResultDto!
-  findUsersByCriteria(input: UserFindByCriteriaRequestDto): PaginatedUserResultDto!
+  usersFindByCriteria(input: UserFindByCriteriaRequestDto): PaginatedUserResultDto!
+  userFindById(input: UserFindByIdRequestDto!): UserResponseDto!
   healthCheck: HealthResponseDto!
 }
 
@@ -386,6 +387,11 @@ input UserFindByCriteriaRequestDto {
 
   """The pagination to find by"""
   pagination: BasePaginationInput = {page: 1, perPage: 10}
+}
+
+input UserFindByIdRequestDto {
+  """The id of the user"""
+  id: String!
 }
 
 type Mutation {
