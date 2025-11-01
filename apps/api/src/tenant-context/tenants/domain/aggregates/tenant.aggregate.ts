@@ -2,7 +2,6 @@ import { TenantCreatedEvent } from '@/shared/domain/events/tenant-context/tenant
 import { TenantDeletedEvent } from '@/shared/domain/events/tenant-context/tenants/tenant-deleted/tenant-deleted.event';
 import { TenantUpdatedEvent } from '@/shared/domain/events/tenant-context/tenants/tenant-updated/tenant-updated.event';
 import { TenantUuidValueObject } from '@/shared/domain/value-objects/identifiers/tenant-uuid/tenant-uuid.vo';
-import { TenantMemberAggregate } from '@/tenant-context/tenant-members/domain/aggregates/tenant-member.aggregate';
 import { ITenantCreateDto } from '@/tenant-context/tenants/domain/dtos/entities/tenant-create/tenant-create.dto';
 import { ITenantUpdateDto } from '@/tenant-context/tenants/domain/dtos/entities/tenant-update/tenant-update.dto';
 import { TenantPrimitives } from '@/tenant-context/tenants/domain/primitives/tenant.primitives';
@@ -54,8 +53,6 @@ export class TenantAggregate extends AggregateRoot {
   private _maxUsers: TenantMaxUsersValueObject | null;
   private _maxStorage: TenantMaxStorageValueObject | null;
   private _maxApiCalls: TenantMaxApiCallsValueObject | null;
-
-  private _tenantMembers: TenantMemberAggregate[] = [];
 
   constructor(props: ITenantCreateDto, generateEvent: boolean = true) {
     super();
