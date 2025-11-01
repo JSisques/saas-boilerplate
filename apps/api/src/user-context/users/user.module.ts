@@ -7,6 +7,7 @@ import { UserDeletedEventHandler } from '@/user-context/users/application/event-
 import { UserUpdatedEventHandler } from '@/user-context/users/application/event-handlers/user-updated/user-updated.event-handler';
 import { FindUsersByCriteriaQueryHandler } from '@/user-context/users/application/queries/find-users-by-criteria/find-users-by-criteria.query-handler';
 import { UserFindByIdQueryHandler } from '@/user-context/users/application/queries/user-find-by-id/user-find-by-id.query-handler';
+import { UserViewModelFindByIdQueryHandler } from '@/user-context/users/application/queries/user-view-model-find-by-id/user-view-model-find-by-id.query-handler';
 import { AssertUserExsistsService } from '@/user-context/users/application/services/assert-user-exsits/assert-user-exsits.service';
 import { AssertUserUsernameIsUniqueService } from '@/user-context/users/application/services/assert-user-username-is-unique/assert-user-username-is-unique.service';
 import { AssertUserViewModelExsistsService } from '@/user-context/users/application/services/assert-user-view-model-exsits/assert-user-view-model-exsits.service';
@@ -34,6 +35,7 @@ const SERVICES = [
 const QUERY_HANDLERS = [
   FindUsersByCriteriaQueryHandler,
   UserFindByIdQueryHandler,
+  UserViewModelFindByIdQueryHandler,
 ];
 
 const COMMAND_HANDLERS = [
