@@ -119,7 +119,7 @@ export class AuthAggregate extends AggregateRoot {
           {
             aggregateId: this._id.value,
             aggregateType: AuthAggregate.name,
-            eventType: AuthUpdatedEvent.name,
+            eventType: AuthUpdatedLastLoginAtEvent.name,
           },
           this.toPrimitives(),
         ),

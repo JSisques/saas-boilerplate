@@ -1,4 +1,8 @@
 import { EventReplayCommandHandler } from '@/event-store-context/event/application/commands/event-replay/event-replay.command-handler';
+import { AuthCreatedEventHandler } from '@/event-store-context/event/application/event-handlers/auth-context/auths/auth-created/auth-created.event-handler';
+import { AuthDeletedEventHandler } from '@/event-store-context/event/application/event-handlers/auth-context/auths/auth-deleted/auth-deleted.event-handler';
+import { AuthUpdatedLastLoginAtEventHandler } from '@/event-store-context/event/application/event-handlers/auth-context/auths/auth-updated-last-login-at/auth-updated-last-login-at.vent-handler';
+import { AuthUpdatedEventHandler } from '@/event-store-context/event/application/event-handlers/auth-context/auths/auth-updated/auth-updated.event-handler';
 import { EventCreatedEventHandler } from '@/event-store-context/event/application/event-handlers/event/event-created/event-created.event-handler';
 import { TenantMemberAddedEventHandler } from '@/event-store-context/event/application/event-handlers/tenant-context/tenant-members/tenant-members-added/tenant-members-added.event-handler';
 import { TenantMemberRemovedEventHandler } from '@/event-store-context/event/application/event-handlers/tenant-context/tenant-members/tenant-members-removed/tenant-members-removed.event-handler';
@@ -42,6 +46,12 @@ const COMMAND_HANDLERS = [EventReplayCommandHandler];
 
 const EVENT_HANDLERS = [
   EventCreatedEventHandler,
+
+  // Auths
+  AuthCreatedEventHandler,
+  AuthDeletedEventHandler,
+  AuthUpdatedEventHandler,
+  AuthUpdatedLastLoginAtEventHandler,
 
   // Users
   UserCreatedEventHandler,
