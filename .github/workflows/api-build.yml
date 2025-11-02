@@ -31,6 +31,9 @@ jobs:
       - name: Install dependencies
         run: pnpm install --filter=./apps/api...
 
+      - name: Generate Prisma client
+        run: pnpm prisma generate --filter=./apps/api...
+
       - name: Lint code
         run: pnpm lint --filter=./apps/api...
 
