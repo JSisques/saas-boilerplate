@@ -6,7 +6,7 @@ import { SubscriptionPlanFindByCriteriaRequestDto } from '@/billing-context/subs
 import { PaginatedSubscriptionPlanResultDto } from '@/billing-context/subscription-plan/transport/graphql/dtos/responses/subscription-plan.response.dto';
 import { SubscriptionPlanGraphQLMapper } from '@/billing-context/subscription-plan/transport/graphql/mappers/subscription-plan.mapper';
 import { Criteria } from '@/shared/domain/entities/criteria';
-import { UseGuards } from '@nestjs/common';
+import { Logger, UseGuards } from '@nestjs/common';
 import { QueryBus } from '@nestjs/cqrs';
 import { Args, Query, Resolver } from '@nestjs/graphql';
 import { UserRoleEnum } from '@prisma/client';
@@ -15,6 +15,7 @@ import { UserRoleEnum } from '@prisma/client';
 @UseGuards(JwtAuthGuard, RolesGuard)
 @Roles(UserRoleEnum.ADMIN)
 export class SubscriptionPlanQueryResolver {
+  private readonly logger = new Logger(SubscriptionPlanQueryResolver.name);
   constructor(
     private readonly queryBus: QueryBus,
     private readonly subscriptionPlanGraphQLMapper: SubscriptionPlanGraphQLMapper,
@@ -31,6 +32,10 @@ export class SubscriptionPlanQueryResolver {
     @Args('input', { nullable: true })
     input?: SubscriptionPlanFindByCriteriaRequestDto,
   ): Promise<PaginatedSubscriptionPlanResultDto> {
+    this.logger.log(
+      `Finding subscription plans with input: ${JSON.stringify(input)}`,
+    );
+
     // 01: Convert DTO to domain Criteria
     const criteria = new Criteria(
       input?.filters,

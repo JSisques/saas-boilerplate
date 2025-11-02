@@ -35,7 +35,7 @@ export class SubscriptionPlanMutationsResolver {
   async subscriptionPlanCreate(
     @Args('input') input: SubscriptionPlanCreateRequestDto,
   ): Promise<MutationResponseDto> {
-    this.logger.debug(
+    this.logger.log(
       `Creating subscription plan with input: ${JSON.stringify(input)}`,
     );
 
@@ -62,7 +62,7 @@ export class SubscriptionPlanMutationsResolver {
   async subscriptionPlanUpdate(
     @Args('input') input: SubscriptionPlanUpdateRequestDto,
   ): Promise<MutationResponseDto> {
-    this.logger.debug(
+    this.logger.log(
       `Updating subscription plan with input: ${JSON.stringify(input)}`,
     );
 
@@ -102,7 +102,7 @@ export class SubscriptionPlanMutationsResolver {
   async subscriptionPlanDelete(
     @Args('input') input: SubscriptionPlanDeleteRequestDto,
   ): Promise<MutationResponseDto> {
-    this.logger.debug(
+    this.logger.log(
       `Deleting subscription plan with input: ${JSON.stringify(input)}`,
     );
 
