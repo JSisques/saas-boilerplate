@@ -1,12 +1,19 @@
+import { JwtAuthGuard } from '@/auth-context/auth/infrastructure/auth/jwt-auth.guard';
+import { Roles } from '@/auth-context/auth/infrastructure/decorators/roles/roles.decorator';
+import { RolesGuard } from '@/auth-context/auth/infrastructure/guards/roles.guard';
 import { FindSubscriptionPlansByCriteriaQuery } from '@/billing-context/subscription-plan/application/queries/subscription-plan-find-by-criteria/subscription-plan-find-by-criteria.query';
 import { SubscriptionPlanFindByCriteriaRequestDto } from '@/billing-context/subscription-plan/transport/graphql/dtos/requests/subscription-plan-find-by-criteria.request.dto';
 import { PaginatedSubscriptionPlanResultDto } from '@/billing-context/subscription-plan/transport/graphql/dtos/responses/subscription-plan.response.dto';
 import { SubscriptionPlanGraphQLMapper } from '@/billing-context/subscription-plan/transport/graphql/mappers/subscription-plan.mapper';
 import { Criteria } from '@/shared/domain/entities/criteria';
+import { UseGuards } from '@nestjs/common';
 import { QueryBus } from '@nestjs/cqrs';
 import { Args, Query, Resolver } from '@nestjs/graphql';
+import { UserRoleEnum } from '@prisma/client';
 
 @Resolver()
+@UseGuards(JwtAuthGuard, RolesGuard)
+@Roles(UserRoleEnum.ADMIN)
 export class SubscriptionPlanQueryResolver {
   constructor(
     private readonly queryBus: QueryBus,

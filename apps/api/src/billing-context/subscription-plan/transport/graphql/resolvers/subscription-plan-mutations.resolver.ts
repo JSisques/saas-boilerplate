@@ -1,3 +1,6 @@
+import { JwtAuthGuard } from '@/auth-context/auth/infrastructure/auth/jwt-auth.guard';
+import { Roles } from '@/auth-context/auth/infrastructure/decorators/roles/roles.decorator';
+import { RolesGuard } from '@/auth-context/auth/infrastructure/guards/roles.guard';
 import { SubscriptionPlanCreateCommand } from '@/billing-context/subscription-plan/application/commands/subscription-plan-create/subscription-plan-create.command';
 import { SubscriptionPlanDeleteCommand } from '@/billing-context/subscription-plan/application/commands/subscription-plan-delete/subscription-plan-delete.command';
 import { SubscriptionPlanUpdateCommand } from '@/billing-context/subscription-plan/application/commands/subscription-plan-update/subscription-plan-update.command';
@@ -6,11 +9,14 @@ import { SubscriptionPlanDeleteRequestDto } from '@/billing-context/subscription
 import { SubscriptionPlanUpdateRequestDto } from '@/billing-context/subscription-plan/transport/graphql/dtos/requests/subscription-plan-update.request.dto';
 import { MutationResponseDto } from '@/shared/transport/graphql/dtos/success-response.dto';
 import { MutationResponseGraphQLMapper } from '@/shared/transport/graphql/mappers/mutation-response.mapper';
-import { Logger } from '@nestjs/common';
+import { Logger, UseGuards } from '@nestjs/common';
 import { CommandBus } from '@nestjs/cqrs';
 import { Args, Mutation, Resolver } from '@nestjs/graphql';
+import { UserRoleEnum } from '@prisma/client';
 
 @Resolver()
+@UseGuards(JwtAuthGuard, RolesGuard)
+@Roles(UserRoleEnum.ADMIN)
 export class SubscriptionPlanMutationsResolver {
   private readonly logger = new Logger(SubscriptionPlanMutationsResolver.name);
 
