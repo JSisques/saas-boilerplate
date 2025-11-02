@@ -32,13 +32,13 @@ jobs:
         run: pnpm install --filter=./apps/api...
 
       - name: Generate Prisma client
-        run: pnpm prisma:generate --filter=./apps/api...
+        run: pnpm --filter=./apps/api... run prisma:generate
 
       - name: Lint code
-        run: pnpm lint --filter=./apps/api...
+        run: pnpm --filter=./apps/api... run lint
 
       - name: Run unit tests
-        run: pnpm test --filter=./apps/api...
+        run: pnpm --filter=./apps/api... run test
 
       - name: Build the app
-        run: pnpm build --filter=./apps/api...
+        run: pnpm --filter=./apps/api... run build
