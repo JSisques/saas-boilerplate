@@ -3,13 +3,12 @@ import { ITenantMemberCreateViewModelDto } from '@/tenant-context/tenant-members
 /**
  * Data Transfer Object for updating a tenant member view model.
  *
- * @interface ITenantMemberUpdateViewModelDto
+ * @type ITenantMemberUpdateViewModelDto
  * @property {string} role - The role of the tenant member.
  */
-export interface ITenantMemberUpdateViewModelDto
-  extends Partial<
-    Omit<
-      ITenantMemberCreateViewModelDto,
-      'id' | 'tenantId' | 'userId' | 'createdAt' | 'updatedAt'
-    >
-  > {}
+export type ITenantMemberUpdateViewModelDto = Partial<
+  Omit<
+    ITenantMemberCreateViewModelDto,
+    'id' | 'tenantId' | 'userId' | 'createdAt' | 'updatedAt'
+  >
+>;

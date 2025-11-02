@@ -3,7 +3,7 @@ import { IUserCreateViewModelDto } from '@/user-context/users/domain/dtos/view-m
 /**
  * Data Transfer Object for updating a user view model.
  *
- * @interface IUserUpdateViewModelDto
+ * @type IUserUpdateViewModelDto
  * @property {string | null} userName - The username of the user (nullable).
  * @property {string | null} name - The first name of the user (nullable).
  * @property {string | null} lastName - The last name of the user (nullable).
@@ -14,7 +14,6 @@ import { IUserCreateViewModelDto } from '@/user-context/users/domain/dtos/view-m
  * @property {Date} createdAt - Timestamp when the user was created.
  * @property {Date} updatedAt - Timestamp when the user was last updated.
  */
-export interface IUserUpdateViewModelDto
-  extends Partial<
-    Omit<IUserCreateViewModelDto, 'id' | 'createdAt' | 'updatedAt'>
-  > {}
+export type IUserUpdateViewModelDto = Partial<
+  Omit<IUserCreateViewModelDto, 'id' | 'createdAt' | 'updatedAt'>
+>;

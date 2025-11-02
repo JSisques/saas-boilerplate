@@ -4,8 +4,7 @@ import { ITenantMemberCreateDto } from '@/tenant-context/tenant-members/domain/d
  * Data Transfer Object for deleting a tenant member.
  *
  * Allows deleting a tenant member entity by specifying only the tenant member's immutable identifier (`id`).
- * @interface ITenantMemberDeleteDto
+ * @type ITenantMemberDeleteDto
  * @property {TenantMemberUuidValueObject} id - The immutable identifier of the tenant member to delete.
  */
-export interface ITenantMemberDeleteDto
-  extends Pick<ITenantMemberCreateDto, 'id'> {}
+export type ITenantMemberDeleteDto = Pick<ITenantMemberCreateDto, 'id'>;

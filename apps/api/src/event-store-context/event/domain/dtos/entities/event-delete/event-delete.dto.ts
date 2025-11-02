@@ -4,7 +4,7 @@ import { IEventCreateDto } from '@/event-store-context/event/domain/dtos/entitie
  * Data Transfer Object for deleting an event.
  *
  * Allows deleting an event entity by specifying only the event's immutable identifier (`id`).
- * @interface IEventDeleteDto
+ * @type IEventDeleteDto
  * @property {string} id - The immutable identifier of the event to delete.
  */
-export interface IEventDeleteDto extends Pick<IEventCreateDto, 'id'> {}
+export type IEventDeleteDto = Pick<IEventCreateDto, 'id'>;

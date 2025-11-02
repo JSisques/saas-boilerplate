@@ -3,7 +3,7 @@ import { IEventCreateViewModelDto } from '@/event-store-context/event/domain/dto
 /**
  * Data Transfer Object for updating a event view model.
  *
- * @interface IEventUpdateViewModelDto
+ * @type IEventUpdateViewModelDto
  * @property {string | null} eventType - The event type of the event (nullable).
  * @property {string | null} aggregateType - The aggregate type of the event (nullable).
  * @property {string | null} aggregateId - The aggregate id of the event (nullable).
@@ -12,7 +12,6 @@ import { IEventCreateViewModelDto } from '@/event-store-context/event/domain/dto
  * @property {Date} createdAt - Timestamp when the event was created.
  * @property {Date} updatedAt - Timestamp when the event was last updated.
  */
-export interface IEventUpdateViewModelDto
-  extends Partial<
-    Omit<IEventCreateViewModelDto, 'id' | 'createdAt' | 'updatedAt'>
-  > {}
+export type IEventUpdateViewModelDto = Partial<
+  Omit<IEventCreateViewModelDto, 'id' | 'createdAt' | 'updatedAt'>
+>;

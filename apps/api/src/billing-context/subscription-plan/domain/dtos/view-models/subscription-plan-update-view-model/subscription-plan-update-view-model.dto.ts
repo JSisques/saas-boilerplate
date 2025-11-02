@@ -4,8 +4,9 @@ import { ISubscriptionPlanCreateViewModelDto } from '@/billing-context/subscript
  * Data Transfer Object for updating a subscription plan.
  *
  * Allows partial updating of a subscription plan entity, excluding the subscription plan's immutable identifier (`id`).
- * @interface ISubscriptionPlanUpdateViewModelDto
+ * @type ISubscriptionPlanUpdateViewModelDto
  * @extends Partial<Omit<ISubscriptionPlanCreateViewModelDto, 'id'>>
  */
-export interface ISubscriptionPlanUpdateViewModelDto
-  extends Partial<Omit<ISubscriptionPlanCreateViewModelDto, 'id'>> {}
+export type ISubscriptionPlanUpdateViewModelDto = Partial<
+  Omit<ISubscriptionPlanCreateViewModelDto, 'id'>
+>;

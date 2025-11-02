@@ -3,8 +3,7 @@ import { ITenantCreateViewModelDto } from '@/tenant-context/tenants/domain/dtos/
 /**
  * Data Transfer Object for deleting a tenant view model.
  *
- * @interface ITenantDeleteViewModelDto
+ * @type ITenantDeleteViewModelDto
  * @property {string} id - The unique identifier of the tenant.
  */
-export interface ITenantDeleteViewModelDto
-  extends Pick<ITenantCreateViewModelDto, 'id'> {}
+export type ITenantDeleteViewModelDto = Pick<ITenantCreateViewModelDto, 'id'>;

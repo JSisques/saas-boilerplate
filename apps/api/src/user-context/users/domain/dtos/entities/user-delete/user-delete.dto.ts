@@ -4,7 +4,7 @@ import { IUserCreateDto } from '@/user-context/users/domain/dtos/entities/user-c
  * Data Transfer Object for deleting a user.
  *
  * Allows deleting a user entity by specifying only the user's immutable identifier (`id`).
- * @interface IUserDeleteDto
+ * @type IUserDeleteDto
  * @property {string} id - The immutable identifier of the user to delete.
  */
-export interface IUserDeleteDto extends Pick<IUserCreateDto, 'id'> {}
+export type IUserDeleteDto = Pick<IUserCreateDto, 'id'>;

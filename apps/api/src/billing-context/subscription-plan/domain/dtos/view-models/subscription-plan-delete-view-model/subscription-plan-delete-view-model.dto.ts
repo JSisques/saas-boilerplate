@@ -4,8 +4,10 @@ import { ISubscriptionPlanCreateViewModelDto } from '@/billing-context/subscript
  * Data Transfer Object for deleting a subscription plan.
  *
  * Allows deleting a subscription plan entity by specifying only the subscription plan's immutable identifier (`id`).
- * @interface ISubscriptionPlanDeleteViewModelDto
+ * @type ISubscriptionPlanDeleteViewModelDto
  * @property {string} id - The immutable identifier of the subscription plan to delete.
  */
-export interface ISubscriptionPlanDeleteViewModelDto
-  extends Pick<ISubscriptionPlanCreateViewModelDto, 'id'> {}
+export type ISubscriptionPlanDeleteViewModelDto = Pick<
+  ISubscriptionPlanCreateViewModelDto,
+  'id'
+>;

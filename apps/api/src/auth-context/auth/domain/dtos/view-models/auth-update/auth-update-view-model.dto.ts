@@ -3,7 +3,7 @@ import { IAuthCreateViewModelDto } from '@/auth-context/auth/domain/dtos/view-mo
 /**
  * Data Transfer Object for updating a auth view model.
  *
- * @interface IAuthUpdateViewModelDto
+ * @type IAuthUpdateViewModelDto
  * @property {string} email - The email of the auth.
  * @property {boolean} emailVerified - The email verified of the auth.
  * @property {Date | null} lastLoginAt - The last login at of the auth.
@@ -13,7 +13,6 @@ import { IAuthCreateViewModelDto } from '@/auth-context/auth/domain/dtos/view-mo
  * @property {string | null} providerId - The provider id of the auth.
  * @property {boolean} twoFactorEnabled - The two factor enabled of the auth.
  */
-export interface IAuthUpdateViewModelDto
-  extends Partial<
-    Omit<IAuthCreateViewModelDto, 'id' | 'userId' | 'createdAt' | 'updatedAt'>
-  > {}
+export type IAuthUpdateViewModelDto = Partial<
+  Omit<IAuthCreateViewModelDto, 'id' | 'userId' | 'createdAt' | 'updatedAt'>
+>;

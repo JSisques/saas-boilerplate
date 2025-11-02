@@ -1,8 +1,5 @@
 import { HealthCheckQuery } from '@/health-context/health/application/queries/health-check/health-check.query';
-import {
-  HealthResponseDto,
-  PaginatedHealthResultDto,
-} from '@/health-context/health/transport/graphql/dtos/responses/health.response.dto';
+import { HealthResponseDto } from '@/health-context/health/transport/graphql/dtos/responses/health.response.dto';
 import { HealthGraphQLMapper } from '@/health-context/health/transport/graphql/mappers/health.mapper';
 import { QueryBus } from '@nestjs/cqrs';
 import { Query, Resolver } from '@nestjs/graphql';

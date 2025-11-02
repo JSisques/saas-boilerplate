@@ -4,8 +4,9 @@ import { ITenantMemberCreateDto } from '@/tenant-context/tenant-members/domain/d
  * Data Transfer Object for updating a tenant member.
  *
  * Allows partial updating of a tenant member entity, excluding the tenant member's immutable identifier (`id`).
- * @interface ITenantMemberUpdateDto
+ * @type ITenantMemberUpdateDto
  * @extends Partial<Omit<ITenantMemberCreateDto, 'id'>>
  */
-export interface ITenantMemberUpdateDto
-  extends Partial<Omit<ITenantMemberCreateDto, 'id'>> {}
+export type ITenantMemberUpdateDto = Partial<
+  Omit<ITenantMemberCreateDto, 'id'>
+>;

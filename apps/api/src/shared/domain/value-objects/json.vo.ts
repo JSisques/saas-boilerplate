@@ -272,7 +272,7 @@ export class JsonValueObject {
           );
         }
         return parsed;
-      } catch (error) {
+      } catch {
         throw new InvalidJsonException('Invalid JSON string format');
       }
     }

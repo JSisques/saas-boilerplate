@@ -4,8 +4,7 @@ import { IAuthCreateDto } from '@/auth-context/auth/domain/dtos/entities/auth-cr
  * Data Transfer Object for updating a auth.
  *
  * Allows partial updating of a auth entity, excluding the auth's immutable identifier (`id`).
- * @interface IAuthUpdateDto
+ * @type IAuthUpdateDto
  * @extends Partial<Omit<IAuthCreateDto, 'id'>>
  */
-export interface IAuthUpdateDto
-  extends Partial<Omit<IAuthCreateDto, 'id' | 'userId'>> {}
+export type IAuthUpdateDto = Partial<Omit<IAuthCreateDto, 'id' | 'userId'>>;

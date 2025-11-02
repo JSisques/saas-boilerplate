@@ -3,7 +3,7 @@ import { ITenantCreateViewModelDto } from '@/tenant-context/tenants/domain/dtos/
 /**
  * Data Transfer Object for updating a tenant view model.
  *
- * @interface ITenantUpdateViewModelDto
+ * @type ITenantUpdateViewModelDto
  * @property {string | null} name - The name of the tenant (nullable).
  * @property {string | null} slug - The slug of the tenant (nullable).
  * @property {string | null} description - The description of the tenant (nullable).
@@ -29,7 +29,6 @@ import { ITenantCreateViewModelDto } from '@/tenant-context/tenants/domain/dtos/
  * @property {Date} createdAt - Timestamp when the tenant was created.
  * @property {Date} updatedAt - Timestamp when the tenant was last updated.
  */
-export interface ITenantUpdateViewModelDto
-  extends Partial<
-    Omit<ITenantCreateViewModelDto, 'id' | 'createdAt' | 'updatedAt'>
-  > {}
+export type ITenantUpdateViewModelDto = Partial<
+  Omit<ITenantCreateViewModelDto, 'id' | 'createdAt' | 'updatedAt'>
+>;
