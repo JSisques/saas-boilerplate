@@ -1,4 +1,3 @@
-import { UserUuidValueObject } from '@/shared/domain/value-objects/identifiers/user-uuid/user-uuid.vo';
 import { AssertUserUsernameIsUniqueService } from '@/user-context/users/application/services/assert-user-username-is-unique/assert-user-username-is-unique.service';
 import { UserAggregateFactory } from '@/user-context/users/domain/factories/user-aggregate/user-aggregate.factory';
 import {
@@ -36,7 +35,6 @@ export class UserCreateCommandHandler
     }
     // 01: Create the user entity
     const user = this.userAggregateFactory.create({
-      id: UserUuidValueObject.generate().value,
       ...command,
     });
 

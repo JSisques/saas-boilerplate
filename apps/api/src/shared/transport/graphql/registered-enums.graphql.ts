@@ -2,7 +2,10 @@ import { FilterOperator } from '@/shared/domain/enums/filter-operator.enum';
 import { SortDirection } from '@/shared/domain/enums/sort-direction.enum';
 import { registerEnumType } from '@nestjs/graphql';
 import {
+  CurrencyEnum,
   StatusEnum,
+  SubscriptionPlanIntervalEnum,
+  SubscriptionPlanTypeEnum,
   TenantMemberRoleEnum,
   TenantStatusEnum,
   UserRoleEnum,
@@ -36,4 +39,19 @@ registerEnumType(TenantMemberRoleEnum, {
 registerEnumType(TenantStatusEnum, {
   name: 'TenantStatusEnum',
   description: 'The status of the tenant',
+});
+
+registerEnumType(SubscriptionPlanTypeEnum, {
+  name: 'SubscriptionPlanTypeEnum',
+  description: 'The type of the subscription plan',
+});
+
+registerEnumType(SubscriptionPlanIntervalEnum, {
+  name: 'SubscriptionPlanIntervalEnum',
+  description: 'The interval of the subscription plan',
+});
+
+registerEnumType(CurrencyEnum, {
+  name: 'CurrencyEnum',
+  description: 'The currency',
 });

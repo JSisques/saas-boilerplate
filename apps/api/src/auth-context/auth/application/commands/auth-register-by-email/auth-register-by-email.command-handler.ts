@@ -68,7 +68,7 @@ export class AuthRegisterByEmailCommandHandler
 
     // 01: Create the auth entity
     const auth = this.authAggregateFactory.create({
-      id: new AuthUuidValueObject(AuthUuidValueObject.generate().value),
+      id: new AuthUuidValueObject(),
       userId: new UserUuidValueObject(newUserId),
       email: command.email,
       emailVerified: new AuthEmailVerifiedValueObject(false),

@@ -105,6 +105,7 @@ model Tenant {
 
   // Relationships
   members TenantMember[]
+  subscription Subscription? 
 }
 
 model Event {
@@ -141,4 +142,101 @@ model Auth {
 
   userId String
   user   User   @relation(fields: [userId], references: [id])
+}
+
+
+enum SubscriptionPlanIntervalEnum {
+  MONTHLY
+  YEARLY
+}
+
+enum CurrencyEnum {
+  USD
+  EUR
+}
+
+enum SubscriptionPlanTypeEnum {
+  FREE
+  BASIC
+  PRO
+  ENTERPRISE
+}
+model SubscriptionPlan{
+  id String @id @default(uuid())
+  name String // Name of the plan
+  slug String @unique // Slug of the plan
+  type SubscriptionPlanTypeEnum // Type of the plan
+  description String? // Description of the plan
+  priceMonthly Decimal // Price of the plan
+  priceYearly Decimal // Price of the plan
+  currency CurrencyEnum // Currency of the plan (USD, EUR, GBP, etc.)
+  interval SubscriptionPlanIntervalEnum // Interval of the plan
+  intervalCount Int // Interval count of the plan
+  trialPeriodDays Int? // Trial period days of the plan
+  isActive Boolean @default(true) // Is active plan
+  features Json? // Features of the plan
+  limits Json? // Limits of the plan
+  stripePriceId String? // Stripe price ID of the plan
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+enum RenewalMethodEnum {
+  MANUAL
+  AUTOMATIC
+}
+enum SubscriptionStatusEnum {
+  ACTIVE
+  INACTIVE
+  CANCELLED
+  REFUNDED
+}
+
+
+model Subscription{
+  id String @id @default(uuid())
+  tenantId String @unique // Tenant ID
+  planId String // Plan ID
+  startDate DateTime // Start date of the subscription
+  endDate DateTime // End date of the subscription
+  trialEndDate DateTime? // Trial end date of the subscription
+  status SubscriptionStatusEnum // Status of the subscription
+  stripeSubscriptionId String? // Stripe subscription ID of the subscription
+  stripeCustomerId String? // Stripe customer ID of the subscription
+  renewalMethod RenewalMethodEnum @default(AUTOMATIC) // Renewal method of the subscription
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  tenant Tenant @relation(fields: [tenantId], references: [id])
+}
+
+
+enum SubscriptionPaymentStatusEnum {
+  PENDING
+  PAID
+  FAILED
+  REFUNDED
+}
+
+enum PaymentMethodEnum {
+  CREDIT_CARD
+  DEBIT_CARD
+  PAYPAL
+  STRIPE
+}
+model SubscriptionPayment{
+  id String @id @default(uuid())
+  subscriptionId String // Subscription ID
+  amount Decimal // Amount of the payment
+  currency CurrencyEnum // Currency of the payment
+  status SubscriptionPaymentStatusEnum // Status of the payment
+  paymentMethod PaymentMethodEnum // Payment method of the payment
+  invoiceNumber String? // Invoice number of the payment
+  stripeInvoiceId String? // Stripe invoice ID of the payment
+  paidAt DateTime? // Paid at of the payment
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }

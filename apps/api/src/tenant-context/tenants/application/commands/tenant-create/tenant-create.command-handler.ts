@@ -1,4 +1,3 @@
-import { TenantUuidValueObject } from '@/shared/domain/value-objects/identifiers/tenant-uuid/tenant-uuid.vo';
 import { AssertTenantSlugIsUniqueService } from '@/tenant-context/tenants/application/services/assert-tenant-slug-is-unique/assert-tenant-slug-is-unique.service';
 import { TenantAggregateFactory } from '@/tenant-context/tenants/domain/factories/tenant-aggregate.factory';
 import {
@@ -33,7 +32,6 @@ export class TenantCreateCommandHandler
 
     // 02: Create the tenant entity
     const tenant = this.tenantAggregateFactory.create({
-      id: TenantUuidValueObject.generate().value,
       ...command,
     });
 

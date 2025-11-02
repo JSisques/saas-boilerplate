@@ -3,6 +3,9 @@ import { AuthCreatedEventHandler } from '@/event-store-context/event/application
 import { AuthDeletedEventHandler } from '@/event-store-context/event/application/event-handlers/auth-context/auths/auth-deleted/auth-deleted.event-handler';
 import { AuthUpdatedLastLoginAtEventHandler } from '@/event-store-context/event/application/event-handlers/auth-context/auths/auth-updated-last-login-at/auth-updated-last-login-at.vent-handler';
 import { AuthUpdatedEventHandler } from '@/event-store-context/event/application/event-handlers/auth-context/auths/auth-updated/auth-updated.event-handler';
+import { SubscriptionPlanCreatedEventHandler } from '@/event-store-context/event/application/event-handlers/billing-context/subscription-plan/subscription-plan-created/subscription-plan-created.event-handler';
+import { SubscriptionPlanDeletedEventHandler } from '@/event-store-context/event/application/event-handlers/billing-context/subscription-plan/subscription-plan-deleted/subscription-plan-deleted.event-handler';
+import { SubscriptionPlanUpdatedEventHandler } from '@/event-store-context/event/application/event-handlers/billing-context/subscription-plan/subscription-plan-updated/subscription-plan-updated.event-handler';
 import { EventCreatedEventHandler } from '@/event-store-context/event/application/event-handlers/event/event-created/event-created.event-handler';
 import { TenantMemberAddedEventHandler } from '@/event-store-context/event/application/event-handlers/tenant-context/tenant-members/tenant-members-added/tenant-members-added.event-handler';
 import { TenantMemberRemovedEventHandler } from '@/event-store-context/event/application/event-handlers/tenant-context/tenant-members/tenant-members-removed/tenant-members-removed.event-handler';
@@ -67,6 +70,11 @@ const EVENT_HANDLERS = [
   TenantMemberAddedEventHandler,
   TenantMemberUpdatedEventHandler,
   TenantMemberRemovedEventHandler,
+
+  // Subscription plans
+  SubscriptionPlanCreatedEventHandler,
+  SubscriptionPlanUpdatedEventHandler,
+  SubscriptionPlanDeletedEventHandler,
 ];
 
 const FACTORIES = [

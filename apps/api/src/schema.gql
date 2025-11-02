@@ -64,6 +64,70 @@ type PaginatedAuthResultDto {
   items: [AuthResponseDto!]!
 }
 
+type SubscriptionPlanResponseDto {
+  """The id of the subscription plan"""
+  id: String!
+
+  """The name of the subscription plan"""
+  name: String!
+
+  """The slug of the subscription plan"""
+  slug: String!
+
+  """The type of the subscription plan"""
+  type: String
+
+  """The description of the subscription plan"""
+  description: String
+
+  """The price monthly of the subscription plan"""
+  priceMonthly: Float!
+
+  """The price yearly of the subscription plan"""
+  priceYearly: Float!
+
+  """The currency of the subscription plan"""
+  currency: String!
+
+  """The interval of the subscription plan"""
+  interval: String!
+
+  """The interval count of the subscription plan"""
+  intervalCount: Float!
+
+  """The trial period days of the subscription plan"""
+  trialPeriodDays: Float!
+
+  """The is active of the subscription plan"""
+  isActive: Boolean!
+
+  """The features of the subscription plan"""
+  features: [String!]
+
+  """The limits of the subscription plan"""
+  limits: [String!]
+
+  """The stripe price id of the subscription plan"""
+  stripePriceId: String
+}
+
+type PaginatedSubscriptionPlanResultDto {
+  """The total number of items"""
+  total: Int!
+
+  """The page number"""
+  page: Int!
+
+  """The number of items per page"""
+  perPage: Int!
+
+  """The total number of pages"""
+  totalPages: Int!
+
+  """The subscription plans in the current page"""
+  items: [SubscriptionPlanResponseDto!]!
+}
+
 type EventResponseDto {
   """The id of the event"""
   id: String!
@@ -287,6 +351,7 @@ type Query {
   usersFindByCriteria(input: UserFindByCriteriaRequestDto): PaginatedUserResultDto!
   userFindById(input: UserFindByIdRequestDto!): UserResponseDto!
   healthCheck: HealthResponseDto!
+  subscriptionPlanFindByCriteria(input: SubscriptionPlanFindByCriteriaRequestDto): PaginatedSubscriptionPlanResultDto!
 }
 
 input EventFindByCriteriaRequestDto {
@@ -394,6 +459,17 @@ input UserFindByIdRequestDto {
   id: String!
 }
 
+input SubscriptionPlanFindByCriteriaRequestDto {
+  """The filters to find by"""
+  filters: [BaseFilterInput!] = []
+
+  """The sorts to find by"""
+  sorts: [BaseSortInput!] = []
+
+  """The pagination to find by"""
+  pagination: BasePaginationInput = {page: 1, perPage: 10}
+}
+
 type Mutation {
   eventsReplay(input: EventReplayRequestDto!): MutationResponseDto!
   loginByEmail(input: AuthLoginByEmailRequestDto!): LoginResponseDto!
@@ -408,6 +484,9 @@ type Mutation {
   createUser(input: CreateUserRequestDto!): MutationResponseDto!
   updateUser(input: UpdateUserRequestDto!): MutationResponseDto!
   deleteUser(input: DeleteUserRequestDto!): MutationResponseDto!
+  subscriptionPlanCreate(input: SubscriptionPlanCreateRequestDto!): MutationResponseDto!
+  subscriptionPlanUpdate(input: SubscriptionPlanUpdateRequestDto!): MutationResponseDto!
+  subscriptionPlanDelete(input: SubscriptionPlanDeleteRequestDto!): MutationResponseDto!
 }
 
 input EventReplayRequestDto {
@@ -682,5 +761,103 @@ input CreateUserRequestDto {
 
 input DeleteUserRequestDto {
   """The unique identifier of the user"""
+  id: String!
+}
+
+input SubscriptionPlanCreateRequestDto {
+  """The name of the subscription plan"""
+  name: String!
+
+  """The type of the subscription plan"""
+  type: SubscriptionPlanTypeEnum!
+
+  """The description of the subscription plan"""
+  description: String
+
+  """The price monthly of the subscription plan"""
+  priceMonthly: Float!
+
+  """The currency of the subscription plan"""
+  currency: CurrencyEnum!
+
+  """The interval of the subscription plan"""
+  interval: SubscriptionPlanIntervalEnum!
+
+  """The interval count of the subscription plan"""
+  intervalCount: Float!
+
+  """The trial period days of the subscription plan"""
+  trialPeriodDays: Float
+
+  """The features of the subscription plan"""
+  features: [String!]
+
+  """The limits of the subscription plan"""
+  limits: [String!]
+
+  """The stripe price id of the subscription plan"""
+  stripePriceId: String
+}
+
+"""The type of the subscription plan"""
+enum SubscriptionPlanTypeEnum {
+  FREE
+  BASIC
+  PRO
+  ENTERPRISE
+}
+
+"""The currency"""
+enum CurrencyEnum {
+  USD
+  EUR
+}
+
+"""The interval of the subscription plan"""
+enum SubscriptionPlanIntervalEnum {
+  MONTHLY
+  YEARLY
+}
+
+input SubscriptionPlanUpdateRequestDto {
+  """The unique identifier of the subscription plan"""
+  id: String!
+
+  """The name of the subscription plan"""
+  name: String
+
+  """The type of the subscription plan"""
+  type: SubscriptionPlanTypeEnum
+
+  """The description of the subscription plan"""
+  description: String
+
+  """The price monthly of the subscription plan"""
+  priceMonthly: Float
+
+  """The currency of the subscription plan"""
+  currency: CurrencyEnum
+
+  """The interval of the subscription plan"""
+  interval: SubscriptionPlanIntervalEnum
+
+  """The interval count of the subscription plan"""
+  intervalCount: Float
+
+  """The trial period days of the subscription plan"""
+  trialPeriodDays: Float
+
+  """The features of the subscription plan"""
+  features: [String!]
+
+  """The limits of the subscription plan"""
+  limits: [String!]
+
+  """The stripe price id of the subscription plan"""
+  stripePriceId: String
+}
+
+input SubscriptionPlanDeleteRequestDto {
+  """The unique identifier of the subscription plan"""
   id: String!
 }

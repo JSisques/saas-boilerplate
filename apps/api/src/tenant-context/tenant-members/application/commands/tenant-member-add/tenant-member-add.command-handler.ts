@@ -1,4 +1,3 @@
-import { TenantUuidValueObject } from '@/shared/domain/value-objects/identifiers/tenant-uuid/tenant-uuid.vo';
 import { AssertTenantMemberNotExsistsService } from '@/tenant-context/tenant-members/application/services/assert-tenant-member-not-exsits/assert-tenant-member-not-exsits.service';
 import { TenantMemberAggregateFactory } from '@/tenant-context/tenant-members/domain/factories/tenant-member-aggregate.factory';
 import {
@@ -60,7 +59,6 @@ export class TenantMemberAddCommandHandler
 
     // 04: Create the tenant member entity
     const tenantMember = this.tenantMemberAggregateFactory.create({
-      id: TenantUuidValueObject.generate().value,
       ...command,
     });
 

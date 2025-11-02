@@ -1,5 +1,6 @@
 import { AppResolver } from '@/app.resolver';
 import { AuthContextModule } from '@/auth-context/auth-context.module';
+import { BillingContextModule } from '@/billing-context/billing-context.module';
 import { EventContextModule } from '@/event-store-context/event-store-context.module';
 import { FeaturesModule } from '@/features/features.module';
 import { HealthContextModule } from '@/health-context/health-context.module';
@@ -20,6 +21,7 @@ const CONTEXT_MODULES = [
   TenantContextModule,
   UserContextModule,
   HealthContextModule,
+  BillingContextModule,
 ];
 
 const MODULES = [FeaturesModule, SharedModule];
