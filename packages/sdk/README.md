@@ -201,6 +201,132 @@ The SDK automatically handles token storage:
 - Access token is automatically included in all requests
 - Use `await sdk.logout()` to clear all stored tokens
 
+## React Hooks (Optional)
+
+For React applications, the SDK provides hooks that manage loading, error, and data states automatically:
+
+```typescript
+import { useSDK, useAuth, useUsersList, useUser } from '@repo/sdk/react';
+
+function MyComponent() {
+  // Initialize SDK
+  const sdk = useSDK({
+    apiUrl: 'http://localhost:4100/api/v1',
+  });
+
+  // Auth hook with states
+  const { login } = useAuth(sdk);
+
+  // Users list hook - automatically fetches on mount
+  const users = useUsersList(sdk, {
+    pagination: { page: 1, perPage: 10 },
+  });
+
+  // Single user hook - automatically fetches when userId changes
+  const user = useUser(sdk, 'user-id');
+
+  // Handle login
+  const handleLogin = async () => {
+    await login.execute({
+      email: 'user@example.com',
+      password: 'password123',
+    });
+  };
+
+  // Render with states - perfect for React Native and Web!
+  if (login.loading) return <div>Logging in...</div>;
+  if (login.error) return <div>Error: {login.error.message}</div>;
+  if (login.success && login.data) {
+    // Tokens are automatically saved!
+  }
+
+  if (users.loading) return <div>Loading users...</div>;
+  if (users.error) return <div>Error: {users.error.message}</div>;
+  if (users.data) {
+    return (
+      <div>
+        {users.data.items.map(user => (
+          <div key={user.id}>{user.name}</div>
+        ))}
+      </div>
+    );
+  }
+
+  return null;
+}
+```
+
+### Available Hooks
+
+- `useSDK(config)` - Initialize SDK instance
+- `useAuth(sdk)` - Authentication operations (login, register, logout)
+- `useUsers(sdk)` - User operations (find, create, update, delete)
+- `useUsersList(sdk, input?)` - Auto-fetch users list
+- `useUser(sdk, userId)` - Auto-fetch single user
+- `useTenants(sdk)` - Tenant operations
+- `useTenantsList(sdk, input?)` - Auto-fetch tenants list
+- `useSubscriptionPlans(sdk)` - Subscription plan operations
+- `useHealth(sdk)` - Health check operations
+- `useEvents(sdk)` - Event store operations
+
+### Hook States
+
+Each hook returns an object with:
+
+- `data`: The response data (or null) - **Use this to render your UI**
+- `error`: Error object (or null) - **Use this to show error messages**
+- `loading`: Boolean indicating if request is in progress - **Use this to show loading spinners**
+- `success`: Boolean indicating if request completed successfully - **Use this for success feedback**
+- `execute` or `fetch`/`mutate`: Function to trigger the operation
+- `reset`: Function to reset all states
+
+### Example: React Native Usage
+
+```typescript
+import { useSDK, useAuth, useUsersList } from '@repo/sdk/react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { View, Text, ActivityIndicator, Button } from 'react-native';
+
+function MyScreen() {
+  const sdk = useSDK(
+    {
+      apiUrl: 'https://api.example.com/api/v1',
+    },
+    AsyncStorage, // Pass AsyncStorage for React Native
+  );
+
+  const { login } = useAuth(sdk);
+  const users = useUsersList(sdk); // Auto-fetches on mount
+
+  const handleLogin = () => {
+    login.execute({
+      email: 'user@example.com',
+      password: 'password123',
+    });
+  };
+
+  return (
+    <View>
+      <Button title="Login" onPress={handleLogin} disabled={login.loading} />
+
+      {login.loading && <ActivityIndicator />}
+      {login.error && <Text>Error: {login.error.message}</Text>}
+      {login.success && <Text>Logged in!</Text>}
+
+      {users.loading && <ActivityIndicator />}
+      {users.error && <Text>Error: {users.error.message}</Text>}
+      {users.data && (
+        <View>
+          {users.data.items.map(user => (
+            <Text key={user.id}>{user.name}</Text>
+          ))}
+        </View>
+      )}
+    </View>
+  );
+}
+```
+
 ## TypeScript Support
 
 The SDK is written in TypeScript and provides full type definitions for all operations, inputs, and responses.
