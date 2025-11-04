@@ -1,12 +1,12 @@
-import { AuthClient } from '@/auth-context/auth-client';
-import { SubscriptionPlanClient } from '@/billing-context/subscription-plan-client';
-import { EventClient } from '@/event-store-context/event-client';
-import { HealthClient } from '@/health-context/health-client';
-import { GraphQLClient } from '@/shared/client/graphql-client';
-import type { GraphQLClientConfig } from '@/shared/types/index';
-import { TenantClient } from '@/tenant-context/tenant-client';
-import { TenantMemberClient } from '@/tenant-context/tenant-member-client';
-import { UserClient } from '@/user-context/user-client';
+import { AuthClient } from './auth-context/auth-client.js';
+import { SubscriptionPlanClient } from './billing-context/subscription-plan-client.js';
+import { EventClient } from './event-store-context/event-client.js';
+import { HealthClient } from './health-context/health-client.js';
+import { GraphQLClient } from './shared/client/graphql-client.js';
+import type { GraphQLClientConfig } from './shared/types/index.js';
+import { TenantClient } from './tenant-context/tenant-client.js';
+import { TenantMemberClient } from './tenant-context/tenant-member-client.js';
+import { UserClient } from './user-context/user-client.js';
 
 // Re-export types from shared
 export type {
@@ -18,7 +18,12 @@ export type {
   PaginatedResult,
   PaginationInput,
   SortDirection,
-} from '@/shared/types/index';
+} from './shared/types/index.js';
+
+// Re-export storage interface for custom implementations
+export { MemoryStorage } from './shared/storage/memory-storage.js';
+export type { Storage } from './shared/storage/storage.interface.js';
+export { WebStorage } from './shared/storage/web-storage.js';
 
 // Re-export types from auth-context
 export type {
@@ -27,7 +32,7 @@ export type {
   AuthRegisterByEmailInput,
   AuthResponse,
   LoginResponse,
-} from '@/auth-context/types/index';
+} from './auth-context/types/index.js';
 
 // Re-export types from user-context
 export type {
@@ -40,7 +45,7 @@ export type {
   UserResponse,
   UserRole,
   UserStatus,
-} from '@/user-context/types/index';
+} from './user-context/types/index.js';
 
 // Re-export types from tenant-context
 export type {
@@ -57,7 +62,7 @@ export type {
   TenantMemberUpdateInput,
   TenantResponse,
   TenantUpdateInput,
-} from '@/tenant-context/types/index';
+} from './tenant-context/types/index.js';
 
 // Re-export types from billing-context
 export type {
@@ -70,17 +75,17 @@ export type {
   SubscriptionPlanResponse,
   SubscriptionPlanType,
   SubscriptionPlanUpdateInput,
-} from '@/billing-context/types/index';
+} from './billing-context/types/index.js';
 
 // Re-export types from health-context
-export type { HealthResponse } from '@/health-context/types/index';
+export type { HealthResponse } from './health-context/types/index.js';
 
 // Re-export types from event-store-context
 export type {
   EventFindByCriteriaInput,
   EventResponse,
   PaginatedEventResult,
-} from '@/event-store-context/types/index';
+} from './event-store-context/types/index.js';
 
 export class SDK {
   private client: GraphQLClient;
@@ -105,9 +110,10 @@ export class SDK {
 
   /**
    * Set the access token for authenticated requests
+   * Automatically saves to storage
    */
-  setAccessToken(token: string | undefined): void {
-    this.client.setAccessToken(token);
+  async setAccessToken(token: string | undefined): Promise<void> {
+    await this.client.setAccessToken(token);
   }
 
   /**
@@ -115,6 +121,28 @@ export class SDK {
    */
   getAccessToken(): string | undefined {
     return this.client.getAccessToken();
+  }
+
+  /**
+   * Set the refresh token
+   * Automatically saves to storage
+   */
+  async setRefreshToken(token: string | undefined): Promise<void> {
+    await this.client.setRefreshToken(token);
+  }
+
+  /**
+   * Get the current refresh token
+   */
+  getRefreshToken(): string | undefined {
+    return this.client.getRefreshToken();
+  }
+
+  /**
+   * Clear all stored tokens
+   */
+  async logout(): Promise<void> {
+    await this.client.clearTokens();
   }
 
   /**
@@ -132,8 +160,13 @@ export class SDK {
       registerByEmail: this.authClient.registerByEmail.bind(this.authClient),
       /**
        * Logout the current user
+       * Clears all stored tokens
        */
-      logout: this.authClient.logout.bind(this.authClient),
+      logout: async (input: any) => {
+        const result = await this.authClient.logout(input);
+        await this.client.clearTokens();
+        return result;
+      },
     };
   }
 

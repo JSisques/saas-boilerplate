@@ -1,8 +1,13 @@
+import type { Storage } from '../storage/storage.interface.js';
+
 // Client configuration
 export type GraphQLClientConfig = {
   apiUrl: string;
   accessToken?: string;
+  refreshToken?: string;
   headers?: Record<string, string>;
+  storage?: Storage;
+  storagePrefix?: string;
 };
 
 // Common types

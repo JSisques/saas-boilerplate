@@ -15,22 +15,37 @@ pnpm add @repo/sdk
 ```typescript
 import { SDK } from '@repo/sdk';
 
+// For Next.js / Web (uses localStorage automatically)
 const sdk = new SDK({
   apiUrl: 'http://localhost:4100/api/v1',
+});
+
+// For React Native (pass AsyncStorage)
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { SDK } from '@repo/sdk';
+
+const sdk = new SDK({
+  apiUrl: 'http://localhost:4100/api/v1',
+  storage: AsyncStorage, // Custom storage for React Native
 });
 ```
 
 ### Authentication
 
 ```typescript
-// Login
+// Login - tokens are automatically saved to storage
 const { accessToken, refreshToken } = await sdk.auth.loginByEmail({
   email: 'user@example.com',
   password: 'password123',
 });
 
-// Set authentication token for subsequent requests
-sdk.setAccessToken(accessToken);
+// Tokens are automatically stored and used in subsequent requests
+// No need to manually set the token!
+
+// The SDK automatically:
+// - Saves tokens to localStorage (web) or AsyncStorage (React Native)
+// - Loads tokens from storage on initialization
+// - Includes the access token in all authenticated requests
 
 // Register
 const registerResult = await sdk.auth.registerByEmail({
@@ -160,6 +175,31 @@ console.log(health.status); // 'ok'
 ## React Native Compatibility
 
 This SDK is fully compatible with React Native and uses only native `fetch` API for HTTP requests. No Node.js-specific dependencies are required.
+
+### Token Storage
+
+The SDK automatically handles token storage:
+
+- **Web/Next.js**: Uses `localStorage` automatically
+- **React Native**: Pass `AsyncStorage` as custom storage:
+
+  ```typescript
+  import AsyncStorage from '@react-native-async-storage/async-storage';
+
+  const sdk = new SDK({
+    apiUrl: 'http://localhost:4100/api/v1',
+    storage: AsyncStorage,
+  });
+  ```
+
+- **Server-side**: Falls back to memory storage (tokens are not persisted)
+
+### Automatic Token Management
+
+- Tokens are automatically saved when you login
+- Tokens are automatically loaded from storage on SDK initialization
+- Access token is automatically included in all requests
+- Use `await sdk.logout()` to clear all stored tokens
 
 ## TypeScript Support
 

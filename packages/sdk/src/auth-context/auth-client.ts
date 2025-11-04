@@ -1,11 +1,11 @@
+import { GraphQLClient } from '@/shared/client/graphql-client';
+import type { MutationResponse } from '@/shared/types/index';
 import type {
   AuthLoginByEmailInput,
   AuthLogoutInput,
   AuthRegisterByEmailInput,
   LoginResponse,
-} from '@/auth-context/types/index';
-import { GraphQLClient } from '@/shared/client/graphql-client';
-import type { MutationResponse } from '@/shared/types/index';
+} from './types/index.js';
 
 export class AuthClient {
   constructor(private client: GraphQLClient) {}
@@ -25,7 +25,15 @@ export class AuthClient {
       variables: { input },
     });
 
-    return result.loginByEmail;
+    const loginResponse = result.loginByEmail;
+
+    // Automatically save tokens to storage
+    await this.client.setTokens(
+      loginResponse.accessToken,
+      loginResponse.refreshToken,
+    );
+
+    return loginResponse;
   }
 
   async registerByEmail(
