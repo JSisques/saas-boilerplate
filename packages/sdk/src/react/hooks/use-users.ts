@@ -16,24 +16,25 @@ import { useAsyncState } from './use-async-state.js';
  * Hook for user operations
  */
 export function useUsers(sdk: SDK) {
-  const findByCriteria = useAsyncState<PaginatedUserResult>(
-    (input?: UserFindByCriteriaInput) => sdk.users.findByCriteria(input),
+  const findByCriteria = useAsyncState<
+    PaginatedUserResult,
+    [UserFindByCriteriaInput?]
+  >((input?: UserFindByCriteriaInput) => sdk.users.findByCriteria(input));
+
+  const findById = useAsyncState<UserResponse, [UserFindByIdInput]>(
+    (input: UserFindByIdInput) => sdk.users.findById(input),
   );
 
-  const findById = useAsyncState<UserResponse>((input: UserFindByIdInput) =>
-    sdk.users.findById(input),
+  const create = useAsyncState<MutationResponse, [CreateUserInput]>(
+    (input: CreateUserInput) => sdk.users.create(input),
   );
 
-  const create = useAsyncState<MutationResponse>((input: CreateUserInput) =>
-    sdk.users.create(input),
+  const update = useAsyncState<MutationResponse, [UpdateUserInput]>(
+    (input: UpdateUserInput) => sdk.users.update(input),
   );
 
-  const update = useAsyncState<MutationResponse>((input: UpdateUserInput) =>
-    sdk.users.update(input),
-  );
-
-  const remove = useAsyncState<MutationResponse>((input: DeleteUserInput) =>
-    sdk.users.delete(input),
+  const remove = useAsyncState<MutationResponse, [DeleteUserInput]>(
+    (input: DeleteUserInput) => sdk.users.delete(input),
   );
 
   return {
@@ -75,8 +76,7 @@ export function useUsersList(
     if (enabled) {
       findByCriteria.fetch(input);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [enabled, input?.pagination?.page, input?.pagination?.perPage]);
+  }, [enabled, input, findByCriteria]);
 
   return findByCriteria;
 }
@@ -96,8 +96,7 @@ export function useUser(
     if (enabled && userId) {
       findById.fetch({ id: userId });
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [enabled, userId]);
+  }, [enabled, userId, findById]);
 
   return findById;
 }

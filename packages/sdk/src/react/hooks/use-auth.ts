@@ -12,16 +12,16 @@ import { useAsyncState } from './use-async-state.js';
  * Hook for authentication operations
  */
 export function useAuth(sdk: SDK) {
-  const login = useAsyncState<LoginResponse>((input: AuthLoginByEmailInput) =>
-    sdk.auth.loginByEmail(input),
+  const login = useAsyncState<LoginResponse, [AuthLoginByEmailInput]>(
+    (input: AuthLoginByEmailInput) => sdk.auth.loginByEmail(input),
   );
 
-  const register = useAsyncState<MutationResponse>(
+  const register = useAsyncState<MutationResponse, [AuthRegisterByEmailInput]>(
     (input: AuthRegisterByEmailInput) => sdk.auth.registerByEmail(input),
   );
 
-  const logout = useAsyncState<MutationResponse>((input: { id: string }) =>
-    sdk.auth.logout(input),
+  const logout = useAsyncState<MutationResponse, [{ id: string }]>(
+    (input: { id: string }) => sdk.auth.logout(input),
   );
 
   const loginByEmail = useCallback(

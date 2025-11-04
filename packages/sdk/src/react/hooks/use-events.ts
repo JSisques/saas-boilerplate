@@ -9,9 +9,10 @@ import { useAsyncState } from './use-async-state.js';
  * Hook for event operations
  */
 export function useEvents(sdk: SDK) {
-  const findByCriteria = useAsyncState<PaginatedEventResult>(
-    (input?: EventFindByCriteriaInput) => sdk.events.findByCriteria(input),
-  );
+  const findByCriteria = useAsyncState<
+    PaginatedEventResult,
+    [EventFindByCriteriaInput?]
+  >((input?: EventFindByCriteriaInput) => sdk.events.findByCriteria(input));
 
   return {
     findByCriteria: {

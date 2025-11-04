@@ -1,4 +1,5 @@
 import { AuthClient } from './auth-context/auth-client.js';
+import type { AuthLogoutInput } from './auth-context/types/index.js';
 import { SubscriptionPlanClient } from './billing-context/subscription-plan-client.js';
 import { EventClient } from './event-store-context/event-client.js';
 import { HealthClient } from './health-context/health-client.js';
@@ -162,7 +163,7 @@ export class SDK {
        * Logout the current user
        * Clears all stored tokens
        */
-      logout: async (input: any) => {
+      logout: async (input: AuthLogoutInput) => {
         const result = await this.authClient.logout(input);
         await this.client.clearTokens();
         return result;

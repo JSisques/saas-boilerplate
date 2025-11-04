@@ -7,14 +7,13 @@ import { useAsyncState } from './use-async-state.js';
  * Hook for health check operations
  */
 export function useHealth(sdk: SDK, options?: { autoFetch?: boolean }) {
-  const check = useAsyncState<HealthResponse>(() => sdk.health.check());
+  const check = useAsyncState<HealthResponse, []>(() => sdk.health.check());
 
   useEffect(() => {
     if (options?.autoFetch !== false) {
       check.execute();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [options?.autoFetch, check]);
 
   return {
     check: {

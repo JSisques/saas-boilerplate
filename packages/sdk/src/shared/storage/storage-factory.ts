@@ -18,7 +18,7 @@ export function createStorage(customStorage?: Storage): Storage {
   if (typeof window !== 'undefined' && typeof localStorage !== 'undefined') {
     try {
       return new WebStorage();
-    } catch (error) {
+    } catch {
       console.warn(
         'Failed to initialize WebStorage, falling back to MemoryStorage',
       );

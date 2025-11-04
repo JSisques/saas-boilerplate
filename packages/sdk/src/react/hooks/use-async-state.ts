@@ -7,17 +7,18 @@ export type AsyncState<T> = {
   success: boolean;
 };
 
-export type UseAsyncStateReturn<T> = AsyncState<T> & {
-  execute: (...args: any[]) => Promise<T | null>;
-  reset: () => void;
-};
+export type UseAsyncStateReturn<T, Args extends unknown[] = unknown[]> =
+  AsyncState<T> & {
+    execute: (...args: Args) => Promise<T | null>;
+    reset: () => void;
+  };
 
 /**
  * Generic hook for managing async operations with loading, error, and data states
  */
-export function useAsyncState<T>(
-  asyncFn: (...args: any[]) => Promise<T>,
-): UseAsyncStateReturn<T> {
+export function useAsyncState<T, Args extends unknown[] = unknown[]>(
+  asyncFn: (...args: Args) => Promise<T>,
+): UseAsyncStateReturn<T, Args> {
   const [state, setState] = useState<AsyncState<T>>({
     data: null,
     error: null,
@@ -26,7 +27,7 @@ export function useAsyncState<T>(
   });
 
   const execute = useCallback(
-    async (...args: any[]): Promise<T | null> => {
+    async (...args: Args): Promise<T | null> => {
       setState({
         data: null,
         error: null,

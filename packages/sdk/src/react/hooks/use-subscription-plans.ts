@@ -13,20 +13,23 @@ import { useAsyncState } from './use-async-state.js';
  * Hook for subscription plan operations
  */
 export function useSubscriptionPlans(sdk: SDK) {
-  const findByCriteria = useAsyncState<PaginatedSubscriptionPlanResult>(
+  const findByCriteria = useAsyncState<
+    PaginatedSubscriptionPlanResult,
+    [SubscriptionPlanFindByCriteriaInput?]
+  >(
     (input?: SubscriptionPlanFindByCriteriaInput) =>
       sdk.subscriptionPlans.findByCriteria(input),
   );
 
-  const create = useAsyncState<MutationResponse>(
+  const create = useAsyncState<MutationResponse, [SubscriptionPlanCreateInput]>(
     (input: SubscriptionPlanCreateInput) => sdk.subscriptionPlans.create(input),
   );
 
-  const update = useAsyncState<MutationResponse>(
+  const update = useAsyncState<MutationResponse, [SubscriptionPlanUpdateInput]>(
     (input: SubscriptionPlanUpdateInput) => sdk.subscriptionPlans.update(input),
   );
 
-  const remove = useAsyncState<MutationResponse>(
+  const remove = useAsyncState<MutationResponse, [SubscriptionPlanDeleteInput]>(
     (input: SubscriptionPlanDeleteInput) => sdk.subscriptionPlans.delete(input),
   );
 

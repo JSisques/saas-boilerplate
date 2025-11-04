@@ -14,20 +14,21 @@ import { useAsyncState } from './use-async-state.js';
  * Hook for tenant operations
  */
 export function useTenants(sdk: SDK) {
-  const findByCriteria = useAsyncState<PaginatedTenantResult>(
-    (input?: TenantFindByCriteriaInput) => sdk.tenants.findByCriteria(input),
+  const findByCriteria = useAsyncState<
+    PaginatedTenantResult,
+    [TenantFindByCriteriaInput?]
+  >((input?: TenantFindByCriteriaInput) => sdk.tenants.findByCriteria(input));
+
+  const create = useAsyncState<MutationResponse, [TenantCreateInput]>(
+    (input: TenantCreateInput) => sdk.tenants.create(input),
   );
 
-  const create = useAsyncState<MutationResponse>((input: TenantCreateInput) =>
-    sdk.tenants.create(input),
+  const update = useAsyncState<MutationResponse, [TenantUpdateInput]>(
+    (input: TenantUpdateInput) => sdk.tenants.update(input),
   );
 
-  const update = useAsyncState<MutationResponse>((input: TenantUpdateInput) =>
-    sdk.tenants.update(input),
-  );
-
-  const remove = useAsyncState<MutationResponse>((input: TenantDeleteInput) =>
-    sdk.tenants.delete(input),
+  const remove = useAsyncState<MutationResponse, [TenantDeleteInput]>(
+    (input: TenantDeleteInput) => sdk.tenants.delete(input),
   );
 
   return {
@@ -65,8 +66,7 @@ export function useTenantsList(
     if (enabled) {
       findByCriteria.fetch(input);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [enabled, input?.pagination?.page, input?.pagination?.perPage]);
+  }, [enabled, input, findByCriteria]);
 
   return findByCriteria;
 }
