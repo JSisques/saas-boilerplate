@@ -7,11 +7,13 @@ export type AsyncState<T> = {
   success: boolean;
 };
 
-export type UseAsyncStateReturn<T, Args extends unknown[] = unknown[]> =
-  AsyncState<T> & {
-    execute: (...args: Args) => Promise<T | null>;
-    reset: () => void;
-  };
+export type UseAsyncStateReturn<
+  T,
+  Args extends unknown[] = unknown[],
+> = AsyncState<T> & {
+  execute: (...args: Args) => Promise<T | null>;
+  reset: () => void;
+};
 
 /**
  * Generic hook for managing async operations with loading, error, and data states
