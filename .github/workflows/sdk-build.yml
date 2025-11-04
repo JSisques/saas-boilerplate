@@ -1,0 +1,41 @@
+name: SDK Build
+
+on:
+  push:
+    paths:
+      - "packages/sdk/**"
+    branches: [main, dev]
+  pull_request:
+    paths:
+      - "packages/sdk/**"
+    branches: [main, dev]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: latest
+
+      - name: Install dependencies
+        run: pnpm install --filter=./packages/sdk...
+
+      - name: Lint code
+        run: pnpm lint --filter=./packages/sdk...
+
+      - name: Check types
+        run: pnpm check-types --filter=./packages/sdk...
+
+      - name: Build the SDK
+        run: pnpm build --filter=./packages/sdk...

@@ -376,6 +376,24 @@ importers:
         specifier: ^8.40.0
         version: 8.40.0(eslint@9.34.0(jiti@2.6.1))(typescript@5.9.2)
 
+  packages/sdk:
+    devDependencies:
+      '@repo/eslint-config':
+        specifier: workspace:*
+        version: link:../eslint-config
+      '@repo/typescript-config':
+        specifier: workspace:*
+        version: link:../typescript-config
+      '@types/node':
+        specifier: ^22.15.3
+        version: 22.15.3
+      eslint:
+        specifier: ^9.34.0
+        version: 9.34.0(jiti@2.6.1)
+      typescript:
+        specifier: 5.9.2
+        version: 5.9.2
+
   packages/typescript-config: {}
 
   packages/ui:
@@ -8057,6 +8075,7 @@ packages:
   typescript@5.9.2:
     resolution: {integrity: sha512-CWBzXQrc/qOkhidw1OzBTQuYRbfyxDXJMVJ1XNwUHGROVmuaeiEm3OslpZ1RV96d7SKKjZKrSJu3+t/xlw3R9A==}
     engines: {node: '>=14.17'}
+    hasBin: true
 
   ua-parser-js@1.0.41:
     resolution: {integrity: sha512-LbBDqdIC5s8iROCUjMbW1f5dJQTEFB1+KO9ogbvlb3nm9n4YHa5p4KTvFPWvh2Hs8gZMBuiB1/8+pdfe/tDPug==}
