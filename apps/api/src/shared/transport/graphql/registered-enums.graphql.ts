@@ -3,9 +3,11 @@ import { SortDirection } from '@/shared/domain/enums/sort-direction.enum';
 import { registerEnumType } from '@nestjs/graphql';
 import {
   CurrencyEnum,
+  RenewalMethodEnum,
   StatusEnum,
   SubscriptionPlanIntervalEnum,
   SubscriptionPlanTypeEnum,
+  SubscriptionStatusEnum,
   TenantMemberRoleEnum,
   TenantStatusEnum,
   UserRoleEnum,
@@ -54,4 +56,14 @@ registerEnumType(SubscriptionPlanIntervalEnum, {
 registerEnumType(CurrencyEnum, {
   name: 'CurrencyEnum',
   description: 'The currency',
+});
+
+registerEnumType(SubscriptionStatusEnum, {
+  name: 'SubscriptionStatusEnum',
+  description: 'The status of the subscription',
+});
+
+registerEnumType(RenewalMethodEnum, {
+  name: 'RenewalMethodEnum',
+  description: 'The renewal method',
 });
