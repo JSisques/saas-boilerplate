@@ -4,6 +4,7 @@ import { BillingContextModule } from '@/billing-context/billing-context.module';
 import { EventContextModule } from '@/event-store-context/event-store-context.module';
 import { FeaturesModule } from '@/features/features.module';
 import { HealthContextModule } from '@/health-context/health-context.module';
+import { LLMContextModule } from '@/llm-context/llm-context.module';
 import { LoggingContextModule } from '@/logging-context/logging-context.module';
 import { SharedModule } from '@/shared/shared.module';
 import '@/shared/transport/graphql/registered-enums.graphql';
@@ -24,6 +25,7 @@ const CONTEXT_MODULES = [
   UserContextModule,
   HealthContextModule,
   BillingContextModule,
+  LLMContextModule,
 ];
 
 const MODULES = [FeaturesModule, SharedModule];
