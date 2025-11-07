@@ -233,6 +233,63 @@ type HealthResponseDto {
   status: String!
 }
 
+type PromptResponseDto {
+  """The id of the prompt"""
+  id: String!
+
+  """The name of the prompt"""
+  slug: String!
+
+  """The version of the prompt"""
+  version: String!
+
+  """The title of the prompt"""
+  title: String!
+
+  """The description of the prompt"""
+  description: DateTime!
+
+  """The content of the prompt"""
+  content: DateTime
+
+  """The status of the prompt"""
+  status: PromptStatusEnum!
+
+  """The is active of the prompt"""
+  isActive: String
+
+  """The created at of the prompt"""
+  createdAt: DateTime!
+
+  """The updated at of the prompt"""
+  updatedAt: DateTime!
+}
+
+"""The status of the prompt"""
+enum PromptStatusEnum {
+  DRAFT
+  ACTIVE
+  ARCHIVED
+  DEPRECATED
+}
+
+type PaginatedPromptResultDto {
+  """The total number of items"""
+  total: Int!
+
+  """The page number"""
+  page: Int!
+
+  """The number of items per page"""
+  perPage: Int!
+
+  """The total number of pages"""
+  totalPages: Int!
+
+  """The prompts in the current page"""
+  items: [PromptResponseDto!]!
+}
+
 type TenantMemberResponseDto {
   """The id of the tenant member"""
   id: String!
@@ -418,6 +475,8 @@ type Query {
   subscriptionFindByCriteria(input: SubscriptionFindByCriteriaRequestDto): PaginatedSubscriptionResultDto!
   subscriptionFindById(input: SubscriptionFindByIdRequestDto!): SubscriptionResponseDto!
   subscriptionFindByTenantId(input: SubscriptionFindByTenantIdRequestDto!): SubscriptionResponseDto!
+  promptFindByCriteria(input: PromptFindByCriteriaRequestDto): PaginatedPromptResultDto!
+  promptFindById(input: PromptFindByIdRequestDto!): PromptResponseDto!
 }
 
 input EventFindByCriteriaRequestDto {
@@ -557,6 +616,22 @@ input SubscriptionFindByTenantIdRequestDto {
   tenantId: String!
 }
 
+input PromptFindByCriteriaRequestDto {
+  """The filters to find by"""
+  filters: [BaseFilterInput!] = []
+
+  """The sorts to find by"""
+  sorts: [BaseSortInput!] = []
+
+  """The pagination to find by"""
+  pagination: BasePaginationInput = {page: 1, perPage: 10}
+}
+
+input PromptFindByIdRequestDto {
+  """The unique identifier of the prompt"""
+  id: String!
+}
+
 type Mutation {
   eventsReplay(input: EventReplayRequestDto!): MutationResponseDto!
   loginByEmail(input: AuthLoginByEmailRequestDto!): LoginResponseDto!
@@ -581,6 +656,13 @@ type Mutation {
   subscriptionDeactivate(input: SubscriptionDeactivateRequestDto!): MutationResponseDto!
   subscriptionRefund(input: SubscriptionRefundRequestDto!): MutationResponseDto!
   subscriptionCancel(input: SubscriptionCancelRequestDto!): MutationResponseDto!
+  promptCreate(input: PromptCreateRequestDto!): MutationResponseDto!
+  promptUpdate(input: PromptUpdateRequestDto!): MutationResponseDto!
+  promptDelete(input: PromptDeleteRequestDto!): MutationResponseDto!
+  promptActivate(input: PromptActivateRequestDto!): MutationResponseDto!
+  promptDraft(input: PromptDraftRequestDto!): MutationResponseDto!
+  promptArchive(input: PromptArchiveRequestDto!): MutationResponseDto!
+  promptDeprecate(input: PromptDeprecateRequestDto!): MutationResponseDto!
 }
 
 input EventReplayRequestDto {
@@ -1033,5 +1115,67 @@ input SubscriptionRefundRequestDto {
 
 input SubscriptionCancelRequestDto {
   """The unique identifier of the subscription"""
+  id: String!
+}
+
+input PromptCreateRequestDto {
+  """The version of the prompt"""
+  version: Float!
+
+  """The title of the prompt"""
+  title: String!
+
+  """The description of the prompt"""
+  description: DateTime!
+
+  """The content of the prompt"""
+  content: String
+
+  """The status of the prompt"""
+  status: PromptStatusEnum!
+
+  """The is active of the prompt"""
+  isActive: Boolean!
+}
+
+input PromptUpdateRequestDto {
+  """The unique identifier of the prompt"""
+  id: String!
+
+  """The version of the prompt"""
+  version: String
+
+  """The title of the prompt"""
+  title: String
+
+  """The description of the prompt"""
+  description: String
+
+  """The content of the prompt"""
+  content: String
+}
+
+input PromptDeleteRequestDto {
+  """The unique identifier of the prompt"""
+  id: String!
+}
+
+input PromptActivateRequestDto {
+  """The unique identifier of the prompt"""
+  id: String!
+}
+
+input PromptDraftRequestDto {
+  """The unique identifier of the prompt"""
+  id: String!
+}
+
+input PromptArchiveRequestDto {
+  """The unique identifier of the prompt"""
+  id: String!
+}
+
+input PromptDeprecateRequestDto {
+  """The unique identifier of the prompt"""
   id: String!
 }

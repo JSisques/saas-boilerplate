@@ -1,7 +1,8 @@
+import { PromptModule } from '@/llm-context/prompt/prompt.module';
 import { SharedModule } from '@/shared/shared.module';
 import { Module } from '@nestjs/common';
 
-const MODULES = [];
+const MODULES = [PromptModule];
 
 @Module({
   imports: [SharedModule, ...MODULES],

@@ -240,3 +240,83 @@ model SubscriptionPayment{
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
+
+// ============================================
+// Prompt System Models
+// ============================================
+
+enum PromptStatusEnum {
+  DRAFT
+  ACTIVE
+  ARCHIVED
+  DEPRECATED
+}
+
+model Prompt {
+  id          String            @id @default(uuid())
+  slug        String // Slug identifier for the prompt (e.g., "categorize-content")
+  version     Int // Version number of the prompt
+  title       String // Title of the prompt
+  description String? // Description of what the prompt does
+  content     String // The actual prompt content with variables like {{variableName}}
+  status      PromptStatusEnum  @default(DRAFT) // Status of the prompt version
+  isActive    Boolean           @default(false) // Whether this version is the active one
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relationships
+  tags      PromptTagRelation[]
+  variables PromptVariable[]
+
+  @@unique([slug, version])
+  @@index([slug])
+  @@index([slug, isActive])
+  @@index([status])
+}
+
+model PromptTag {
+  id          String @id @default(uuid())
+  name        String @unique // Tag name (e.g., "nlp", "content", "moderation")
+  description String? // Description of the tag
+  color       String? // Optional color for UI purposes
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  prompts PromptTagRelation[]
+
+  @@index([name])
+}
+
+model PromptTagRelation {
+  id       String @id @default(uuid())
+  promptId String
+  tagId    String
+
+  createdAt DateTime @default(now())
+
+  prompt Prompt     @relation(fields: [promptId], references: [id], onDelete: Cascade)
+  tag    PromptTag  @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  @@unique([promptId, tagId])
+  @@index([promptId])
+  @@index([tagId])
+}
+
+model PromptVariable {
+  id          String  @id @default(uuid())
+  promptId    String
+  name        String // Variable name (e.g., "content", "language", "maxLength")
+  description String? // Description of what this variable represents
+  isRequired  Boolean @default(true) // Whether this variable is required
+  defaultValue String? // Default value if optional
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  prompt Prompt @relation(fields: [promptId], references: [id], onDelete: Cascade)
+
+  @@unique([promptId, name])
+  @@index([promptId])
+}
