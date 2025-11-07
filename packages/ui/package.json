@@ -3,6 +3,9 @@
   "version": "0.0.0",
   "private": true,
   "exports": {
+    "./components/ui/*": "./src/components/ui/*.tsx",
+    "./lib/utils": "./src/lib/utils.ts",
+    "./styles/globals.css": "./src/styles/globals.css",
     "./*": "./src/*.tsx"
   },
   "scripts": {
