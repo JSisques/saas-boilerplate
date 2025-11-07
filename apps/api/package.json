@@ -47,11 +47,14 @@
     "class-validator": "^0.14.2",
     "graphql": "^16.11.0",
     "mongodb": "^6.20.0",
+    "nest-winston": "^1.10.2",
     "passport": "^0.7.0",
     "passport-jwt": "^4.0.1",
     "prisma": "^6.18.0",
     "reflect-metadata": "^0.2.0",
-    "rxjs": "^7.8.1"
+    "rxjs": "^7.8.1",
+    "winston": "^3.18.3",
+    "winston-daily-rotate-file": "^5.0.0"
   },
   "devDependencies": {
     "@nestjs/cli": "^10.0.0",

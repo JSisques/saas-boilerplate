@@ -1,12 +1,19 @@
 import { AppModule } from '@/app.module';
-import { Logger, ValidationPipe, VersioningType } from '@nestjs/common';
+import { ValidationPipe, VersioningType } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
+import { WINSTON_MODULE_NEST_PROVIDER } from 'nest-winston';
 
 async function bootstrap() {
-  const logger = new Logger(AppModule.name);
+  let app;
+  let logger;
 
   try {
-    const app = await NestFactory.create(AppModule);
+    app = await NestFactory.create(AppModule, {
+      bufferLogs: true,
+    });
+
+    logger = app.get(WINSTON_MODULE_NEST_PROVIDER);
+    app.useLogger(logger);
 
     // Global prefix
     app.setGlobalPrefix('api');
@@ -43,7 +50,11 @@ async function bootstrap() {
     const url = await app.getUrl();
     logger.log(`🚀 Server is running on ${url}`);
   } catch (error) {
-    logger.error(`🚀 Error starting the application: ${error}`);
+    if (logger) {
+      logger.error(`🚀 Error starting the application: ${error}`);
+    } else {
+      console.error(`🚀 Error starting the application: ${error}`);
+    }
     process.exit(1);
   }
 }

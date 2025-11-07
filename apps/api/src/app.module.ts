@@ -4,6 +4,7 @@ import { BillingContextModule } from '@/billing-context/billing-context.module';
 import { EventContextModule } from '@/event-store-context/event-store-context.module';
 import { FeaturesModule } from '@/features/features.module';
 import { HealthContextModule } from '@/health-context/health-context.module';
+import { LoggingContextModule } from '@/logging-context/logging-context.module';
 import { SharedModule } from '@/shared/shared.module';
 import '@/shared/transport/graphql/registered-enums.graphql';
 import { TenantContextModule } from '@/tenant-context/tenant-context.module';
@@ -16,6 +17,7 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { join } from 'path';
 
 const CONTEXT_MODULES = [
+  LoggingContextModule,
   EventContextModule,
   AuthContextModule,
   TenantContextModule,
