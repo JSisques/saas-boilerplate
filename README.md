@@ -147,8 +147,8 @@ pnpm dev --filter=docs
 
 ### 6. Access Applications
 
-- **GraphQL API**: http://localhost:4100/api/v1/graphql
-- **GraphQL Playground**: http://localhost:4100/api/v1/graphql (development mode)
+- **GraphQL API**: http://localhost:4100/graphql
+- **GraphQL Playground**: http://localhost:4100/graphql (development mode)
 - **Web App**: http://localhost:3000
 - **Admin Panel**: http://localhost:3001 (Next.js default port)
 - **Docs**: http://localhost:4321 (Astro default port)
@@ -269,7 +269,7 @@ pnpm dev --filter=docs
 
 ### API Documentation
 
-- **GraphQL Playground**: http://localhost:4100/api/v1/graphql
+- **GraphQL Playground**: http://localhost:4100/graphql
 - **GraphQL Schema**: Automatically generated in `apps/api/src/schema.gql`
 
 ### SDK Documentation

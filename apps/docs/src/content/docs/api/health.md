@@ -1,5 +1,5 @@
 ---
-title: Plans
+title: Health
 description: A guide in my new Starlight docs site.
 ---
 

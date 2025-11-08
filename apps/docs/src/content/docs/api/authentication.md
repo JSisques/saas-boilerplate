@@ -1,5 +1,5 @@
 ---
-title: Overview
+title: Authentication
 description: A guide in my new Starlight docs site.
 ---
 
