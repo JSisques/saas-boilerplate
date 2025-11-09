@@ -1,69 +1,149 @@
 import { BaseEvent } from '@/shared/domain/events/base-event.interface';
 import { IEventMetadata } from '@/shared/domain/interfaces/event-metadata.interface';
-import { Injectable } from '@nestjs/common';
-
-// Auth
-import { AuthCreatedEvent } from '@/shared/domain/events/auth/auth-created/auth-created.event';
-import { AuthDeletedEvent } from '@/shared/domain/events/auth/auth-deleted/auth-deleted.event';
-import { AuthLoggedInByEmailEvent } from '@/shared/domain/events/auth/auth-logged-in-by-email/auth-logged-in-by-email.event';
-import { AuthRegisteredByEmailEvent } from '@/shared/domain/events/auth/auth-registered-by-email/auth-registered-by-email.event';
-import { AuthUpdatedLastLoginAtEvent } from '@/shared/domain/events/auth/auth-updated-last-login-at/auth-updated-last-login-at.event';
-import { AuthUpdatedEvent } from '@/shared/domain/events/auth/auth-updated/auth-updated.event';
-
-// Users
-import { UserCreatedEvent } from '@/shared/domain/events/users/user-created/user-created.event';
-import { UserDeletedEvent } from '@/shared/domain/events/users/user-deleted/user-deleted.event';
-import { UserUpdatedEvent } from '@/shared/domain/events/users/user-updated/user-updated.event';
-
-// Tenants
-import { TenantCreatedEvent } from '@/shared/domain/events/tenant-context/tenants/tenant-created/tenant-created.event';
-import { TenantDeletedEvent } from '@/shared/domain/events/tenant-context/tenants/tenant-deleted/tenant-deleted.event';
-import { TenantUpdatedEvent } from '@/shared/domain/events/tenant-context/tenants/tenant-updated/tenant-updated.event';
-
-// Tenant Members
-import { TenantMemberAddedEvent } from '@/shared/domain/events/tenant-context/tenant-members/tenant-members-added/tenant-members-created.event';
-import { TenantMemberRemovedEvent } from '@/shared/domain/events/tenant-context/tenant-members/tenant-members-removed/tenant-members-removed.event';
-import { TenantMemberUpdatedEvent } from '@/shared/domain/events/tenant-context/tenant-members/tenant-members-updated/tenant-members-updated.event';
+import { Injectable, Logger } from '@nestjs/common';
+import { existsSync, readdirSync, statSync } from 'fs';
+import { join, resolve } from 'path';
 
 type Constructor<T> = new (metadata: IEventMetadata, data: any) => T;
 
 @Injectable()
 export class DomainEventFactory {
-  private readonly registry: Record<string, Constructor<BaseEvent<any>>> = {
-    // Auth
-    [AuthCreatedEvent.name]: AuthCreatedEvent,
-    [AuthDeletedEvent.name]: AuthDeletedEvent,
-    [AuthLoggedInByEmailEvent.name]: AuthLoggedInByEmailEvent,
-    [AuthRegisteredByEmailEvent.name]: AuthRegisteredByEmailEvent,
-    [AuthUpdatedEvent.name]: AuthUpdatedEvent,
-    [AuthUpdatedLastLoginAtEvent.name]: AuthUpdatedLastLoginAtEvent,
+  private static readonly EVENT_FILE_REGEX = /\.event\.(t|j)s$/;
+  private readonly logger = new Logger(DomainEventFactory.name);
+  private readonly registry = new Map<
+    string,
+    Constructor<BaseEvent<unknown>>
+  >();
 
-    // Users
-    [UserCreatedEvent.name]: UserCreatedEvent,
-    [UserDeletedEvent.name]: UserDeletedEvent,
-    [UserUpdatedEvent.name]: UserUpdatedEvent,
-
-    // Tenants
-    [TenantCreatedEvent.name]: TenantCreatedEvent,
-    [TenantDeletedEvent.name]: TenantDeletedEvent,
-    [TenantUpdatedEvent.name]: TenantUpdatedEvent,
-
-    // Tenant Members
-    [TenantMemberAddedEvent.name]: TenantMemberAddedEvent,
-    [TenantMemberRemovedEvent.name]: TenantMemberRemovedEvent,
-    [TenantMemberUpdatedEvent.name]: TenantMemberUpdatedEvent,
-  };
+  constructor() {
+    this.registerDomainEvents();
+  }
 
   create(
     eventType: string,
     metadata: IEventMetadata,
-    data: any,
-  ): BaseEvent<any> {
-    const EventCtor = this.registry[eventType];
+    data: unknown,
+  ): BaseEvent<unknown> {
+    const EventCtor = this.registry.get(eventType);
     if (!EventCtor) {
       // TODO: Handle this error gracefully by returning a custom error in domain/exceptions
       throw new Error(`Unsupported eventType for replay: ${eventType}`);
     }
     return new EventCtor(metadata, data);
+  }
+
+  /**
+   * Registers all domain events in the events directory.
+   *
+   * The flow of this method is:
+   * 1. Resolve the events directory.
+   * 2. Collect all event files in the events directory.
+   * 3. Register all domain events in the events directory.
+   *
+   * @returns {void}
+   */
+  private registerDomainEvents(): void {
+    const eventsDirectory = this.resolveEventsDirectory();
+    if (!existsSync(eventsDirectory)) {
+      this.logger.warn(
+        `Events directory not found, skipping domain events auto-registration: ${eventsDirectory}`,
+      );
+      return;
+    }
+
+    const eventFiles = this.collectEventFiles(eventsDirectory);
+    eventFiles.forEach((file) => {
+      try {
+        // eslint-disable-next-line @typescript-eslint/no-var-requires
+        const exportsFromModule = require(file);
+        Object.values(exportsFromModule).forEach((exported) => {
+          if (this.isDomainEventConstructor(exported)) {
+            this.registry.set(exported.name, exported);
+          }
+        });
+      } catch (error) {
+        const stack = (error as Error)?.stack;
+        this.logger.error(
+          `Failed to register domain events from file: ${file}`,
+          stack,
+        );
+      }
+    });
+  }
+
+  /**
+   * Resolves the events directory.
+   *
+   * The flow of this method is:
+   * 1. Resolve the events directory.
+   * 2. Return the events directory.
+   *
+   * @returns {string} The events directory.
+   */
+  private resolveEventsDirectory(): string {
+    const compiledPath = resolve(__dirname, '../../../../shared/domain/events');
+
+    if (existsSync(compiledPath)) {
+      return compiledPath;
+    }
+
+    return resolve(__dirname, '../../../../../shared/domain/events');
+  }
+
+  /**
+   * Collects all event files in the events directory.
+   *
+   * The flow of this method is:
+   * 1. Collect all event files in the events directory.
+   * 2. Return the event files.
+   *
+   * @returns {string[]} The event files.
+   */
+  private collectEventFiles(directory: string): string[] {
+    const dirents = readdirSync(directory, { withFileTypes: true });
+
+    return dirents.flatMap((dirent) => {
+      const fullPath = join(directory, dirent.name);
+
+      if (dirent.isDirectory()) {
+        return this.collectEventFiles(fullPath);
+      }
+
+      if (!DomainEventFactory.EVENT_FILE_REGEX.test(dirent.name)) {
+        return [];
+      }
+
+      if (dirent.name.endsWith('.d.ts')) {
+        return [];
+      }
+
+      const stats = statSync(fullPath);
+      if (!stats.isFile()) {
+        return [];
+      }
+
+      return [fullPath];
+    });
+  }
+
+  /**
+   * Checks if the exported object is a domain event constructor.
+   *
+   * The flow of this method is:
+   * 1. Check if the exported object is a function.
+   * 2. Check if the exported object is a subclass of BaseEvent.
+   * 3. Return the result.
+   *
+   * @param exported - The exported object to check.
+   * @returns True if the exported object is a domain event constructor, false otherwise.
+   */
+  private isDomainEventConstructor(
+    exported: unknown,
+  ): exported is Constructor<BaseEvent<unknown>> {
+    if (typeof exported !== 'function') {
+      return false;
+    }
+
+    return exported.prototype instanceof BaseEvent;
   }
 }
