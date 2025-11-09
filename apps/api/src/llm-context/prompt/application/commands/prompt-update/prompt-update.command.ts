@@ -26,9 +26,6 @@ export class PromptUpdateCommand {
         generateFromString: true,
       });
     }
-    if (props.version !== undefined) {
-      this.version = new PromptVersionValueObject(props.version);
-    }
     if (props.description !== undefined) {
       this.description = new PromptDescriptionValueObject(props.description);
     }

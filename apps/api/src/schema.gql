@@ -247,10 +247,10 @@ type PromptResponseDto {
   title: String!
 
   """The description of the prompt"""
-  description: DateTime!
+  description: String!
 
   """The content of the prompt"""
-  content: DateTime
+  content: String
 
   """The status of the prompt"""
   status: PromptStatusEnum!
@@ -1119,31 +1119,22 @@ input SubscriptionCancelRequestDto {
 }
 
 input PromptCreateRequestDto {
-  """The version of the prompt"""
-  version: Float!
-
   """The title of the prompt"""
   title: String!
 
   """The description of the prompt"""
-  description: DateTime!
+  description: String!
 
   """The content of the prompt"""
   content: String
 
   """The status of the prompt"""
   status: PromptStatusEnum!
-
-  """The is active of the prompt"""
-  isActive: Boolean!
 }
 
 input PromptUpdateRequestDto {
   """The unique identifier of the prompt"""
   id: String!
-
-  """The version of the prompt"""
-  version: String
 
   """The title of the prompt"""
   title: String

@@ -12,7 +12,6 @@
  * @property {boolean} isActive - The is active of the prompt. Must be provided.
  */
 export interface IPromptCreateCommandDto {
-  version: number;
   title: string;
   description: string | null;
   content: string;

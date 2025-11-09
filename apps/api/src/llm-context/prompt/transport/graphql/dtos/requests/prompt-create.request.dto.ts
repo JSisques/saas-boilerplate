@@ -1,27 +1,9 @@
 import { Field, InputType } from '@nestjs/graphql';
 import { PromptStatusEnum } from '@prisma/client';
-import {
-  IsBoolean,
-  IsDate,
-  IsEnum,
-  IsNotEmpty,
-  IsNumber,
-  IsOptional,
-  IsString,
-  Min,
-} from 'class-validator';
+import { IsEnum, IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
 @InputType('PromptCreateRequestDto')
 export class PromptCreateRequestDto {
-  @Field(() => Number, {
-    description: 'The version of the prompt',
-    nullable: false,
-  })
-  @IsNumber()
-  @Min(1)
-  @IsNotEmpty()
-  version: number;
-
   @Field(() => String, {
     description: 'The title of the prompt',
     nullable: false,
@@ -30,11 +12,11 @@ export class PromptCreateRequestDto {
   @IsNotEmpty()
   title: string;
 
-  @Field(() => Date, {
+  @Field(() => String, {
     description: 'The description of the prompt',
     nullable: false,
   })
-  @IsDate()
+  @IsString()
   @IsNotEmpty()
   description: string | null;
 
@@ -53,12 +35,4 @@ export class PromptCreateRequestDto {
   @IsEnum(PromptStatusEnum)
   @IsNotEmpty()
   status: PromptStatusEnum;
-
-  @Field(() => Boolean, {
-    description: 'The is active of the prompt',
-    nullable: false,
-  })
-  @IsBoolean()
-  @IsNotEmpty()
-  isActive: boolean;
 }

@@ -12,6 +12,7 @@ import { PromptDeletedEventHandler } from '@/llm-context/prompt/application/even
 import { PromptDeprecatedEventHandler } from '@/llm-context/prompt/application/event-handlers/prompt-deprecated/prompt-deprecated.event-handler';
 import { PromptDraftedEventHandler } from '@/llm-context/prompt/application/event-handlers/prompt-drafted/prompt-drafted.event-handler';
 import { PromptUpdatedEventHandler } from '@/llm-context/prompt/application/event-handlers/prompt-updated/prompt-updated.event-handler';
+import { PromptVersionIncrementedEventHandler } from '@/llm-context/prompt/application/event-handlers/prompt-version-inncremented/prompt-version-inncremented.event-handler';
 import { FindPromptsByCriteriaQueryHandler } from '@/llm-context/prompt/application/queries/prompt-find-by-criteria/prompt-find-by-criteria.query-handler';
 import { FindPromptViewModelByIdQueryHandler } from '@/llm-context/prompt/application/queries/prompt-find-view-model-by-id/prompt-find-view-model-by-id.query-handler';
 import { AssertPromptExsistsService } from '@/llm-context/prompt/application/services/assert-prompt-exsits/assert-prompt-exsits.service';
@@ -60,6 +61,7 @@ const EVENT_HANDLERS = [
   PromptDraftedEventHandler,
   PromptArchivedEventHandler,
   PromptDeprecatedEventHandler,
+  PromptVersionIncrementedEventHandler,
 ];
 
 const FACTORIES = [PromptAggregateFactory, PromptViewModelFactory];

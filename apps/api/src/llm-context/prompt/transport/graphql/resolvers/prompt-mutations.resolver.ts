@@ -74,7 +74,6 @@ export class PromptMutationsResolver {
     await this.commandBus.execute(
       new PromptUpdateCommand({
         id: input.id,
-        version: input.version,
         title: input.title,
         description: input.description,
         content: input.content,

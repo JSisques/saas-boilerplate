@@ -23,7 +23,7 @@ export class PromptCreateCommand {
     this.slug = new PromptSlugValueObject(props.title, {
       generateFromString: true,
     });
-    this.version = new PromptVersionValueObject(props.version);
+    this.version = new PromptVersionValueObject(1);
     this.title = new PromptTitleValueObject(props.title);
     this.description = new PromptDescriptionValueObject(props.description);
     this.content = new PromptContentValueObject(props.content);

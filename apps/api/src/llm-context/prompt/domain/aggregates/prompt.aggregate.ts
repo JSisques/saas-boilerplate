@@ -16,6 +16,7 @@ import { PromptDeletedEvent } from '@/shared/domain/events/llm-context/prompts/p
 import { PromptDeprecatedEvent } from '@/shared/domain/events/llm-context/prompts/prompt-deprecated/prompt-deprecated.event';
 import { PromptDraftedEvent } from '@/shared/domain/events/llm-context/prompts/prompt-drafted/prompt-drafted.event';
 import { PromptUpdatedEvent } from '@/shared/domain/events/llm-context/prompts/prompt-updated/prompt-updated.event';
+import { PromptVersionIncrementedEvent } from '@/shared/domain/events/llm-context/prompts/prompt-version-incremented/prompt-version-incremented.event';
 import { PromptUuidValueObject } from '@/shared/domain/value-objects/identifiers/prompt-uuid/prompt-uuid.vo';
 import { AggregateRoot } from '@nestjs/cqrs';
 
@@ -183,6 +184,27 @@ export class PromptAggregate extends AggregateRoot {
             aggregateId: this._id.value,
             aggregateType: PromptAggregate.name,
             eventType: PromptDeprecatedEvent.name,
+          },
+          this.toPrimitives(),
+        ),
+      );
+    }
+  }
+
+  /**
+   * Increment the version of the prompt.
+   *
+   * @param generateEvent - Whether to generate an event.
+   */
+  public incrementVersion(generateEvent: boolean = true): void {
+    this._version = new PromptVersionValueObject(this._version.value + 1);
+    if (generateEvent) {
+      this.apply(
+        new PromptVersionIncrementedEvent(
+          {
+            aggregateId: this._id.value,
+            aggregateType: PromptAggregate.name,
+            eventType: PromptVersionIncrementedEvent.name,
           },
           this.toPrimitives(),
         ),

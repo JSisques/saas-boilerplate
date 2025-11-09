@@ -12,14 +12,6 @@ export class PromptUpdateRequestDto {
   id: string;
 
   @Field(() => String, {
-    description: 'The version of the prompt',
-    nullable: true,
-  })
-  @IsString()
-  @IsOptional()
-  version: number | null;
-
-  @Field(() => String, {
     description: 'The title of the prompt',
     nullable: true,
   })

@@ -28,13 +28,13 @@ export class PromptResponseDto {
   })
   title: string;
 
-  @Field(() => Date, {
+  @Field(() => String, {
     nullable: false,
     description: 'The description of the prompt',
   })
   description: string | null;
 
-  @Field(() => Date, {
+  @Field(() => String, {
     nullable: true,
     description: 'The content of the prompt',
   })

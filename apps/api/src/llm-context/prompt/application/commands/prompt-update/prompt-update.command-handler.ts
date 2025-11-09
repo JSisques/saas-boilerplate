@@ -45,10 +45,13 @@ export class PromptUpdateCommandHandler
     // 03: Update the prompt
     existingPrompt.update(updateData);
 
-    // 04: Save the prompt
+    // 04: Increment the version of the prompt
+    existingPrompt.incrementVersion();
+
+    // 05: Save the prompt
     await this.promptWriteRepository.save(existingPrompt);
 
-    // 05: Publish the prompt updated event
+    // 06: Publish the prompt updated event
     await this.eventBus.publishAll(existingPrompt.getUncommittedEvents());
     await existingPrompt.commit();
   }
