@@ -1,21 +1,6 @@
 import { EventReplayCommandHandler } from '@/event-store-context/event/application/commands/event-replay/event-replay.command-handler';
-import { AuthCreatedEventHandler } from '@/event-store-context/event/application/event-handlers/auth-context/auths/auth-created/auth-created.event-handler';
-import { AuthDeletedEventHandler } from '@/event-store-context/event/application/event-handlers/auth-context/auths/auth-deleted/auth-deleted.event-handler';
-import { AuthUpdatedLastLoginAtEventHandler } from '@/event-store-context/event/application/event-handlers/auth-context/auths/auth-updated-last-login-at/auth-updated-last-login-at.vent-handler';
-import { AuthUpdatedEventHandler } from '@/event-store-context/event/application/event-handlers/auth-context/auths/auth-updated/auth-updated.event-handler';
-import { SubscriptionPlanCreatedEventHandler } from '@/event-store-context/event/application/event-handlers/billing-context/subscription-plan/subscription-plan-created/subscription-plan-created.event-handler';
-import { SubscriptionPlanDeletedEventHandler } from '@/event-store-context/event/application/event-handlers/billing-context/subscription-plan/subscription-plan-deleted/subscription-plan-deleted.event-handler';
-import { SubscriptionPlanUpdatedEventHandler } from '@/event-store-context/event/application/event-handlers/billing-context/subscription-plan/subscription-plan-updated/subscription-plan-updated.event-handler';
 import { EventCreatedEventHandler } from '@/event-store-context/event/application/event-handlers/event/event-created/event-created.event-handler';
-import { TenantMemberAddedEventHandler } from '@/event-store-context/event/application/event-handlers/tenant-context/tenant-members/tenant-members-added/tenant-members-added.event-handler';
-import { TenantMemberRemovedEventHandler } from '@/event-store-context/event/application/event-handlers/tenant-context/tenant-members/tenant-members-removed/tenant-members-removed.event-handler';
-import { TenantMemberUpdatedEventHandler } from '@/event-store-context/event/application/event-handlers/tenant-context/tenant-members/tenant-members-updated/tenant-members-updated.event-handler';
-import { TenantCreatedEventHandler } from '@/event-store-context/event/application/event-handlers/tenant-context/tenants/tenant-created/tenant-created.event-handler';
-import { TenantDeletedEventHandler } from '@/event-store-context/event/application/event-handlers/tenant-context/tenants/tenant-deleted/tenant-deleted.event-handler';
-import { TenantUpdatedEventHandler } from '@/event-store-context/event/application/event-handlers/tenant-context/tenants/tenant-updated/tenant-updated.event-handler';
-import { UserCreatedEventHandler } from '@/event-store-context/event/application/event-handlers/users/user-created/user-created.event-handler';
-import { UserDeletedEventHandler } from '@/event-store-context/event/application/event-handlers/users/user-deleted/user-deleted.event-handler';
-import { UserUpdatedEventHandler } from '@/event-store-context/event/application/event-handlers/users/user-updated/user-updated.event-handler';
+import { GlobalEventTrackingListener } from '@/event-store-context/event/application/event-listeners/global-event-tracking/global-event-tracking.listener';
 import { FindEventsByCriteriaQueryHandler } from '@/event-store-context/event/application/queries/event-find-by-criteria/event-find-by-criteria.command-handler';
 import { EventPublishService } from '@/event-store-context/event/application/services/event-publish/event-publish.service';
 import { EventReplayService } from '@/event-store-context/event/application/services/event-replay/event-replay.service';
@@ -47,35 +32,9 @@ const QUERY_HANDLERS = [FindEventsByCriteriaQueryHandler];
 
 const COMMAND_HANDLERS = [EventReplayCommandHandler];
 
-const EVENT_HANDLERS = [
-  EventCreatedEventHandler,
+const EVENT_HANDLERS = [EventCreatedEventHandler];
 
-  // Auths
-  AuthCreatedEventHandler,
-  AuthDeletedEventHandler,
-  AuthUpdatedEventHandler,
-  AuthUpdatedLastLoginAtEventHandler,
-
-  // Users
-  UserCreatedEventHandler,
-  UserDeletedEventHandler,
-  UserUpdatedEventHandler,
-
-  // Tenants
-  TenantCreatedEventHandler,
-  TenantDeletedEventHandler,
-  TenantUpdatedEventHandler,
-
-  // Tenant members
-  TenantMemberAddedEventHandler,
-  TenantMemberUpdatedEventHandler,
-  TenantMemberRemovedEventHandler,
-
-  // Subscription plans
-  SubscriptionPlanCreatedEventHandler,
-  SubscriptionPlanUpdatedEventHandler,
-  SubscriptionPlanDeletedEventHandler,
-];
+const EVENT_SUBSCRIBERS = [GlobalEventTrackingListener];
 
 const FACTORIES = [
   EventAggregateFactory,
@@ -105,6 +64,7 @@ const REPOSITORIES = [
     ...QUERY_HANDLERS,
     ...COMMAND_HANDLERS,
     ...EVENT_HANDLERS,
+    ...EVENT_SUBSCRIBERS,
     ...REPOSITORIES,
     ...FACTORIES,
     ...MAPPERS,
