@@ -1,12 +1,6 @@
 import { JwtAuthGuard } from '@/auth-context/auth/infrastructure/auth/jwt-auth.guard';
 import { Roles } from '@/auth-context/auth/infrastructure/decorators/roles/roles.decorator';
 import { RolesGuard } from '@/auth-context/auth/infrastructure/guards/roles.guard';
-import { SubscriptionFindByCriteriaRequestDto } from '@/billing-context/subscription/transport/graphql/dtos/requests/subscription-find-by-criteria.request.dto';
-import { SubscriptionFindByIdRequestDto } from '@/billing-context/subscription/transport/graphql/dtos/requests/subscription-find-by-id.request.dto';
-import {
-  PaginatedSubscriptionResultDto,
-  SubscriptionResponseDto,
-} from '@/billing-context/subscription/transport/graphql/dtos/responses/subscription.response.dto';
 import { FindPromptsByCriteriaQuery } from '@/llm-context/prompt/application/queries/prompt-find-by-criteria/prompt-find-by-criteria.query';
 import { FindPromptViewModelByIdQuery } from '@/llm-context/prompt/application/queries/prompt-find-view-model-by-id/prompt-find-view-model-by-id.query';
 import { PromptFindByCriteriaRequestDto } from '@/llm-context/prompt/transport/graphql/dtos/requests/prompt-find-by-criteria.request.dto';

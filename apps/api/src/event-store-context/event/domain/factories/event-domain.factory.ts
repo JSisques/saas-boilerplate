@@ -55,6 +55,7 @@ export class DomainEventFactory {
     eventFiles.forEach((file) => {
       try {
         // eslint-disable-next-line @typescript-eslint/no-var-requires
+        // eslint-disable-next-line @typescript-eslint/no-require-imports
         const exportsFromModule = require(file);
         Object.values(exportsFromModule).forEach((exported) => {
           if (this.isDomainEventConstructor(exported)) {
