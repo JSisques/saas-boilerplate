@@ -65,6 +65,9 @@ export class EventReplayService
         await this.eventPublishService.execute(event);
         const view = this.eventViewModelFactory.fromAggregate(event);
         await this.eventReadRepository.save(view);
+
+        // TODO: Replace this delay with a better throttling/batching/queuing approach
+        await new Promise((resolve) => setTimeout(resolve, 500));
       }
 
       totalEvents += events.length;

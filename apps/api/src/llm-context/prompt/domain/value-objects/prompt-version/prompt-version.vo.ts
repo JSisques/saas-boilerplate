@@ -12,4 +12,3 @@ export class PromptVersionValueObject extends NumberValueObject {
     });
   }
 }
-
