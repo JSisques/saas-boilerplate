@@ -121,5 +121,68 @@ describe('AssertUserViewModelExsistsService', () => {
       expect(result.bio).toBe('Software developer');
       expect(result.avatarUrl).toBe('https://example.com/avatar.jpg');
     });
+
+    it('should throw UserNotFoundException with correct error message', async () => {
+      const userId = '123e4567-e89b-12d3-a456-426614174000';
+
+      mockUserReadRepository.findById.mockResolvedValue(null);
+
+      await expect(service.execute(userId)).rejects.toThrow(
+        UserNotFoundException,
+      );
+      await expect(service.execute(userId)).rejects.toThrow(
+        `User with id ${userId} not found`,
+      );
+
+      expect(mockUserReadRepository.findById).toHaveBeenCalledWith(userId);
+      expect(mockUserReadRepository.findById).toHaveBeenCalledTimes(2);
+    });
+
+    it('should handle repository errors correctly', async () => {
+      const userId = '123e4567-e89b-12d3-a456-426614174000';
+      const repositoryError = new Error('Database connection error');
+
+      mockUserReadRepository.findById.mockRejectedValue(repositoryError);
+
+      await expect(service.execute(userId)).rejects.toThrow(repositoryError);
+
+      expect(mockUserReadRepository.findById).toHaveBeenCalledWith(userId);
+      expect(mockUserReadRepository.findById).toHaveBeenCalledTimes(1);
+    });
+
+    it('should return user view model with different roles and statuses', async () => {
+      const userId = '123e4567-e89b-12d3-a456-426614174000';
+      const testCases = [
+        { role: UserRoleEnum.USER, status: UserStatusEnum.ACTIVE },
+        { role: UserRoleEnum.ADMIN, status: UserStatusEnum.ACTIVE },
+        { role: UserRoleEnum.USER, status: UserStatusEnum.INACTIVE },
+        { role: UserRoleEnum.ADMIN, status: UserStatusEnum.INACTIVE },
+      ];
+
+      for (const testCase of testCases) {
+        const mockViewModelDto: IUserCreateViewModelDto = {
+          id: userId,
+          userName: 'johndoe',
+          name: 'John',
+          lastName: 'Doe',
+          role: testCase.role,
+          status: testCase.status,
+          bio: null,
+          avatarUrl: null,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        };
+        const mockViewModel = new UserViewModel(mockViewModelDto);
+
+        mockUserReadRepository.findById.mockResolvedValue(mockViewModel);
+
+        const result = await service.execute(userId);
+
+        expect(result.role).toBe(testCase.role);
+        expect(result.status).toBe(testCase.status);
+
+        jest.clearAllMocks();
+      }
+    });
   });
 });
