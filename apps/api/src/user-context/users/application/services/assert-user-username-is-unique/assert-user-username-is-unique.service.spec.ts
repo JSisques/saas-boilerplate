@@ -101,5 +101,89 @@ describe('AssertUserUsernameIsUniqueService', () => {
       );
       expect(mockUserWriteRepository.findByUserName).toHaveBeenCalledTimes(2);
     });
+
+    it('should throw UserUsernameIsNotUniqueException with correct error message', async () => {
+      const username = 'johndoe';
+      const existingUser = new UserAggregate(
+        {
+          id: new UserUuidValueObject('123e4567-e89b-12d3-a456-426614174000'),
+          userName: new UserUserNameValueObject(username),
+          role: new UserRoleValueObject(UserRoleEnum.USER),
+          status: new UserStatusValueObject(UserStatusEnum.ACTIVE),
+        },
+        false,
+      );
+
+      mockUserWriteRepository.findByUserName.mockResolvedValue(existingUser);
+
+      await expect(service.execute(username)).rejects.toThrow(
+        UserUsernameIsNotUniqueException,
+      );
+      await expect(service.execute(username)).rejects.toThrow(
+        `Username ${username} is already taken`,
+      );
+
+      expect(mockUserWriteRepository.findByUserName).toHaveBeenCalledWith(
+        username,
+      );
+      expect(mockUserWriteRepository.findByUserName).toHaveBeenCalledTimes(2);
+    });
+
+    it('should handle repository errors correctly', async () => {
+      const username = 'johndoe';
+      const repositoryError = new Error('Database connection error');
+
+      mockUserWriteRepository.findByUserName.mockRejectedValue(repositoryError);
+
+      await expect(service.execute(username)).rejects.toThrow(repositoryError);
+
+      expect(mockUserWriteRepository.findByUserName).toHaveBeenCalledWith(
+        username,
+      );
+      expect(mockUserWriteRepository.findByUserName).toHaveBeenCalledTimes(1);
+    });
+
+    it('should not throw when username is unique for users with different statuses', async () => {
+      const username = 'johndoe';
+
+      mockUserWriteRepository.findByUserName.mockResolvedValue(null);
+
+      await expect(service.execute(username)).resolves.toBeUndefined();
+
+      expect(mockUserWriteRepository.findByUserName).toHaveBeenCalledWith(
+        username,
+      );
+      expect(mockUserWriteRepository.findByUserName).toHaveBeenCalledTimes(1);
+    });
+
+    it('should throw exception regardless of user status or role', async () => {
+      const username = 'johndoe';
+      const testCases = [
+        { role: UserRoleEnum.USER, status: UserStatusEnum.ACTIVE },
+        { role: UserRoleEnum.ADMIN, status: UserStatusEnum.ACTIVE },
+        { role: UserRoleEnum.USER, status: UserStatusEnum.INACTIVE },
+        { role: UserRoleEnum.ADMIN, status: UserStatusEnum.INACTIVE },
+      ];
+
+      for (const testCase of testCases) {
+        const existingUser = new UserAggregate(
+          {
+            id: new UserUuidValueObject('123e4567-e89b-12d3-a456-426614174000'),
+            userName: new UserUserNameValueObject(username),
+            role: new UserRoleValueObject(testCase.role),
+            status: new UserStatusValueObject(testCase.status),
+          },
+          false,
+        );
+
+        mockUserWriteRepository.findByUserName.mockResolvedValue(existingUser);
+
+        await expect(service.execute(username)).rejects.toThrow(
+          UserUsernameIsNotUniqueException,
+        );
+
+        jest.clearAllMocks();
+      }
+    });
   });
 });

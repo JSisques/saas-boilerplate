@@ -222,5 +222,96 @@ describe('FindUsersByCriteriaQueryHandler', () => {
       expect(criteria.sorts[0].field).toBe('userName');
       expect(criteria.sorts[0].direction).toBe(SortDirection.ASC);
     });
+
+    it('should handle repository errors correctly', async () => {
+      const criteria = new Criteria();
+      const query = new FindUsersByCriteriaQuery(criteria);
+
+      const repositoryError = new Error('Database connection error');
+      mockUserReadRepository.findByCriteria.mockRejectedValue(repositoryError);
+
+      await expect(handler.execute(query)).rejects.toThrow(repositoryError);
+
+      expect(mockUserReadRepository.findByCriteria).toHaveBeenCalledWith(
+        criteria,
+      );
+      expect(mockUserReadRepository.findByCriteria).toHaveBeenCalledTimes(1);
+    });
+
+    it('should handle criteria with multiple filters and sorts', async () => {
+      const filters = [
+        {
+          field: 'status',
+          operator: FilterOperator.EQUALS,
+          value: UserStatusEnum.ACTIVE,
+        },
+        {
+          field: 'role',
+          operator: FilterOperator.EQUALS,
+          value: UserRoleEnum.USER,
+        },
+      ];
+      const sorts = [
+        { field: 'userName', direction: SortDirection.ASC },
+        { field: 'createdAt', direction: SortDirection.DESC },
+      ];
+      const criteria = new Criteria(filters, sorts, { page: 1, perPage: 10 });
+      const query = new FindUsersByCriteriaQuery(criteria);
+
+      const mockPaginatedResult = new PaginatedResult<UserViewModel>(
+        [],
+        0,
+        1,
+        10,
+      );
+
+      mockUserReadRepository.findByCriteria.mockResolvedValue(
+        mockPaginatedResult,
+      );
+
+      await handler.execute(query);
+
+      expect(mockUserReadRepository.findByCriteria).toHaveBeenCalledWith(
+        criteria,
+      );
+      expect(criteria.filters).toHaveLength(2);
+      expect(criteria.sorts).toHaveLength(2);
+    });
+
+    it('should return correct pagination metadata', async () => {
+      const criteria = new Criteria([], [], { page: 2, perPage: 5 });
+      const query = new FindUsersByCriteriaQuery(criteria);
+
+      const mockUsers: UserViewModel[] = Array.from(
+        { length: 5 },
+        (_, i) =>
+          new UserViewModel({
+            id: `${i}e4567-e89b-12d3-a456-426614174000`,
+            userName: `user${i}`,
+            name: `Name${i}`,
+            lastName: `Last${i}`,
+            role: UserRoleEnum.USER,
+            status: UserStatusEnum.ACTIVE,
+            bio: null,
+            avatarUrl: null,
+            createdAt: new Date(),
+            updatedAt: new Date(),
+          }),
+      );
+
+      const mockPaginatedResult = new PaginatedResult(mockUsers, 25, 2, 5);
+
+      mockUserReadRepository.findByCriteria.mockResolvedValue(
+        mockPaginatedResult,
+      );
+
+      const result = await handler.execute(query);
+
+      expect(result.items).toHaveLength(5);
+      expect(result.total).toBe(25);
+      expect(result.page).toBe(2);
+      expect(result.perPage).toBe(5);
+      expect(result.totalPages).toBe(5);
+    });
   });
 });

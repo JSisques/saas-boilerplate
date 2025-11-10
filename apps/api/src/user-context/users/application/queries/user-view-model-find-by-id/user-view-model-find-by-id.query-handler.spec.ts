@@ -3,6 +3,7 @@ import { IUserFindByIdQueryDto } from '@/user-context/users/application/dtos/que
 import { UserViewModelFindByIdQuery } from '@/user-context/users/application/queries/user-view-model-find-by-id/user-view-model-find-by-id.query';
 import { UserViewModelFindByIdQueryHandler } from '@/user-context/users/application/queries/user-view-model-find-by-id/user-view-model-find-by-id.query-handler';
 import { AssertUserViewModelExsistsService } from '@/user-context/users/application/services/assert-user-view-model-exsits/assert-user-view-model-exsits.service';
+import { UserNotFoundException } from '@/user-context/users/application/exceptions/user-not-found/user-not-found.exception';
 import { IUserCreateViewModelDto } from '@/user-context/users/domain/dtos/view-models/user-create/user-create-view-model.dto';
 import { UserRoleEnum } from '@/user-context/users/domain/enums/user-role/user-role.enum';
 import { UserStatusEnum } from '@/user-context/users/domain/enums/user-status/user-status.enum';
@@ -68,17 +69,20 @@ describe('UserViewModelFindByIdQueryHandler', () => {
       const queryDto: IUserFindByIdQueryDto = { id: userId };
       const query = new UserViewModelFindByIdQuery(queryDto);
 
-      const error = new Error('User not found');
+      const error = new UserNotFoundException(userId);
       mockAssertUserViewModelExsistsService.execute.mockRejectedValue(error);
 
       await expect(handler.execute(query)).rejects.toThrow(error);
+      await expect(handler.execute(query)).rejects.toThrow(
+        `User with id ${userId} not found`,
+      );
 
       expect(
         mockAssertUserViewModelExsistsService.execute,
       ).toHaveBeenCalledWith(userId);
       expect(
         mockAssertUserViewModelExsistsService.execute,
-      ).toHaveBeenCalledTimes(1);
+      ).toHaveBeenCalledTimes(2);
     });
 
     it('should call service with correct id from query', async () => {
@@ -147,6 +151,62 @@ describe('UserViewModelFindByIdQueryHandler', () => {
       expect(result.status).toBe(UserStatusEnum.INACTIVE);
       expect(result.bio).toBe('Software developer');
       expect(result.avatarUrl).toBe('https://example.com/avatar.jpg');
+    });
+
+    it('should return user view model with minimal properties when user exists', async () => {
+      const userId = '123e4567-e89b-12d3-a456-426614174000';
+      const queryDto: IUserFindByIdQueryDto = { id: userId };
+      const query = new UserViewModelFindByIdQuery(queryDto);
+
+      const mockViewModelDto: IUserCreateViewModelDto = {
+        id: userId,
+        userName: 'johndoe',
+        name: null,
+        lastName: null,
+        role: UserRoleEnum.USER,
+        status: UserStatusEnum.ACTIVE,
+        bio: null,
+        avatarUrl: null,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      };
+      const mockViewModel = new UserViewModel(mockViewModelDto);
+
+      mockAssertUserViewModelExsistsService.execute.mockResolvedValue(
+        mockViewModel,
+      );
+
+      const result = await handler.execute(query);
+
+      expect(result).toBe(mockViewModel);
+      expect(result.id).toBe(userId);
+      expect(result.userName).toBe('johndoe');
+      expect(result.name).toBeNull();
+      expect(result.lastName).toBeNull();
+      expect(result.bio).toBeNull();
+      expect(result.avatarUrl).toBeNull();
+      expect(result.role).toBe(UserRoleEnum.USER);
+      expect(result.status).toBe(UserStatusEnum.ACTIVE);
+    });
+
+    it('should propagate repository errors correctly', async () => {
+      const userId = '123e4567-e89b-12d3-a456-426614174000';
+      const queryDto: IUserFindByIdQueryDto = { id: userId };
+      const query = new UserViewModelFindByIdQuery(queryDto);
+
+      const repositoryError = new Error('Database connection error');
+      mockAssertUserViewModelExsistsService.execute.mockRejectedValue(
+        repositoryError,
+      );
+
+      await expect(handler.execute(query)).rejects.toThrow(repositoryError);
+
+      expect(
+        mockAssertUserViewModelExsistsService.execute,
+      ).toHaveBeenCalledWith(userId);
+      expect(
+        mockAssertUserViewModelExsistsService.execute,
+      ).toHaveBeenCalledTimes(1);
     });
   });
 });
