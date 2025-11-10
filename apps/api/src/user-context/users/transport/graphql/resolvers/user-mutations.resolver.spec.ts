@@ -73,13 +73,13 @@ describe('UserMutationsResolver', () => {
       expect(command.userName?.value).toBe('johndoe');
       expect(command.role?.value).toBe(UserRoleEnum.USER);
       expect(command.status?.value).toBe(StatusEnum.ACTIVE);
-      expect(mockMutationResponseGraphQLMapper.toResponseDto).toHaveBeenCalledWith(
-        {
-          success: true,
-          message: 'User created successfully',
-          id: userId,
-        },
-      );
+      expect(
+        mockMutationResponseGraphQLMapper.toResponseDto,
+      ).toHaveBeenCalledWith({
+        success: true,
+        message: 'User created successfully',
+        id: userId,
+      });
     });
 
     it('should create user with minimal properties', async () => {
@@ -131,7 +131,9 @@ describe('UserMutationsResolver', () => {
       expect(mockCommandBus.execute).toHaveBeenCalledWith(
         expect.any(UserCreateCommand),
       );
-      expect(mockMutationResponseGraphQLMapper.toResponseDto).not.toHaveBeenCalled();
+      expect(
+        mockMutationResponseGraphQLMapper.toResponseDto,
+      ).not.toHaveBeenCalled();
     });
   });
 
@@ -172,17 +174,19 @@ describe('UserMutationsResolver', () => {
       expect(command.name?.value).toBe('Jane');
       expect(command.lastName?.value).toBe('Smith');
       expect(command.bio?.value).toBe('Updated bio');
-      expect(command.avatarUrl?.value).toBe('https://example.com/new-avatar.jpg');
+      expect(command.avatarUrl?.value).toBe(
+        'https://example.com/new-avatar.jpg',
+      );
       expect(command.userName?.value).toBe('janesmith');
       expect(command.role?.value).toBe(UserRoleEnum.ADMIN);
       expect(command.status?.value).toBe(StatusEnum.INACTIVE);
-      expect(mockMutationResponseGraphQLMapper.toResponseDto).toHaveBeenCalledWith(
-        {
-          success: true,
-          message: 'User updated successfully',
-          id: userId,
-        },
-      );
+      expect(
+        mockMutationResponseGraphQLMapper.toResponseDto,
+      ).toHaveBeenCalledWith({
+        success: true,
+        message: 'User updated successfully',
+        id: userId,
+      });
     });
 
     it('should update user with partial data', async () => {
@@ -228,7 +232,9 @@ describe('UserMutationsResolver', () => {
       expect(mockCommandBus.execute).toHaveBeenCalledWith(
         expect.any(UserUpdateCommand),
       );
-      expect(mockMutationResponseGraphQLMapper.toResponseDto).not.toHaveBeenCalled();
+      expect(
+        mockMutationResponseGraphQLMapper.toResponseDto,
+      ).not.toHaveBeenCalled();
     });
   });
 
@@ -259,13 +265,13 @@ describe('UserMutationsResolver', () => {
       const command = (mockCommandBus.execute as jest.Mock).mock.calls[0][0];
       expect(command).toBeInstanceOf(UserDeleteCommand);
       expect(command.id).toBe(userId);
-      expect(mockMutationResponseGraphQLMapper.toResponseDto).toHaveBeenCalledWith(
-        {
-          success: true,
-          message: 'User deleted successfully',
-          id: userId,
-        },
-      );
+      expect(
+        mockMutationResponseGraphQLMapper.toResponseDto,
+      ).toHaveBeenCalledWith({
+        success: true,
+        message: 'User deleted successfully',
+        id: userId,
+      });
     });
 
     it('should handle errors from command bus', async () => {
@@ -281,8 +287,9 @@ describe('UserMutationsResolver', () => {
       expect(mockCommandBus.execute).toHaveBeenCalledWith(
         expect.any(UserDeleteCommand),
       );
-      expect(mockMutationResponseGraphQLMapper.toResponseDto).not.toHaveBeenCalled();
+      expect(
+        mockMutationResponseGraphQLMapper.toResponseDto,
+      ).not.toHaveBeenCalled();
     });
   });
 });
-

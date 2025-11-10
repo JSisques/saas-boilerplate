@@ -228,9 +228,7 @@ describe('FindUsersByCriteriaQueryHandler', () => {
       const query = new FindUsersByCriteriaQuery(criteria);
 
       const repositoryError = new Error('Database connection error');
-      mockUserReadRepository.findByCriteria.mockRejectedValue(
-        repositoryError,
-      );
+      mockUserReadRepository.findByCriteria.mockRejectedValue(repositoryError);
 
       await expect(handler.execute(query)).rejects.toThrow(repositoryError);
 

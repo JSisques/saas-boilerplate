@@ -87,12 +87,12 @@ describe('UserCreateCommandHandler', () => {
       const result = await handler.execute(command);
 
       expect(result).toBe(mockUser.id.value);
-      expect(mockAssertUserUsernameIsUniqueService.execute).toHaveBeenCalledWith(
-        'johndoe',
-      );
-      expect(mockAssertUserUsernameIsUniqueService.execute).toHaveBeenCalledTimes(
-        1,
-      );
+      expect(
+        mockAssertUserUsernameIsUniqueService.execute,
+      ).toHaveBeenCalledWith('johndoe');
+      expect(
+        mockAssertUserUsernameIsUniqueService.execute,
+      ).toHaveBeenCalledTimes(1);
       expect(mockUserAggregateFactory.create).toHaveBeenCalledWith({
         id: command.id,
         userName: command.userName,
@@ -161,9 +161,9 @@ describe('UserCreateCommandHandler', () => {
       mockAssertUserUsernameIsUniqueService.execute.mockRejectedValue(error);
 
       await expect(handler.execute(command)).rejects.toThrow(error);
-      expect(mockAssertUserUsernameIsUniqueService.execute).toHaveBeenCalledWith(
-        'johndoe',
-      );
+      expect(
+        mockAssertUserUsernameIsUniqueService.execute,
+      ).toHaveBeenCalledWith('johndoe');
       expect(mockUserAggregateFactory.create).not.toHaveBeenCalled();
       expect(mockUserWriteRepository.save).not.toHaveBeenCalled();
       expect(mockEventBus.publishAll).not.toHaveBeenCalled();
@@ -233,9 +233,9 @@ describe('UserCreateCommandHandler', () => {
 
       await handler.execute(command);
 
-      const saveOrder = mockUserWriteRepository.save.mock.invocationCallOrder[0];
-      const publishOrder =
-        mockEventBus.publishAll.mock.invocationCallOrder[0];
+      const saveOrder =
+        mockUserWriteRepository.save.mock.invocationCallOrder[0];
+      const publishOrder = mockEventBus.publishAll.mock.invocationCallOrder[0];
       expect(saveOrder).toBeLessThan(publishOrder);
     });
 
@@ -273,4 +273,3 @@ describe('UserCreateCommandHandler', () => {
     });
   });
 });
-

@@ -1,10 +1,9 @@
 import { PaginatedResult } from '@/shared/domain/entities/paginated-result.entity';
-import { UserViewModel } from '@/user-context/users/domain/view-models/user.view-model';
-import { UserGraphQLMapper } from '@/user-context/users/transport/graphql/mappers/user.mapper';
-import { UserResponseDto } from '@/user-context/users/transport/graphql/dtos/responses/user.response.dto';
+import { IUserCreateViewModelDto } from '@/user-context/users/domain/dtos/view-models/user-create/user-create-view-model.dto';
 import { UserRoleEnum } from '@/user-context/users/domain/enums/user-role/user-role.enum';
 import { UserStatusEnum } from '@/user-context/users/domain/enums/user-status/user-status.enum';
-import { IUserCreateViewModelDto } from '@/user-context/users/domain/dtos/view-models/user-create/user-create-view-model.dto';
+import { UserViewModel } from '@/user-context/users/domain/view-models/user.view-model';
+import { UserGraphQLMapper } from '@/user-context/users/transport/graphql/mappers/user.mapper';
 
 describe('UserGraphQLMapper', () => {
   let mapper: UserGraphQLMapper;
@@ -188,19 +187,21 @@ describe('UserGraphQLMapper', () => {
     it('should convert paginated result with pagination metadata', () => {
       const createdAt = new Date('2024-01-01');
       const updatedAt = new Date('2024-01-02');
-      const viewModels: UserViewModel[] = Array.from({ length: 5 }, (_, i) =>
-        new UserViewModel({
-          id: `${i}e4567-e89b-12d3-a456-426614174000`,
-          userName: `user${i}`,
-          name: `Name${i}`,
-          lastName: `Last${i}`,
-          bio: null,
-          avatarUrl: null,
-          role: UserRoleEnum.USER,
-          status: UserStatusEnum.ACTIVE,
-          createdAt,
-          updatedAt,
-        }),
+      const viewModels: UserViewModel[] = Array.from(
+        { length: 5 },
+        (_, i) =>
+          new UserViewModel({
+            id: `${i}e4567-e89b-12d3-a456-426614174000`,
+            userName: `user${i}`,
+            name: `Name${i}`,
+            lastName: `Last${i}`,
+            bio: null,
+            avatarUrl: null,
+            role: UserRoleEnum.USER,
+            status: UserStatusEnum.ACTIVE,
+            createdAt,
+            updatedAt,
+          }),
       );
 
       const paginatedResult = new PaginatedResult(viewModels, 25, 2, 5);
@@ -215,4 +216,3 @@ describe('UserGraphQLMapper', () => {
     });
   });
 });
-

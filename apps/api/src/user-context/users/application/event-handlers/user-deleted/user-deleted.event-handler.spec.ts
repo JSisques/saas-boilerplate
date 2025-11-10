@@ -200,8 +200,10 @@ describe('UserDeletedEventHandler', () => {
 
       await handler.handle(event);
 
-      const findOrder = mockUserReadRepository.findById.mock.invocationCallOrder[0];
-      const deleteOrder = mockUserReadRepository.delete.mock.invocationCallOrder[0];
+      const findOrder =
+        mockUserReadRepository.findById.mock.invocationCallOrder[0];
+      const deleteOrder =
+        mockUserReadRepository.delete.mock.invocationCallOrder[0];
       expect(findOrder).toBeLessThan(deleteOrder);
     });
 
@@ -300,4 +302,3 @@ describe('UserDeletedEventHandler', () => {
     });
   });
 });
-

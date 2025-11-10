@@ -1,17 +1,16 @@
-import { QueryBus } from '@nestjs/cqrs';
-import { UserQueryResolver } from './user-queries.resolver';
-import { UserGraphQLMapper } from '@/user-context/users/transport/graphql/mappers/user.mapper';
-import { FindUsersByCriteriaQuery } from '@/user-context/users/application/queries/find-users-by-criteria/find-users-by-criteria.query';
-import { UserViewModelFindByIdQuery } from '@/user-context/users/application/queries/user-view-model-find-by-id/user-view-model-find-by-id.query';
-import { UserFindByCriteriaRequestDto } from '@/user-context/users/transport/graphql/dtos/requests/user-find-by-criteria.request.dto';
-import { UserFindByIdRequestDto } from '@/user-context/users/transport/graphql/dtos/requests/user-find-by-id.request.dto';
 import { Criteria } from '@/shared/domain/entities/criteria';
 import { PaginatedResult } from '@/shared/domain/entities/paginated-result.entity';
-import { UserViewModel } from '@/user-context/users/domain/view-models/user.view-model';
+import { FindUsersByCriteriaQuery } from '@/user-context/users/application/queries/find-users-by-criteria/find-users-by-criteria.query';
+import { UserViewModelFindByIdQuery } from '@/user-context/users/application/queries/user-view-model-find-by-id/user-view-model-find-by-id.query';
 import { UserRoleEnum } from '@/user-context/users/domain/enums/user-role/user-role.enum';
 import { UserStatusEnum } from '@/user-context/users/domain/enums/user-status/user-status.enum';
-import { IUserCreateViewModelDto } from '@/user-context/users/domain/dtos/view-models/user-create/user-create-view-model.dto';
+import { UserViewModel } from '@/user-context/users/domain/view-models/user.view-model';
+import { UserFindByCriteriaRequestDto } from '@/user-context/users/transport/graphql/dtos/requests/user-find-by-criteria.request.dto';
+import { UserFindByIdRequestDto } from '@/user-context/users/transport/graphql/dtos/requests/user-find-by-id.request.dto';
 import { PaginatedUserResultDto } from '@/user-context/users/transport/graphql/dtos/responses/user.response.dto';
+import { UserGraphQLMapper } from '@/user-context/users/transport/graphql/mappers/user.mapper';
+import { QueryBus } from '@nestjs/cqrs';
+import { UserQueryResolver } from './user-queries.resolver';
 
 describe('UserQueryResolver', () => {
   let resolver: UserQueryResolver;
@@ -232,4 +231,3 @@ describe('UserQueryResolver', () => {
     });
   });
 });
-

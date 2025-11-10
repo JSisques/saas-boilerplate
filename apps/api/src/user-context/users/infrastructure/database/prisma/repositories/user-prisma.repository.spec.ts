@@ -1,15 +1,17 @@
-import { PrismaService } from '@/shared/infrastructure/database/prisma/prisma.service';
-import { UserAggregate } from '@/user-context/users/domain/aggregates/user.aggregate';
-import { UserPrismaRepository } from '@/user-context/users/infrastructure/database/prisma/repositories/user-prisma.repository';
-import { UserPrismaMapper } from '@/user-context/users/infrastructure/database/prisma/mappers/user-prisma.mapper';
-import { UserPrismaDto } from '@/user-context/users/infrastructure/database/prisma/dtos/user-prisma.dto';
 import { UserUuidValueObject } from '@/shared/domain/value-objects/identifiers/user-uuid/user-uuid.vo';
-import { UserUserNameValueObject } from '@/user-context/users/domain/value-objects/user-user-name/user-user-name.vo';
-import { UserRoleValueObject } from '@/user-context/users/domain/value-objects/user-role/user-role.vo';
-import { UserStatusValueObject } from '@/user-context/users/domain/value-objects/user-status/user-status.vo';
+import { UserAggregate } from '@/user-context/users/domain/aggregates/user.aggregate';
 import { UserRoleEnum } from '@/user-context/users/domain/enums/user-role/user-role.enum';
 import { UserStatusEnum } from '@/user-context/users/domain/enums/user-status/user-status.enum';
-import { UserRoleEnum as PrismaUserRoleEnum, StatusEnum as PrismaStatusEnum } from '@prisma/client';
+import { UserRoleValueObject } from '@/user-context/users/domain/value-objects/user-role/user-role.vo';
+import { UserStatusValueObject } from '@/user-context/users/domain/value-objects/user-status/user-status.vo';
+import { UserUserNameValueObject } from '@/user-context/users/domain/value-objects/user-user-name/user-user-name.vo';
+import { UserPrismaDto } from '@/user-context/users/infrastructure/database/prisma/dtos/user-prisma.dto';
+import { UserPrismaMapper } from '@/user-context/users/infrastructure/database/prisma/mappers/user-prisma.mapper';
+import { UserPrismaRepository } from '@/user-context/users/infrastructure/database/prisma/repositories/user-prisma.repository';
+import {
+  StatusEnum as PrismaStatusEnum,
+  UserRoleEnum as PrismaUserRoleEnum,
+} from '@prisma/client';
 
 describe('UserPrismaRepository', () => {
   let repository: UserPrismaRepository;
@@ -291,4 +293,3 @@ describe('UserPrismaRepository', () => {
     });
   });
 });
-

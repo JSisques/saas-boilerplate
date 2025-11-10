@@ -3,13 +3,13 @@ import { PaginatedResult } from '@/shared/domain/entities/paginated-result.entit
 import { FilterOperator } from '@/shared/domain/enums/filter-operator.enum';
 import { SortDirection } from '@/shared/domain/enums/sort-direction.enum';
 import { MongoService } from '@/shared/infrastructure/database/mongodb/mongo.service';
-import { UserViewModel } from '@/user-context/users/domain/view-models/user.view-model';
-import { UserMongoRepository } from '@/user-context/users/infrastructure/database/mongodb/repositories/user-mongodb.repository';
-import { UserMongoDBMapper } from '@/user-context/users/infrastructure/database/mongodb/mappers/user-mongodb.mapper';
-import { UserMongoDbDto } from '@/user-context/users/infrastructure/database/mongodb/dtos/user-mongodb.dto';
+import { IUserCreateViewModelDto } from '@/user-context/users/domain/dtos/view-models/user-create/user-create-view-model.dto';
 import { UserRoleEnum } from '@/user-context/users/domain/enums/user-role/user-role.enum';
 import { UserStatusEnum } from '@/user-context/users/domain/enums/user-status/user-status.enum';
-import { IUserCreateViewModelDto } from '@/user-context/users/domain/dtos/view-models/user-create/user-create-view-model.dto';
+import { UserViewModel } from '@/user-context/users/domain/view-models/user.view-model';
+import { UserMongoDbDto } from '@/user-context/users/infrastructure/database/mongodb/dtos/user-mongodb.dto';
+import { UserMongoDBMapper } from '@/user-context/users/infrastructure/database/mongodb/mappers/user-mongodb.mapper';
+import { UserMongoRepository } from '@/user-context/users/infrastructure/database/mongodb/repositories/user-mongodb.repository';
 import { Collection } from 'mongodb';
 
 describe('UserMongoRepository', () => {
@@ -173,7 +173,9 @@ describe('UserMongoRepository', () => {
       mockCollection.countDocuments.mockResolvedValue(2);
 
       mongoDocs.forEach((doc, index) => {
-        mockUserMongoDBMapper.toViewModel.mockReturnValueOnce(viewModels[index]);
+        mockUserMongoDBMapper.toViewModel.mockReturnValueOnce(
+          viewModels[index],
+        );
       });
 
       const result = await repository.findByCriteria(criteria);
@@ -274,8 +276,6 @@ describe('UserMongoRepository', () => {
     });
 
     it('should handle criteria with sorts', async () => {
-      const createdAt = new Date('2024-01-01');
-      const updatedAt = new Date('2024-01-02');
       const criteria = new Criteria(
         [],
         [{ field: 'userName', direction: SortDirection.ASC }],
@@ -402,4 +402,3 @@ describe('UserMongoRepository', () => {
     });
   });
 });
-

@@ -8,7 +8,10 @@ import { UserRoleValueObject } from '@/user-context/users/domain/value-objects/u
 import { UserStatusValueObject } from '@/user-context/users/domain/value-objects/user-status/user-status.vo';
 import { UserRoleEnum } from '@/user-context/users/domain/enums/user-role/user-role.enum';
 import { UserStatusEnum } from '@/user-context/users/domain/enums/user-status/user-status.enum';
-import { UserRoleEnum as PrismaUserRoleEnum, StatusEnum as PrismaStatusEnum } from '@prisma/client';
+import {
+  UserRoleEnum as PrismaUserRoleEnum,
+  StatusEnum as PrismaStatusEnum,
+} from '@prisma/client';
 
 describe('UserPrismaMapper', () => {
   let mapper: UserPrismaMapper;
@@ -51,7 +54,9 @@ describe('UserPrismaMapper', () => {
         false,
       );
 
-      mockUserAggregateFactory.fromPrimitives.mockReturnValue(mockUserAggregate);
+      mockUserAggregateFactory.fromPrimitives.mockReturnValue(
+        mockUserAggregate,
+      );
 
       const result = mapper.toDomainEntity(prismaData);
 
@@ -92,7 +97,9 @@ describe('UserPrismaMapper', () => {
         false,
       );
 
-      mockUserAggregateFactory.fromPrimitives.mockReturnValue(mockUserAggregate);
+      mockUserAggregateFactory.fromPrimitives.mockReturnValue(
+        mockUserAggregate,
+      );
 
       const result = mapper.toDomainEntity(prismaData);
 
@@ -132,7 +139,9 @@ describe('UserPrismaMapper', () => {
         false,
       );
 
-      mockUserAggregateFactory.fromPrimitives.mockReturnValue(mockUserAggregate);
+      mockUserAggregateFactory.fromPrimitives.mockReturnValue(
+        mockUserAggregate,
+      );
 
       const result = mapper.toDomainEntity(prismaData);
 
@@ -265,4 +274,3 @@ describe('UserPrismaMapper', () => {
     });
   });
 });
-

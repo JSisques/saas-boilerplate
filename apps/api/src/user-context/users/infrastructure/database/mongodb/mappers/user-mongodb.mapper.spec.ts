@@ -281,4 +281,3 @@ describe('UserMongoDBMapper', () => {
     });
   });
 });
-

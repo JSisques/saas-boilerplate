@@ -75,12 +75,12 @@ describe('UserUpdatedEventHandler', () => {
 
       await handler.handle(event);
 
-      expect(mockAssertUserViewModelExsistsService.execute).toHaveBeenCalledWith(
-        userId,
-      );
-      expect(mockAssertUserViewModelExsistsService.execute).toHaveBeenCalledTimes(
-        1,
-      );
+      expect(
+        mockAssertUserViewModelExsistsService.execute,
+      ).toHaveBeenCalledWith(userId);
+      expect(
+        mockAssertUserViewModelExsistsService.execute,
+      ).toHaveBeenCalledTimes(1);
       expect(updateSpy).toHaveBeenCalledWith(updateData);
       expect(mockUserReadRepository.save).toHaveBeenCalledWith(
         existingViewModel,
@@ -110,9 +110,9 @@ describe('UserUpdatedEventHandler', () => {
       mockAssertUserViewModelExsistsService.execute.mockRejectedValue(error);
 
       await expect(handler.handle(event)).rejects.toThrow(error);
-      expect(mockAssertUserViewModelExsistsService.execute).toHaveBeenCalledWith(
-        userId,
-      );
+      expect(
+        mockAssertUserViewModelExsistsService.execute,
+      ).toHaveBeenCalledWith(userId);
       expect(mockUserReadRepository.save).not.toHaveBeenCalled();
     });
 
@@ -248,9 +248,9 @@ describe('UserUpdatedEventHandler', () => {
       await handler.handle(event);
 
       expect(event.aggregateId).toBe(userId);
-      expect(mockAssertUserViewModelExsistsService.execute).toHaveBeenCalledWith(
-        userId,
-      );
+      expect(
+        mockAssertUserViewModelExsistsService.execute,
+      ).toHaveBeenCalledWith(userId);
     });
 
     it('should save view model after updating it', async () => {
@@ -292,7 +292,8 @@ describe('UserUpdatedEventHandler', () => {
       await handler.handle(event);
 
       const assertOrder =
-        mockAssertUserViewModelExsistsService.execute.mock.invocationCallOrder[0];
+        mockAssertUserViewModelExsistsService.execute.mock
+          .invocationCallOrder[0];
       const updateOrder = updateSpy.mock.invocationCallOrder[0];
       const saveOrder = mockUserReadRepository.save.mock.invocationCallOrder[0];
 
@@ -303,4 +304,3 @@ describe('UserUpdatedEventHandler', () => {
     });
   });
 });
-

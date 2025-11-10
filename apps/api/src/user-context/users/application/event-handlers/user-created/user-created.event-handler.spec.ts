@@ -268,4 +268,3 @@ describe('UserCreatedEventHandler', () => {
     });
   });
 });
-

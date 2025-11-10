@@ -115,7 +115,9 @@ describe('UserFindByIdQueryHandler', () => {
           name: new UserNameValueObject('John'),
           lastName: new UserLastNameValueObject('Doe'),
           bio: new UserBioValueObject('Software developer'),
-          avatarUrl: new UserAvatarUrlValueObject('https://example.com/avatar.jpg'),
+          avatarUrl: new UserAvatarUrlValueObject(
+            'https://example.com/avatar.jpg',
+          ),
           role: new UserRoleValueObject(UserRoleEnum.ADMIN),
           status: new UserStatusValueObject(UserStatusEnum.INACTIVE),
         },
