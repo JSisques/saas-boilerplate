@@ -50,7 +50,7 @@ export class SupabaseStorageProviderService implements IStorageProvider {
   async upload(file: Buffer, path: string, mimeType: string): Promise<string> {
     this.logger.log(`Uploading file to Supabase: ${path}`);
 
-    const { data, error } = await this.getClient()
+    const { error } = await this.getClient()
       .storage.from(this.bucketName)
       .upload(path, file, {
         contentType: mimeType,
