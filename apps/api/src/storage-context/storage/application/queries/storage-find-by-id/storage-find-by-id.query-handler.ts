@@ -1,9 +1,6 @@
-import {
-  STORAGE_READ_REPOSITORY_TOKEN,
-  StorageReadRepository,
-} from '@/storage-context/storage/domain/repositories/storage-read.repository';
-import { StorageViewModel } from '@/storage-context/storage/domain/view-models/storage.view-model';
-import { Inject } from '@nestjs/common';
+import { AssertStorageExsistsService } from '@/storage-context/storage/application/services/assert-storage-exsits/assert-storage-exsits.service';
+import { StorageAggregate } from '@/storage-context/storage/domain/aggregate/storage.aggregate';
+import { Logger } from '@nestjs/common';
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { StorageFindByIdQuery } from './storage-find-by-id.query';
 
@@ -11,12 +8,15 @@ import { StorageFindByIdQuery } from './storage-find-by-id.query';
 export class StorageFindByIdQueryHandler
   implements IQueryHandler<StorageFindByIdQuery>
 {
+  private readonly logger = new Logger(StorageFindByIdQueryHandler.name);
+
   constructor(
-    @Inject(STORAGE_READ_REPOSITORY_TOKEN)
-    private readonly storageReadRepository: StorageReadRepository,
+    private readonly assertStorageExsistsService: AssertStorageExsistsService,
   ) {}
 
-  async execute(query: StorageFindByIdQuery): Promise<StorageViewModel | null> {
-    return this.storageReadRepository.findById(query.id.value);
+  async execute(query: StorageFindByIdQuery): Promise<StorageAggregate> {
+    this.logger.log(`Executing storage find by id query: ${query.id.value}`);
+
+    return this.assertStorageExsistsService.execute(query.id.value);
   }
 }

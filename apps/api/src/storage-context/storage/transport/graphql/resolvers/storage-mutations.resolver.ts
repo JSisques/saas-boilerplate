@@ -3,6 +3,7 @@ import { MutationResponseGraphQLMapper } from '@/shared/transport/graphql/mapper
 import { StorageDeleteFileCommand } from '@/storage-context/storage/application/commands/storage-delete-file/storage-delete-file.command';
 import { StorageDownloadFileCommand } from '@/storage-context/storage/application/commands/storage-download-file/storage-download-file.command';
 import { StorageUploadFileCommand } from '@/storage-context/storage/application/commands/storage-upload-file/storage-upload-file.command';
+import { StorageFindByIdQuery } from '@/storage-context/storage/application/queries/storage-find-by-id/storage-find-by-id.query';
 import { StorageDeleteFileRequestDto } from '@/storage-context/storage/transport/graphql/dtos/requests/storage-delete-file.request.dto';
 import { StorageDownloadFileRequestDto } from '@/storage-context/storage/transport/graphql/dtos/requests/storage-download-file.request.dto';
 import { StorageDownloadFileResponseDto } from '@/storage-context/storage/transport/graphql/dtos/responses/storage-download-file.response.dto';
@@ -66,21 +67,29 @@ export class StorageMutationsResolver {
   ): Promise<StorageDownloadFileResponseDto[]> {
     this.logger.log(`Downloading ${input.ids.length} files`);
 
-    const promises = input.ids.map(async (id) => {
-      const fileBuffer = await this.commandBus.execute(
-        new StorageDownloadFileCommand({ id }),
-      );
-      return fileBuffer;
-    });
+    const results = await Promise.all(
+      input.ids.map(async (id) => {
+        // 01: Get storage information first
+        const storage = await this.queryBus.execute(
+          new StorageFindByIdQuery({ id }),
+        );
 
-    const fileBuffers = await Promise.all(promises);
+        // 02: Download file buffer
+        const fileBuffer = await this.commandBus.execute(
+          new StorageDownloadFileCommand({ id }),
+        );
 
-    return fileBuffers.map((fileBuffer) => ({
-      content: fileBuffer.toString('base64'),
-      fileName: fileBuffer.fileName,
-      mimeType: fileBuffer.mimeType,
-      fileSize: fileBuffer.fileSize,
-    }));
+        // 03: Convert buffer to base64 and return with metadata
+        return {
+          content: fileBuffer.toString('base64'),
+          fileName: storage.fileName.value,
+          mimeType: storage.mimeType.value,
+          fileSize: storage.fileSize.value,
+        };
+      }),
+    );
+
+    return results;
   }
 
   @Mutation(() => MutationResponseDto)

@@ -1,10 +1,10 @@
 /**
- * Base Application Exception
- * This is the base class for all application layer exceptions.
- * It provides a common structure for application layer-specific errors.
+ * Base Infrastructure Exception
+ * This is the base class for all infrastructure exceptions.
+ * It provides a common structure for infrastructure-specific errors.
  */
-export class BaseApplicationException extends Error {
-  public readonly layer: string = 'Application';
+export class BaseInfrastructureException extends Error {
+  public readonly layer: string = 'Infrastructure';
   public readonly timestamp: Date;
 
   constructor(message: string) {

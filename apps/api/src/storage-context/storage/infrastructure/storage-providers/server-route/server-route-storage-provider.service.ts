@@ -1,3 +1,6 @@
+import { ServerRouteDeleteFailedException } from '@/storage-context/storage/infrastructure/exceptions/server-route/server-route-delete-failed.exception';
+import { ServerRouteDownloadFailedException } from '@/storage-context/storage/infrastructure/exceptions/server-route/server-route-download-failed.exception';
+import { ServerRouteUploadFailedException } from '@/storage-context/storage/infrastructure/exceptions/server-route/server-route-upload-failed.exception';
 import { IStorageProvider } from '@/storage-context/storage/infrastructure/storage-providers/storage-provider.interface';
 import { HttpService } from '@nestjs/axios';
 import { Injectable, Logger } from '@nestjs/common';
@@ -72,7 +75,7 @@ export class ServerRouteStorageProviderService implements IStorageProvider {
       return response.data.url || response.data.path;
     } catch (error: any) {
       this.logger.error(`Error uploading to server route: ${error.message}`);
-      throw new Error(`Failed to upload file: ${error.message}`);
+      throw new ServerRouteUploadFailedException(path);
     }
   }
 
@@ -99,7 +102,7 @@ export class ServerRouteStorageProviderService implements IStorageProvider {
       this.logger.error(
         `Error downloading from server route: ${error.message}`,
       );
-      throw new Error(`Failed to download file: ${error.message}`);
+      throw new ServerRouteDownloadFailedException(path);
     }
   }
 
@@ -123,7 +126,7 @@ export class ServerRouteStorageProviderService implements IStorageProvider {
       return true;
     } catch (error: any) {
       this.logger.error(`Error deleting from server route: ${error.message}`);
-      throw new Error(`Failed to delete file: ${error.message}`);
+      throw new ServerRouteDeleteFailedException(path);
     }
   }
 

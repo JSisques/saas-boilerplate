@@ -1,3 +1,7 @@
+import { SupabaseDeleteFailedException } from '@/storage-context/storage/infrastructure/exceptions/supabase/supabase-delete-failed.exception';
+import { SupabaseDownloadFailedException } from '@/storage-context/storage/infrastructure/exceptions/supabase/supabase-download-failed.exception';
+import { SupabaseFileNotFoundException } from '@/storage-context/storage/infrastructure/exceptions/supabase/supabase-file-not-found.exception';
+import { SupabaseUploadFailedException } from '@/storage-context/storage/infrastructure/exceptions/supabase/supabase-upload-failed.exception';
 import { IStorageProvider } from '@/storage-context/storage/infrastructure/storage-providers/storage-provider.interface';
 import { Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
@@ -55,31 +59,70 @@ export class SupabaseStorageProviderService implements IStorageProvider {
 
     if (error) {
       this.logger.error(`Error uploading to Supabase: ${error.message}`);
-      throw new Error(`Failed to upload file: ${error.message}`);
+      throw new SupabaseUploadFailedException(path);
     }
 
     return await this.getUrl(path);
   }
 
   /**
+   * Extracts the relative path from a Supabase URL if it's a full URL
+   * @param pathOrUrl - The path or URL of the file
+   * @returns The relative path
+   */
+  private extractRelativePath(pathOrUrl: string): string {
+    // If it's already a relative path, return it
+    if (!pathOrUrl.includes('http')) {
+      return pathOrUrl;
+    }
+
+    // Extract path from Supabase URL
+    // Example: https://xxx.supabase.co/storage/v1/object/public/bucket/file.jpg
+    // Should extract: file.jpg
+    try {
+      const url = new URL(pathOrUrl);
+      const pathParts = url.pathname.split('/');
+      // Find the bucket name and get everything after it
+      const bucketIndex = pathParts.findIndex(
+        (part) => part === this.bucketName,
+      );
+      if (bucketIndex !== -1 && bucketIndex < pathParts.length - 1) {
+        return decodeURIComponent(pathParts.slice(bucketIndex + 1).join('/'));
+      }
+      // Fallback: try to extract from the last part
+      const lastPart = pathParts[pathParts.length - 1];
+      return lastPart ? decodeURIComponent(lastPart) : pathOrUrl;
+    } catch {
+      // If URL parsing fails, return as is (might be a relative path)
+      return pathOrUrl;
+    }
+  }
+
+  /**
    * Downloads a file from the Supabase storage provider
-   * @param path - The path of the file to download
+   * @param path - The path of the file to download (can be URL or relative path)
    * @returns The file buffer
    */
   async download(path: string): Promise<Buffer> {
-    this.logger.log(`Downloading file from Supabase: ${path}`);
+    // Extract relative path from URL if needed
+    const relativePath = this.extractRelativePath(path);
+    this.logger.log(
+      `Downloading file from Supabase: ${relativePath} (original: ${path})`,
+    );
 
     const { data, error } = await this.getClient()
       .storage.from(this.bucketName)
-      .download(path);
+      .download(relativePath);
 
     if (error) {
-      this.logger.error(`Error downloading from Supabase: ${error.message}`);
-      throw new Error(`Failed to download file: ${error.message}`);
+      this.logger.error(
+        `Error downloading from Supabase: ${JSON.stringify(error)}`,
+      );
+      throw new SupabaseDownloadFailedException(relativePath);
     }
 
     if (!data) {
-      throw new Error('File not found');
+      throw new SupabaseFileNotFoundException(relativePath);
     }
 
     const arrayBuffer = await data.arrayBuffer();
@@ -92,15 +135,19 @@ export class SupabaseStorageProviderService implements IStorageProvider {
    * @returns True if the file was deleted successfully
    */
   async delete(path: string): Promise<boolean> {
-    this.logger.log(`Deleting file from Supabase: ${path}`);
+    // Extract relative path from URL if needed
+    const relativePath = this.extractRelativePath(path);
+    this.logger.log(
+      `Deleting file from Supabase: ${relativePath} (original: ${path})`,
+    );
 
     const { error } = await this.getClient()
       .storage.from(this.bucketName)
-      .remove([path]);
+      .remove([relativePath]);
 
     if (error) {
       this.logger.error(`Error deleting from Supabase: ${error.message}`);
-      throw new Error(`Failed to delete file: ${error.message}`);
+      throw new SupabaseDeleteFailedException(relativePath);
     }
 
     return true;

@@ -8,7 +8,6 @@ export class StorageFileNameValueObject extends StringValueObject {
   constructor(value: string) {
     super(value, {
       minLength: 1,
-      maxLength: 255,
       allowEmpty: false,
       trim: true,
     });

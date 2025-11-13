@@ -5,6 +5,9 @@ import { StorageUploadFileCommandHandler } from '@/storage-context/storage/appli
 import { StorageUploadedEventHandler } from '@/storage-context/storage/application/event-handlers/storage-uploaded/storage-uploaded.event-handler';
 import { StorageFindByCriteriaQueryHandler } from '@/storage-context/storage/application/queries/storage-find-by-criteria/storage-find-by-criteria.query-handler';
 import { StorageFindByIdQueryHandler } from '@/storage-context/storage/application/queries/storage-find-by-id/storage-find-by-id.query-handler';
+import { StorageViewModelFindByIdQueryHandler } from '@/storage-context/storage/application/queries/storage-view-model-find-by-id/storage-view-model-find-by-id.query-handler';
+import { AssertStorageExsistsService } from '@/storage-context/storage/application/services/assert-storage-exsits/assert-storage-exsits.service';
+import { AssertStorageViewModelExsistsService } from '@/storage-context/storage/application/services/assert-storage-view-model-exsits/assert-storage-view-model-exsits.service';
 import { StorageProviderEnum } from '@/storage-context/storage/domain/enums/storage-provider.enum';
 import { StorageAggregateFactory } from '@/storage-context/storage/domain/factories/storage-aggregate.factory';
 import { StorageViewModelFactory } from '@/storage-context/storage/domain/factories/storage-view-model.factory';
@@ -32,11 +35,14 @@ const SERVICES = [
   SupabaseStorageProviderService,
   ServerRouteStorageProviderService,
   StorageProviderFactoryService,
+  AssertStorageExsistsService,
+  AssertStorageViewModelExsistsService,
 ];
 
 const QUERY_HANDLERS = [
   StorageFindByIdQueryHandler,
   StorageFindByCriteriaQueryHandler,
+  StorageViewModelFindByIdQueryHandler,
 ];
 
 const COMMAND_HANDLERS = [

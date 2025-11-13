@@ -41,14 +41,17 @@ export class StorageUploadFileCommandHandler
     const provider = this.storageProviderFactory.getDefaultProvider();
     const providerType = this.storageProviderFactory.getProviderType(provider);
 
-    // 02: Upload file to storage provider
+    // 02: Use fileName as the relative path for storage
+    const relativePath = command.fileName.value;
+
+    // 03: Upload file to storage provider
     const url = await provider.upload(
       command.buffer,
-      command.fileName.value,
+      relativePath,
       command.mimetype.value,
     );
 
-    // 03: Create the storage entity
+    // 04: Create the storage entity
     const storage = this.storageAggregateFactory.create({
       id: new StorageUuidValueObject(),
       fileName: command.fileName,
@@ -56,7 +59,7 @@ export class StorageUploadFileCommandHandler
       mimeType: command.mimetype,
       provider: new StorageProviderValueObject(providerType),
       url: new StorageUrlValueObject(url),
-      path: new StoragePathValueObject(url),
+      path: new StoragePathValueObject(relativePath),
     });
 
     // 04: Save the storage entity

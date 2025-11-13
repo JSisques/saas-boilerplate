@@ -1,3 +1,6 @@
+import { S3DeleteFailedException } from '@/storage-context/storage/infrastructure/exceptions/s3/s3-delete-failed.exception';
+import { S3DownloadFailedException } from '@/storage-context/storage/infrastructure/exceptions/s3/s3-download-failed.exception';
+import { S3UploadFailedException } from '@/storage-context/storage/infrastructure/exceptions/s3/s3-upload-failed.exception';
 import { IStorageProvider } from '@/storage-context/storage/infrastructure/storage-providers/storage-provider.interface';
 import {
   DeleteObjectCommand,
@@ -63,16 +66,21 @@ export class S3StorageProviderService implements IStorageProvider {
   async upload(file: Buffer, path: string, mimeType: string): Promise<string> {
     this.logger.log(`Uploading file to S3: ${path}`);
 
-    const command = new PutObjectCommand({
-      Bucket: this.bucketName,
-      Key: path,
-      Body: file,
-      ContentType: mimeType,
-    });
+    try {
+      const command = new PutObjectCommand({
+        Bucket: this.bucketName,
+        Key: path,
+        Body: file,
+        ContentType: mimeType,
+      });
 
-    await this.getClient().send(command);
+      await this.getClient().send(command);
 
-    return await this.getUrl(path);
+      return await this.getUrl(path);
+    } catch (error: any) {
+      this.logger.error(`Error uploading to S3: ${error.message}`);
+      throw new S3UploadFailedException(path);
+    }
   }
 
   /**
@@ -83,21 +91,26 @@ export class S3StorageProviderService implements IStorageProvider {
   async download(path: string): Promise<Buffer> {
     this.logger.log(`Downloading file from S3: ${path}`);
 
-    const command = new GetObjectCommand({
-      Bucket: this.bucketName,
-      Key: path,
-    });
+    try {
+      const command = new GetObjectCommand({
+        Bucket: this.bucketName,
+        Key: path,
+      });
 
-    const response = await this.getClient().send(command);
-    const chunks: Uint8Array[] = [];
+      const response = await this.getClient().send(command);
+      const chunks: Uint8Array[] = [];
 
-    if (response.Body) {
-      for await (const chunk of response.Body as any) {
-        chunks.push(chunk);
+      if (response.Body) {
+        for await (const chunk of response.Body as any) {
+          chunks.push(chunk);
+        }
       }
-    }
 
-    return Buffer.concat(chunks);
+      return Buffer.concat(chunks);
+    } catch (error: any) {
+      this.logger.error(`Error downloading from S3: ${error.message}`);
+      throw new S3DownloadFailedException(path);
+    }
   }
 
   /**
@@ -108,13 +121,18 @@ export class S3StorageProviderService implements IStorageProvider {
   async delete(path: string): Promise<boolean> {
     this.logger.log(`Deleting file from S3: ${path}`);
 
-    const command = new DeleteObjectCommand({
-      Bucket: this.bucketName,
-      Key: path,
-    });
+    try {
+      const command = new DeleteObjectCommand({
+        Bucket: this.bucketName,
+        Key: path,
+      });
 
-    await this.getClient().send(command);
-    return true;
+      await this.getClient().send(command);
+      return true;
+    } catch (error: any) {
+      this.logger.error(`Error deleting from S3: ${error.message}`);
+      throw new S3DeleteFailedException(path);
+    }
   }
 
   /**
