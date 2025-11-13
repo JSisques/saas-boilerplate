@@ -1,10 +1,10 @@
 /**
  * Base Application Exception
- * This is the base class for all application exceptions.
- * It provides a common structure for application-specific errors.
+ * This is the base class for all application layer exceptions.
+ * It provides a common structure for application layer-specific errors.
  */
 export class BaseApplicationException extends Error {
-  public readonly domain: string = 'Application';
+  public readonly layer: string = 'Application';
   public readonly timestamp: Date;
 
   constructor(message: string) {
@@ -18,7 +18,7 @@ export class BaseApplicationException extends Error {
    * @returns A formatted error description
    */
   public getDetailedMessage(): string {
-    return `[${this.domain}] ${this.name}: ${this.message}`;
+    return `[${this.layer}] ${this.name}: ${this.message}`;
   }
 
   /**
@@ -29,7 +29,7 @@ export class BaseApplicationException extends Error {
     return {
       name: this.name,
       message: this.message,
-      domain: this.domain,
+      layer: this.layer,
       timestamp: this.timestamp.toISOString(),
       stack: this.stack,
     };
