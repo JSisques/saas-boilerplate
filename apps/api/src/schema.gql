@@ -290,6 +290,12 @@ type PaginatedPromptResultDto {
   items: [PromptResponseDto!]!
 }
 
+type MutationResponseArrayDto {
+  success: Boolean!
+  message: String
+  ids: [String!]
+}
+
 type StorageDownloadFileResponseDto {
   """The file content as base64"""
   content: String!
@@ -743,7 +749,7 @@ type Mutation {
   promptDeprecate(input: PromptDeprecateRequestDto!): MutationResponseDto!
   storageUploadFile(file: Upload!): MutationResponseDto!
   storageDownloadFiles(input: StorageDownloadFileRequestDto!): [StorageDownloadFileResponseDto!]!
-  storageDeleteFile(input: StorageDeleteFileRequestDto!): MutationResponseDto!
+  storageDeleteFile(input: StorageDeleteFileRequestDto!): MutationResponseArrayDto!
 }
 
 input EventReplayRequestDto {
@@ -1261,6 +1267,6 @@ input StorageDownloadFileRequestDto {
 }
 
 input StorageDeleteFileRequestDto {
-  """The unique identifier of the storage"""
-  id: String!
+  """The unique identifiers of the storages"""
+  ids: [String!]!
 }

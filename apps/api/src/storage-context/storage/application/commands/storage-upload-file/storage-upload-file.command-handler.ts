@@ -65,11 +65,14 @@ export class StorageUploadFileCommandHandler
     // 04: Save the storage entity
     await this.storageWriteRepository.save(storage);
 
-    // 05: Publish all events
+    // 05: Mark as uploaded and publish event
+    storage.markAsUploaded();
+
+    // 06: Publish all events
     await this.eventBus.publishAll(storage.getUncommittedEvents());
     await storage.commit();
 
-    // 06: Return the storage id
+    // 07: Return the storage id
     return storage.id.value;
   }
 }

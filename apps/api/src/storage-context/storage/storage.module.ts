@@ -2,6 +2,7 @@ import { SharedModule } from '@/shared/shared.module';
 import { StorageDeleteFileCommandHandler } from '@/storage-context/storage/application/commands/storage-delete-file/storage-delete-file.command-handler';
 import { StorageDownloadFileCommandHandler } from '@/storage-context/storage/application/commands/storage-download-file/storage-download-file.command-handler';
 import { StorageUploadFileCommandHandler } from '@/storage-context/storage/application/commands/storage-upload-file/storage-upload-file.command-handler';
+import { StorageFileDeletedEventHandler } from '@/storage-context/storage/application/event-handlers/storage-file-deleted/storage-file-deleted.event-handler';
 import { StorageUploadedEventHandler } from '@/storage-context/storage/application/event-handlers/storage-uploaded/storage-uploaded.event-handler';
 import { StorageFindByCriteriaQueryHandler } from '@/storage-context/storage/application/queries/storage-find-by-criteria/storage-find-by-criteria.query-handler';
 import { StorageFindByIdQueryHandler } from '@/storage-context/storage/application/queries/storage-find-by-id/storage-find-by-id.query-handler';
@@ -51,7 +52,10 @@ const COMMAND_HANDLERS = [
   StorageDeleteFileCommandHandler,
 ];
 
-const EVENT_HANDLERS = [StorageUploadedEventHandler];
+const EVENT_HANDLERS = [
+  StorageUploadedEventHandler,
+  StorageFileDeletedEventHandler,
+];
 
 const FACTORIES = [StorageAggregateFactory, StorageViewModelFactory];
 

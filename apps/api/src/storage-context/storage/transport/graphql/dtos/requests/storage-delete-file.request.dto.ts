@@ -1,13 +1,14 @@
 import { Field, InputType } from '@nestjs/graphql';
-import { IsNotEmpty, IsUUID } from 'class-validator';
+import { IsArray, IsNotEmpty, IsUUID } from 'class-validator';
 
 @InputType('StorageDeleteFileRequestDto')
 export class StorageDeleteFileRequestDto {
-  @Field(() => String, {
-    description: 'The unique identifier of the storage',
+  @Field(() => [String], {
+    description: 'The unique identifiers of the storages',
     nullable: false,
   })
-  @IsUUID()
+  @IsArray()
+  @IsUUID(4, { each: true })
   @IsNotEmpty()
-  id: string;
+  ids: string[];
 }

@@ -1,10 +1,12 @@
+import { AssertStorageExsistsService } from '@/storage-context/storage/application/services/assert-storage-exsits/assert-storage-exsits.service';
+import { AssertStorageViewModelExsistsService } from '@/storage-context/storage/application/services/assert-storage-view-model-exsits/assert-storage-view-model-exsits.service';
 import {
   STORAGE_WRITE_REPOSITORY_TOKEN,
   StorageWriteRepository,
 } from '@/storage-context/storage/domain/repositories/storage-write.repository';
 import { StorageProviderFactoryService } from '@/storage-context/storage/infrastructure/storage-providers/storage-provider-factory.service';
 import { Inject, Logger } from '@nestjs/common';
-import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
+import { CommandHandler, EventBus, ICommandHandler } from '@nestjs/cqrs';
 import { StorageDeleteFileCommand } from './storage-delete-file.command';
 
 @CommandHandler(StorageDeleteFileCommand)
@@ -17,6 +19,9 @@ export class StorageDeleteFileCommandHandler
     @Inject(STORAGE_WRITE_REPOSITORY_TOKEN)
     private readonly storageWriteRepository: StorageWriteRepository,
     private readonly storageProviderFactory: StorageProviderFactoryService,
+    private readonly assertStorageExsistsService: AssertStorageExsistsService,
+    private readonly assertStorageViewModelExsistsService: AssertStorageViewModelExsistsService,
+    private readonly eventBus: EventBus,
   ) {}
 
   /**
@@ -30,29 +35,30 @@ export class StorageDeleteFileCommandHandler
       `Executing storage delete file command: ${command.id.value}`,
     );
 
-    // 01: Find the storage entity
-    const storage = await this.storageWriteRepository.findById(
+    // 01: Check if the storage exists
+    const existingStorage = await this.assertStorageExsistsService.execute(
       command.id.value,
     );
 
-    if (!storage) {
-      this.logger.error(`Storage not found: ${command.id.value}`);
-      // TODO: Throw a specific exception
-      throw new Error('Storage not found');
-    }
-
     // 02: Get the storage provider
     const provider = this.storageProviderFactory.getProvider(
-      storage.provider.value as any,
+      existingStorage.provider.value as any,
     );
 
     // 03: Delete file from storage provider
-    await provider.delete(storage.path.value);
+    await provider.delete(existingStorage.path.value);
 
     // 04: Delete the storage entity from database
-    await this.storageWriteRepository.delete(storage.id.value);
+    await this.storageWriteRepository.delete(existingStorage.id.value);
 
-    // 05: Return success
+    // 05: Delete the storage entity
+    existingStorage.delete();
+
+    // 06: Mark as deleted and publish event
+    await this.eventBus.publishAll(existingStorage.getUncommittedEvents());
+    await existingStorage.commit();
+
+    // 07: Return success
     return true;
   }
 }

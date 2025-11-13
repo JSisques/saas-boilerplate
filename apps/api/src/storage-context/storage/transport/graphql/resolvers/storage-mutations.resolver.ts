@@ -1,3 +1,4 @@
+import { MutationResponseArrayDto } from '@/shared/transport/graphql/dtos/success-response-array.dto';
 import { MutationResponseDto } from '@/shared/transport/graphql/dtos/success-response.dto';
 import { MutationResponseGraphQLMapper } from '@/shared/transport/graphql/mappers/mutation-response.mapper';
 import { StorageDeleteFileCommand } from '@/storage-context/storage/application/commands/storage-delete-file/storage-delete-file.command';
@@ -92,22 +93,23 @@ export class StorageMutationsResolver {
     return results;
   }
 
-  @Mutation(() => MutationResponseDto)
+  @Mutation(() => MutationResponseArrayDto)
   async storageDeleteFile(
     @Args('input') input: StorageDeleteFileRequestDto,
-  ): Promise<MutationResponseDto> {
-    this.logger.log(`Deleting file: ${input.id}`);
+  ): Promise<MutationResponseArrayDto> {
+    this.logger.log(`Deleting ${input.ids.length} files`);
 
-    // 01: Send the command to the command bus
-    await this.commandBus.execute(
-      new StorageDeleteFileCommand({ id: input.id }),
+    await Promise.all(
+      input.ids.map(async (id) => {
+        // 01: Delete file
+        await this.commandBus.execute(new StorageDeleteFileCommand({ id }));
+      }),
     );
 
-    // 02: Return success response
-    return this.mutationResponseGraphQLMapper.toResponseDto({
+    return this.mutationResponseGraphQLMapper.toResponseDtoArray({
       success: true,
-      message: 'File deleted successfully',
-      id: input.id,
+      message: 'Files deleted successfully',
+      ids: input.ids,
     });
   }
 }
