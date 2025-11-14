@@ -20,7 +20,7 @@ import type { Sort } from "@repo/ui/components/ui/data-table";
 import { DownloadIcon, PlusIcon, TrashIcon, UploadIcon } from "lucide-react";
 import { useState } from "react";
 
-const UserPage = () => {
+const UsersPage = () => {
   const [search, setSearch] = useState("");
   const [filters, setFilters] = useState<DynamicFilter[]>([]);
   const [sorts, setSorts] = useState<Sort[]>([]);
@@ -119,4 +119,4 @@ const UserPage = () => {
   );
 };
 
-export default UserPage;
+export default UsersPage;
