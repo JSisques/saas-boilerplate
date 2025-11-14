@@ -1,4 +1,12 @@
-import { config } from "@repo/eslint-config/react-internal";
+import { defineConfig, globalIgnores } from "eslint/config";
 
-/** @type {import("eslint").Linter.Config} */
-export default config;
+const eslintConfig = defineConfig([
+  globalIgnores([
+    // Default ignores of eslint-config-next:
+    "dist/**",
+    "node_modules/**",
+    "src/components/ui/**",
+  ]),
+]);
+
+export default eslintConfig;
