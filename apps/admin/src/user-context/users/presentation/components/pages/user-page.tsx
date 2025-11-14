@@ -1,6 +1,7 @@
 "use client";
 
 import { FilterOperator } from "@/shared/domain/enums/filter-operator.enum";
+import { SortDirection } from "@/shared/domain/enums/sort-direction.enum";
 import { PageHeader } from "@/shared/presentation/components/organisms/page-header/page-header";
 import {
   TableLayout,
@@ -15,12 +16,14 @@ import { UsersTable } from "@/user-context/users/presentation/components/organis
 import { useUserFilterFields } from "@/user-context/users/presentation/hooks/use-user-filter-fields";
 import { useUsers } from "@/user-context/users/presentation/hooks/use-users";
 import { Button } from "@repo/ui/components/ui/button";
+import type { Sort } from "@repo/ui/components/ui/data-table";
 import { DownloadIcon, PlusIcon, TrashIcon, UploadIcon } from "lucide-react";
 import { useState } from "react";
 
 const UserPage = () => {
   const [search, setSearch] = useState("");
   const [filters, setFilters] = useState<DynamicFilter[]>([]);
+  const [sorts, setSorts] = useState<Sort[]>([]);
   const [page, setPage] = useState(1);
   const [perPage, setPerPage] = useState(10);
 
@@ -42,9 +45,16 @@ const UserPage = () => {
     searchOperator: FilterOperator.LIKE,
   });
 
+  // Convert sorts to API format
+  const apiSorts = sorts.map((sort) => ({
+    field: sort.field,
+    direction: sort.direction as SortDirection,
+  }));
+
   const { data, isLoading, error } = useUsers({
     pagination: { page, perPage },
     filters: apiFilters,
+    sorts: apiSorts.length > 0 ? apiSorts : undefined,
   });
 
   if (error) {
@@ -98,7 +108,11 @@ const UserPage = () => {
             <div className="text-sm text-muted-foreground">Loading...</div>
           </div>
         ) : (
-          <UsersTable users={data?.items || []} />
+          <UsersTable
+            users={data?.items || []}
+            sorts={sorts}
+            onSortChange={setSorts}
+          />
         )}
       </TableLayout>
     </PageTemplate>

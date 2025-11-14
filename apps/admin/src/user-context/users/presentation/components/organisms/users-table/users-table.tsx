@@ -6,6 +6,7 @@ import {
 } from "@/shared/presentation/components/organisms/table-layout/table-layout";
 import { userTableColumns } from "@/user-context/users/presentation/components/organisms/users-table-columns/users-table-columns";
 import type { UserResponse } from "@repo/sdk";
+import type { Sort } from "@repo/ui/components/ui/data-table";
 import { DataTable } from "@repo/ui/components/ui/data-table";
 
 interface UsersTableProps {
@@ -18,6 +19,8 @@ interface UsersTableProps {
   page?: number;
   totalPages?: number;
   onPageChange?: (page: number) => void;
+  sorts?: Sort[];
+  onSortChange?: (sorts: Sort[]) => void;
 }
 
 export function UsersTable({
@@ -30,6 +33,8 @@ export function UsersTable({
   page,
   totalPages,
   onPageChange,
+  sorts,
+  onSortChange,
 }: UsersTableProps) {
   return (
     <TableLayout
@@ -46,6 +51,8 @@ export function UsersTable({
         columns={userTableColumns}
         getRowId={(user) => user.id}
         onRowClick={onUserClick ? (user) => onUserClick(user.id) : undefined}
+        sorts={sorts}
+        onSortChange={onSortChange}
         emptyMessage="No users found"
         className={className}
       />

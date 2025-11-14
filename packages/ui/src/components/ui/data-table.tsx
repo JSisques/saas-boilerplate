@@ -1,4 +1,5 @@
 import * as React from "react";
+import { ArrowDown, ArrowUp, ArrowUpDown } from "lucide-react";
 import {
   Table,
   TableBody,
@@ -8,6 +9,13 @@ import {
   TableRow,
 } from "./table";
 import { cn } from "../../lib/utils";
+
+export type SortDirection = "ASC" | "DESC";
+
+export interface Sort {
+  field: string;
+  direction: SortDirection;
+}
 
 export interface ColumnDef<T> {
   /**
@@ -26,6 +34,14 @@ export interface ColumnDef<T> {
    * Custom cell renderer. If provided, this takes precedence over accessor
    */
   cell?: (row: T) => React.ReactNode;
+  /**
+   * Whether this column is sortable
+   */
+  sortable?: boolean;
+  /**
+   * Field name to use for sorting (defaults to column id)
+   */
+  sortField?: string;
   /**
    * Additional className for the header cell
    */
@@ -53,6 +69,14 @@ export interface DataTableProps<T> {
    * Callback when a row is clicked
    */
   onRowClick?: (row: T) => void;
+  /**
+   * Current sort configuration
+   */
+  sorts?: Sort[];
+  /**
+   * Callback when sort changes
+   */
+  onSortChange?: (sorts: Sort[]) => void;
   /**
    * Message to display when there's no data
    */
@@ -102,10 +126,52 @@ export function DataTable<T extends Record<string, any>>({
   columns,
   getRowId,
   onRowClick,
+  sorts = [],
+  onSortChange,
   emptyMessage = "No data found",
   className,
   rowClassName,
 }: DataTableProps<T>) {
+  const handleSort = (column: ColumnDef<T>) => {
+    if (!column.sortable || !onSortChange) return;
+
+    const sortField = column.sortField || column.id;
+    const currentSort = sorts.find((s) => s.field === sortField);
+
+    let newSorts: Sort[];
+
+    if (!currentSort) {
+      // No sort for this column, add ASC
+      newSorts = [...sorts, { field: sortField, direction: "ASC" }];
+    } else if (currentSort.direction === "ASC") {
+      // Change from ASC to DESC
+      newSorts = sorts.map((s) =>
+        s.field === sortField ? { ...s, direction: "DESC" } : s
+      );
+    } else {
+      // Remove sort (DESC -> no sort)
+      newSorts = sorts.filter((s) => s.field !== sortField);
+    }
+
+    onSortChange(newSorts);
+  };
+
+  const getSortIcon = (column: ColumnDef<T>) => {
+    if (!column.sortable) return null;
+
+    const sortField = column.sortField || column.id;
+    const currentSort = sorts.find((s) => s.field === sortField);
+
+    if (!currentSort) {
+      return <ArrowUpDown className="ml-2 h-4 w-4 opacity-50" />;
+    }
+
+    return currentSort.direction === "ASC" ? (
+      <ArrowUp className="ml-2 h-4 w-4" />
+    ) : (
+      <ArrowDown className="ml-2 h-4 w-4" />
+    );
+  };
   const getRowKey = (row: T, index: number): string | number => {
     if (getRowId) {
       return getRowId(row);
@@ -153,8 +219,18 @@ export function DataTable<T extends Record<string, any>>({
       <TableHeader>
         <TableRow>
           {columns.map((column) => (
-            <TableHead key={column.id} className={column.headerClassName}>
-              {column.header}
+            <TableHead
+              key={column.id}
+              className={cn(
+                column.headerClassName,
+                column.sortable && onSortChange && "cursor-pointer select-none hover:bg-muted/50"
+              )}
+              onClick={() => handleSort(column)}
+            >
+              <div className="flex items-center">
+                {column.header}
+                {getSortIcon(column)}
+              </div>
             </TableHead>
           ))}
         </TableRow>
