@@ -1,4 +1,4 @@
-import { InvalidEnumValueException } from '@/shared/domain/exceptions/value-objects/invalid-enum-value.exception';
+import { InvalidEnumValueException } from "@/shared/domain/exceptions/value-objects/invalid-enum-value.exception";
 
 /**
  * Enum Value Object
@@ -57,7 +57,7 @@ export abstract class EnumValueObject<
    */
   public getKey(): string | undefined {
     return Object.keys(this.enumObject).find(
-      (key) => this.enumObject[key] === this._value,
+      (key) => this.enumObject[key] === this._value
     );
   }
 
@@ -152,7 +152,7 @@ export abstract class EnumValueObject<
 
     // Convert camelCase/PascalCase to readable format
     return key
-      .replace(/([A-Z])/g, ' $1')
+      .replace(/([A-Z])/g, " $1")
       .replace(/^./, (str) => str.toUpperCase())
       .trim();
   }
@@ -166,9 +166,9 @@ export abstract class EnumValueObject<
     if (!key) return this._value.toLowerCase();
 
     return key
-      .replace(/([A-Z])/g, '-$1')
+      .replace(/([A-Z])/g, "-$1")
       .toLowerCase()
-      .replace(/^-/, '');
+      .replace(/^-/, "");
   }
 
   /**
@@ -180,9 +180,9 @@ export abstract class EnumValueObject<
     if (!key) return this._value.toUpperCase();
 
     return key
-      .replace(/([A-Z])/g, '_$1')
+      .replace(/([A-Z])/g, "_$1")
       .toUpperCase()
-      .replace(/^_/, '');
+      .replace(/^_/, "");
   }
 
   /**
@@ -191,7 +191,7 @@ export abstract class EnumValueObject<
    * @returns A new instance with the specified value
    */
   public withValue(value: string): this {
-    return new (this.constructor as any)(value);
+    return new (this.constructor as new (value: string) => this)(value);
   }
 
   /**
@@ -259,27 +259,27 @@ export abstract class EnumValueObject<
    * @param json - JSON string or object
    * @returns A new enum value object
    */
-  public static fromJSON<T extends EnumValueObject<any>>(
-    this: new (value: string) => T,
-    json: string | object,
-  ): T {
-    const data = typeof json === 'string' ? JSON.parse(json) : json;
+  public static fromJSON<
+    T extends EnumValueObject<Record<string, string | number>>,
+  >(this: new (value: string) => T, json: string | { value: string }): T {
+    const data =
+      typeof json === "string" ? (JSON.parse(json) as { value: string }) : json;
     return new this(data.value);
   }
 
   protected abstract get enumObject(): T;
 
   protected validate(value: string): void {
-    if (!value || value.trim() === '') {
+    if (!value || value.trim() === "") {
       throw new InvalidEnumValueException(
-        `Enum value cannot be empty for ${this.constructor.name}`,
+        `Enum value cannot be empty for ${this.constructor.name}`
       );
     }
 
     const enumValues = Object.values(this.enumObject);
     if (!enumValues.includes(value)) {
       throw new InvalidEnumValueException(
-        `Invalid value for ${this.constructor.name}: ${value}. Valid values are: ${enumValues.join(', ')}`,
+        `Invalid value for ${this.constructor.name}: ${value}. Valid values are: ${enumValues.join(", ")}`
       );
     }
   }

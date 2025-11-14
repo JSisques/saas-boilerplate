@@ -1,4 +1,15 @@
-import { InvalidJsonException } from '@/shared/domain/exceptions/value-objects/invalid-json.exception';
+import { InvalidJsonException } from "@/shared/domain/exceptions/value-objects/invalid-json.exception";
+
+/**
+ * Type representing a valid JSON value
+ */
+type JsonValue =
+  | string
+  | number
+  | boolean
+  | null
+  | JsonValue[]
+  | { [key: string]: JsonValue };
 
 /**
  * JSON Value Object
@@ -9,23 +20,23 @@ import { InvalidJsonException } from '@/shared/domain/exceptions/value-objects/i
  * @returns A new instance of the JsonValueObject.
  */
 export class JsonValueObject {
-  private readonly _value: Record<string, any>;
+  private readonly _value: Record<string, JsonValue>;
 
   constructor(
-    value?: Record<string, any> | string,
+    value?: Record<string, JsonValue> | string,
     private readonly options: {
       allowEmpty?: boolean;
       maxDepth?: number;
       requiredKeys?: string[];
       allowedKeys?: string[];
-      schema?: Record<string, any>;
-    } = {},
+      schema?: Record<string, string>;
+    } = {}
   ) {
     this._value = this.processValue(value);
     this.validate();
   }
 
-  public get value(): Record<string, any> {
+  public get value(): Record<string, JsonValue> {
     return this._value;
   }
 
@@ -87,7 +98,7 @@ export class JsonValueObject {
    * @param key - The key to get
    * @returns The value or undefined
    */
-  public get(key: string): any {
+  public get(key: string): JsonValue | undefined {
     return this._value[key];
   }
 
@@ -97,7 +108,7 @@ export class JsonValueObject {
    * @param defaultValue - The default value if key doesn't exist
    * @returns The value or default value
    */
-  public getOrDefault(key: string, defaultValue: any): any {
+  public getOrDefault(key: string, defaultValue: JsonValue): JsonValue {
     return this._value[key] ?? defaultValue;
   }
 
@@ -113,7 +124,7 @@ export class JsonValueObject {
    * Gets all values in the JSON
    * @returns Array of values
    */
-  public values(): any[] {
+  public values(): JsonValue[] {
     return Object.values(this._value);
   }
 
@@ -121,7 +132,7 @@ export class JsonValueObject {
    * Gets all entries in the JSON
    * @returns Array of [key, value] pairs
    */
-  public entries(): [string, any][] {
+  public entries(): [string, JsonValue][] {
     return Object.entries(this._value);
   }
 
@@ -138,7 +149,7 @@ export class JsonValueObject {
     }
     return new JsonValueObject(
       { ...this._value, ...other.value },
-      this.options,
+      this.options
     );
   }
 
@@ -148,7 +159,7 @@ export class JsonValueObject {
    * @returns A new JsonValueObject with filtered keys
    */
   public pick(keys: string[]): JsonValueObject {
-    const picked: Record<string, any> = {};
+    const picked: Record<string, JsonValue> = {};
     keys.forEach((key) => {
       if (key in this._value) {
         picked[key] = this._value[key];
@@ -163,7 +174,7 @@ export class JsonValueObject {
    * @returns A new JsonValueObject without the specified keys
    */
   public omit(keys: string[]): JsonValueObject {
-    const omitted: Record<string, any> = { ...this._value };
+    const omitted: Record<string, JsonValue> = { ...this._value };
     keys.forEach((key) => {
       delete omitted[key];
     });
@@ -176,9 +187,9 @@ export class JsonValueObject {
    * @returns A new JsonValueObject with transformed data
    */
   public transform(
-    transformer: (key: string, value: any) => [string, any],
+    transformer: (key: string, value: JsonValue) => [string, JsonValue]
   ): JsonValueObject {
-    const transformed: Record<string, any> = {};
+    const transformed: Record<string, JsonValue> = {};
     Object.entries(this._value).forEach(([key, value]) => {
       const [newKey, newValue] = transformer(key, value);
       transformed[newKey] = newValue;
@@ -192,9 +203,9 @@ export class JsonValueObject {
    * @returns A new JsonValueObject with filtered data
    */
   public filter(
-    predicate: (key: string, value: any) => boolean,
+    predicate: (key: string, value: JsonValue) => boolean
   ): JsonValueObject {
-    const filtered: Record<string, any> = {};
+    const filtered: Record<string, JsonValue> = {};
     Object.entries(this._value).forEach(([key, value]) => {
       if (predicate(key, value)) {
         filtered[key] = value;
@@ -208,7 +219,7 @@ export class JsonValueObject {
    * @param schema - The schema to validate against
    * @returns True if valid, false otherwise
    */
-  public validateSchema(schema: Record<string, any>): boolean {
+  public validateSchema(schema: Record<string, string>): boolean {
     return this.validateAgainstSchema(this._value, schema);
   }
 
@@ -217,8 +228,13 @@ export class JsonValueObject {
    * @param path - The dot notation path (e.g., 'user.profile.name')
    * @returns The nested value or undefined
    */
-  public getNested(path: string): any {
-    return path.split('.').reduce((obj, key) => obj?.[key], this._value);
+  public getNested(path: string): JsonValue | undefined {
+    return path.split(".").reduce<JsonValue | undefined>((obj, key) => {
+      if (obj && typeof obj === "object" && !Array.isArray(obj) && key in obj) {
+        return (obj as Record<string, JsonValue>)[key];
+      }
+      return undefined;
+    }, this._value);
   }
 
   /**
@@ -227,15 +243,19 @@ export class JsonValueObject {
    * @param value - The value to set
    * @returns A new JsonValueObject with the nested value set
    */
-  public setNested(path: string, value: any): JsonValueObject {
+  public setNested(path: string, value: JsonValue): JsonValueObject {
     const newValue = { ...this._value };
-    const keys = path.split('.');
+    const keys = path.split(".");
     const lastKey = keys.pop()!;
-    const target = keys.reduce((obj, key) => {
-      if (!(key in obj)) {
+    const target = keys.reduce<Record<string, JsonValue>>((obj, key) => {
+      if (
+        !(key in obj) ||
+        typeof obj[key] !== "object" ||
+        Array.isArray(obj[key])
+      ) {
         obj[key] = {};
       }
-      return obj[key];
+      return obj[key] as Record<string, JsonValue>;
     }, newValue);
     target[lastKey] = value;
     return new JsonValueObject(newValue, this.options);
@@ -250,36 +270,36 @@ export class JsonValueObject {
     if (deep) {
       return new JsonValueObject(
         JSON.parse(JSON.stringify(this._value)),
-        this.options,
+        this.options
       );
     }
     return new JsonValueObject({ ...this._value }, this.options);
   }
 
   private processValue(
-    value: Record<string, any> | string | undefined,
-  ): Record<string, any> {
+    value: Record<string, JsonValue> | string | undefined
+  ): Record<string, JsonValue> {
     if (value === undefined || value === null) {
       return {};
     }
 
-    if (typeof value === 'string') {
+    if (typeof value === "string") {
       try {
         const parsed = JSON.parse(value);
-        if (typeof parsed !== 'object' || Array.isArray(parsed)) {
+        if (typeof parsed !== "object" || Array.isArray(parsed)) {
           throw new InvalidJsonException(
-            'JSON must be an object, not an array or primitive',
+            "JSON must be an object, not an array or primitive"
           );
         }
         return parsed;
       } catch {
-        throw new InvalidJsonException('Invalid JSON string format');
+        throw new InvalidJsonException("Invalid JSON string format");
       }
     }
 
-    if (typeof value !== 'object' || Array.isArray(value)) {
+    if (typeof value !== "object" || Array.isArray(value)) {
       throw new InvalidJsonException(
-        'Value must be an object, not an array or primitive',
+        "Value must be an object, not an array or primitive"
       );
     }
 
@@ -296,7 +316,7 @@ export class JsonValueObject {
 
   private checkEmpty(): void {
     if (this.options.allowEmpty === false && this.isEmpty()) {
-      throw new InvalidJsonException('JSON cannot be empty');
+      throw new InvalidJsonException("JSON cannot be empty");
     }
   }
 
@@ -305,7 +325,7 @@ export class JsonValueObject {
       const depth = this.getDepth(this._value);
       if (depth > this.options.maxDepth) {
         throw new InvalidJsonException(
-          `JSON depth (${depth}) exceeds maximum allowed depth (${this.options.maxDepth})`,
+          `JSON depth (${depth}) exceeds maximum allowed depth (${this.options.maxDepth})`
         );
       }
     }
@@ -314,11 +334,11 @@ export class JsonValueObject {
   private checkRequiredKeys(): void {
     if (this.options.requiredKeys) {
       const missingKeys = this.options.requiredKeys.filter(
-        (key) => !(key in this._value),
+        (key) => !(key in this._value)
       );
       if (missingKeys.length > 0) {
         throw new InvalidJsonException(
-          `Missing required keys: ${missingKeys.join(', ')}`,
+          `Missing required keys: ${missingKeys.join(", ")}`
         );
       }
     }
@@ -327,11 +347,11 @@ export class JsonValueObject {
   private checkAllowedKeys(): void {
     if (this.options.allowedKeys) {
       const invalidKeys = Object.keys(this._value).filter(
-        (key) => !this.options.allowedKeys!.includes(key),
+        (key) => !this.options.allowedKeys!.includes(key)
       );
       if (invalidKeys.length > 0) {
         throw new InvalidJsonException(
-          `Invalid keys: ${invalidKeys.join(', ')}. Allowed keys: ${this.options.allowedKeys.join(', ')}`,
+          `Invalid keys: ${invalidKeys.join(", ")}. Allowed keys: ${this.options.allowedKeys.join(", ")}`
         );
       }
     }
@@ -342,12 +362,12 @@ export class JsonValueObject {
       this.options.schema &&
       !this.validateAgainstSchema(this._value, this.options.schema)
     ) {
-      throw new InvalidJsonException('JSON does not match required schema');
+      throw new InvalidJsonException("JSON does not match required schema");
     }
   }
 
-  private getDepth(obj: any, currentDepth: number = 0): number {
-    if (typeof obj !== 'object' || obj === null) {
+  private getDepth(obj: JsonValue, currentDepth: number = 0): number {
+    if (typeof obj !== "object" || obj === null || Array.isArray(obj)) {
       return currentDepth;
     }
 
@@ -360,27 +380,40 @@ export class JsonValueObject {
     return maxDepth;
   }
 
-  private deepMerge(target: any, source: any): any {
-    const result = { ...target };
+  private deepMerge(
+    target: Record<string, JsonValue>,
+    source: Record<string, JsonValue>
+  ): Record<string, JsonValue> {
+    const result: Record<string, JsonValue> = { ...target };
 
     Object.keys(source).forEach((key) => {
+      const sourceValue = source[key];
       if (
-        source[key] &&
-        typeof source[key] === 'object' &&
-        !Array.isArray(source[key])
+        sourceValue &&
+        typeof sourceValue === "object" &&
+        !Array.isArray(sourceValue) &&
+        target[key] &&
+        typeof target[key] === "object" &&
+        !Array.isArray(target[key])
       ) {
-        result[key] = this.deepMerge(target[key] || {}, source[key]);
+        result[key] = this.deepMerge(
+          target[key] as Record<string, JsonValue>,
+          sourceValue as Record<string, JsonValue>
+        );
       } else {
-        result[key] = source[key];
+        result[key] = sourceValue;
       }
     });
 
     return result;
   }
 
-  private validateAgainstSchema(obj: any, schema: any): boolean {
+  private validateAgainstSchema(
+    obj: Record<string, JsonValue>,
+    schema: Record<string, string>
+  ): boolean {
     // Simple schema validation - can be extended for more complex schemas
-    if (typeof schema !== 'object' || schema === null) {
+    if (typeof schema !== "object" || schema === null) {
       return false;
     }
 
@@ -390,10 +423,10 @@ export class JsonValueObject {
       }
 
       const actualType = typeof obj[key];
-      if (expectedType === 'array' && !Array.isArray(obj[key])) {
+      if (expectedType === "array" && !Array.isArray(obj[key])) {
         return false;
       }
-      if (expectedType !== 'array' && actualType !== expectedType) {
+      if (expectedType !== "array" && actualType !== expectedType) {
         return false;
       }
     }

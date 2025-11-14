@@ -5,9 +5,9 @@
  */
 export interface IReadFactory<
   TViewModel,
-  TCreateProps = any,
-  TSource = any,
-  TPrimitives = any,
+  TCreateProps = unknown,
+  TSource = unknown,
+  TPrimitives = unknown,
 > {
   /**
    * Creates a new view model from the given data.

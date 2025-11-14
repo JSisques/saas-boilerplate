@@ -3,7 +3,11 @@
  * These factories are responsible for creating aggregates and entities
  * from primitive data or command data.
  */
-export interface IWriteFactory<TEntity, TCreateProps = any, TPrimitives = any> {
+export interface IWriteFactory<
+  TEntity,
+  TCreateProps = unknown,
+  TPrimitives = unknown,
+> {
   /**
    * Creates a new entity from the given properties.
    *

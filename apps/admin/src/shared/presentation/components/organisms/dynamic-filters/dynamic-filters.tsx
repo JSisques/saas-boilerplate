@@ -70,7 +70,6 @@ export function DynamicFilters({
 
   const renderValueInput = (filter: DynamicFilter) => {
     const fieldType = getFieldType(filter.field);
-    const field = fields.find((f) => f.key === filter.field);
 
     if (fieldType === "enum") {
       const enumOptions = getFieldEnumOptions(filter.field);
@@ -114,7 +113,6 @@ export function DynamicFilters({
     <div className={className}>
       <div className="flex flex-wrap gap-2 items-end">
         {filters.map((filter) => {
-          const field = fields.find((f) => f.key === filter.field);
           return (
             <div key={filter.id} className="flex items-center gap-2">
               {/* Field Selector */}

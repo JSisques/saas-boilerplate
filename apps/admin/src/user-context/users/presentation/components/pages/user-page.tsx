@@ -25,7 +25,7 @@ const UserPage = () => {
   const [filters, setFilters] = useState<DynamicFilter[]>([]);
   const [sorts, setSorts] = useState<Sort[]>([]);
   const [page, setPage] = useState(1);
-  const [perPage, setPerPage] = useState(10);
+  const [perPage] = useState(10);
 
   const filterFields = useUserFilterFields();
 
