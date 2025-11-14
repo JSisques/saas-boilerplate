@@ -23,8 +23,7 @@ export interface IUserCreateViewModelDto {
   name: string | null;
   role: string;
   status: string;
-  userName: string;
+  userName: string | null;
   createdAt: Date;
   updatedAt: Date;
 }
-

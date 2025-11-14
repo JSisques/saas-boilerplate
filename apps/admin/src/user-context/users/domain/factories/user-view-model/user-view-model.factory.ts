@@ -1,8 +1,8 @@
-import { IReadFactory } from '@/shared/domain/interfaces/read-factory.interface';
-import { UserAggregate } from '@/user-context/users/domain/aggregates/user.aggregate';
-import { IUserCreateViewModelDto } from '@/user-context/users/domain/dtos/view-models/user-create/user-create-view-model.dto';
-import { UserPrimitives } from '@/user-context/users/domain/primitives/user.primitives';
-import { UserViewModel } from '@/user-context/users/domain/view-models/user.view-model';
+import { IReadFactory } from "@/shared/domain/interfaces/read-factory.interface";
+import { UserAggregate } from "@/user-context/users/domain/aggregates/user.aggregate";
+import { IUserCreateViewModelDto } from "@/user-context/users/domain/dtos/view-models/user-create/user-create-view-model.dto";
+import { UserPrimitives } from "@/user-context/users/domain/primitives/user.primitives";
+import { UserViewModel } from "@/user-context/users/domain/view-models/user.view-model";
 
 /**
  * This factory class is used to create a new user entity.
@@ -62,8 +62,8 @@ export class UserViewModelFactory
       userName: userAggregate.userName?.value || null,
       name: userAggregate.name?.value || null,
       lastName: userAggregate.lastName?.value || null,
-      role: userAggregate.role?.value || null,
-      status: userAggregate.status?.value || null,
+      role: userAggregate.role?.value,
+      status: userAggregate.status?.value,
       bio: userAggregate.bio?.value || null,
       avatarUrl: userAggregate.avatarUrl?.value || null,
       createdAt: now,
@@ -71,4 +71,3 @@ export class UserViewModelFactory
     });
   }
 }
-

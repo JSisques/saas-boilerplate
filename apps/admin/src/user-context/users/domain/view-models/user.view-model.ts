@@ -1,5 +1,5 @@
-import { IUserCreateViewModelDto } from '@/user-context/users/domain/dtos/view-models/user-create/user-create-view-model.dto';
-import { IUserUpdateViewModelDto } from '@/user-context/users/domain/dtos/view-models/user-update/user-update-view-model.dto';
+import { IUserCreateViewModelDto } from "@/user-context/users/domain/dtos/view-models/user-create/user-create-view-model.dto";
+import { IUserUpdateViewModelDto } from "@/user-context/users/domain/dtos/view-models/user-update/user-update-view-model.dto";
 
 /**
  * This class is used to represent a user view model.
@@ -12,7 +12,7 @@ export class UserViewModel {
   private _name: string | null;
   private _role: string;
   private _status: string;
-  private _userName: string;
+  private _userName: string | null;
   private _createdAt: Date;
   private _updatedAt: Date;
 
@@ -91,4 +91,3 @@ export class UserViewModel {
     this._updatedAt = new Date();
   }
 }
-
