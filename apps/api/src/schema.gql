@@ -442,6 +442,12 @@ type UserResponseDto {
 
   """The name of the user"""
   name: String
+
+  """The created at of the user"""
+  createdAt: DateTime
+
+  """The updated at of the user"""
+  updatedAt: DateTime
 }
 
 type PaginatedUserResultDto {

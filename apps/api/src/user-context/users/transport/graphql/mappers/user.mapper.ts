@@ -18,6 +18,8 @@ export class UserGraphQLMapper {
       role: user.role,
       status: user.status,
       userName: user.userName,
+      createdAt: user.createdAt,
+      updatedAt: user.updatedAt,
     };
   }
 

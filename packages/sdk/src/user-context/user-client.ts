@@ -32,6 +32,8 @@ export class UserClient {
             avatarUrl
             bio
             name
+            createdAt
+            updatedAt
           }
         }
       }
@@ -59,6 +61,8 @@ export class UserClient {
           avatarUrl
           bio
           name
+          createdAt
+          updatedAt
         }
       }
     `;

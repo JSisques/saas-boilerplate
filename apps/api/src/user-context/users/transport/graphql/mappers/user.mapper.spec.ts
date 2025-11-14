@@ -42,6 +42,8 @@ describe('UserGraphQLMapper', () => {
         avatarUrl: 'https://example.com/avatar.jpg',
         role: UserRoleEnum.USER,
         status: UserStatusEnum.ACTIVE,
+        createdAt,
+        updatedAt,
       });
     });
 
@@ -74,6 +76,8 @@ describe('UserGraphQLMapper', () => {
         avatarUrl: null,
         role: UserRoleEnum.USER,
         status: UserStatusEnum.ACTIVE,
+        createdAt,
+        updatedAt,
       });
     });
 
@@ -106,6 +110,8 @@ describe('UserGraphQLMapper', () => {
         avatarUrl: null,
         role: UserRoleEnum.ADMIN,
         status: UserStatusEnum.INACTIVE,
+        createdAt,
+        updatedAt,
       });
     });
   });
@@ -159,6 +165,8 @@ describe('UserGraphQLMapper', () => {
         avatarUrl: null,
         role: UserRoleEnum.USER,
         status: UserStatusEnum.ACTIVE,
+        createdAt,
+        updatedAt,
       });
       expect(result.items[1]).toEqual({
         id: '223e4567-e89b-12d3-a456-426614174001',
@@ -169,6 +177,8 @@ describe('UserGraphQLMapper', () => {
         avatarUrl: null,
         role: UserRoleEnum.USER,
         status: UserStatusEnum.ACTIVE,
+        createdAt,
+        updatedAt,
       });
     });
 

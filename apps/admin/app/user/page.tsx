@@ -1,18 +1,7 @@
-import { Button } from "@repo/ui/components/ui/button";
-import { Card, CardHeader, CardTitle } from "@repo/ui/components/ui/card";
+import UserPage from "@/user-context/users/presentation/components/pages/user-page";
 
-const UserPage = () => {
-  return (
-    <div>
-      <Button>Click me</Button>
-      <Card>
-        <CardHeader>
-          {" "}
-          <CardTitle>Card Title</CardTitle>{" "}
-        </CardHeader>
-      </Card>
-    </div>
-  );
+const Page = () => {
+  return <UserPage />;
 };
 
-export default UserPage;
+export default Page;

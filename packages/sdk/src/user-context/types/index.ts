@@ -15,6 +15,8 @@ export type UserResponse = {
   avatarUrl?: string;
   bio?: string;
   name?: string;
+  createdAt?: Date;
+  updatedAt?: Date;
 };
 
 export type UserFindByIdInput = {
