@@ -1,5 +1,6 @@
-import * as React from "react";
+import { cn } from "@repo/ui/lib/utils";
 import { ArrowDown, ArrowUp, ArrowUpDown } from "lucide-react";
+import * as React from "react";
 import {
   Table,
   TableBody,
@@ -8,7 +9,6 @@ import {
   TableHeader,
   TableRow,
 } from "./table";
-import { cn } from "../../lib/utils";
 
 export type SortDirection = "ASC" | "DESC";
 
@@ -223,7 +223,9 @@ export function DataTable<T extends Record<string, any>>({
               key={column.id}
               className={cn(
                 column.headerClassName,
-                column.sortable && onSortChange && "cursor-pointer select-none hover:bg-muted/50"
+                column.sortable &&
+                  onSortChange &&
+                  "cursor-pointer select-none hover:bg-muted/50"
               )}
               onClick={() => handleSort(column)}
             >
@@ -253,10 +255,7 @@ export function DataTable<T extends Record<string, any>>({
               className={getRowClassNames(row)}
             >
               {columns.map((column) => (
-                <TableCell
-                  key={column.id}
-                  className={column.cellClassName}
-                >
+                <TableCell key={column.id} className={column.cellClassName}>
                   {getCellValue(column, row)}
                 </TableCell>
               ))}
@@ -267,4 +266,3 @@ export function DataTable<T extends Record<string, any>>({
     </Table>
   );
 }
-
