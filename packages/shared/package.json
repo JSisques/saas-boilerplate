@@ -3,9 +3,10 @@
   "version": "0.0.0",
   "private": true,
   "exports": {
-    "./components/ui/*": "./src/components/ui/*.tsx",
-    "./lib/utils": "./src/lib/utils.ts",
-    "./styles/globals.css": "./src/styles/globals.css",
+    "./components/ui/*": "./src/presentation/components/ui/*.tsx",
+    "./lib/utils": "./src/presentation/lib/utils.ts",
+    "./styles/globals.css": "./src/presentation/styles/globals.css",
+    "./hooks/*": "./src/presentation/hooks/*.ts",
     "./*": "./src/*.tsx"
   },
   "scripts": {
