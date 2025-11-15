@@ -1,11 +1,11 @@
-import { defineConfig, globalIgnores } from "eslint/config";
+import { defineConfig, globalIgnores } from 'eslint/config';
 
 const eslintConfig = defineConfig([
   globalIgnores([
     // Default ignores of eslint-config-next:
-    "dist/**",
-    "node_modules/**",
-    "src/components/ui/**",
+    'dist/**',
+    'node_modules/**',
+    '@repo/shared/presentation/components/ui/**',
   ]),
 ]);
 

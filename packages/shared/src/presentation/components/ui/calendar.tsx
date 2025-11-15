@@ -8,7 +8,10 @@ import {
 import * as React from 'react';
 import { DayButton, DayPicker, getDefaultClassNames } from 'react-day-picker';
 
-import { Button, buttonVariants } from '@repo/shared/components/ui/button';
+import {
+  Button,
+  buttonVariants,
+} from '@repo/shared/presentation/components/ui/button';
 import { cn } from '@repo/shared/presentation/lib/utils';
 
 function Calendar({
