@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import { SidebarData } from '@repo/shared/domain/interfaces/sidebar-data.interface';
-import { VersionSwitcher } from '@repo/shared/presentation/components/molecules/version-switcher';
+import { TenantSwitcher } from '@repo/shared/presentation/components/molecules/tenant-switcher';
 import { SearchForm } from '@repo/shared/presentation/components/organisms/search-form';
 import {
   Sidebar,
@@ -21,16 +21,39 @@ export interface AppSidebarProps extends React.ComponentProps<typeof Sidebar> {
    * The sidebar data structure containing versions and navigation items
    */
   data: SidebarData;
-  tenants?: string[];
+  /**
+   * Optional tenants for tenant switching. If not provided, shows default tenant view.
+   */
+  tenants?: {
+    name: string;
+    logo: React.ElementType;
+    plan: string;
+  }[];
+  /**
+   * Default tenant name when no tenants are provided (default: "Admin Panel")
+   */
+  defaultTenantName?: string;
+  /**
+   * Default tenant subtitle when no tenants are provided (default: "Management")
+   */
+  defaultTenantSubtitle?: string;
 }
 
-export function AppSidebar({ data, tenants, ...props }: AppSidebarProps) {
+export function AppSidebar({
+  data,
+  tenants,
+  defaultTenantName,
+  defaultTenantSubtitle,
+  ...props
+}: AppSidebarProps) {
   return (
     <Sidebar {...props}>
       <SidebarHeader>
-        {tenants && (
-          <VersionSwitcher versions={tenants} defaultVersion={tenants[0]} />
-        )}
+        <TenantSwitcher
+          tenants={tenants}
+          defaultTenantName={defaultTenantName}
+          defaultTenantSubtitle={defaultTenantSubtitle}
+        />
         <SearchForm />
       </SidebarHeader>
       <SidebarContent>
