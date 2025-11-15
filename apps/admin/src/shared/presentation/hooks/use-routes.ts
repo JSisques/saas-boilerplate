@@ -45,14 +45,14 @@ export const useRoutes = () => {
           url: "#",
           items: [
             {
-              title: "Users",
-              url: routes.users,
-              isActive: pathname === routes.users,
-            },
-            {
               title: "Authentication",
               url: routes.auth,
               isActive: pathname === routes.auth,
+            },
+            {
+              title: "Users",
+              url: routes.users,
+              isActive: pathname === routes.users,
             },
           ],
         },
