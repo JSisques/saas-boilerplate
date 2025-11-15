@@ -1,5 +1,6 @@
 "use client";
 
+import { useRoutes } from "@/shared/presentation/hooks/use-routes";
 import { UserFiltersEnum } from "@/user-context/users/domain/enums/user-filters/user-filters.enum";
 import { UsersTable } from "@/user-context/users/presentation/components/organisms/users-table/users-table";
 import { useUserFilterFields } from "@/user-context/users/presentation/hooks/use-user-filter-fields";
@@ -11,7 +12,7 @@ import {
   TableLayout,
   type DynamicFilter,
 } from "@repo/shared/presentation/components/organisms/table-layout";
-import PageTemplate from "@repo/shared/presentation/components/templates/page-template";
+import PageWithSidebarTemplate from "@repo/shared/presentation/components/templates/page-with-sidebar-template";
 import { Button } from "@repo/shared/presentation/components/ui/button";
 import type { Sort } from "@repo/shared/presentation/components/ui/data-table";
 import { useDebouncedFilters } from "@repo/shared/presentation/hooks/use-debounced-filters";
@@ -27,6 +28,7 @@ const UsersPage = () => {
   const [page, setPage] = useState(1);
   const [perPage] = useState(10);
 
+  const { getSidebarData } = useRoutes();
   const filterFields = useUserFilterFields();
 
   // Define operators
@@ -66,7 +68,11 @@ const UsersPage = () => {
   }
 
   return (
-    <PageTemplate>
+    <PageWithSidebarTemplate
+      sidebarProps={{
+        data: getSidebarData(),
+      }}
+    >
       <PageHeader
         title="Users"
         description="Manage and view all users in the system"
@@ -115,7 +121,7 @@ const UsersPage = () => {
           />
         )}
       </TableLayout>
-    </PageTemplate>
+    </PageWithSidebarTemplate>
   );
 };
 

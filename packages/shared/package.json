@@ -6,6 +6,7 @@
     "./domain/entities/*": "./src/domain/entities/*.ts",
     "./domain/enums/*": "./src/domain/enums/*.ts",
     "./domain/exceptions/*": "./src/domain/exceptions/*.ts",
+    "./domain/interfaces/*": "./src/domain/interfaces/*.ts",
     "./domain/value-objects/*": "./src/domain/value-objects/*.ts",
     "./domain/value-objects/idenitfiers/*": "./src/domain/value-objects/idenitfiers/*.ts",
     "./application/exceptions/*": "./src/application/exceptions/*.ts",
