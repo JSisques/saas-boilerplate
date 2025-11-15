@@ -1,6 +1,6 @@
-import { cn } from "../../lib/utils";
-import { ArrowDown, ArrowUp, ArrowUpDown } from "lucide-react";
-import * as React from "react";
+import { cn } from '@repo/shared/presentation/lib/utils';
+import { ArrowDown, ArrowUp, ArrowUpDown } from 'lucide-react';
+import * as React from 'react';
 import {
   Table,
   TableBody,
@@ -8,9 +8,9 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "./table";
+} from './table';
 
-export type SortDirection = "ASC" | "DESC";
+export type SortDirection = 'ASC' | 'DESC';
 
 export interface Sort {
   field: string;
@@ -128,7 +128,7 @@ export function DataTable<T extends Record<string, any>>({
   onRowClick,
   sorts = [],
   onSortChange,
-  emptyMessage = "No data found",
+  emptyMessage = 'No data found',
   className,
   rowClassName,
 }: DataTableProps<T>) {
@@ -142,11 +142,11 @@ export function DataTable<T extends Record<string, any>>({
 
     if (!currentSort) {
       // No sort for this column, add ASC
-      newSorts = [...sorts, { field: sortField, direction: "ASC" }];
-    } else if (currentSort.direction === "ASC") {
+      newSorts = [...sorts, { field: sortField, direction: 'ASC' }];
+    } else if (currentSort.direction === 'ASC') {
       // Change from ASC to DESC
       newSorts = sorts.map((s) =>
-        s.field === sortField ? { ...s, direction: "DESC" } : s
+        s.field === sortField ? { ...s, direction: 'DESC' } : s,
       );
     } else {
       // Remove sort (DESC -> no sort)
@@ -166,7 +166,7 @@ export function DataTable<T extends Record<string, any>>({
       return <ArrowUpDown className="ml-2 h-4 w-4 opacity-50" />;
     }
 
-    return currentSort.direction === "ASC" ? (
+    return currentSort.direction === 'ASC' ? (
       <ArrowUp className="ml-2 h-4 w-4" />
     ) : (
       <ArrowDown className="ml-2 h-4 w-4" />
@@ -177,10 +177,10 @@ export function DataTable<T extends Record<string, any>>({
       return getRowId(row);
     }
     // Try to find common id fields
-    if ("id" in row && typeof row.id === "string") {
+    if ('id' in row && typeof row.id === 'string') {
       return row.id;
     }
-    if ("id" in row && typeof row.id === "number") {
+    if ('id' in row && typeof row.id === 'number') {
       return row.id;
     }
     return index;
@@ -193,22 +193,22 @@ export function DataTable<T extends Record<string, any>>({
     }
 
     // If accessor is a function, call it
-    if (typeof column.accessor === "function") {
+    if (typeof column.accessor === 'function') {
       return column.accessor(row);
     }
 
     // If accessor is a key, get the value
     if (column.accessor) {
       const value = row[column.accessor];
-      return value !== null && value !== undefined ? String(value) : "-";
+      return value !== null && value !== undefined ? String(value) : '-';
     }
 
-    return "-";
+    return '-';
   };
 
   const getRowClassNames = (row: T): string => {
-    const baseClass = onRowClick ? "cursor-pointer" : "";
-    if (typeof rowClassName === "function") {
+    const baseClass = onRowClick ? 'cursor-pointer' : '';
+    if (typeof rowClassName === 'function') {
       return cn(baseClass, rowClassName(row));
     }
     return cn(baseClass, rowClassName);
@@ -225,7 +225,7 @@ export function DataTable<T extends Record<string, any>>({
                 column.headerClassName,
                 column.sortable &&
                   onSortChange &&
-                  "cursor-pointer select-none hover:bg-muted/50"
+                  'cursor-pointer select-none hover:bg-muted/50',
               )}
               onClick={() => handleSort(column)}
             >

@@ -5,16 +5,9 @@ import { cva, type VariantProps } from 'class-variance-authority';
 import { PanelLeftIcon } from 'lucide-react';
 import * as React from 'react';
 
-import { Separator } from '@repo/shared/components/ui/separator';
-import { Skeleton } from '@repo/shared/components/ui/skeleton';
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from '@repo/shared/components/ui/tooltip';
 import { Button } from '@repo/shared/presentation/components/ui/button';
 import { Input } from '@repo/shared/presentation/components/ui/input';
+import { Separator } from '@repo/shared/presentation/components/ui/separator';
 import {
   Sheet,
   SheetContent,
@@ -22,6 +15,13 @@ import {
   SheetHeader,
   SheetTitle,
 } from '@repo/shared/presentation/components/ui/sheet';
+import { Skeleton } from '@repo/shared/presentation/components/ui/skeleton';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@repo/shared/presentation/components/ui/tooltip';
 import { useIsMobile } from '@repo/shared/presentation/hooks/use-mobile';
 import { cn } from '@repo/shared/presentation/lib/utils';
 
