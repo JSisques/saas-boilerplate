@@ -31,9 +31,6 @@ jobs:
       - name: Install dependencies
         run: pnpm install --filter=./packages/shared...
 
-      - name: Build SDK (dependency)
-        run: pnpm build --filter=./packages/sdk...
-
       - name: Lint code
         run: pnpm lint --filter=./packages/shared...
 

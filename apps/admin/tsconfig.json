@@ -30,10 +30,7 @@
     "**/*.tsx",
     ".next/types/**/*.ts",
     ".next/dev/types/**/*.ts",
-    "**/*.mts",
-    "../../packages/shared/src/presentation/hooks/use-debounced-filters.ts",
-    "../../packages/shared/src/presentation/hooks/use-filter-operators.ts",
-    "../../packages/shared/src/presentation/hooks/use-sdk.ts"
+    "**/*.mts"
   ],
   "exclude": ["node_modules"]
 }
