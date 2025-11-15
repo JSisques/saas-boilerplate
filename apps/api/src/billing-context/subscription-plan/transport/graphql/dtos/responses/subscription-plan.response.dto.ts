@@ -92,6 +92,18 @@ export class SubscriptionPlanResponseDto {
     description: 'The stripe price id of the subscription plan',
   })
   stripePriceId: string | null;
+
+  @Field(() => Date, {
+    nullable: false,
+    description: 'The created at of the subscription plan',
+  })
+  createdAt: Date;
+
+  @Field(() => Date, {
+    nullable: false,
+    description: 'The updated at of the subscription plan',
+  })
+  updatedAt: Date;
 }
 
 @ObjectType('PaginatedSubscriptionPlanResultDto')

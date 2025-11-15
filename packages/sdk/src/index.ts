@@ -1,6 +1,6 @@
 import { AuthClient } from './auth-context/auth-client.js';
 import type { AuthLogoutInput } from './auth-context/types/index.js';
-import { SubscriptionPlanClient } from './billing-context/subscription-plan-client.js';
+import { SubscriptionPlanClient } from './billing-context/subscription-plan/client/subscription-plan-client.js';
 import { EventClient } from './event-store-context/event-client.js';
 import { HealthClient } from './health-context/health-client.js';
 import { GraphQLClient } from './shared/client/graphql-client.js';
@@ -65,19 +65,6 @@ export type {
   TenantUpdateInput,
 } from './tenant-context/types/index.js';
 
-// Re-export types from billing-context
-export type {
-  Currency,
-  PaginatedSubscriptionPlanResult,
-  SubscriptionPlanCreateInput,
-  SubscriptionPlanDeleteInput,
-  SubscriptionPlanFindByCriteriaInput,
-  SubscriptionPlanInterval,
-  SubscriptionPlanResponse,
-  SubscriptionPlanType,
-  SubscriptionPlanUpdateInput,
-} from './billing-context/types/index.js';
-
 // Re-export types from health-context
 export type { HealthResponse } from './health-context/types/index.js';
 
@@ -87,6 +74,9 @@ export type {
   EventResponse,
   PaginatedEventResult,
 } from './event-store-context/types/index.js';
+
+// Re-export types from billing-context
+export * from './billing-context/subscription-plan/index.js';
 
 export class SDK {
   private client: GraphQLClient;
@@ -258,6 +248,12 @@ export class SDK {
        * Find subscription plans by criteria with pagination, filters, and sorting
        */
       findByCriteria: this.subscriptionPlanClient.findByCriteria.bind(
+        this.subscriptionPlanClient,
+      ),
+      /**
+       * Find a subscription plan by ID
+       */
+      findById: this.subscriptionPlanClient.findById.bind(
         this.subscriptionPlanClient,
       ),
       /**

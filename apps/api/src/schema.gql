@@ -109,6 +109,12 @@ type SubscriptionPlanResponseDto {
 
   """The stripe price id of the subscription plan"""
   stripePriceId: String
+
+  """The created at of the subscription plan"""
+  createdAt: DateTime!
+
+  """The updated at of the subscription plan"""
+  updatedAt: DateTime!
 }
 
 type PaginatedSubscriptionPlanResultDto {
@@ -478,6 +484,7 @@ type Query {
   userFindById(input: UserFindByIdRequestDto!): UserResponseDto!
   healthCheck: HealthResponseDto!
   subscriptionPlanFindByCriteria(input: SubscriptionPlanFindByCriteriaRequestDto): PaginatedSubscriptionPlanResultDto!
+  subscriptionPlanFindById(input: SubscriptionPlanFindByIdRequestDto!): SubscriptionPlanResponseDto!
   subscriptionFindByCriteria(input: SubscriptionFindByCriteriaRequestDto): PaginatedSubscriptionResultDto!
   subscriptionFindById(input: SubscriptionFindByIdRequestDto!): SubscriptionResponseDto!
   subscriptionFindByTenantId(input: SubscriptionFindByTenantIdRequestDto!): SubscriptionResponseDto!
@@ -599,6 +606,11 @@ input SubscriptionPlanFindByCriteriaRequestDto {
 
   """The pagination to find by"""
   pagination: BasePaginationInput = {page: 1, perPage: 10}
+}
+
+input SubscriptionPlanFindByIdRequestDto {
+  """The ID of the subscription plan to find"""
+  id: String!
 }
 
 input SubscriptionFindByCriteriaRequestDto {
