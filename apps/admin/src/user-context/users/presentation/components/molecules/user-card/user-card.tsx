@@ -8,8 +8,8 @@ import { UserRoleBadge } from "@/user-context/users/presentation/components/atom
 import { UserStatusBadge } from "@/user-context/users/presentation/components/atoms/user-status-badge/user-status-badge";
 import { UserResponse } from "@repo/sdk";
 
-import { Card, CardContent } from "@repo/ui/components/ui/card";
-import { cn } from "@repo/ui/lib/utils";
+import { Card, CardContent } from "@repo/shared/components/ui/card";
+import { cn } from "@repo/shared/lib/utils";
 
 interface UserCardProps {
   user: UserViewModel;

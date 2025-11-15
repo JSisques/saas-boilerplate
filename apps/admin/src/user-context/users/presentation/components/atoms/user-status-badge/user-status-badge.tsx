@@ -1,8 +1,8 @@
 "use client";
 
 import { UserStatusEnum } from "@/user-context/users/domain/enums/user-status/user-status.enum";
-import { Badge } from "@repo/ui/components/ui/badge";
-import { cn } from "@repo/ui/lib/utils";
+import { Badge } from "@repo/shared/components/ui/badge";
+import { cn } from "@repo/shared/lib/utils";
 
 interface UserStatusBadgeProps {
   status: string;

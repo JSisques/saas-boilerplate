@@ -5,7 +5,7 @@ import {
   DynamicFilters,
   FilterField,
 } from "@/shared/presentation/components/organisms/dynamic-filters/dynamic-filters";
-import { Input } from "@repo/ui/components/ui/input";
+import { Input } from "@repo/shared/components/ui/input";
 import {
   Pagination,
   PaginationContent,
@@ -14,8 +14,8 @@ import {
   PaginationLink,
   PaginationNext,
   PaginationPrevious,
-} from "@repo/ui/components/ui/pagination";
-import { cn } from "@repo/ui/lib/utils";
+} from "@repo/shared/components/ui/pagination";
+import { cn } from "@repo/shared/lib/utils";
 import { SearchIcon } from "lucide-react";
 import * as React from "react";
 

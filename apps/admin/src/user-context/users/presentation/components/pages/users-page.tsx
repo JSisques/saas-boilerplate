@@ -15,8 +15,8 @@ import { UserFiltersEnum } from "@/user-context/users/domain/enums/user-filters/
 import { UsersTable } from "@/user-context/users/presentation/components/organisms/users-table/users-table";
 import { useUserFilterFields } from "@/user-context/users/presentation/hooks/use-user-filter-fields";
 import { useUsers } from "@/user-context/users/presentation/hooks/use-users";
-import { Button } from "@repo/ui/components/ui/button";
-import type { Sort } from "@repo/ui/components/ui/data-table";
+import { Button } from "@repo/shared/components/ui/button";
+import type { Sort } from "@repo/shared/components/ui/data-table";
 import { DownloadIcon, PlusIcon, TrashIcon, UploadIcon } from "lucide-react";
 import { useState } from "react";
 

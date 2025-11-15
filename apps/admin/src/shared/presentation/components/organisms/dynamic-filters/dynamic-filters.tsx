@@ -1,14 +1,14 @@
 "use client";
 
-import { Button } from "@repo/ui/components/ui/button";
-import { Input } from "@repo/ui/components/ui/input";
+import { Button } from "@repo/shared/components/ui/button";
+import { Input } from "@repo/shared/components/ui/input";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@repo/ui/components/ui/select";
+} from "@repo/shared/components/ui/select";
 import { PlusIcon, XIcon } from "lucide-react";
 
 export interface FilterField {

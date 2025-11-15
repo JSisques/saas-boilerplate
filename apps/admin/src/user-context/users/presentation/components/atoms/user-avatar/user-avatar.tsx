@@ -5,8 +5,8 @@ import {
   Avatar,
   AvatarFallback,
   AvatarImage,
-} from "@repo/ui/components/ui/avatar";
-import { cn } from "@repo/ui/lib/utils";
+} from "@repo/shared/components/ui/avatar";
+import { cn } from "@repo/shared/lib/utils";
 
 interface UserAvatarProps {
   user: UserResponse;
