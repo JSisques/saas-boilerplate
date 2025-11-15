@@ -1,6 +1,6 @@
 'use client';
 
-import type { DynamicFilter } from '@repo/shared/components/organisms/table-layout/table-layout';
+import type { DynamicFilter } from '@repo/shared/presentation/components/organisms/dynamic-filters';
 import { useEffect, useMemo, useRef, useState } from 'react';
 
 export interface UseDebouncedFiltersOptions {

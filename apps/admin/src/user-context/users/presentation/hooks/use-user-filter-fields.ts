@@ -1,7 +1,7 @@
-import { FilterField } from "@/shared/presentation/components/organisms/dynamic-filters/dynamic-filters";
 import { UserFiltersEnum } from "@/user-context/users/domain/enums/user-filters/user-filters.enum";
 import { UserRoleEnum } from "@/user-context/users/domain/enums/user-role/user-role.enum";
 import { UserStatusEnum } from "@/user-context/users/domain/enums/user-status/user-status.enum";
+import { FilterField } from "@repo/shared/presentation/components/organisms/dynamic-filters";
 
 export const useUserFilterFields = (): FilterField[] => {
   return [
