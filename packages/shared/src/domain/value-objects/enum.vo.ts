@@ -100,7 +100,7 @@ export abstract class EnumValueObject<
    */
   public getRandomValue(): string | number {
     const values = Object.values(this.enumObject);
-    return values[Math.floor(Math.random() * values.length)];
+    return values[Math.floor(Math.random() * values.length)] ?? '';
   }
 
   /**
@@ -111,7 +111,7 @@ export abstract class EnumValueObject<
     const values = Object.values(this.enumObject);
     const currentIndex = values.indexOf(this._value);
     const nextIndex = (currentIndex + 1) % values.length;
-    return values[nextIndex];
+    return values[nextIndex] ?? '';
   }
 
   /**
@@ -123,7 +123,7 @@ export abstract class EnumValueObject<
     const currentIndex = values.indexOf(this._value);
     const previousIndex =
       currentIndex === 0 ? values.length - 1 : currentIndex - 1;
-    return values[previousIndex];
+    return values[previousIndex] ?? '';
   }
 
   /**

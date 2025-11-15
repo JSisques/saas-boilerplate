@@ -198,7 +198,7 @@ export class LocaleValueObject extends StringValueObject {
    * @returns The language code
    */
   public getLanguageCode(): string {
-    return this.value.split('-')[0];
+    return this.value.split('-')[0] ?? '';
   }
 
   /**
@@ -207,7 +207,7 @@ export class LocaleValueObject extends StringValueObject {
    */
   public getCountryCode(): string | null {
     const parts = this.value.split('-');
-    return parts.length >= 2 ? parts[1].toUpperCase() : null;
+    return parts.length >= 2 ? (parts[1]?.toUpperCase() ?? null) : null;
   }
 
   /**

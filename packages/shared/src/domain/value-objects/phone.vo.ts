@@ -29,7 +29,7 @@ export class PhoneValueObject {
    */
   public getCountryCode(): string | null {
     const match = this._value.match(/^\+(\d{1,4})/);
-    return match ? match[1] : null;
+    return match ? (match[1] ?? null) : null;
   }
 
   /**

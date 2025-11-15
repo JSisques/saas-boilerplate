@@ -141,7 +141,7 @@ export class TimezoneValueObject extends StringValueObject {
    */
   public getRegion(): string | null {
     const parts = this.value.split('/');
-    return parts.length >= 2 ? parts[0] : null;
+    return parts.length >= 2 ? (parts[0] ?? null) : null;
   }
 
   /**
@@ -150,7 +150,7 @@ export class TimezoneValueObject extends StringValueObject {
    */
   public getCity(): string | null {
     const parts = this.value.split('/');
-    return parts.length >= 2 ? parts[1] : null;
+    return parts.length >= 2 ? (parts[1] ?? null) : null;
   }
 
   /**

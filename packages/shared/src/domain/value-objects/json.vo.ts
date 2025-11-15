@@ -162,7 +162,7 @@ export class JsonValueObject {
     const picked: Record<string, JsonValue> = {};
     keys.forEach((key) => {
       if (key in this._value) {
-        picked[key] = this._value[key];
+        picked[key] = this._value[key] ?? null;
       }
     });
     return new JsonValueObject(picked, this.options);
@@ -401,7 +401,7 @@ export class JsonValueObject {
           sourceValue as Record<string, JsonValue>,
         );
       } else {
-        result[key] = sourceValue;
+        result[key] = sourceValue ?? null;
       }
     });
 

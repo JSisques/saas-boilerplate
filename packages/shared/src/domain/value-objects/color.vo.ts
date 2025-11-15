@@ -160,18 +160,18 @@ export class ColorValueObject {
     const match = this._value.match(/rgb\((\d+),\s*(\d+),\s*(\d+)\)/);
     if (!match) return this._value;
 
-    const r = parseInt(match[1]);
-    const g = parseInt(match[2]);
-    const b = parseInt(match[3]);
+    const r = parseInt(match[1] ?? '0');
+    const g = parseInt(match[2] ?? '0');
+    const b = parseInt(match[3] ?? '0');
 
     return `#${((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1)}`;
   }
 
   private hexToRgb(): string {
     const hex = this._value.replace('#', '');
-    const r = parseInt(hex.substr(0, 2), 16);
-    const g = parseInt(hex.substr(2, 2), 16);
-    const b = parseInt(hex.substr(4, 2), 16);
+    const r = parseInt(hex.substring(0, 2), 16);
+    const g = parseInt(hex.substring(2, 4), 16);
+    const b = parseInt(hex.substring(4, 6), 16);
 
     return `rgb(${r}, ${g}, ${b})`;
   }

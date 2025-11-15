@@ -28,7 +28,7 @@ export class EmailValueObject {
    * @returns The local part of the email
    */
   public getLocalPart(): string {
-    return this._value.split('@')[0];
+    return this._value.split('@')[0] ?? '';
   }
 
   /**
@@ -36,7 +36,7 @@ export class EmailValueObject {
    * @returns The domain part of the email
    */
   public getDomain(): string {
-    return this._value.split('@')[1];
+    return this._value.split('@')[1] ?? '';
   }
 
   private validate(value: string): void {
@@ -65,7 +65,7 @@ export class EmailValueObject {
     }
 
     const localPart = value.split('@')[0];
-    if (localPart.length > 64) {
+    if (localPart && localPart.length > 64) {
       throw new InvalidEmailException(
         'Local part of email is too long (max 64 characters)',
       );
