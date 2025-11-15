@@ -18,3 +18,4 @@ export type IUserUpdateViewModelDto = Partial<
   Omit<IUserCreateViewModelDto, 'id' | 'createdAt' | 'updatedAt'>
 >;
 
+

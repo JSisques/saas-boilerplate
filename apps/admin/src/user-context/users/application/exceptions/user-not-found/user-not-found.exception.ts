@@ -6,3 +6,4 @@ export class UserNotFoundException extends BaseApplicationException {
   }
 }
 
+

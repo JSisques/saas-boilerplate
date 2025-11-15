@@ -8,3 +8,4 @@ import { IUserCreateDto } from "@/user-context/users/domain/dtos/entities/user-c
  * @extends Partial<Omit<IUserCreateDto, 'id'>>
  */
 export type IUserUpdateDto = Partial<Omit<IUserCreateDto, "id">>;
+

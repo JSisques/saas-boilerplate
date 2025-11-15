@@ -1,5 +1,6 @@
 "use client";
 
+import { useDefaultTenantName } from "@/shared/presentation/hooks/use-default-tenant-name";
 import { useRoutes } from "@/shared/presentation/hooks/use-routes";
 import { UserFiltersEnum } from "@/user-context/users/domain/enums/user-filters/user-filters.enum";
 import { UsersTable } from "@/user-context/users/presentation/components/organisms/users-table/users-table";
@@ -71,6 +72,8 @@ const UsersPage = () => {
     <PageWithSidebarTemplate
       sidebarProps={{
         data: getSidebarData(),
+        defaultTenantName: useDefaultTenantName().defaultTenantName,
+        defaultTenantSubtitle: useDefaultTenantName().defaultTenantSubtitle,
       }}
     >
       <PageHeader
