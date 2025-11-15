@@ -8,6 +8,8 @@
     "./domain/exceptions/*": "./src/domain/exceptions/*.ts",
     "./domain/value-objects/*": "./src/domain/value-objects/*.ts",
     "./domain/value-objects/idenitfiers/*": "./src/domain/value-objects/idenitfiers/*.ts",
+    "./application/exceptions/*": "./src/application/exceptions/*.ts",
+    "./application/services/*": "./src/application/services/*.ts",
     "./components/ui/*": "./src/presentation/components/ui/*.tsx",
     "./lib/utils": "./src/presentation/lib/utils.ts",
     "./styles/globals.css": "./src/presentation/styles/globals.css",

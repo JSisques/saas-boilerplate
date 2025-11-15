@@ -1,12 +1,12 @@
 "use client";
 
-import { formatDate } from "@/shared/application/services/format-date/format-date.service";
 import { UserRoleEnum } from "@/user-context/users/domain/enums/user-role/user-role.enum";
 import { UserStatusEnum } from "@/user-context/users/domain/enums/user-status/user-status.enum";
 import { UserAvatar } from "@/user-context/users/presentation/components/atoms/user-avatar/user-avatar";
 import { UserRoleBadge } from "@/user-context/users/presentation/components/atoms/user-role-badge/user-role-badge";
 import { UserStatusBadge } from "@/user-context/users/presentation/components/atoms/user-status-badge/user-status-badge";
 import type { UserResponse } from "@repo/sdk";
+import { formatDate } from "@repo/shared/application/services/format-date.service";
 import type { ColumnDef } from "@repo/shared/components/ui/data-table";
 
 export const userTableColumns: ColumnDef<UserResponse>[] = [
