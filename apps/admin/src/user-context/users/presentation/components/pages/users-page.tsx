@@ -1,7 +1,5 @@
 "use client";
 
-import { FilterOperator } from "@/shared/domain/enums/filter-operator.enum";
-import { SortDirection } from "@/shared/domain/enums/sort-direction.enum";
 import { PageHeader } from "@/shared/presentation/components/organisms/page-header/page-header";
 import {
   TableLayout,
@@ -17,6 +15,8 @@ import { useUserFilterFields } from "@/user-context/users/presentation/hooks/use
 import { useUsers } from "@/user-context/users/presentation/hooks/use-users";
 import { Button } from "@repo/shared/components/ui/button";
 import type { Sort } from "@repo/shared/components/ui/data-table";
+import { FilterOperator } from "@repo/shared/domain/enums/filter-operator.enum";
+import { SortDirection } from "@repo/shared/domain/enums/sort-direction.enum";
 import { DownloadIcon, PlusIcon, TrashIcon, UploadIcon } from "lucide-react";
 import { useState } from "react";
 

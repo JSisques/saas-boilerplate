@@ -1,8 +1,8 @@
-import { IReadFactory } from "@/shared/domain/interfaces/read-factory.interface";
 import { UserAggregate } from "@/user-context/users/domain/aggregates/user.aggregate";
 import { IUserCreateViewModelDto } from "@/user-context/users/domain/dtos/view-models/user-create/user-create-view-model.dto";
 import { UserPrimitives } from "@/user-context/users/domain/primitives/user.primitives";
 import { UserViewModel } from "@/user-context/users/domain/view-models/user.view-model";
+import { IReadFactory } from "@repo/shared/domain/interfaces/read-factory.interface";
 
 /**
  * This factory class is used to create a new user entity.

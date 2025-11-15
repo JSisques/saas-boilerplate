@@ -1,5 +1,3 @@
-import { IWriteFactory } from "@/shared/domain/interfaces/write-factory.interface";
-import { UserUuidValueObject } from "@/shared/domain/value-objects/identifiers/user-uuid/user-uuid.vo";
 import { UserAggregate } from "@/user-context/users/domain/aggregates/user.aggregate";
 import { IUserCreateDto } from "@/user-context/users/domain/dtos/entities/user-create/user-create.dto";
 import { UserPrimitives } from "@/user-context/users/domain/primitives/user.primitives";
@@ -10,6 +8,8 @@ import { UserNameValueObject } from "@/user-context/users/domain/value-objects/u
 import { UserRoleValueObject } from "@/user-context/users/domain/value-objects/user-role/user-role.vo";
 import { UserStatusValueObject } from "@/user-context/users/domain/value-objects/user-status/user-status.vo";
 import { UserUserNameValueObject } from "@/user-context/users/domain/value-objects/user-user-name/user-user-name.vo";
+import { IWriteFactory } from "@repo/shared/domain/interfaces/write-factory.interface";
+import { UserUuidValueObject } from "@repo/shared/domain/value-objects/identifiers/user-uuid/user-uuid.vo";
 
 /**
  * Factory class responsible for creating UserAggregate entities.

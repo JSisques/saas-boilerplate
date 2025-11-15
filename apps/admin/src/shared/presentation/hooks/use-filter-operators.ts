@@ -1,4 +1,4 @@
-import { FilterOperator } from "@/shared/domain/enums/filter-operator.enum";
+import { FilterOperator } from "@repo/shared/domain/enums/filter-operator.enum";
 
 export const useFilterOperators = (): {
   label: string;

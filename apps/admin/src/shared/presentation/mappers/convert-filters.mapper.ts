@@ -1,6 +1,6 @@
-import type { Filter } from "@/shared/domain/entities/criteria";
-import { FilterOperator } from "@/shared/domain/enums/filter-operator.enum";
 import type { DynamicFilter } from "@/shared/presentation/components/organisms/table-layout/table-layout";
+import type { Filter } from "@repo/shared/domain/entities/criteria";
+import { FilterOperator } from "@repo/shared/domain/enums/filter-operator.enum";
 
 /**
  * Options for converting dynamic filters to API format

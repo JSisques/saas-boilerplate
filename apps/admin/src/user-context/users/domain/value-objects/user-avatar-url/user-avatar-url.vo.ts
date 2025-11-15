@@ -1,4 +1,4 @@
-import { UrlValueObject } from "@/shared/domain/value-objects/url.vo";
+import { UrlValueObject } from "@repo/shared/domain/value-objects/url.vo";
 
 /**
  * UserAvatarUrlValueObject represents a user's avatar URL in the domain.
