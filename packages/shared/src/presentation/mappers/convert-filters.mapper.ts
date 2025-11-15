@@ -1,6 +1,6 @@
-import type { DynamicFilter } from "@/shared/presentation/components/organisms/table-layout/table-layout";
-import type { Filter } from "@repo/shared/domain/entities/criteria";
-import { FilterOperator } from "@repo/shared/domain/enums/filter-operator.enum";
+import type { Filter } from '@repo/shared/domain/entities/criteria';
+import { FilterOperator } from '@repo/shared/domain/enums/filter-operator.enum';
+import type { DynamicFilter } from '@repo/shared/presentation/components/organisms/table-layout';
 
 /**
  * Options for converting dynamic filters to API format
@@ -28,7 +28,7 @@ export interface ConvertFiltersMapperOptions {
  */
 export function dynamicFiltersToApiFiltersMapper(
   filters: DynamicFilter[],
-  options?: ConvertFiltersMapperOptions
+  options?: ConvertFiltersMapperOptions,
 ): Filter[] {
   const apiFilters: Filter[] = [];
 

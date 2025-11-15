@@ -1,20 +1,21 @@
-"use client";
+'use client';
 
-import { Button } from "@repo/shared/components/ui/button";
-import { Input } from "@repo/shared/components/ui/input";
+import { Button } from '@repo/shared/presentation/components/ui/button';
+import { Input } from '@repo/shared/presentation/components/ui/input';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@repo/shared/components/ui/select";
-import { PlusIcon, XIcon } from "lucide-react";
+} from '@repo/shared/presentation/components/ui/select';
+import { PlusIcon, XIcon } from 'lucide-react';
+import * as React from 'react';
 
 export interface FilterField {
   key: string;
   label: string;
-  type: "text" | "enum" | "number" | "date";
+  type: 'text' | 'enum' | 'number' | 'date';
   enumOptions?: { label: string; value: string }[];
 }
 
@@ -43,9 +44,9 @@ export function DynamicFilters({
   const addFilter = () => {
     const newFilter: DynamicFilter = {
       id: `filter-${Date.now()}`,
-      field: fields[0]?.key || "",
-      operator: operators[0]?.value || "",
-      value: "",
+      field: fields[0]?.key || '',
+      operator: operators[0]?.value || '',
+      value: '',
     };
     onFiltersChange([...filters, newFilter]);
   };
@@ -56,12 +57,12 @@ export function DynamicFilters({
 
   const updateFilter = (id: string, updates: Partial<DynamicFilter>) => {
     onFiltersChange(
-      filters.map((f) => (f.id === id ? { ...f, ...updates } : f))
+      filters.map((f) => (f.id === id ? { ...f, ...updates } : f)),
     );
   };
 
-  const getFieldType = (fieldKey: string): FilterField["type"] => {
-    return fields.find((f) => f.key === fieldKey)?.type || "text";
+  const getFieldType = (fieldKey: string): FilterField['type'] => {
+    return fields.find((f) => f.key === fieldKey)?.type || 'text';
   };
 
   const getFieldEnumOptions = (fieldKey: string) => {
@@ -71,7 +72,7 @@ export function DynamicFilters({
   const renderValueInput = (filter: DynamicFilter) => {
     const fieldType = getFieldType(filter.field);
 
-    if (fieldType === "enum") {
+    if (fieldType === 'enum') {
       const enumOptions = getFieldEnumOptions(filter.field);
       return (
         <Select
@@ -95,11 +96,11 @@ export function DynamicFilters({
     return (
       <Input
         type={
-          fieldType === "number"
-            ? "number"
-            : fieldType === "date"
-              ? "date"
-              : "text"
+          fieldType === 'number'
+            ? 'number'
+            : fieldType === 'date'
+              ? 'date'
+              : 'text'
         }
         value={filter.value}
         onChange={(e) => updateFilter(filter.id, { value: e.target.value })}
@@ -119,7 +120,7 @@ export function DynamicFilters({
               <Select
                 value={filter.field}
                 onValueChange={(value) => {
-                  updateFilter(filter.id, { field: value, value: "" });
+                  updateFilter(filter.id, { field: value, value: '' });
                 }}
               >
                 <SelectTrigger className="w-[140px]">

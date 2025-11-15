@@ -1,6 +1,5 @@
 "use client";
 
-import { useSDK } from "@/shared/presentation/hooks/use-sdk";
 import type {
   CreateUserInput,
   DeleteUserInput,
@@ -10,6 +9,7 @@ import type {
   UserFindByCriteriaInput,
   UserResponse,
 } from "@repo/sdk";
+import { useSDK } from "@repo/shared/presentation/hooks/use-sdk";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 /**

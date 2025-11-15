@@ -1,22 +1,22 @@
 "use client";
 
-import { PageHeader } from "@/shared/presentation/components/organisms/page-header/page-header";
-import {
-  TableLayout,
-  type DynamicFilter,
-} from "@/shared/presentation/components/organisms/table-layout/table-layout";
-import PageTemplate from "@/shared/presentation/components/templates/page-template/page-template";
-import { useDebouncedFilters } from "@/shared/presentation/hooks/use-debounced-filters";
-import { useFilterOperators } from "@/shared/presentation/hooks/use-filter-operators";
-import { dynamicFiltersToApiFiltersMapper } from "@/shared/presentation/mappers/convert-filters.mapper";
 import { UserFiltersEnum } from "@/user-context/users/domain/enums/user-filters/user-filters.enum";
 import { UsersTable } from "@/user-context/users/presentation/components/organisms/users-table/users-table";
 import { useUserFilterFields } from "@/user-context/users/presentation/hooks/use-user-filter-fields";
 import { useUsers } from "@/user-context/users/presentation/hooks/use-users";
-import { Button } from "@repo/shared/components/ui/button";
-import type { Sort } from "@repo/shared/components/ui/data-table";
 import { FilterOperator } from "@repo/shared/domain/enums/filter-operator.enum";
 import { SortDirection } from "@repo/shared/domain/enums/sort-direction.enum";
+import { PageHeader } from "@repo/shared/presentation/components/organisms/page-header";
+import {
+  TableLayout,
+  type DynamicFilter,
+} from "@repo/shared/presentation/components/organisms/table-layout";
+import PageTemplate from "@repo/shared/presentation/components/templates/page-template";
+import { Button } from "@repo/shared/presentation/components/ui/button";
+import type { Sort } from "@repo/shared/presentation/components/ui/data-table";
+import { useDebouncedFilters } from "@repo/shared/presentation/hooks/use-debounced-filters";
+import { useFilterOperators } from "@repo/shared/presentation/hooks/use-filter-operators";
+import { dynamicFiltersToApiFiltersMapper } from "@repo/shared/presentation/mappers/convert-filters.mapper";
 import { DownloadIcon, PlusIcon, TrashIcon, UploadIcon } from "lucide-react";
 import { useState } from "react";
 

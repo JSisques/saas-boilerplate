@@ -1,11 +1,11 @@
-"use client";
+'use client';
 
 import {
   DynamicFilter,
   DynamicFilters,
   FilterField,
-} from "@/shared/presentation/components/organisms/dynamic-filters/dynamic-filters";
-import { Input } from "@repo/shared/components/ui/input";
+} from '@repo/shared/presentation/components/organisms/dynamic-filters';
+import { Input } from '@repo/shared/presentation/components/ui/input';
 import {
   Pagination,
   PaginationContent,
@@ -14,10 +14,10 @@ import {
   PaginationLink,
   PaginationNext,
   PaginationPrevious,
-} from "@repo/shared/components/ui/pagination";
-import { cn } from "@repo/shared/lib/utils";
-import { SearchIcon } from "lucide-react";
-import * as React from "react";
+} from '@repo/shared/presentation/components/ui/pagination';
+import { cn } from '@repo/shared/presentation/lib/utils';
+import { SearchIcon } from 'lucide-react';
+import * as React from 'react';
 
 // Re-export types for convenience
 export type { DynamicFilter, FilterField };
@@ -44,7 +44,7 @@ interface TableLayoutProps {
 export function TableLayout({
   searchValue,
   onSearchChange,
-  searchPlaceholder = "Search...",
+  searchPlaceholder = 'Search...',
   filterFields = [],
   filterOperators = [],
   filters = [],
@@ -64,7 +64,7 @@ export function TableLayout({
   const renderPagination = () => {
     if (totalPages <= 1) return null;
 
-    const pages: (number | "ellipsis")[] = [];
+    const pages: (number | 'ellipsis')[] = [];
     const maxVisible = 7;
 
     if (totalPages <= maxVisible) {
@@ -77,7 +77,7 @@ export function TableLayout({
       pages.push(1);
 
       if (page > 3) {
-        pages.push("ellipsis");
+        pages.push('ellipsis');
       }
 
       const start = Math.max(2, page - 1);
@@ -88,7 +88,7 @@ export function TableLayout({
       }
 
       if (page < totalPages - 2) {
-        pages.push("ellipsis");
+        pages.push('ellipsis');
       }
 
       pages.push(totalPages);
@@ -101,13 +101,13 @@ export function TableLayout({
             <PaginationPrevious
               size="default"
               onClick={() => handlePageChange(page - 1)}
-              className={cn(page === 1 && "pointer-events-none opacity-50")}
+              className={cn(page === 1 && 'pointer-events-none opacity-50')}
             />
           </PaginationItem>
 
           {pages.map((p, index) => (
             <PaginationItem key={index}>
-              {p === "ellipsis" ? (
+              {p === 'ellipsis' ? (
                 <PaginationEllipsis />
               ) : (
                 <PaginationLink
@@ -126,7 +126,7 @@ export function TableLayout({
               size="default"
               onClick={() => handlePageChange(page + 1)}
               className={cn(
-                page === totalPages && "pointer-events-none opacity-50"
+                page === totalPages && 'pointer-events-none opacity-50',
               )}
             />
           </PaginationItem>
@@ -136,7 +136,7 @@ export function TableLayout({
   };
 
   return (
-    <div className={cn("flex flex-col gap-4", className)}>
+    <div className={cn('flex flex-col gap-4', className)}>
       {/* Search */}
       {onSearchChange && (
         <div className="relative">
@@ -144,7 +144,7 @@ export function TableLayout({
           <Input
             type="search"
             placeholder={searchPlaceholder}
-            value={searchValue || ""}
+            value={searchValue || ''}
             onChange={(e) => onSearchChange(e.target.value)}
             className="pl-9"
           />

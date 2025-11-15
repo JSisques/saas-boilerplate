@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import type { DynamicFilter } from "@/shared/presentation/components/organisms/table-layout/table-layout";
-import { useEffect, useMemo, useRef, useState } from "react";
+import type { DynamicFilter } from '@repo/shared/components/organisms/table-layout/table-layout';
+import { useEffect, useMemo, useRef, useState } from 'react';
 
 export interface UseDebouncedFiltersOptions {
   /**
@@ -21,7 +21,7 @@ export interface UseDebouncedFiltersOptions {
 export function useDebouncedFilters(
   search: string,
   filters: DynamicFilter[],
-  options?: UseDebouncedFiltersOptions
+  options?: UseDebouncedFiltersOptions,
 ) {
   const delay = options?.delay ?? 250;
 

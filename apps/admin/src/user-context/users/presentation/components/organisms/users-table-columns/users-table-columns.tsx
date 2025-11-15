@@ -7,7 +7,7 @@ import { UserRoleBadge } from "@/user-context/users/presentation/components/atom
 import { UserStatusBadge } from "@/user-context/users/presentation/components/atoms/user-status-badge/user-status-badge";
 import type { UserResponse } from "@repo/sdk";
 import { formatDate } from "@repo/shared/application/services/format-date.service";
-import type { ColumnDef } from "@repo/shared/components/ui/data-table";
+import type { ColumnDef } from "@repo/shared/presentation/components/ui/data-table";
 
 export const userTableColumns: ColumnDef<UserResponse>[] = [
   {
