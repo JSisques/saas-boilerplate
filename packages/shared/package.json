@@ -3,6 +3,11 @@
   "version": "0.0.0",
   "private": true,
   "exports": {
+    "./domain/entities/*": "./src/domain/entities/*.ts",
+    "./domain/enums/*": "./src/domain/enums/*.ts",
+    "./domain/exceptions/*": "./src/domain/exceptions/*.ts",
+    "./domain/value-objects/*": "./src/domain/value-objects/*.ts",
+    "./domain/value-objects/idenitfiers/*": "./src/domain/value-objects/idenitfiers/*.ts",
     "./components/ui/*": "./src/presentation/components/ui/*.tsx",
     "./lib/utils": "./src/presentation/lib/utils.ts",
     "./styles/globals.css": "./src/presentation/styles/globals.css",

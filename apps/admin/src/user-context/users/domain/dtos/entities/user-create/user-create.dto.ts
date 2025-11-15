@@ -1,4 +1,3 @@
-import { UserUuidValueObject } from "@/shared/domain/value-objects/identifiers/user-uuid/user-uuid.vo";
 import { UserAvatarUrlValueObject } from "@/user-context/users/domain/value-objects/user-avatar-url/user-avatar-url.vo";
 import { UserBioValueObject } from "@/user-context/users/domain/value-objects/user-bio/user-bio.vo";
 import { UserLastNameValueObject } from "@/user-context/users/domain/value-objects/user-last-name/user-last-name.vo";
@@ -6,6 +5,7 @@ import { UserNameValueObject } from "@/user-context/users/domain/value-objects/u
 import { UserRoleValueObject } from "@/user-context/users/domain/value-objects/user-role/user-role.vo";
 import { UserStatusValueObject } from "@/user-context/users/domain/value-objects/user-status/user-status.vo";
 import { UserUserNameValueObject } from "@/user-context/users/domain/value-objects/user-user-name/user-user-name.vo";
+import { UserUuidValueObject } from "@repo/shared/domain/value-objects/identifiers/user-uuid/user-uuid.vo";
 
 /**
  * Interface representing the structure required to create a new user entity.
