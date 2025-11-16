@@ -1,3 +1,4 @@
+'use client';
 import { useEffect } from 'react';
 import type { SDK } from '../../index.js';
 import type { MutationResponse } from '../../shared/types/index.js';

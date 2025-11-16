@@ -2,68 +2,73 @@
 
 import * as React from 'react';
 
-import {
-	Dialog,
-	DialogContent,
-	DialogDescription,
-	DialogFooter,
-	DialogHeader,
-	DialogTitle,
-	DialogTrigger,
-} from '@repo/shared/presentation/components/ui/dialog';
 import { Button } from '@repo/shared/presentation/components/ui/button';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@repo/shared/presentation/components/ui/dialog';
 import { cn } from '@repo/shared/presentation/lib/utils';
 
 export type GenericModalAction = {
-	label: string;
-	variant?:
-		| 'default'
-		| 'destructive'
-		| 'outline'
-		| 'secondary'
-		| 'ghost'
-		| 'link';
-	isLoading?: boolean;
-	disabled?: boolean;
-	onClick?: () => void | Promise<void>;
-	type?: 'button' | 'submit' | 'reset';
+  label: string;
+  variant?:
+    | 'default'
+    | 'destructive'
+    | 'outline'
+    | 'secondary'
+    | 'ghost'
+    | 'link';
+  isLoading?: boolean;
+  disabled?: boolean;
+  onClick?: () => void | Promise<void>;
+  type?: 'button' | 'submit' | 'reset';
 };
 
 export type GenericModalProps = {
-	title: React.ReactNode;
-	description?: React.ReactNode;
-	children?: React.ReactNode;
-	className?: string;
-	trigger?: React.ReactNode;
-	open?: boolean;
-	defaultOpen?: boolean;
-	onOpenChange?: (open: boolean) => void;
-	/**
-	 * Footer primary/confirm action (right-most).
-	 * Omit to hide the footer entirely.
-	 */
-	primaryAction?: GenericModalAction;
-	/**
-	 * Footer secondary/cancel action (left of primary).
-	 */
-	secondaryAction?: GenericModalAction;
-	/**
-	 * Hide the footer section.
-	 */
-	hideFooter?: boolean;
-	/**
-	 * Hide the header section.
-	 */
-	hideHeader?: boolean;
-	/**
-	 * Custom content to render in the footer. If provided, it replaces the default footer actions.
-	 */
-	footerContent?: React.ReactNode;
-	/**
-	 * Size utility classes to adjust the max width if needed.
-	 * Defaults to `sm:max-w-lg`.
-	 */
-	contentClassName?: string;
+  title: React.ReactNode;
+  description?: React.ReactNode;
+  children?: React.ReactNode;
+  className?: string;
+  trigger?: React.ReactNode;
+  open?: boolean;
+  defaultOpen?: boolean;
+  onOpenChange?: (open: boolean) => void;
+  /**
+   * Footer primary/confirm action (right-most).
+   * Omit to hide the footer entirely.
+   */
+  primaryAction?: GenericModalAction;
+  /**
+   * Footer secondary/cancel action (left of primary).
+   */
+  secondaryAction?: GenericModalAction;
+  /**
+   * Hide the footer section.
+   */
+  hideFooter?: boolean;
+  /**
+   * Hide the header section.
+   */
+  hideHeader?: boolean;
+  /**
+   * Custom content to render in the footer. If provided, it replaces the default footer actions.
+   */
+  footerContent?: React.ReactNode;
+  /**
+   * Size utility classes to adjust the max width if needed.
+   * Defaults to `sm:max-w-lg`.
+   */
+  contentClassName?: string;
+  /**
+   * Classes for the scrollable body container wrapping children.
+   * Defaults to `max-h-[70vh] overflow-y-auto`.
+   */
+  contentBodyClassName?: string;
 };
 
 /**
@@ -71,70 +76,74 @@ export type GenericModalProps = {
  * exposed via our shared UI `Dialog` components.
  */
 export function GenericModal({
-	title,
-	description,
-	children,
-	className,
-	trigger,
-	open,
-	defaultOpen,
-	onOpenChange,
-	primaryAction,
-	secondaryAction,
-	hideFooter,
-	hideHeader,
-	footerContent,
-	contentClassName,
+  title,
+  description,
+  children,
+  className,
+  trigger,
+  open,
+  defaultOpen,
+  onOpenChange,
+  primaryAction,
+  secondaryAction,
+  hideFooter,
+  hideHeader,
+  footerContent,
+  contentClassName,
+  contentBodyClassName,
 }: GenericModalProps) {
-	const contentClasses = cn('sm:max-w-lg', contentClassName);
+  const contentClasses = cn('sm:max-w-lg', contentClassName);
+  const bodyClasses = cn('max-h-[70vh] overflow-y-auto', contentBodyClassName);
 
-	return (
-		<Dialog open={open} defaultOpen={defaultOpen} onOpenChange={onOpenChange}>
-			{trigger ? <DialogTrigger asChild>{trigger}</DialogTrigger> : null}
-			<DialogContent className={cn(contentClasses, className)}>
-				{!hideHeader ? (
-					<DialogHeader>
-						{title ? <DialogTitle>{title}</DialogTitle> : null}
-						{description ? (
-							<DialogDescription>{description}</DialogDescription>
-						) : null}
-					</DialogHeader>
-				) : null}
+  return (
+    <Dialog open={open} defaultOpen={defaultOpen} onOpenChange={onOpenChange}>
+      {trigger ? <DialogTrigger asChild>{trigger}</DialogTrigger> : null}
+      <DialogContent className={cn(contentClasses, className)}>
+        {!hideHeader ? (
+          <DialogHeader>
+            {title ? <DialogTitle>{title}</DialogTitle> : null}
+            {description ? (
+              <DialogDescription>{description}</DialogDescription>
+            ) : null}
+          </DialogHeader>
+        ) : null}
 
-				{children}
+        <div className={bodyClasses}>{children}</div>
 
-				{hideFooter
-					? null
-					: footerContent ?? (
-							<DialogFooter>
-								{secondaryAction ? (
-									<Button
-										variant={secondaryAction.variant ?? 'outline'}
-										type={secondaryAction.type ?? 'button'}
-										disabled={secondaryAction.disabled || secondaryAction.isLoading}
-										onClick={secondaryAction.onClick}
-									>
-										{secondaryAction.label}
-									</Button>
-								) : null}
+        {hideFooter
+          ? null
+          : (footerContent ?? (
+              <DialogFooter>
+                {secondaryAction ? (
+                  <Button
+                    variant={secondaryAction.variant ?? 'outline'}
+                    type={secondaryAction.type ?? 'button'}
+                    disabled={
+                      secondaryAction.disabled || secondaryAction.isLoading
+                    }
+                    onClick={secondaryAction.onClick}
+                  >
+                    {secondaryAction.label}
+                  </Button>
+                ) : null}
 
-								{primaryAction ? (
-									<Button
-										variant={primaryAction.variant ?? 'default'}
-										type={primaryAction.type ?? 'button'}
-										disabled={primaryAction.disabled || primaryAction.isLoading}
-										onClick={primaryAction.onClick}
-									>
-										{primaryAction.isLoading ? 'Processing…' : primaryAction.label}
-									</Button>
-								) : null}
-							</DialogFooter>
-					  )}
-			</DialogContent>
-		</Dialog>
-	);
+                {primaryAction ? (
+                  <Button
+                    variant={primaryAction.variant ?? 'default'}
+                    type={primaryAction.type ?? 'button'}
+                    disabled={primaryAction.disabled || primaryAction.isLoading}
+                    onClick={primaryAction.onClick}
+                  >
+                    {primaryAction.isLoading
+                      ? 'Processing…'
+                      : primaryAction.label}
+                  </Button>
+                ) : null}
+              </DialogFooter>
+            ))}
+      </DialogContent>
+    </Dialog>
+  );
 }
 
 export default GenericModal;
-
-

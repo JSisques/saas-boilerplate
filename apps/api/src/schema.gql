@@ -96,7 +96,7 @@ type SubscriptionPlanResponseDto {
   intervalCount: Float!
 
   """The trial period days of the subscription plan"""
-  trialPeriodDays: Float!
+  trialPeriodDays: Float
 
   """The is active of the subscription plan"""
   isActive: Boolean!

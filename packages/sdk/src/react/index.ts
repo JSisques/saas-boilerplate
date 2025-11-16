@@ -1,5 +1,11 @@
 // Export all React hooks
 export * from './hooks/index.js';
+export {
+  SDKAutoProvider,
+  SDKProvider,
+  useSDKContext,
+  useSDKOptional,
+} from './sdk-context.js';
 
 // Re-export SDK types and classes for convenience
 export { SDK } from '../index.js';

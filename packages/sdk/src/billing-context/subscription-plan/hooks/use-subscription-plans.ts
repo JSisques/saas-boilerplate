@@ -1,20 +1,34 @@
-import { MutationResponse, SDK } from '../../../index.js';
+import { MutationResponse } from '../../../index.js';
 import { useAsyncState } from '../../../react/hooks/index.js';
+import {
+  PaginatedSubscriptionPlanResult,
+  SubscriptionPlanDeleteInput,
+  SubscriptionPlanFindByCriteriaInput,
+  SubscriptionPlanFindByIdInput,
+  SubscriptionPlanResponse,
+  SubscriptionPlanUpdateInput,
+  useSDKContext,
+} from '../../../react/index.js';
 import { SubscriptionPlanCreateInput } from '../types/subscription-plan-create-input.type.js';
-import { SubscriptionPlanDeleteInput } from '../types/subscription-plan-delete-input.type.js';
-import { SubscriptionPlanFindByCriteriaInput } from '../types/subscription-plan-find-by-criteria-input.type.js';
-import { PaginatedSubscriptionPlanResult } from '../types/subscription-plan-paginated-response.type.js';
-import { SubscriptionPlanUpdateInput } from '../types/subscription-plan-update-input.type.js';
 
 /**
- * Hook for subscription plan operations
+ * Hook for creating a subscription plan
  */
-export function useSubscriptionPlans(sdk: SDK) {
+export function useSubscriptionPlans() {
+  const sdk = useSDKContext();
+
   const findByCriteria = useAsyncState<
     PaginatedSubscriptionPlanResult,
-    [SubscriptionPlanFindByCriteriaInput?]
-  >((input?: SubscriptionPlanFindByCriteriaInput) =>
+    [SubscriptionPlanFindByCriteriaInput]
+  >((input: SubscriptionPlanFindByCriteriaInput) =>
     sdk.subscriptionPlans.findByCriteria(input),
+  );
+
+  const findById = useAsyncState<
+    SubscriptionPlanResponse,
+    [SubscriptionPlanFindByIdInput]
+  >((input: SubscriptionPlanFindByIdInput) =>
+    sdk.subscriptionPlans.findById(input),
   );
 
   const create = useAsyncState<MutationResponse, [SubscriptionPlanCreateInput]>(
@@ -34,17 +48,21 @@ export function useSubscriptionPlans(sdk: SDK) {
       ...findByCriteria,
       fetch: findByCriteria.execute,
     },
+    findById: {
+      ...findById,
+      fetch: findById.execute,
+    },
     create: {
       ...create,
-      mutate: create.execute,
+      fetch: create.execute,
     },
     update: {
       ...update,
-      mutate: update.execute,
+      fetch: update.execute,
     },
-    delete: {
+    remove: {
       ...remove,
-      mutate: remove.execute,
+      fetch: remove.execute,
     },
   };
 }

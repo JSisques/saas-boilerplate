@@ -10,6 +10,7 @@ export * from './types/subscription-plan-type.type.js';
 export * from './types/subscription-plan-update-input.type.js';
 
 // Hooks
+export * from './hooks/use-subscription-plans-list.js';
 export * from './hooks/use-subscription-plans.js';
 
 // Clients

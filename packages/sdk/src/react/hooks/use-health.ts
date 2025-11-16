@@ -1,3 +1,4 @@
+'use client';
 import { useEffect } from 'react';
 import type { HealthResponse } from '../../health-context/types/index.js';
 import type { SDK } from '../../index.js';

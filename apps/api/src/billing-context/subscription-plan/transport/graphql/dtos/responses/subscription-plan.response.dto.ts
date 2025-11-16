@@ -64,10 +64,10 @@ export class SubscriptionPlanResponseDto {
   intervalCount: number;
 
   @Field(() => Number, {
-    nullable: false,
+    nullable: true,
     description: 'The trial period days of the subscription plan',
   })
-  trialPeriodDays: number | null;
+  trialPeriodDays?: number | null;
 
   @Field(() => Boolean, {
     nullable: false,

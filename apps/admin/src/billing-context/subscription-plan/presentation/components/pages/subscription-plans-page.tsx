@@ -4,13 +4,11 @@ import { SubscriptionPlanFiltersEnum } from "@/billing-context/subscription-plan
 import { SubscriptionPlanCreateModal } from "@/billing-context/subscription-plan/presentation/components/organisms/subscription-plan-create-modal/subscription-plan-create-modal";
 import { SubscriptionPlansTable } from "@/billing-context/subscription-plan/presentation/components/organisms/subscription-plans-table/subscription-plans-table";
 import { useSubscriptionPlanFilterFields } from "@/billing-context/subscription-plan/presentation/hooks/use-subscription-plan-filter-fields";
-import { useSubscriptionPlans } from "@/billing-context/subscription-plan/presentation/hooks/use-subscription-plans";
 import { useSubscriptionPlanPageStore } from "@/billing-context/subscription-plan/presentation/stores/subscription-plan-page-store";
 import { useDefaultTenantName } from "@/shared/presentation/hooks/use-default-tenant-name";
 import { useRoutes } from "@/shared/presentation/hooks/use-routes";
-import { BaseFilter } from "@repo/sdk";
+import { BaseFilter, useSubscriptionPlansList } from "@repo/sdk";
 import { FilterOperator } from "@repo/shared/domain/enums/filter-operator.enum";
-import { SortDirection } from "@repo/shared/domain/enums/sort-direction.enum";
 import { PageHeader } from "@repo/shared/presentation/components/organisms/page-header";
 import {
   TableLayout,
@@ -22,8 +20,9 @@ import type { Sort } from "@repo/shared/presentation/components/ui/data-table";
 import { useDebouncedFilters } from "@repo/shared/presentation/hooks/use-debounced-filters";
 import { useFilterOperators } from "@repo/shared/presentation/hooks/use-filter-operators";
 import { dynamicFiltersToApiFiltersMapper } from "@repo/shared/presentation/mappers/convert-filters.mapper";
+import { dynamicSortsToApiSortsMapper } from "@repo/shared/presentation/mappers/convert-sorts.mapper";
 import { PlusIcon, TrashIcon } from "lucide-react";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 
 const SubscriptionPlansPage = () => {
   const [search, setSearch] = useState("");
@@ -36,38 +35,44 @@ const SubscriptionPlansPage = () => {
   const { getSidebarData } = useRoutes();
   const filterFields = useSubscriptionPlanFilterFields();
 
-  // Define operators
   const filterOperators = useFilterOperators();
 
-  // Debounce search and filters to avoid multiple API calls
   const { debouncedSearch, debouncedFilters } = useDebouncedFilters(
     search,
     filters
   );
 
-  // Convert dynamic filters to API format using debounced values
-  const apiFilters = dynamicFiltersToApiFiltersMapper(debouncedFilters, {
-    search: debouncedSearch,
-    searchField: SubscriptionPlanFiltersEnum.NAME,
-    searchOperator: FilterOperator.LIKE,
+  const apiFilters = useMemo(
+    () =>
+      dynamicFiltersToApiFiltersMapper(debouncedFilters, {
+        search: debouncedSearch,
+        searchField: SubscriptionPlanFiltersEnum.NAME,
+        searchOperator: FilterOperator.LIKE,
+      }),
+    [debouncedFilters, debouncedSearch]
+  );
+
+  const apiSorts = useMemo(() => dynamicSortsToApiSortsMapper(sorts), [sorts]);
+
+  const requestInput = useMemo(
+    () => ({
+      pagination: { page, perPage },
+      filters: apiFilters as BaseFilter[],
+      sorts: apiSorts.length > 0 ? apiSorts : undefined,
+    }),
+    [page, perPage, apiFilters, apiSorts]
+  );
+
+  const subscriptionPlansList = useSubscriptionPlansList(requestInput, {
+    enabled: true,
   });
 
-  // Convert sorts to API format
-  const apiSorts = sorts.map((sort) => ({
-    field: sort.field,
-    direction: sort.direction as SortDirection,
-  }));
-
-  const { data, isLoading, error } = useSubscriptionPlans({
-    pagination: { page, perPage },
-    filters: apiFilters as BaseFilter[],
-    sorts: apiSorts.length > 0 ? apiSorts : undefined,
-  });
-
-  if (error) {
+  if (subscriptionPlansList.error) {
     return (
       <div className="p-4">
-        <div className="text-destructive">Error: {error.message}</div>
+        <div className="text-destructive">
+          Error: {subscriptionPlansList.error.message}
+        </div>
       </div>
     );
   }
@@ -108,23 +113,25 @@ const SubscriptionPlansPage = () => {
         filters={filters}
         onFiltersChange={setFilters}
         page={page}
-        totalPages={data?.totalPages || 0}
+        totalPages={subscriptionPlansList?.data?.totalPages || 0}
         onPageChange={setPage}
       >
-        {isLoading ? (
+        {subscriptionPlansList.loading ? (
           <div className="flex items-center justify-center p-8">
             <div className="text-sm text-muted-foreground">Loading...</div>
           </div>
         ) : (
           <SubscriptionPlansTable
-            subscriptionPlans={data?.items || []}
+            subscriptionPlans={subscriptionPlansList.data?.items || []}
             onSubscriptionPlanClick={() => {}}
             sorts={sorts}
             onSortChange={setSorts}
           />
         )}
       </TableLayout>
-      <SubscriptionPlanCreateModal />
+      <SubscriptionPlanCreateModal
+        onCreated={() => subscriptionPlansList.refetch()}
+      />
     </PageWithSidebarTemplate>
   );
 };
