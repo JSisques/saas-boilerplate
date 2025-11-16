@@ -69,10 +69,10 @@ export class SubscriptionPlanAggregateFactory
         : null,
       isActive: new SubscriptionPlanIsActiveValueObject(data.isActive),
       features: data.features
-        ? new SubscriptionPlanFeaturesValueObject(data.features)
+        ? new SubscriptionPlanFeaturesValueObject(JSON.stringify(data.features))
         : null,
       limits: data.limits
-        ? new SubscriptionPlanLimitsValueObject(data.limits)
+        ? new SubscriptionPlanLimitsValueObject(JSON.stringify(data.limits))
         : null,
       stripePriceId: data.stripePriceId
         ? new SubscriptionPlanStripePriceIdValueObject(data.stripePriceId)

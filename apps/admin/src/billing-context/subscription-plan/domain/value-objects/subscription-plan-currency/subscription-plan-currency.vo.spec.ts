@@ -46,19 +46,25 @@ describe("SubscriptionPlanCurrencyValueObject", () => {
 
     it("should throw InvalidEnumValueException for invalid currency", () => {
       expect(() => {
-        new SubscriptionPlanCurrencyValueObject("INVALID_CURRENCY" as any);
+        new SubscriptionPlanCurrencyValueObject(
+          "INVALID_CURRENCY" as unknown as SubscriptionPlanCurrencyEnum
+        );
       }).toThrow(InvalidEnumValueException);
     });
 
     it("should throw InvalidEnumValueException for null value", () => {
       expect(() => {
-        new SubscriptionPlanCurrencyValueObject(null as any);
+        new SubscriptionPlanCurrencyValueObject(
+          null as unknown as SubscriptionPlanCurrencyEnum
+        );
       }).toThrow(InvalidEnumValueException);
     });
 
     it("should throw InvalidEnumValueException for undefined value", () => {
       expect(() => {
-        new SubscriptionPlanCurrencyValueObject(undefined as any);
+        new SubscriptionPlanCurrencyValueObject(
+          undefined as unknown as SubscriptionPlanCurrencyEnum
+        );
       }).toThrow(InvalidEnumValueException);
     });
   });

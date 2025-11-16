@@ -29,6 +29,8 @@ const UsersPage = () => {
   const [page, setPage] = useState(1);
   const [perPage] = useState(10);
 
+  const { defaultTenantName, defaultTenantSubtitle } = useDefaultTenantName();
+
   const { getSidebarData } = useRoutes();
   const filterFields = useUserFilterFields();
 
@@ -79,8 +81,8 @@ const UsersPage = () => {
     <PageWithSidebarTemplate
       sidebarProps={{
         data: getSidebarData(),
-        defaultTenantName: useDefaultTenantName().defaultTenantName,
-        defaultTenantSubtitle: useDefaultTenantName().defaultTenantSubtitle,
+        defaultTenantName: defaultTenantName,
+        defaultTenantSubtitle: defaultTenantSubtitle,
       }}
     >
       <PageHeader

@@ -46,19 +46,25 @@ describe("SubscriptionPlanTypeValueObject", () => {
 
     it("should throw InvalidEnumValueException for invalid type", () => {
       expect(() => {
-        new SubscriptionPlanTypeValueObject("INVALID_TYPE" as any);
+        new SubscriptionPlanTypeValueObject(
+          "INVALID_TYPE" as unknown as SubscriptionPlanTypeEnum
+        );
       }).toThrow(InvalidEnumValueException);
     });
 
     it("should throw InvalidEnumValueException for null value", () => {
       expect(() => {
-        new SubscriptionPlanTypeValueObject(null as any);
+        new SubscriptionPlanTypeValueObject(
+          null as unknown as SubscriptionPlanTypeEnum
+        );
       }).toThrow(InvalidEnumValueException);
     });
 
     it("should throw InvalidEnumValueException for undefined value", () => {
       expect(() => {
-        new SubscriptionPlanTypeValueObject(undefined as any);
+        new SubscriptionPlanTypeValueObject(
+          undefined as unknown as SubscriptionPlanTypeEnum
+        );
       }).toThrow(InvalidEnumValueException);
     });
   });

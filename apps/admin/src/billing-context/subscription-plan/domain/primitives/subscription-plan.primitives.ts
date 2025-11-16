@@ -11,7 +11,7 @@ export type SubscriptionPlanPrimitives = {
   intervalCount: number;
   trialPeriodDays: number | null;
   isActive: boolean;
-  features: any | null;
-  limits: any | null;
+  features: Record<string, unknown> | null;
+  limits: Record<string, unknown> | null;
   stripePriceId: string | null;
 };

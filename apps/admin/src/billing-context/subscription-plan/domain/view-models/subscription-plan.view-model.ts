@@ -18,8 +18,8 @@ export class SubscriptionPlanViewModel {
   private _intervalCount: number;
   private _trialPeriodDays: number | null;
   private _isActive: boolean;
-  private _features: Record<string, any> | null;
-  private _limits: Record<string, any> | null;
+  private _features: Record<string, unknown> | null;
+  private _limits: Record<string, unknown> | null;
   private _stripePriceId: string | null;
   private _createdAt: Date;
   private _updatedAt: Date;
@@ -155,13 +155,13 @@ export class SubscriptionPlanViewModel {
     return this._isActive;
   }
 
-  /** @returns {Record<string, any> | null} Features available in the subscription plan */
-  public get features(): Record<string, any> | null {
+  /** @returns {Record<string, unknown> | null} Features available in the subscription plan */
+  public get features(): Record<string, unknown> | null {
     return this._features;
   }
 
-  /** @returns {Record<string, any> | null} Limits applied to the subscription plan */
-  public get limits(): Record<string, any> | null {
+  /** @returns {Record<string, unknown> | null} Limits applied to the subscription plan */
+  public get limits(): Record<string, unknown> | null {
     return this._limits;
   }
 

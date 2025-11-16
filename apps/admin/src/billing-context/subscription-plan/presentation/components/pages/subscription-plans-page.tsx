@@ -30,7 +30,9 @@ const SubscriptionPlansPage = () => {
   const [sorts, setSorts] = useState<Sort[]>([]);
   const [page, setPage] = useState(1);
   const [perPage] = useState(10);
-  const { isAddModalOpen, setIsAddModalOpen } = useSubscriptionPlanPageStore();
+  const { setIsAddModalOpen } = useSubscriptionPlanPageStore();
+
+  const { defaultTenantName, defaultTenantSubtitle } = useDefaultTenantName();
 
   const { getSidebarData } = useRoutes();
   const filterFields = useSubscriptionPlanFilterFields();
@@ -81,8 +83,8 @@ const SubscriptionPlansPage = () => {
     <PageWithSidebarTemplate
       sidebarProps={{
         data: getSidebarData(),
-        defaultTenantName: useDefaultTenantName().defaultTenantName,
-        defaultTenantSubtitle: useDefaultTenantName().defaultTenantSubtitle,
+        defaultTenantName: defaultTenantName,
+        defaultTenantSubtitle: defaultTenantSubtitle,
       }}
     >
       <PageHeader

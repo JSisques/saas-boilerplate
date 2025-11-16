@@ -32,19 +32,25 @@ describe("SubscriptionPlanIntervalValueObject", () => {
 
     it("should throw InvalidEnumValueException for invalid interval", () => {
       expect(() => {
-        new SubscriptionPlanIntervalValueObject("INVALID_INTERVAL" as any);
+        new SubscriptionPlanIntervalValueObject(
+          "INVALID_INTERVAL" as unknown as SubscriptionPlanIntervalEnum
+        );
       }).toThrow(InvalidEnumValueException);
     });
 
     it("should throw InvalidEnumValueException for null value", () => {
       expect(() => {
-        new SubscriptionPlanIntervalValueObject(null as any);
+        new SubscriptionPlanIntervalValueObject(
+          null as unknown as SubscriptionPlanIntervalEnum
+        );
       }).toThrow(InvalidEnumValueException);
     });
 
     it("should throw InvalidEnumValueException for undefined value", () => {
       expect(() => {
-        new SubscriptionPlanIntervalValueObject(undefined as any);
+        new SubscriptionPlanIntervalValueObject(
+          undefined as unknown as SubscriptionPlanIntervalEnum
+        );
       }).toThrow(InvalidEnumValueException);
     });
   });

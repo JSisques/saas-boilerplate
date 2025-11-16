@@ -66,13 +66,15 @@ describe("SubscriptionPlanIsActiveValueObject", () => {
 
     it("should throw InvalidBooleanException for null value", () => {
       expect(() => {
-        new SubscriptionPlanIsActiveValueObject(null as any);
+        new SubscriptionPlanIsActiveValueObject(null as unknown as boolean);
       }).toThrow(InvalidBooleanException);
     });
 
     it("should throw InvalidBooleanException for undefined value", () => {
       expect(() => {
-        new SubscriptionPlanIsActiveValueObject(undefined as any);
+        new SubscriptionPlanIsActiveValueObject(
+          undefined as unknown as boolean
+        );
       }).toThrow(InvalidBooleanException);
     });
   });

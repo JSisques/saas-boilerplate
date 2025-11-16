@@ -62,13 +62,15 @@ describe("SubscriptionPlanFeaturesValueObject", () => {
 
     it("should throw InvalidJsonException for array value", () => {
       expect(() => {
+        // @ts-expect-error - Testing invalid input type
         new SubscriptionPlanFeaturesValueObject([]);
       }).toThrow(InvalidJsonException);
     });
 
     it("should throw InvalidJsonException for primitive value", () => {
       expect(() => {
-        new SubscriptionPlanFeaturesValueObject("primitive" as any);
+        // @ts-expect-error - Testing invalid input type
+        new SubscriptionPlanFeaturesValueObject(123);
       }).toThrow(InvalidJsonException);
     });
 

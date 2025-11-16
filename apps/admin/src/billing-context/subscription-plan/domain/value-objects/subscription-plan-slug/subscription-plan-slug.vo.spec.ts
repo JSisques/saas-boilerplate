@@ -57,13 +57,13 @@ describe("SubscriptionPlanSlugValueObject", () => {
 
     it("should throw InvalidStringException for null value", () => {
       expect(() => {
-        new SubscriptionPlanSlugValueObject(null as any);
+        new SubscriptionPlanSlugValueObject(null as unknown as string);
       }).toThrow(InvalidStringException);
     });
 
     it("should throw InvalidStringException for undefined value", () => {
       expect(() => {
-        new SubscriptionPlanSlugValueObject(undefined as any);
+        new SubscriptionPlanSlugValueObject(undefined as unknown as string);
       }).toThrow(InvalidStringException);
     });
   });
