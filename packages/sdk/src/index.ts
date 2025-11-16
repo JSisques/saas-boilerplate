@@ -7,7 +7,7 @@ import { GraphQLClient } from './shared/client/graphql-client.js';
 import type { GraphQLClientConfig } from './shared/types/index.js';
 import { TenantClient } from './tenant-context/tenant-client.js';
 import { TenantMemberClient } from './tenant-context/tenant-member-client.js';
-import { UserClient } from './user-context/user-client.js';
+import { UserClient } from './user-context/users/client/user-client.js';
 
 // Re-export types from shared
 export type {
@@ -34,19 +34,6 @@ export type {
   AuthResponse,
   LoginResponse,
 } from './auth-context/types/index.js';
-
-// Re-export types from user-context
-export type {
-  CreateUserInput,
-  DeleteUserInput,
-  PaginatedUserResult,
-  UpdateUserInput,
-  UserFindByCriteriaInput,
-  UserFindByIdInput,
-  UserResponse,
-  UserRole,
-  UserStatus,
-} from './user-context/types/index.js';
 
 // Re-export types from tenant-context
 export type {
@@ -77,6 +64,7 @@ export type {
 
 // Re-export types from billing-context
 export * from './billing-context/subscription-plan/index.js';
+export * from './user-context/users/index.js';
 
 export class SDK {
   private client: GraphQLClient;

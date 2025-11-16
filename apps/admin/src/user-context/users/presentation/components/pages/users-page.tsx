@@ -5,9 +5,8 @@ import { useRoutes } from "@/shared/presentation/hooks/use-routes";
 import { UserFiltersEnum } from "@/user-context/users/domain/enums/user-filters/user-filters.enum";
 import { UsersTable } from "@/user-context/users/presentation/components/organisms/users-table/users-table";
 import { useUserFilterFields } from "@/user-context/users/presentation/hooks/use-user-filter-fields";
-import { useUsers } from "@/user-context/users/presentation/hooks/use-users";
+import { BaseFilter, useUsersList } from "@repo/sdk";
 import { FilterOperator } from "@repo/shared/domain/enums/filter-operator.enum";
-import { SortDirection } from "@repo/shared/domain/enums/sort-direction.enum";
 import { PageHeader } from "@repo/shared/presentation/components/organisms/page-header";
 import {
   TableLayout,
@@ -19,8 +18,9 @@ import type { Sort } from "@repo/shared/presentation/components/ui/data-table";
 import { useDebouncedFilters } from "@repo/shared/presentation/hooks/use-debounced-filters";
 import { useFilterOperators } from "@repo/shared/presentation/hooks/use-filter-operators";
 import { dynamicFiltersToApiFiltersMapper } from "@repo/shared/presentation/mappers/convert-filters.mapper";
+import { dynamicSortsToApiSortsMapper } from "@repo/shared/presentation/mappers/convert-sorts.mapper";
 import { DownloadIcon, PlusIcon, TrashIcon, UploadIcon } from "lucide-react";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 
 const UsersPage = () => {
   const [search, setSearch] = useState("");
@@ -42,28 +42,35 @@ const UsersPage = () => {
   );
 
   // Convert dynamic filters to API format using debounced values
-  const apiFilters = dynamicFiltersToApiFiltersMapper(debouncedFilters, {
-    search: debouncedSearch,
-    searchField: UserFiltersEnum.NAME,
-    searchOperator: FilterOperator.LIKE,
+  const apiFilters = useMemo(
+    () =>
+      dynamicFiltersToApiFiltersMapper(debouncedFilters, {
+        search: debouncedSearch,
+        searchField: UserFiltersEnum.NAME,
+        searchOperator: FilterOperator.LIKE,
+      }),
+    [debouncedFilters, debouncedSearch]
+  );
+
+  const apiSorts = useMemo(() => dynamicSortsToApiSortsMapper(sorts), [sorts]);
+
+  const requestInput = useMemo(
+    () => ({
+      pagination: { page, perPage },
+      filters: apiFilters as BaseFilter[],
+      sorts: apiSorts.length > 0 ? apiSorts : undefined,
+    }),
+    [page, perPage, apiFilters, apiSorts]
+  );
+
+  const usersList = useUsersList(requestInput, {
+    enabled: true,
   });
 
-  // Convert sorts to API format
-  const apiSorts = sorts.map((sort) => ({
-    field: sort.field,
-    direction: sort.direction as SortDirection,
-  }));
-
-  const { data, isLoading, error } = useUsers({
-    pagination: { page, perPage },
-    filters: apiFilters,
-    sorts: apiSorts.length > 0 ? apiSorts : undefined,
-  });
-
-  if (error) {
+  if (usersList.error) {
     return (
       <div className="p-4">
-        <div className="text-destructive">Error: {error.message}</div>
+        <div className="text-destructive">Error: {usersList.error.message}</div>
       </div>
     );
   }
@@ -109,16 +116,16 @@ const UsersPage = () => {
         filters={filters}
         onFiltersChange={setFilters}
         page={page}
-        totalPages={data?.totalPages || 0}
+        totalPages={usersList.data?.totalPages || 0}
         onPageChange={setPage}
       >
-        {isLoading ? (
+        {usersList.loading ? (
           <div className="flex items-center justify-center p-8">
             <div className="text-sm text-muted-foreground">Loading...</div>
           </div>
         ) : (
           <UsersTable
-            users={data?.items || []}
+            users={usersList.data?.items || []}
             sorts={sorts}
             onSortChange={setSorts}
           />
