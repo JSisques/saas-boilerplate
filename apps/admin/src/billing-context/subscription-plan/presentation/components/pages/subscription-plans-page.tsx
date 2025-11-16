@@ -1,9 +1,11 @@
 "use client";
 
 import { SubscriptionPlanFiltersEnum } from "@/billing-context/subscription-plan/domain/enum/subscription-plan-filters/user-filters.enum";
+import { SubscriptionPlanCreateModal } from "@/billing-context/subscription-plan/presentation/components/organisms/subscription-plan-create-modal/subscription-plan-create-modal";
 import { SubscriptionPlansTable } from "@/billing-context/subscription-plan/presentation/components/organisms/subscription-plans-table/subscription-plans-table";
 import { useSubscriptionPlanFilterFields } from "@/billing-context/subscription-plan/presentation/hooks/use-subscription-plan-filter-fields";
 import { useSubscriptionPlans } from "@/billing-context/subscription-plan/presentation/hooks/use-subscription-plans";
+import { useSubscriptionPlanPageStore } from "@/billing-context/subscription-plan/presentation/stores/subscription-plan-page-store";
 import { useDefaultTenantName } from "@/shared/presentation/hooks/use-default-tenant-name";
 import { useRoutes } from "@/shared/presentation/hooks/use-routes";
 import { BaseFilter } from "@repo/sdk";
@@ -29,6 +31,7 @@ const SubscriptionPlansPage = () => {
   const [sorts, setSorts] = useState<Sort[]>([]);
   const [page, setPage] = useState(1);
   const [perPage] = useState(10);
+  const { isAddModalOpen, setIsAddModalOpen } = useSubscriptionPlanPageStore();
 
   const { getSidebarData } = useRoutes();
   const filterFields = useSubscriptionPlanFilterFields();
@@ -81,13 +84,16 @@ const SubscriptionPlansPage = () => {
         title="Subscription Plans"
         description="Manage and view all subscription plans in the system"
         actions={[
-          <Button key="add-subscription-plan" onClick={() => {}}>
+          <Button
+            key="add-subscription-plan"
+            onClick={() => setIsAddModalOpen(true)}
+          >
             <PlusIcon className="size-4" />
             Add Subscription Plan
           </Button>,
           <Button key="delete-subscription-plans" variant="destructive">
             <TrashIcon className="size-4" />
-            Delete Subscription Plan
+            Delete Subscription Plans
           </Button>,
         ]}
       />
@@ -118,6 +124,7 @@ const SubscriptionPlansPage = () => {
           />
         )}
       </TableLayout>
+      <SubscriptionPlanCreateModal />
     </PageWithSidebarTemplate>
   );
 };
