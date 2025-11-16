@@ -3,7 +3,10 @@ import {
   AppSidebarProps,
 } from '@repo/shared/presentation/components/organisms/app-sidebar';
 import PageTemplate from '@repo/shared/presentation/components/templates/page-template';
-import { SidebarProvider } from '@repo/shared/presentation/components/ui/sidebar';
+import {
+  SidebarInset,
+  SidebarProvider,
+} from '@repo/shared/presentation/components/ui/sidebar';
 import React from 'react';
 
 interface PageWithSidebarTemplateProps {
@@ -18,7 +21,9 @@ const PageWithSidebarTemplate = ({
   return (
     <SidebarProvider>
       <AppSidebar {...sidebarProps} />
-      <PageTemplate>{children}</PageTemplate>
+      <SidebarInset className="min-w-0 max-w-full">
+        <PageTemplate>{children}</PageTemplate>
+      </SidebarInset>
     </SidebarProvider>
   );
 };
