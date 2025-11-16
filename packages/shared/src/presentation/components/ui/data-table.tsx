@@ -1,6 +1,7 @@
 import { cn } from '@repo/shared/presentation/lib/utils';
 import { ArrowDown, ArrowUp, ArrowUpDown } from 'lucide-react';
 import * as React from 'react';
+import { Input } from './input';
 import {
   Table,
   TableBody,
@@ -50,6 +51,14 @@ export interface ColumnDef<T> {
    * Additional className for the body cells in this column
    */
   cellClassName?: string;
+  /**
+   * Whether this column is editable
+   */
+  editable?: boolean;
+  /**
+   * Custom input type for editable cells (defaults to "text")
+   */
+  inputType?: 'text' | 'number' | 'email' | 'tel' | 'url';
 }
 
 export interface DataTableProps<T> {
@@ -89,6 +98,10 @@ export interface DataTableProps<T> {
    * Additional className for table rows
    */
   rowClassName?: string | ((row: T) => string);
+  /**
+   * Callback when a cell is edited
+   */
+  onCellEdit?: (row: T, columnId: string, newValue: string) => void;
 }
 
 /**
@@ -100,11 +113,14 @@ export interface DataTableProps<T> {
  *     id: "name",
  *     header: "Name",
  *     accessor: "name",
+ *     editable: true,
  *   },
  *   {
  *     id: "email",
  *     header: "Email",
  *     accessor: (row) => row.email,
+ *     editable: true,
+ *     inputType: "email",
  *   },
  *   {
  *     id: "actions",
@@ -118,6 +134,10 @@ export interface DataTableProps<T> {
  *   columns={columns}
  *   getRowId={(row) => row.id}
  *   onRowClick={(row) => console.log(row)}
+ *   onCellEdit={(row, columnId, newValue) => {
+ *     console.log(`Editing ${columnId} of row ${row.id} to ${newValue}`);
+ *     // Update your data here
+ *   }}
  * />
  * ```
  */
@@ -131,7 +151,13 @@ export function DataTable<T extends Record<string, any>>({
   emptyMessage = 'No data found',
   className,
   rowClassName,
+  onCellEdit,
 }: DataTableProps<T>) {
+  const [editingCell, setEditingCell] = React.useState<{
+    rowId: string | number;
+    columnId: string;
+  } | null>(null);
+  const [editValue, setEditValue] = React.useState<string>('');
   const handleSort = (column: ColumnDef<T>) => {
     if (!column.sortable || !onSortChange) return;
 
@@ -206,6 +232,70 @@ export function DataTable<T extends Record<string, any>>({
     return '-';
   };
 
+  const getCellRawValue = (column: ColumnDef<T>, row: T): string => {
+    // For editable cells, we need the raw value, not the rendered cell
+    // If accessor is a function, call it and convert to string
+    if (typeof column.accessor === 'function') {
+      const value = column.accessor(row);
+      return value !== null && value !== undefined ? String(value) : '';
+    }
+
+    // If accessor is a key, get the value
+    if (column.accessor) {
+      const value = row[column.accessor];
+      return value !== null && value !== undefined ? String(value) : '';
+    }
+
+    // Fallback: try to get value from row using column id
+    const value = row[column.id as keyof T];
+    return value !== null && value !== undefined ? String(value) : '';
+  };
+
+  const handleCellDoubleClick = (
+    row: T,
+    column: ColumnDef<T>,
+    rowKey: string | number,
+  ) => {
+    if (!column.editable || !onCellEdit) return;
+
+    const rawValue = getCellRawValue(column, row);
+    setEditingCell({ rowId: rowKey, columnId: column.id });
+    setEditValue(rawValue);
+  };
+
+  const handleCellEditSave = () => {
+    if (!editingCell || !onCellEdit) return;
+
+    const row = data.find((r) => {
+      const rowKey = getRowKey(r, data.indexOf(r));
+      return rowKey === editingCell.rowId;
+    });
+
+    if (row) {
+      onCellEdit(row, editingCell.columnId, editValue);
+    }
+
+    setEditingCell(null);
+    setEditValue('');
+  };
+
+  const handleCellEditCancel = () => {
+    setEditingCell(null);
+    setEditValue('');
+  };
+
+  const handleCellEditKeyDown = (
+    e: React.KeyboardEvent<HTMLInputElement>,
+  ) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      handleCellEditSave();
+    } else if (e.key === 'Escape') {
+      e.preventDefault();
+      handleCellEditCancel();
+    }
+  };
+
   const getRowClassNames = (row: T): string => {
     const baseClass = onRowClick ? 'cursor-pointer' : '';
     if (typeof rowClassName === 'function') {
@@ -248,19 +338,57 @@ export function DataTable<T extends Record<string, any>>({
             </TableCell>
           </TableRow>
         ) : (
-          data.map((row, index) => (
+          data.map((row, index) => {
+            const rowKey = getRowKey(row, index);
+            return (
             <TableRow
-              key={getRowKey(row, index)}
+                key={rowKey}
               onClick={() => onRowClick?.(row)}
               className={getRowClassNames(row)}
             >
-              {columns.map((column) => (
-                <TableCell key={column.id} className={column.cellClassName}>
-                  {getCellValue(column, row)}
+                {columns.map((column) => {
+                  const isEditing =
+                    editingCell?.rowId === rowKey &&
+                    editingCell?.columnId === column.id;
+
+                  return (
+                    <TableCell
+                      key={column.id}
+                      className={cn(
+                        column.cellClassName,
+                        column.editable && 'cursor-text',
+                      )}
+                      onDoubleClick={(e) => {
+                        e.stopPropagation();
+                        handleCellDoubleClick(row, column, rowKey);
+                      }}
+                      onClick={(e) => {
+                        if (column.editable) {
+                          e.stopPropagation();
+                        }
+                      }}
+                    >
+                      {isEditing ? (
+                        <Input
+                          type={column.inputType || 'text'}
+                          value={editValue}
+                          onChange={(e) => setEditValue(e.target.value)}
+                          onBlur={handleCellEditSave}
+                          onKeyDown={handleCellEditKeyDown}
+                          className="h-8 w-full"
+                          autoFocus
+                          onClick={(e) => e.stopPropagation()}
+                          onDoubleClick={(e) => e.stopPropagation()}
+                        />
+                      ) : (
+                        getCellValue(column, row)
+                      )}
                 </TableCell>
-              ))}
+                  );
+                })}
             </TableRow>
-          ))
+            );
+          })
         )}
       </TableBody>
     </Table>

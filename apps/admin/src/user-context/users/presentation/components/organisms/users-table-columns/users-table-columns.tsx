@@ -33,6 +33,7 @@ export const userTableColumns: ColumnDef<UserResponse>[] = [
     accessor: "bio",
     sortable: true,
     sortField: "bio",
+    editable: true,
   },
   {
     id: "name",
@@ -40,6 +41,7 @@ export const userTableColumns: ColumnDef<UserResponse>[] = [
     accessor: "name",
     sortable: true,
     sortField: "name",
+    editable: true,
   },
   {
     id: "lastName",
@@ -47,6 +49,7 @@ export const userTableColumns: ColumnDef<UserResponse>[] = [
     accessor: "lastName",
     sortable: true,
     sortField: "lastName",
+    editable: true,
   },
   {
     id: "role",
@@ -65,6 +68,7 @@ export const userTableColumns: ColumnDef<UserResponse>[] = [
     ),
     sortable: true,
     sortField: "status",
+    editable: true,
   },
   {
     id: "createdAt",

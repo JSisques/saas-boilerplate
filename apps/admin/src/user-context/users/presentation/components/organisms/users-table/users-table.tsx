@@ -21,6 +21,7 @@ interface UsersTableProps {
   onPageChange?: (page: number) => void;
   sorts?: Sort[];
   onSortChange?: (sorts: Sort[]) => void;
+  onCellEdit?: (user: UserResponse, columnId: string, newValue: string) => void;
 }
 
 export function UsersTable({
@@ -35,6 +36,7 @@ export function UsersTable({
   onPageChange,
   sorts,
   onSortChange,
+  onCellEdit,
 }: UsersTableProps) {
   return (
     <TableLayout
@@ -55,6 +57,7 @@ export function UsersTable({
         onSortChange={onSortChange}
         emptyMessage="No users found"
         className={className}
+        onCellEdit={onCellEdit}
       />
     </TableLayout>
   );
