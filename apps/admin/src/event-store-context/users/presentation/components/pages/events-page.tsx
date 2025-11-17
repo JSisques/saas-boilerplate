@@ -122,9 +122,7 @@ const UsersPage = () => {
             events={eventsList.data?.items || []}
             sorts={sorts}
             onSortChange={setSorts}
-            onCellEdit={(event, columnId, newValue) => {
-              // TODO: Implement actual update logic here
-            }}
+            onCellEdit={() => {}}
           />
         )}
       </TableLayout>
