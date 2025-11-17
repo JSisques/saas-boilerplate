@@ -4,7 +4,7 @@ import type {
   AuthLoginByEmailInput,
   AuthRegisterByEmailInput,
   LoginResponse,
-} from '../../auth-context/types/index.js';
+} from '../../auth/types/index.js';
 import type { SDK } from '../../index.js';
 import type { MutationResponse } from '../../shared/types/index.js';
 import { useAsyncState } from './use-async-state.js';
