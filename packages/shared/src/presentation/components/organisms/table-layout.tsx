@@ -176,7 +176,7 @@ export function TableLayout({
       {children}
 
       {/* Pagination Controls */}
-      {(totalPages > 1 || onPerPageChange) && (
+      {totalPages > 1 && (
         <div className="flex items-center justify-between gap-4">
           {/* Per Page Selector */}
           {onPerPageChange && (
@@ -211,9 +211,7 @@ export function TableLayout({
           )}
 
           {/* Pagination */}
-          {totalPages > 1 && (
-            <div className="ml-auto">{renderPagination()}</div>
-          )}
+          <div className="ml-auto">{renderPagination()}</div>
         </div>
       )}
     </div>
