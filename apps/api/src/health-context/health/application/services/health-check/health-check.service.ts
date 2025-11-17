@@ -1,4 +1,6 @@
 import { HealthCheckQuery } from '@/health-context/health/application/queries/health-check/health-check.query';
+import { HealthReadDatabaseCheckService } from '@/health-context/health/application/services/health-read-database-check/health-read-database-check.service';
+import { HealthWriteDatabaseCheckService } from '@/health-context/health/application/services/health-write-database-check/health-write-database-check.service';
 import { HealthStatusEnum } from '@/health-context/health/domain/enum/health-status.enum';
 import { HealthViewModelFactory } from '@/health-context/health/domain/factories/health-view-model.factory';
 import { HealthViewModel } from '@/health-context/health/domain/view-models/health.view-model';
@@ -13,6 +15,8 @@ export class HealthCheckService
 
   constructor(
     private readonly healthViewModelFactory: HealthViewModelFactory,
+    private readonly healthWriteDatabaseCheckService: HealthWriteDatabaseCheckService,
+    private readonly healthReadDatabaseCheckService: HealthReadDatabaseCheckService,
   ) {}
 
   /**
@@ -26,8 +30,25 @@ export class HealthCheckService
   async execute(): Promise<HealthViewModel> {
     this.logger.log('Checking health');
 
+    // 01: Check write database connection
+    const writeDatabaseStatus =
+      await this.healthWriteDatabaseCheckService.execute();
+
+    // 02: Check read database connection
+    const readDatabaseStatus =
+      await this.healthReadDatabaseCheckService.execute();
+
+    // 03: Determine overall status based on database checks
+    const overallStatus =
+      writeDatabaseStatus === HealthStatusEnum.OK &&
+      readDatabaseStatus === HealthStatusEnum.OK
+        ? HealthStatusEnum.OK
+        : HealthStatusEnum.ERROR;
+
     return this.healthViewModelFactory.create({
-      status: HealthStatusEnum.OK,
+      status: overallStatus,
+      writeDatabaseStatus,
+      readDatabaseStatus,
     });
   }
 }

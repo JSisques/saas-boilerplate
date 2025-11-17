@@ -1,7 +1,7 @@
 import { AuthClient } from './auth/auth-client.js';
 import type { AuthLogoutInput } from './auth/types/index.js';
 import { EventClient } from './event/client/event-client.js';
-import { HealthClient } from './health-context/health-client.js';
+import { HealthClient } from './health/client/health-client.js';
 import { GraphQLClient } from './shared/client/graphql-client.js';
 import type { GraphQLClientConfig } from './shared/types/index.js';
 import { SubscriptionPlanClient } from './subscription-plan/client/subscription-plan-client.js';
@@ -52,11 +52,8 @@ export type {
   TenantUpdateInput,
 } from './tenant/types/index.js';
 
-// Re-export types from health-context
-export type { HealthResponse } from './health-context/types/index.js';
-
-// Re-export types from billing-context
 export * from './event/index.js';
+export * from './health/index.js';
 export * from './subscription-plan/index.js';
 export * from './users/index.js';
 

@@ -243,6 +243,12 @@ type PaginatedEventResultDto {
 type HealthResponseDto {
   """The status of the check"""
   status: String!
+
+  """The status of the write database check"""
+  writeDatabaseStatus: String!
+
+  """The status of the read database check"""
+  readDatabaseStatus: String!
 }
 
 type PromptResponseDto {

@@ -8,6 +8,17 @@ export class HealthResponseDto {
     description: 'The status of the check',
   })
   status: string;
+
+  @Field(() => String, {
+    nullable: false,
+    description: 'The status of the write database check',
+  })
+  writeDatabaseStatus: string;
+  @Field(() => String, {
+    nullable: false,
+    description: 'The status of the read database check',
+  })
+  readDatabaseStatus: string;
 }
 
 @ObjectType('PaginatedHealthResultDto')

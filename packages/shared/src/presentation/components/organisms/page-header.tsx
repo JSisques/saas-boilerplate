@@ -33,7 +33,7 @@ export function PageHeader({
 }: PageHeaderProps) {
   return (
     <div
-      className={`flex  items-center  justify-between gap-4 space-y-4 ${className || ''}`}
+      className={`flex  items-center justify-between gap-4 space-y-4 ${className || ''}`}
     >
       <div className="flex flex-col justify-center h-full">
         <h1 className="text-2xl font-semibold">{title}</h1>

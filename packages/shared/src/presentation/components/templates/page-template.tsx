@@ -5,7 +5,7 @@ interface PageTemplateProps {
 }
 
 const PageTemplate = ({ children }: PageTemplateProps) => {
-  return <div className="p-4 h-full min-w-0">{children}</div>;
+  return <div className="p-4 h-full min-w-0 gap-4 space-y-4">{children}</div>;
 };
 
 export default PageTemplate;

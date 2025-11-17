@@ -7,6 +7,8 @@ export class HealthRestMapper {
   toResponseDto(health: HealthViewModel): HealthRestResponseDto {
     return {
       status: health.status,
+      writeDatabaseStatus: health.writeDatabaseStatus,
+      readDatabaseStatus: health.readDatabaseStatus,
     };
   }
 
