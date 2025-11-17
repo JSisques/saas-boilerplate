@@ -5,4 +5,6 @@ export type EventResponse = {
   aggregateId?: string;
   payload?: string;
   timestamp?: string;
+  createdAt?: string;
+  updatedAt?: string;
 };

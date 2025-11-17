@@ -9,6 +9,7 @@ export * from './client/event-client';
 
 // React Hooks
 export * from './hooks/use-events';
+export * from './hooks/use-events-list';
 
 // GraphQL
 export * from './graphql/mutations/event.mutations';

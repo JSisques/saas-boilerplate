@@ -215,6 +215,12 @@ type EventResponseDto {
 
   """The timestamp of the event"""
   timestamp: DateTime
+
+  """The created at of the event"""
+  createdAt: DateTime
+
+  """The updated at of the event"""
+  updatedAt: DateTime
 }
 
 type PaginatedEventResultDto {

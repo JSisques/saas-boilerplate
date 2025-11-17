@@ -29,6 +29,18 @@ export class EventResponseDto {
     description: 'The timestamp of the event',
   })
   timestamp?: Date;
+
+  @Field(() => Date, {
+    nullable: true,
+    description: 'The created at of the event',
+  })
+  createdAt?: Date;
+
+  @Field(() => Date, {
+    nullable: true,
+    description: 'The updated at of the event',
+  })
+  updatedAt?: Date;
 }
 
 @ObjectType('PaginatedEventResultDto')

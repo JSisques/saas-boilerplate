@@ -12,6 +12,8 @@ export const EVENT_FIND_BY_CRITERIA_QUERY = `
                 aggregateId
                 payload
                 timestamp
+                createdAt
+                updatedAt
             }
             }
         }
@@ -26,6 +28,8 @@ export const EVENT_FIND_BY_ID_QUERY = `
             aggregateId
             payload
             timestamp
+            createdAt
+            updatedAt
         }
     }
 `;
