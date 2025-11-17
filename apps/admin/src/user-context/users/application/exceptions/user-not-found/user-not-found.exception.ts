@@ -5,3 +5,4 @@ export class UserNotFoundException extends BaseApplicationException {
     super(`User with id ${userId} not found`);
   }
 }
+
