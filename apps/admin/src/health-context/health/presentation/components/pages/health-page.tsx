@@ -1,34 +1,31 @@
 'use client';
 
 import { HealthStatusPanel } from '@/health-context/health/presentation/components/organisms/health-status-panel/health-status-panel';
+import { useHealthPageStore } from '@/health-context/health/presentation/stores/health-page-store';
 import { useDefaultTenantName } from '@/shared/presentation/hooks/use-default-tenant-name';
 import { useRoutes } from '@/shared/presentation/hooks/use-routes';
 import { useHealth } from '@repo/sdk';
 import { PageHeader } from '@repo/shared/presentation/components/organisms/page-header';
 import PageWithSidebarTemplate from '@repo/shared/presentation/components/templates/page-with-sidebar-template';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 
 const HealthPage = () => {
   const { defaultTenantName, defaultTenantSubtitle } = useDefaultTenantName();
   const { getSidebarData } = useRoutes();
-  const [lastChecked, setLastChecked] = useState<Date | undefined>();
+  const { lastChecked, setLastChecked } = useHealthPageStore();
 
   const { check } = useHealth();
 
   // Fetch health check on mount
   useEffect(() => {
-    check.fetch();
+    handleRefresh();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // Update lastChecked when data or error changes
-  useEffect(() => {
-    if (check.data || check.error) {
-      setLastChecked(new Date());
-    }
-  }, [check.data, check.error]);
-
   const handleRefresh = () => {
-    check.fetch();
+    check.fetch().then(() => {
+      setLastChecked(new Date());
+    });
   };
 
   return (
