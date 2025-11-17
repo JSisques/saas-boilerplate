@@ -1,35 +1,35 @@
-"use client";
+'use client';
 
-import { SubscriptionPlanFiltersEnum } from "@/billing-context/subscription-plan/domain/enum/subscription-plan-filters/user-filters.enum";
-import { SubscriptionPlanCreateModal } from "@/billing-context/subscription-plan/presentation/components/organisms/subscription-plan-create-modal/subscription-plan-create-modal";
-import { SubscriptionPlansTable } from "@/billing-context/subscription-plan/presentation/components/organisms/subscription-plans-table/subscription-plans-table";
-import { useSubscriptionPlanFilterFields } from "@/billing-context/subscription-plan/presentation/hooks/use-subscription-plan-filter-fields";
-import { useSubscriptionPlanPageStore } from "@/billing-context/subscription-plan/presentation/stores/subscription-plan-page-store";
-import { useDefaultTenantName } from "@/shared/presentation/hooks/use-default-tenant-name";
-import { useRoutes } from "@/shared/presentation/hooks/use-routes";
-import { BaseFilter, useSubscriptionPlansList } from "@repo/sdk";
-import { FilterOperator } from "@repo/shared/domain/enums/filter-operator.enum";
-import { PageHeader } from "@repo/shared/presentation/components/organisms/page-header";
+import { SubscriptionPlanFiltersEnum } from '@/billing-context/subscription-plan/domain/enum/subscription-plan-filters/user-filters.enum';
+import { SubscriptionPlanCreateModal } from '@/billing-context/subscription-plan/presentation/components/organisms/subscription-plan-create-modal/subscription-plan-create-modal';
+import { SubscriptionPlansTable } from '@/billing-context/subscription-plan/presentation/components/organisms/subscription-plans-table/subscription-plans-table';
+import { useSubscriptionPlanFilterFields } from '@/billing-context/subscription-plan/presentation/hooks/use-subscription-plan-filter-fields';
+import { useSubscriptionPlanPageStore } from '@/billing-context/subscription-plan/presentation/stores/subscription-plan-page-store';
+import { useDefaultTenantName } from '@/shared/presentation/hooks/use-default-tenant-name';
+import { useRoutes } from '@/shared/presentation/hooks/use-routes';
+import { BaseFilter, useSubscriptionPlansList } from '@repo/sdk';
+import { FilterOperator } from '@repo/shared/domain/enums/filter-operator.enum';
+import { PageHeader } from '@repo/shared/presentation/components/organisms/page-header';
 import {
   TableLayout,
   type DynamicFilter,
-} from "@repo/shared/presentation/components/organisms/table-layout";
-import PageWithSidebarTemplate from "@repo/shared/presentation/components/templates/page-with-sidebar-template";
-import { Button } from "@repo/shared/presentation/components/ui/button";
-import type { Sort } from "@repo/shared/presentation/components/ui/data-table";
-import { useDebouncedFilters } from "@repo/shared/presentation/hooks/use-debounced-filters";
-import { useFilterOperators } from "@repo/shared/presentation/hooks/use-filter-operators";
-import { dynamicFiltersToApiFiltersMapper } from "@repo/shared/presentation/mappers/convert-filters.mapper";
-import { dynamicSortsToApiSortsMapper } from "@repo/shared/presentation/mappers/convert-sorts.mapper";
-import { PlusIcon, TrashIcon } from "lucide-react";
-import { useMemo, useState } from "react";
+} from '@repo/shared/presentation/components/organisms/table-layout';
+import PageWithSidebarTemplate from '@repo/shared/presentation/components/templates/page-with-sidebar-template';
+import { Button } from '@repo/shared/presentation/components/ui/button';
+import type { Sort } from '@repo/shared/presentation/components/ui/data-table';
+import { useDebouncedFilters } from '@repo/shared/presentation/hooks/use-debounced-filters';
+import { useFilterOperators } from '@repo/shared/presentation/hooks/use-filter-operators';
+import { dynamicFiltersToApiFiltersMapper } from '@repo/shared/presentation/mappers/convert-filters.mapper';
+import { dynamicSortsToApiSortsMapper } from '@repo/shared/presentation/mappers/convert-sorts.mapper';
+import { PlusIcon, TrashIcon } from 'lucide-react';
+import { useMemo, useState } from 'react';
 
 const SubscriptionPlansPage = () => {
-  const [search, setSearch] = useState("");
+  const [search, setSearch] = useState('');
   const [filters, setFilters] = useState<DynamicFilter[]>([]);
   const [sorts, setSorts] = useState<Sort[]>([]);
   const [page, setPage] = useState(1);
-  const [perPage] = useState(10);
+  const [perPage, setPerPage] = useState(10);
   const { setIsAddModalOpen } = useSubscriptionPlanPageStore();
 
   const { defaultTenantName, defaultTenantSubtitle } = useDefaultTenantName();
@@ -41,7 +41,7 @@ const SubscriptionPlansPage = () => {
 
   const { debouncedSearch, debouncedFilters } = useDebouncedFilters(
     search,
-    filters
+    filters,
   );
 
   const apiFilters = useMemo(
@@ -51,7 +51,7 @@ const SubscriptionPlansPage = () => {
         searchField: SubscriptionPlanFiltersEnum.NAME,
         searchOperator: FilterOperator.LIKE,
       }),
-    [debouncedFilters, debouncedSearch]
+    [debouncedFilters, debouncedSearch],
   );
 
   const apiSorts = useMemo(() => dynamicSortsToApiSortsMapper(sorts), [sorts]);
@@ -62,7 +62,7 @@ const SubscriptionPlansPage = () => {
       filters: apiFilters as BaseFilter[],
       sorts: apiSorts.length > 0 ? apiSorts : undefined,
     }),
-    [page, perPage, apiFilters, apiSorts]
+    [page, perPage, apiFilters, apiSorts],
   );
 
   const subscriptionPlansList = useSubscriptionPlansList(requestInput, {
@@ -117,6 +117,8 @@ const SubscriptionPlansPage = () => {
         page={page}
         totalPages={subscriptionPlansList?.data?.totalPages || 0}
         onPageChange={setPage}
+        perPage={perPage}
+        onPerPageChange={setPerPage}
       >
         {subscriptionPlansList.loading ? (
           <div className="flex items-center justify-center p-8">

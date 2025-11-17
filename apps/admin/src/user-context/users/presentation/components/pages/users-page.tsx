@@ -1,33 +1,33 @@
-"use client";
+'use client';
 
-import { useDefaultTenantName } from "@/shared/presentation/hooks/use-default-tenant-name";
-import { useRoutes } from "@/shared/presentation/hooks/use-routes";
-import { UserFiltersEnum } from "@/user-context/users/domain/enums/user-filters/user-filters.enum";
-import { UsersTable } from "@/user-context/users/presentation/components/organisms/users-table/users-table";
-import { useUserFilterFields } from "@/user-context/users/presentation/hooks/use-user-filter-fields";
-import { BaseFilter, useUsersList } from "@repo/sdk";
-import { FilterOperator } from "@repo/shared/domain/enums/filter-operator.enum";
-import { PageHeader } from "@repo/shared/presentation/components/organisms/page-header";
+import { useDefaultTenantName } from '@/shared/presentation/hooks/use-default-tenant-name';
+import { useRoutes } from '@/shared/presentation/hooks/use-routes';
+import { UserFiltersEnum } from '@/user-context/users/domain/enums/user-filters/user-filters.enum';
+import { UsersTable } from '@/user-context/users/presentation/components/organisms/users-table/users-table';
+import { useUserFilterFields } from '@/user-context/users/presentation/hooks/use-user-filter-fields';
+import { BaseFilter, useUsersList } from '@repo/sdk';
+import { FilterOperator } from '@repo/shared/domain/enums/filter-operator.enum';
+import { PageHeader } from '@repo/shared/presentation/components/organisms/page-header';
 import {
   TableLayout,
   type DynamicFilter,
-} from "@repo/shared/presentation/components/organisms/table-layout";
-import PageWithSidebarTemplate from "@repo/shared/presentation/components/templates/page-with-sidebar-template";
-import { Button } from "@repo/shared/presentation/components/ui/button";
-import type { Sort } from "@repo/shared/presentation/components/ui/data-table";
-import { useDebouncedFilters } from "@repo/shared/presentation/hooks/use-debounced-filters";
-import { useFilterOperators } from "@repo/shared/presentation/hooks/use-filter-operators";
-import { dynamicFiltersToApiFiltersMapper } from "@repo/shared/presentation/mappers/convert-filters.mapper";
-import { dynamicSortsToApiSortsMapper } from "@repo/shared/presentation/mappers/convert-sorts.mapper";
-import { DownloadIcon, PlusIcon, TrashIcon, UploadIcon } from "lucide-react";
-import { useMemo, useState } from "react";
+} from '@repo/shared/presentation/components/organisms/table-layout';
+import PageWithSidebarTemplate from '@repo/shared/presentation/components/templates/page-with-sidebar-template';
+import { Button } from '@repo/shared/presentation/components/ui/button';
+import type { Sort } from '@repo/shared/presentation/components/ui/data-table';
+import { useDebouncedFilters } from '@repo/shared/presentation/hooks/use-debounced-filters';
+import { useFilterOperators } from '@repo/shared/presentation/hooks/use-filter-operators';
+import { dynamicFiltersToApiFiltersMapper } from '@repo/shared/presentation/mappers/convert-filters.mapper';
+import { dynamicSortsToApiSortsMapper } from '@repo/shared/presentation/mappers/convert-sorts.mapper';
+import { DownloadIcon, PlusIcon, TrashIcon, UploadIcon } from 'lucide-react';
+import { useMemo, useState } from 'react';
 
 const UsersPage = () => {
-  const [search, setSearch] = useState("");
+  const [search, setSearch] = useState('');
   const [filters, setFilters] = useState<DynamicFilter[]>([]);
   const [sorts, setSorts] = useState<Sort[]>([]);
   const [page, setPage] = useState(1);
-  const [perPage] = useState(10);
+  const [perPage, setPerPage] = useState(10);
 
   const { defaultTenantName, defaultTenantSubtitle } = useDefaultTenantName();
 
@@ -40,7 +40,7 @@ const UsersPage = () => {
   // Debounce search and filters to avoid multiple API calls
   const { debouncedSearch, debouncedFilters } = useDebouncedFilters(
     search,
-    filters
+    filters,
   );
 
   // Convert dynamic filters to API format using debounced values
@@ -51,7 +51,7 @@ const UsersPage = () => {
         searchField: UserFiltersEnum.NAME,
         searchOperator: FilterOperator.LIKE,
       }),
-    [debouncedFilters, debouncedSearch]
+    [debouncedFilters, debouncedSearch],
   );
 
   const apiSorts = useMemo(() => dynamicSortsToApiSortsMapper(sorts), [sorts]);
@@ -62,7 +62,7 @@ const UsersPage = () => {
       filters: apiFilters as BaseFilter[],
       sorts: apiSorts.length > 0 ? apiSorts : undefined,
     }),
-    [page, perPage, apiFilters, apiSorts]
+    [page, perPage, apiFilters, apiSorts],
   );
 
   const usersList = useUsersList(requestInput, {
@@ -120,6 +120,8 @@ const UsersPage = () => {
         page={page}
         totalPages={usersList.data?.totalPages || 0}
         onPageChange={setPage}
+        perPage={perPage}
+        onPerPageChange={setPerPage}
       >
         {usersList.loading ? (
           <div className="flex items-center justify-center p-8">

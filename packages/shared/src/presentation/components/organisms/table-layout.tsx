@@ -15,6 +15,13 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from '@repo/shared/presentation/components/ui/pagination';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@repo/shared/presentation/components/ui/select';
 import { cn } from '@repo/shared/presentation/lib/utils';
 import { SearchIcon } from 'lucide-react';
 import * as React from 'react';
@@ -36,6 +43,8 @@ interface TableLayoutProps {
   page?: number;
   totalPages?: number;
   onPageChange?: (page: number) => void;
+  perPage?: number;
+  onPerPageChange?: (perPage: number) => void;
   // Content
   children: React.ReactNode;
   className?: string;
@@ -52,6 +61,8 @@ export function TableLayout({
   page = 1,
   totalPages = 0,
   onPageChange,
+  perPage = 10,
+  onPerPageChange,
   children,
   className,
 }: TableLayoutProps) {
@@ -164,8 +175,47 @@ export function TableLayout({
       {/* Table Content */}
       {children}
 
-      {/* Pagination */}
-      {totalPages > 1 && renderPagination()}
+      {/* Pagination Controls */}
+      {(totalPages > 1 || onPerPageChange) && (
+        <div className="flex items-center justify-between gap-4">
+          {/* Per Page Selector */}
+          {onPerPageChange && (
+            <div className="flex items-center gap-2">
+              <span className="text-sm text-muted-foreground">
+                Items per page:
+              </span>
+              <Select
+                value={perPage.toString()}
+                onValueChange={(value) => {
+                  const newPerPage = parseInt(value, 10);
+                  if (onPerPageChange) {
+                    onPerPageChange(newPerPage);
+                  }
+                  // Reset to page 1 when changing per page
+                  if (onPageChange) {
+                    onPageChange(1);
+                  }
+                }}
+              >
+                <SelectTrigger className="w-[100px]">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="10">10</SelectItem>
+                  <SelectItem value="25">25</SelectItem>
+                  <SelectItem value="50">50</SelectItem>
+                  <SelectItem value="100">100</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          )}
+
+          {/* Pagination */}
+          {totalPages > 1 && (
+            <div className="ml-auto">{renderPagination()}</div>
+          )}
+        </div>
+      )}
     </div>
   );
 }

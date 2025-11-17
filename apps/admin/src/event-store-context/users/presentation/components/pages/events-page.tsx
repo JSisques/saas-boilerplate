@@ -27,7 +27,7 @@ const UsersPage = () => {
   const [filters, setFilters] = useState<DynamicFilter[]>([]);
   const [sorts, setSorts] = useState<Sort[]>([]);
   const [page, setPage] = useState(1);
-  const [perPage] = useState(10);
+  const [perPage, setPerPage] = useState(10);
 
   const { defaultTenantName, defaultTenantSubtitle } = useDefaultTenantName();
 
@@ -110,6 +110,8 @@ const UsersPage = () => {
         page={page}
         totalPages={eventsList.data?.totalPages || 0}
         onPageChange={setPage}
+        perPage={perPage}
+        onPerPageChange={setPerPage}
       >
         {eventsList.loading ? (
           <div className="flex items-center justify-center p-8">
