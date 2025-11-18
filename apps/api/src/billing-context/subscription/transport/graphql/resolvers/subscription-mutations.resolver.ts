@@ -15,8 +15,8 @@ import { SubscriptionDeactivateRequestDto } from '@/billing-context/subscription
 import { SubscriptionDeleteRequestDto } from '@/billing-context/subscription/transport/graphql/dtos/requests/subscription-delete.request.dto';
 import { SubscriptionRefundRequestDto } from '@/billing-context/subscription/transport/graphql/dtos/requests/subscription-refund.request.dto';
 import { SubscriptionUpdateRequestDto } from '@/billing-context/subscription/transport/graphql/dtos/requests/subscription-update.request.dto';
-import { MutationResponseDto } from '@/shared/transport/graphql/dtos/success-response.dto';
-import { MutationResponseGraphQLMapper } from '@/shared/transport/graphql/mappers/mutation-response.mapper';
+import { MutationResponseDto } from '@/shared/transport/graphql/dtos/responses/success-response/success-response.dto';
+import { MutationResponseGraphQLMapper } from '@/shared/transport/graphql/mappers/mutation-response/mutation-response.mapper';
 import { Logger, UseGuards } from '@nestjs/common';
 import { CommandBus } from '@nestjs/cqrs';
 import { Args, Mutation, Resolver } from '@nestjs/graphql';

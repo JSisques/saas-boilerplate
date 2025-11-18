@@ -1,5 +1,5 @@
 import { SubscriptionPlanFeaturesValueObject } from '@/billing-context/subscription-plan/domain/value-objects/subscription-plan-features/subscription-plan-features.vo';
-import { InvalidJsonException } from '@/shared/domain/exceptions/value-objects/invalid-json.exception';
+import { InvalidJsonException } from '@/shared/domain/exceptions/value-objects/invalid-json/invalid-json.exception';
 
 describe('SubscriptionPlanFeaturesValueObject', () => {
   describe('constructor', () => {

@@ -1,4 +1,4 @@
-import { BooleanValueObject } from '@/shared/domain/value-objects/boolean.vo';
+import { BooleanValueObject } from '@/shared/domain/value-objects/boolean/boolean.vo';
 
 /**
  * EmailVerifiedValueObject represents the verified status of the email.

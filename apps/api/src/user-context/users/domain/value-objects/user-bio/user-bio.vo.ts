@@ -1,4 +1,4 @@
-import { StringValueObject } from '@/shared/domain/value-objects/string.vo';
+import { StringValueObject } from '@/shared/domain/value-objects/string/string.vo';
 
 /**
  * UserBioValueObject represents a user's bio in the domain.

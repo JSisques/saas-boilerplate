@@ -1,7 +1,7 @@
 "use client";
 
 import { SDK } from "@repo/sdk";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 type User = {
   id: string;
@@ -62,10 +62,6 @@ export default function SDKTestPage() {
   const sdk = new SDK({
     apiUrl: process.env.NEXT_PUBLIC_API_URL || "http://localhost:4100",
   });
-
-  useEffect(() => {
-    checkHealth();
-  }, []);
 
   const clearMessages = () => {
     setError(null);
@@ -195,7 +191,7 @@ export default function SDKTestPage() {
     try {
       setLoading(true);
       clearMessages();
-      const result = await sdk.users.delete({ id: userId });
+      await sdk.users.delete({ id: userId });
       setSuccess(`User deleted successfully!`);
       await fetchUsers();
     } catch (err) {
@@ -245,7 +241,7 @@ export default function SDKTestPage() {
     try {
       setLoading(true);
       clearMessages();
-      const result = await sdk.tenants.update({
+      await sdk.tenants.update({
         id: tenantId,
         description: `Updated at ${new Date().toLocaleString()}`,
       });
@@ -262,7 +258,7 @@ export default function SDKTestPage() {
     try {
       setLoading(true);
       clearMessages();
-      const result = await sdk.tenants.delete({ id: tenantId });
+      await sdk.tenants.delete({ id: tenantId });
       setSuccess(`Tenant deleted successfully!`);
       await fetchTenants();
     } catch (err) {
@@ -296,7 +292,7 @@ export default function SDKTestPage() {
     try {
       setLoading(true);
       clearMessages();
-      const result = await sdk.tenantMembers.add({
+      await sdk.tenantMembers.add({
         tenantId,
         userId,
         role: "MEMBER",

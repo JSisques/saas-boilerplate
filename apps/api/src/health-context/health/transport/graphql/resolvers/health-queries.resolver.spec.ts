@@ -1,7 +1,7 @@
 import { HealthCheckQuery } from '@/health-context/health/application/queries/health-check/health-check.query';
-import { HealthQueryResolver } from '@/health-context/health/transport/graphql/resolvers/health-queries.resolver';
-import { HealthGraphQLMapper } from '@/health-context/health/transport/graphql/mappers/health.mapper';
 import { HealthViewModel } from '@/health-context/health/domain/view-models/health.view-model';
+import { HealthGraphQLMapper } from '@/health-context/health/transport/graphql/mappers/health.mapper';
+import { HealthQueryResolver } from '@/health-context/health/transport/graphql/resolvers/health-queries.resolver';
 import { QueryBus } from '@nestjs/cqrs';
 
 describe('HealthQueryResolver', () => {
@@ -27,8 +27,16 @@ describe('HealthQueryResolver', () => {
   });
 
   it('should execute health check query and map result', async () => {
-    const viewModel = new HealthViewModel({ status: 'OK' });
-    const responseDto = { status: 'OK' };
+    const viewModel = new HealthViewModel({
+      status: 'OK',
+      writeDatabaseStatus: 'OK',
+      readDatabaseStatus: 'OK',
+    });
+    const responseDto = {
+      status: 'OK',
+      writeDatabaseStatus: 'OK',
+      readDatabaseStatus: 'OK',
+    };
 
     mockQueryBus.execute.mockResolvedValue(viewModel);
     mockHealthGraphQLMapper.toResponseDto.mockReturnValue(responseDto);

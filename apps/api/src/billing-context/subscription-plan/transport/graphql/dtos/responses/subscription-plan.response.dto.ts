@@ -1,4 +1,4 @@
-import { BasePaginatedResultDto } from '@/shared/transport/graphql/dtos/responses/base-paginated-result.dto';
+import { BasePaginatedResultDto } from '@/shared/transport/graphql/dtos/responses/base-paginated-result/base-paginated-result.dto';
 import { Field, ObjectType } from '@nestjs/graphql';
 
 @ObjectType('SubscriptionPlanResponseDto')
@@ -64,10 +64,10 @@ export class SubscriptionPlanResponseDto {
   intervalCount: number;
 
   @Field(() => Number, {
-    nullable: false,
+    nullable: true,
     description: 'The trial period days of the subscription plan',
   })
-  trialPeriodDays: number | null;
+  trialPeriodDays?: number | null;
 
   @Field(() => Boolean, {
     nullable: false,
@@ -92,6 +92,18 @@ export class SubscriptionPlanResponseDto {
     description: 'The stripe price id of the subscription plan',
   })
   stripePriceId: string | null;
+
+  @Field(() => Date, {
+    nullable: false,
+    description: 'The created at of the subscription plan',
+  })
+  createdAt: Date;
+
+  @Field(() => Date, {
+    nullable: false,
+    description: 'The updated at of the subscription plan',
+  })
+  updatedAt: Date;
 }
 
 @ObjectType('PaginatedSubscriptionPlanResultDto')

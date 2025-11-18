@@ -1,8 +1,8 @@
 import { PromptAggregate } from '@/llm-context/prompt/domain/aggregates/prompt.aggregate';
 import { PromptWriteRepository } from '@/llm-context/prompt/domain/repositories/prompt-write/prompt-write.repository';
 import { PromptPrismaMapper } from '@/llm-context/prompt/infrastructure/database/prisma/mappers/prompt-prisma.mapper';
-import { BasePrismaRepository } from '@/shared/infrastructure/database/prisma/base-prisma.repository';
-import { PrismaService } from '@/shared/infrastructure/database/prisma/prisma.service';
+import { BasePrismaRepository } from '@/shared/infrastructure/database/prisma/base-prisma/base-prisma.repository';
+import { PrismaService } from '@/shared/infrastructure/database/prisma/services/prisma.service';
 import { Injectable, Logger } from '@nestjs/common';
 
 @Injectable()

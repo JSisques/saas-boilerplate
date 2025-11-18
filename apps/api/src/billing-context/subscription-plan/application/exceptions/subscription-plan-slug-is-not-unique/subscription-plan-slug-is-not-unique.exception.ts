@@ -1,4 +1,4 @@
-import { BaseApplicationException } from '@/shared/application/exceptions/base-application.exception';
+import { BaseApplicationException } from '@/shared/application/exceptions/base-application/base-application.exception';
 
 export class SubscriptionPlanSlugIsAlreadyTakenException extends BaseApplicationException {
   constructor(slug: string) {

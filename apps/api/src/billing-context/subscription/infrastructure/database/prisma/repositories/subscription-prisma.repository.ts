@@ -1,8 +1,8 @@
 import { SubscriptionAggregate } from '@/billing-context/subscription/domain/aggregates/subscription.aggregate';
 import { SubscriptionWriteRepository } from '@/billing-context/subscription/domain/repositories/subscription-write/subscription-write.repository';
 import { SubscriptionPrismaMapper } from '@/billing-context/subscription/infrastructure/database/prisma/mappers/subscription-prisma.mapper';
-import { BasePrismaRepository } from '@/shared/infrastructure/database/prisma/base-prisma.repository';
-import { PrismaService } from '@/shared/infrastructure/database/prisma/prisma.service';
+import { BasePrismaRepository } from '@/shared/infrastructure/database/prisma/base-prisma/base-prisma.repository';
+import { PrismaService } from '@/shared/infrastructure/database/prisma/services/prisma.service';
 import { Injectable, Logger } from '@nestjs/common';
 
 @Injectable()

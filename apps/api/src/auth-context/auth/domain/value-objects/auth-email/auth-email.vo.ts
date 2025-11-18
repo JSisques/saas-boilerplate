@@ -1,4 +1,4 @@
-import { EmailValueObject } from '@/shared/domain/value-objects/email.vo';
+import { EmailValueObject } from '@/shared/domain/value-objects/email/email.vo';
 
 /**
  * AuthEmailValueObject represents the email of the authentication.

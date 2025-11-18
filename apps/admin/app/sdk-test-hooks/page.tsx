@@ -1,38 +1,38 @@
-"use client";
+'use client';
+
+import { useAuth, useSDK, useTenantsList } from '@repo/sdk/react';
+import { useState } from 'react';
 
 import {
-  useAuth,
   useHealth,
-  useSDK,
-  useTenantsList,
-  useUser,
   useUsersList,
-} from "@repo/sdk/react";
-import { useState } from "react";
-
-import type { TenantResponse, UserResponse } from "@repo/sdk";
+  type TenantResponse,
+  type UserResponse,
+} from '@repo/sdk';
 
 export default function SDKHooksTestPage() {
   const [selectedUserId, setSelectedUserId] = useState<string | null>(null);
 
   // Initialize SDK
   const sdk = useSDK({
-    apiUrl: process.env.NEXT_PUBLIC_API_URL || "http://localhost:4100",
+    apiUrl: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4100',
   });
 
   // Health check (auto-fetches on mount)
-  const health = useHealth(sdk, { autoFetch: true });
+  const health = useHealth();
 
   // Auth hooks
   const auth = useAuth(sdk);
 
   // Users hooks
-  const users = useUsersList(sdk, {
-    pagination: { page: 1, perPage: 10 },
-  });
-
-  // Single user hook (only fetches if userId is provided)
-  const user = useUser(sdk, selectedUserId);
+  const usersList = useUsersList(
+    {
+      pagination: { page: 1, perPage: 10 },
+    },
+    {
+      enabled: true,
+    },
+  );
 
   // Tenants hooks
   const tenants = useTenantsList(sdk, {
@@ -41,8 +41,8 @@ export default function SDKHooksTestPage() {
 
   const handleLogin = async () => {
     await auth.login.execute({
-      email: "mail@mail.com",
-      password: "12345678",
+      email: 'mail@mail.com',
+      password: '12345678',
     });
   };
 
@@ -88,14 +88,14 @@ export default function SDKHooksTestPage() {
             disabled={auth.login.loading}
             className="px-4 py-2 rounded-lg bg-purple-600 text-white hover:bg-purple-700 disabled:opacity-50"
           >
-            {auth.login.loading ? "Logging in..." : "Login"}
+            {auth.login.loading ? 'Logging in...' : 'Login'}
           </button>
           {auth.login.error && (
             <p className="mt-2 text-red-600">{auth.login.error.message}</p>
           )}
           {auth.login.success && auth.login.data && (
             <p className="mt-2 text-green-600">
-              Login successful! Token:{" "}
+              Login successful! Token:{' '}
               {auth.login.data.accessToken.substring(0, 30)}...
             </p>
           )}
@@ -106,26 +106,26 @@ export default function SDKHooksTestPage() {
           <h2 className="text-xl font-semibold text-black dark:text-zinc-50 mb-4">
             Users List (Auto-fetch)
           </h2>
-          {users.loading && <p>Loading users...</p>}
-          {users.error && (
-            <p className="text-red-600">Error: {users.error.message}</p>
+          {usersList.loading && <p>Loading users...</p>}
+          {usersList.error && (
+            <p className="text-red-600">Error: {usersList.error.message}</p>
           )}
-          {users.data && (
+          {usersList.data && (
             <div className="space-y-2">
               <p className="text-sm text-zinc-600 dark:text-zinc-400">
-                Total: {users.data.total} users
+                Total: {usersList.data.total} users
               </p>
-              {users.data.items.map((u: UserResponse) => (
+              {usersList.data.items.map((u: UserResponse) => (
                 <div
                   key={u.id}
                   className="flex items-center justify-between rounded border border-zinc-200 dark:border-zinc-800 p-4"
                 >
                   <div>
                     <p className="font-medium text-black dark:text-zinc-50">
-                      {u.name || u.userName || "No name"}
+                      {u.name || u.userName || 'No name'}
                     </p>
                     <p className="text-sm text-zinc-600 dark:text-zinc-400">
-                      {u.role || "N/A"} | {u.status || "N/A"}
+                      {u.role || 'N/A'} | {u.status || 'N/A'}
                     </p>
                   </div>
                   <button
@@ -139,7 +139,7 @@ export default function SDKHooksTestPage() {
             </div>
           )}
           <button
-            onClick={() => users.fetch()}
+            onClick={() => usersList.fetch()}
             className="mt-4 px-4 py-2 rounded-lg bg-green-600 text-white hover:bg-green-700"
           >
             Refresh
@@ -152,20 +152,21 @@ export default function SDKHooksTestPage() {
             <h2 className="text-xl font-semibold text-black dark:text-zinc-50 mb-4">
               User Details (Auto-fetch when ID changes)
             </h2>
-            {user.loading && <p>Loading user...</p>}
-            {user.error && (
-              <p className="text-red-600">Error: {user.error.message}</p>
+            {usersList.loading && <p>Loading user...</p>}
+            {usersList.error && (
+              <p className="text-red-600">Error: {usersList.error.message}</p>
             )}
-            {user.data && (
+            {usersList.data && (
               <div>
                 <p className="font-medium text-black dark:text-zinc-50">
-                  {user.data.name || user.data.userName}
+                  {usersList.data.items[0].name ||
+                    usersList.data.items[0].userName}
                 </p>
                 <p className="text-sm text-zinc-600 dark:text-zinc-400">
-                  ID: {user.data.id}
+                  ID: {usersList.data.items[0].id}
                 </p>
                 <p className="text-sm text-zinc-600 dark:text-zinc-400">
-                  Role: {user.data.role || "N/A"}
+                  Role: {usersList.data.items[0].role || 'N/A'}
                 </p>
               </div>
             )}
@@ -198,10 +199,10 @@ export default function SDKHooksTestPage() {
                   className="rounded border border-zinc-200 dark:border-zinc-800 p-4"
                 >
                   <p className="font-medium text-black dark:text-zinc-50">
-                    {tenant.name || "No name"}
+                    {tenant.name || 'No name'}
                   </p>
                   <p className="text-sm text-zinc-600 dark:text-zinc-400">
-                    {tenant.slug || "N/A"} | {tenant.status || "N/A"}
+                    {tenant.slug || 'N/A'} | {tenant.status || 'N/A'}
                   </p>
                 </div>
               ))}
@@ -218,8 +219,8 @@ export default function SDKHooksTestPage() {
         {/* Info */}
         <div className="rounded-lg border border-zinc-200 dark:border-zinc-800 p-4 bg-zinc-50 dark:bg-zinc-900">
           <p className="text-sm text-zinc-600 dark:text-zinc-400">
-            <strong>API URL:</strong>{" "}
-            {process.env.NEXT_PUBLIC_API_URL || "http://localhost:4100/api/v1"}
+            <strong>API URL:</strong>{' '}
+            {process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4100/api/v1'}
           </p>
           <p className="text-xs text-zinc-500 dark:text-zinc-500 mt-2">
             Using React hooks for automatic state management (loading, error,

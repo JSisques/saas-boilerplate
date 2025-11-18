@@ -1,4 +1,4 @@
-import { EnumValueObject } from '@/shared/domain/value-objects/enum.vo';
+import { EnumValueObject } from '@/shared/domain/value-objects/enum/enum.vo';
 import { UserRoleEnum } from '@/user-context/users/domain/enums/user-role/user-role.enum';
 
 export class UserRoleValueObject extends EnumValueObject<typeof UserRoleEnum> {

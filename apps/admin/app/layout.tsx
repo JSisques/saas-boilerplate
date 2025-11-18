@@ -1,3 +1,5 @@
+import { SDKAutoProvider } from "@repo/sdk/react";
+import { QueryProvider } from "@repo/shared/presentation/providers/query-client-provider";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
@@ -27,7 +29,11 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        {children}
+        <SDKAutoProvider
+          apiUrl={process.env.NEXT_PUBLIC_API_URL || "http://localhost:4100"}
+        >
+          <QueryProvider>{children}</QueryProvider>
+        </SDKAutoProvider>
       </body>
     </html>
   );

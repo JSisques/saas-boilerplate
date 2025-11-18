@@ -1,4 +1,4 @@
-import { IBaseService } from '@/shared/application/services/base-service.interface';
+import { IBaseService } from '@/shared/application/services/base-service/base-service.interface';
 import { TenantNotFoundException } from '@/tenant-context/tenants/application/exceptions/tenant-not-found/tenant-not-found.exception';
 import {
   TENANT_READ_REPOSITORY_TOKEN,

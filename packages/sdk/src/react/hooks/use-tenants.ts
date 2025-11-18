@@ -1,3 +1,4 @@
+'use client';
 import { useEffect } from 'react';
 import type { SDK } from '../../index.js';
 import type { MutationResponse } from '../../shared/types/index.js';
@@ -7,7 +8,7 @@ import type {
   TenantDeleteInput,
   TenantFindByCriteriaInput,
   TenantUpdateInput,
-} from '../../tenant-context/types/index.js';
+} from '../../tenant/types/index.js';
 import { useAsyncState } from './use-async-state.js';
 
 /**

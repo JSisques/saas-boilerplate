@@ -1,5 +1,5 @@
-import { MutationResponseDto } from '@/shared/transport/graphql/dtos/success-response.dto';
-import { MutationResponseGraphQLMapper } from '@/shared/transport/graphql/mappers/mutation-response.mapper';
+import { MutationResponseDto } from '@/shared/transport/graphql/dtos/responses/success-response/success-response.dto';
+import { MutationResponseGraphQLMapper } from '@/shared/transport/graphql/mappers/mutation-response/mutation-response.mapper';
 import { TenantCreateCommand } from '@/tenant-context/tenants/application/commands/tenant-create/tenant-create.command';
 import { TenantDeleteCommand } from '@/tenant-context/tenants/application/commands/tenant-delete/tenant-delete.command';
 import { TenantUpdateCommand } from '@/tenant-context/tenants/application/commands/tenant-update/tenant-update.command';

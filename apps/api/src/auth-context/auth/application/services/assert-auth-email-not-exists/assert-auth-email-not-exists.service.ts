@@ -3,7 +3,7 @@ import {
   AUTH_WRITE_REPOSITORY_TOKEN,
   AuthWriteRepository,
 } from '@/auth-context/auth/domain/repositories/auth-write.repository';
-import { IBaseService } from '@/shared/application/services/base-service.interface';
+import { IBaseService } from '@/shared/application/services/base-service/base-service.interface';
 import { Inject, Injectable, Logger } from '@nestjs/common';
 
 @Injectable()

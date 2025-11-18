@@ -1,6 +1,6 @@
 import { SubscriptionPlanTypeEnum } from '@/billing-context/subscription-plan/domain/enum/subscription-plan-type.enum';
 import { SubscriptionPlanTypeValueObject } from '@/billing-context/subscription-plan/domain/value-objects/subscription-plan-type/subscription-plan-type.vo';
-import { InvalidEnumValueException } from '@/shared/domain/exceptions/value-objects/invalid-enum-value.exception';
+import { InvalidEnumValueException } from '@/shared/domain/exceptions/value-objects/invalid-enum-value/invalid-enum-value.exception';
 
 describe('SubscriptionPlanTypeValueObject', () => {
   describe('constructor', () => {

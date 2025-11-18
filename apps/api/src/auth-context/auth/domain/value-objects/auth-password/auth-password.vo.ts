@@ -1,4 +1,4 @@
-import { PasswordValueObject } from '@/shared/domain/value-objects/password.vo';
+import { PasswordValueObject } from '@/shared/domain/value-objects/password/password.vo';
 
 /**
  * PasswordHashValueObject represents the hash of the password.

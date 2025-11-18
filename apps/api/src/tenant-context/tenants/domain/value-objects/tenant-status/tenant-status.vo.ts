@@ -1,4 +1,4 @@
-import { EnumValueObject } from '@/shared/domain/value-objects/enum.vo';
+import { EnumValueObject } from '@/shared/domain/value-objects/enum/enum.vo';
 import { TenantStatusEnum } from '@/tenant-context/tenants/domain/enums/tenant-status/tenant-status.enum';
 
 /**

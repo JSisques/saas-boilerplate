@@ -32,6 +32,8 @@ export class SubscriptionPlanGraphQLMapper {
       features: subscriptionPlan.features,
       limits: subscriptionPlan.limits,
       stripePriceId: subscriptionPlan.stripePriceId,
+      createdAt: subscriptionPlan.createdAt,
+      updatedAt: subscriptionPlan.updatedAt,
     };
   }
 

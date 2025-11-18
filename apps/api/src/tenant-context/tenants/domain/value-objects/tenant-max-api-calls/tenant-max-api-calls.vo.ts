@@ -1,4 +1,4 @@
-import { NumberValueObject } from '@/shared/domain/value-objects/number.vo';
+import { NumberValueObject } from '@/shared/domain/value-objects/number/number.vo';
 
 /**
  * TenantMaxApiCallsValueObject represents a tenant's maximum API calls limit in the domain.

@@ -1,13 +1,13 @@
-import { AuthClient } from './auth-context/auth-client.js';
-import type { AuthLogoutInput } from './auth-context/types/index.js';
-import { SubscriptionPlanClient } from './billing-context/subscription-plan-client.js';
-import { EventClient } from './event-store-context/event-client.js';
-import { HealthClient } from './health-context/health-client.js';
+import { AuthClient } from './auth/auth-client.js';
+import type { AuthLogoutInput } from './auth/types/index.js';
+import { EventClient } from './event/client/event-client.js';
+import { HealthClient } from './health/client/health-client.js';
 import { GraphQLClient } from './shared/client/graphql-client.js';
 import type { GraphQLClientConfig } from './shared/types/index.js';
-import { TenantClient } from './tenant-context/tenant-client.js';
-import { TenantMemberClient } from './tenant-context/tenant-member-client.js';
-import { UserClient } from './user-context/user-client.js';
+import { SubscriptionPlanClient } from './subscription-plan/client/subscription-plan-client.js';
+import { TenantClient } from './tenant/tenant-client.js';
+import { TenantMemberClient } from './tenant/tenant-member-client.js';
+import { UserClient } from './users/client/user-client.js';
 
 // Re-export types from shared
 export type {
@@ -33,20 +33,7 @@ export type {
   AuthRegisterByEmailInput,
   AuthResponse,
   LoginResponse,
-} from './auth-context/types/index.js';
-
-// Re-export types from user-context
-export type {
-  CreateUserInput,
-  DeleteUserInput,
-  PaginatedUserResult,
-  UpdateUserInput,
-  UserFindByCriteriaInput,
-  UserFindByIdInput,
-  UserResponse,
-  UserRole,
-  UserStatus,
-} from './user-context/types/index.js';
+} from './auth/types/index.js';
 
 // Re-export types from tenant-context
 export type {
@@ -63,30 +50,12 @@ export type {
   TenantMemberUpdateInput,
   TenantResponse,
   TenantUpdateInput,
-} from './tenant-context/types/index.js';
+} from './tenant/types/index.js';
 
-// Re-export types from billing-context
-export type {
-  Currency,
-  PaginatedSubscriptionPlanResult,
-  SubscriptionPlanCreateInput,
-  SubscriptionPlanDeleteInput,
-  SubscriptionPlanFindByCriteriaInput,
-  SubscriptionPlanInterval,
-  SubscriptionPlanResponse,
-  SubscriptionPlanType,
-  SubscriptionPlanUpdateInput,
-} from './billing-context/types/index.js';
-
-// Re-export types from health-context
-export type { HealthResponse } from './health-context/types/index.js';
-
-// Re-export types from event-store-context
-export type {
-  EventFindByCriteriaInput,
-  EventResponse,
-  PaginatedEventResult,
-} from './event-store-context/types/index.js';
+export * from './event/index.js';
+export * from './health/index.js';
+export * from './subscription-plan/index.js';
+export * from './users/index.js';
 
 export class SDK {
   private client: GraphQLClient;
@@ -261,6 +230,12 @@ export class SDK {
         this.subscriptionPlanClient,
       ),
       /**
+       * Find a subscription plan by ID
+       */
+      findById: this.subscriptionPlanClient.findById.bind(
+        this.subscriptionPlanClient,
+      ),
+      /**
        * Create a new subscription plan
        */
       create: this.subscriptionPlanClient.create.bind(
@@ -290,6 +265,10 @@ export class SDK {
        * Find events by criteria with pagination, filters, and sorting
        */
       findByCriteria: this.eventClient.findByCriteria.bind(this.eventClient),
+      /**
+       * Replay events
+       */
+      replay: this.eventClient.replay.bind(this.eventClient),
     };
   }
 
