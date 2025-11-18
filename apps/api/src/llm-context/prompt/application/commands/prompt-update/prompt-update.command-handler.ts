@@ -5,7 +5,7 @@ import {
   PROMPT_WRITE_REPOSITORY_TOKEN,
   PromptWriteRepository,
 } from '@/llm-context/prompt/domain/repositories/prompt-write/prompt-write.repository';
-import { BaseUpdateCommandHandler } from '@/shared/application/commands/update/base-update.command-handler';
+import { BaseUpdateCommandHandler } from '@/shared/application/commands/update/base-update/base-update.command-handler';
 import { Inject, Logger } from '@nestjs/common';
 import { CommandHandler, EventBus, ICommandHandler } from '@nestjs/cqrs';
 

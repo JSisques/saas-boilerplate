@@ -5,7 +5,7 @@ import {
   SUBSCRIPTION_PLAN_WRITE_REPOSITORY_TOKEN,
   SubscriptionPlanWriteRepository,
 } from '@/billing-context/subscription-plan/domain/repositories/subscription-plan-write/subscription-plan-write.repository';
-import { BaseUpdateCommandHandler } from '@/shared/application/commands/update/base-update.command-handler';
+import { BaseUpdateCommandHandler } from '@/shared/application/commands/update/base-update/base-update.command-handler';
 import { Inject, Logger } from '@nestjs/common';
 import { CommandHandler, EventBus, ICommandHandler } from '@nestjs/cqrs';
 

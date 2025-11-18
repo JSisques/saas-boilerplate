@@ -1,4 +1,4 @@
-import { BaseUpdateCommandHandler } from '@/shared/application/commands/update/base-update.command-handler';
+import { BaseUpdateCommandHandler } from '@/shared/application/commands/update/base-update/base-update.command-handler';
 import { UserUpdateCommand } from '@/user-context/users/application/commands/user-update/user-update.command';
 import { AssertUserExsistsService } from '@/user-context/users/application/services/assert-user-exsits/assert-user-exsits.service';
 import { IUserUpdateDto } from '@/user-context/users/domain/dtos/entities/user-update/user-update.dto';

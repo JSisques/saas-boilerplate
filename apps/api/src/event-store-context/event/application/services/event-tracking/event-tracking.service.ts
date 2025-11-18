@@ -3,7 +3,7 @@ import {
   EVENT_WRITE_REPOSITORY_TOKEN,
   EventWriteRepository,
 } from '@/event-store-context/event/domain/repositories/event-write.repository';
-import { IBaseService } from '@/shared/application/services/base-service.interface';
+import { IBaseService } from '@/shared/application/services/base-service/base-service.interface';
 import { BaseEvent } from '@/shared/domain/events/base-event.interface';
 import { UuidValueObject } from '@/shared/domain/value-objects/uuid/uuid.vo';
 import { Inject, Injectable, Logger } from '@nestjs/common';

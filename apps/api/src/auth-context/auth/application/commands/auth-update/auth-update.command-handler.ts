@@ -6,7 +6,7 @@ import {
   AUTH_WRITE_REPOSITORY_TOKEN,
   AuthWriteRepository,
 } from '@/auth-context/auth/domain/repositories/auth-write.repository';
-import { BaseUpdateCommandHandler } from '@/shared/application/commands/update/base-update.command-handler';
+import { BaseUpdateCommandHandler } from '@/shared/application/commands/update/base-update/base-update.command-handler';
 import { Inject, Logger } from '@nestjs/common';
 import { CommandHandler, EventBus, ICommandHandler } from '@nestjs/cqrs';
 

@@ -1,4 +1,4 @@
-import { BaseDomainException } from '../../../domain/exceptions/base-domain.exception';
+import { BaseDomainException } from '@/shared/domain/exceptions/base-domain.exception';
 
 /**
  * Invalid Salt Rounds Exception
