@@ -1,7 +1,7 @@
 import { EventReplayCommand } from '@/event-store-context/event/application/commands/event-replay/event-replay.command';
-import { EventMutationResolver } from '@/event-store-context/event/transport/graphql/resolvers/event-mutations.resolver';
 import { EventReplayRequestDto } from '@/event-store-context/event/transport/graphql/dtos/requests/event-replay.request.dto';
-import { MutationResponseGraphQLMapper } from '@/shared/transport/graphql/mappers/mutation-response.mapper';
+import { EventMutationResolver } from '@/event-store-context/event/transport/graphql/resolvers/event-mutations.resolver';
+import { MutationResponseGraphQLMapper } from '@/shared/transport/graphql/mappers/mutation-response/mutation-response.mapper';
 import { CommandBus } from '@nestjs/cqrs';
 
 describe('EventMutationResolver', () => {

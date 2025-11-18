@@ -1,8 +1,8 @@
+import { BaseFilterInput } from '@/shared/transport/graphql/dtos/requests/base-filter/base-filter.input';
+import { BasePaginationInput } from '@/shared/transport/graphql/dtos/requests/base-pagination/base-pagination.input';
+import { BaseSortInput } from '@/shared/transport/graphql/dtos/requests/base-sort/base-sort.input';
 import { Field, InputType } from '@nestjs/graphql';
 import { IsArray, IsOptional, ValidateNested } from 'class-validator';
-import { BaseFilterInput } from './base-filter.input';
-import { BasePaginationInput } from './base-pagination.input';
-import { BaseSortInput } from './base-sort.input';
 
 @InputType('BaseFindByCriteriaInput')
 export class BaseFindByCriteriaInput {

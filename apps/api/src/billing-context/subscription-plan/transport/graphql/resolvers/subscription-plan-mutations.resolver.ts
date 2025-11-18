@@ -7,8 +7,8 @@ import { SubscriptionPlanUpdateCommand } from '@/billing-context/subscription-pl
 import { SubscriptionPlanCreateRequestDto } from '@/billing-context/subscription-plan/transport/graphql/dtos/requests/subscription-plan-create.request.dto';
 import { SubscriptionPlanDeleteRequestDto } from '@/billing-context/subscription-plan/transport/graphql/dtos/requests/subscription-plan-delete.request.dto';
 import { SubscriptionPlanUpdateRequestDto } from '@/billing-context/subscription-plan/transport/graphql/dtos/requests/subscription-plan-update.request.dto';
-import { MutationResponseDto } from '@/shared/transport/graphql/dtos/success-response.dto';
-import { MutationResponseGraphQLMapper } from '@/shared/transport/graphql/mappers/mutation-response.mapper';
+import { MutationResponseDto } from '@/shared/transport/graphql/dtos/responses/success-response/success-response.dto';
+import { MutationResponseGraphQLMapper } from '@/shared/transport/graphql/mappers/mutation-response/mutation-response.mapper';
 import { Logger, UseGuards } from '@nestjs/common';
 import { CommandBus } from '@nestjs/cqrs';
 import { Args, Mutation, Resolver } from '@nestjs/graphql';

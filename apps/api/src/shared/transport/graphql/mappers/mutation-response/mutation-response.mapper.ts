@@ -1,4 +1,4 @@
-import { MutationResponseDto } from '@/shared/transport/graphql/dtos/success-response.dto';
+import { MutationResponseDto } from '@/shared/transport/graphql/dtos/responses/success-response/success-response.dto';
 import { Injectable } from '@nestjs/common';
 
 @Injectable()

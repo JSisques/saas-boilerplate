@@ -3,8 +3,8 @@ import { AuthViewModel } from '@/auth-context/auth/domain/view-models/auth.view-
 import { AuthMongoDBMapper } from '@/auth-context/auth/infrastructure/database/mongodb/mappers/auth-mongodb.mapper';
 import { Criteria } from '@/shared/domain/entities/criteria';
 import { PaginatedResult } from '@/shared/domain/entities/paginated-result.entity';
-import { BaseMongoRepository } from '@/shared/infrastructure/database/mongodb/base-mongo.repository';
-import { MongoService } from '@/shared/infrastructure/database/mongodb/mongo.service';
+import { BaseMongoRepository } from '@/shared/infrastructure/database/mongodb/base-mongo/base-mongo.repository';
+import { MongoService } from '@/shared/infrastructure/database/mongodb/services/mongo.service';
 import { Injectable, Logger } from '@nestjs/common';
 
 @Injectable()

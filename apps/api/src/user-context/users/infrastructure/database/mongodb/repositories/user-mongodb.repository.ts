@@ -1,7 +1,7 @@
 import { Criteria } from '@/shared/domain/entities/criteria';
 import { PaginatedResult } from '@/shared/domain/entities/paginated-result.entity';
-import { BaseMongoRepository } from '@/shared/infrastructure/database/mongodb/base-mongo.repository';
-import { MongoService } from '@/shared/infrastructure/database/mongodb/mongo.service';
+import { BaseMongoRepository } from '@/shared/infrastructure/database/mongodb/base-mongo/base-mongo.repository';
+import { MongoService } from '@/shared/infrastructure/database/mongodb/services/mongo.service';
 import { UserReadRepository } from '@/user-context/users/domain/repositories/user-read.repository';
 import { UserViewModel } from '@/user-context/users/domain/view-models/user.view-model';
 import { UserMongoDBMapper } from '@/user-context/users/infrastructure/database/mongodb/mappers/user-mongodb.mapper';

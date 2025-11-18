@@ -1,6 +1,6 @@
 import { HealthReadDatabaseCheckService } from '@/health-context/health/application/services/health-read-database-check/health-read-database-check.service';
 import { HealthStatusEnum } from '@/health-context/health/domain/enum/health-status.enum';
-import { MongoService } from '@/shared/infrastructure/database/mongodb/mongo.service';
+import { MongoService } from '@/shared/infrastructure/database/mongodb/services/mongo.service';
 
 describe('HealthReadDatabaseCheckService', () => {
   let service: HealthReadDatabaseCheckService;

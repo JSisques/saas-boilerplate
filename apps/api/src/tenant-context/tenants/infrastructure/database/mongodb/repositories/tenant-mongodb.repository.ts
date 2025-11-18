@@ -1,7 +1,7 @@
 import { Criteria } from '@/shared/domain/entities/criteria';
 import { PaginatedResult } from '@/shared/domain/entities/paginated-result.entity';
-import { BaseMongoRepository } from '@/shared/infrastructure/database/mongodb/base-mongo.repository';
-import { MongoService } from '@/shared/infrastructure/database/mongodb/mongo.service';
+import { BaseMongoRepository } from '@/shared/infrastructure/database/mongodb/base-mongo/base-mongo.repository';
+import { MongoService } from '@/shared/infrastructure/database/mongodb/services/mongo.service';
 import { TenantReadRepository } from '@/tenant-context/tenants/domain/repositories/tenant-read.repository';
 import { TenantViewModel } from '@/tenant-context/tenants/domain/view-models/tenant/tenant.view-model';
 import { TenantMongoDBMapper } from '@/tenant-context/tenants/infrastructure/database/mongodb/mappers/tenant-mongodb.mapper';

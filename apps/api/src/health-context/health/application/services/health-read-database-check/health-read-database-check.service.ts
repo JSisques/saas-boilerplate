@@ -1,5 +1,5 @@
 import { HealthStatusEnum } from '@/health-context/health/domain/enum/health-status.enum';
-import { MongoService } from '@/shared/infrastructure/database/mongodb/mongo.service';
+import { MongoService } from '@/shared/infrastructure/database/mongodb/services/mongo.service';
 import { Injectable, Logger } from '@nestjs/common';
 
 @Injectable()

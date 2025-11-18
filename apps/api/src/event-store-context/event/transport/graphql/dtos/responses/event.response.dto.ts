@@ -1,4 +1,4 @@
-import { BasePaginatedResultDto } from '@/shared/transport/graphql/dtos/responses';
+import { BasePaginatedResultDto } from '@/shared/transport/graphql/dtos/responses/base-paginated-result/base-paginated-result.dto';
 import { Field, ObjectType } from '@nestjs/graphql';
 
 @ObjectType('EventResponseDto')

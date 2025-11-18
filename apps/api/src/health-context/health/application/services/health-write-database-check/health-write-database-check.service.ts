@@ -1,5 +1,5 @@
 import { HealthStatusEnum } from '@/health-context/health/domain/enum/health-status.enum';
-import { PrismaService } from '@/shared/infrastructure/database/prisma/prisma.service';
+import { PrismaService } from '@/shared/infrastructure/database/prisma/services/prisma.service';
 import { Injectable, Logger } from '@nestjs/common';
 
 @Injectable()

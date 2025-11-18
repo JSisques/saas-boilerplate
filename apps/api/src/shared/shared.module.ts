@@ -1,5 +1,5 @@
 import { PasswordHashingService } from '@/auth-context/auth/application/services/password-hashing/password-hashing.service';
-import { MutationResponseGraphQLMapper } from '@/shared/transport/graphql/mappers/mutation-response.mapper';
+import { MutationResponseGraphQLMapper } from '@/shared/transport/graphql/mappers/mutation-response/mutation-response.mapper';
 import { Global, Module } from '@nestjs/common';
 import { MongoModule } from './infrastructure/database/mongodb/mongodb.module';
 import { PrismaModule } from './infrastructure/database/prisma/prisma.module';

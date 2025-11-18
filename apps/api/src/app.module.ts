@@ -7,7 +7,7 @@ import { HealthContextModule } from '@/health-context/health-context.module';
 import { LLMContextModule } from '@/llm-context/llm-context.module';
 import { LoggingContextModule } from '@/logging-context/logging-context.module';
 import { SharedModule } from '@/shared/shared.module';
-import '@/shared/transport/graphql/registered-enums.graphql';
+import '@/shared/transport/graphql/registered-enums/registered-enums.graphql';
 import { TenantContextModule } from '@/tenant-context/tenant-context.module';
 import { UserContextModule } from '@/user-context/user-context.module';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';

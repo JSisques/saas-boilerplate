@@ -1,6 +1,6 @@
 import { HealthWriteDatabaseCheckService } from '@/health-context/health/application/services/health-write-database-check/health-write-database-check.service';
 import { HealthStatusEnum } from '@/health-context/health/domain/enum/health-status.enum';
-import { PrismaService } from '@/shared/infrastructure/database/prisma/prisma.service';
+import { PrismaService } from '@/shared/infrastructure/database/prisma/services/prisma.service';
 
 describe('HealthWriteDatabaseCheckService', () => {
   let service: HealthWriteDatabaseCheckService;

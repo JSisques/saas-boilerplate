@@ -95,7 +95,9 @@
       "**/*.(t|j)s",
       "!**/domain/repositories/**",
       "!**/interfaces/**",
-      "!**/dtos/**"
+      "!**/dtos/**",
+      "!**/value-objects/**",
+      "!**/*.module.ts"
     ],
     "coverageDirectory": "../coverage",
     "testEnvironment": "node",
