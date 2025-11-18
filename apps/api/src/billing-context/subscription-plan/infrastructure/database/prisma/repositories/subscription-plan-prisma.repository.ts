@@ -4,6 +4,7 @@ import { SubscriptionPlanPrismaMapper } from '@/billing-context/subscription-pla
 import { BasePrismaRepository } from '@/shared/infrastructure/database/prisma/base-prisma/base-prisma.repository';
 import { PrismaService } from '@/shared/infrastructure/database/prisma/services/prisma.service';
 import { Injectable, Logger } from '@nestjs/common';
+import { SubscriptionPlanTypeEnum } from '@prisma/client';
 
 @Injectable()
 export class SubscriptionPlanPrismaRepository
@@ -63,6 +64,43 @@ export class SubscriptionPlanPrismaRepository
     const subscriptionPlanData =
       await this.prismaService.subscriptionPlan.findUnique({
         where: { slug },
+      });
+
+    if (!subscriptionPlanData) {
+      return null;
+    }
+
+    return this.subscriptionPlanPrismaMapper.toDomainEntity({
+      id: subscriptionPlanData.id,
+      name: subscriptionPlanData.name,
+      slug: subscriptionPlanData.slug,
+      type: subscriptionPlanData.type,
+      description: subscriptionPlanData.description,
+      priceMonthly: subscriptionPlanData.priceMonthly.toNumber(),
+      priceYearly: subscriptionPlanData.priceYearly.toNumber(),
+      currency: subscriptionPlanData.currency,
+      interval: subscriptionPlanData.interval,
+      intervalCount: subscriptionPlanData.intervalCount,
+      trialPeriodDays: subscriptionPlanData.trialPeriodDays,
+      isActive: subscriptionPlanData.isActive,
+      features: subscriptionPlanData.features as Record<string, any>,
+      limits: subscriptionPlanData.limits as Record<string, any>,
+      stripePriceId: subscriptionPlanData.stripePriceId,
+    });
+  }
+
+  /**
+   * Finds a subscription plan by their type
+   *
+   * @param type - The type of the subscription plan to find
+   * @returns The subscription plan if found, null otherwise
+   */
+  async findByType(
+    type: SubscriptionPlanTypeEnum,
+  ): Promise<SubscriptionPlanAggregate | null> {
+    const subscriptionPlanData =
+      await this.prismaService.subscriptionPlan.findFirst({
+        where: { type },
       });
 
     if (!subscriptionPlanData) {
