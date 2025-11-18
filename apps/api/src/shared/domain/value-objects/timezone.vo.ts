@@ -1,4 +1,4 @@
-import { InvalidTimezoneException } from '@/shared/domain/exceptions/value-objects/invalid-timezone.exception';
+import { InvalidTimezoneException } from '@/shared/domain/exceptions/value-objects/invalid-timezone/invalid-timezone.exception';
 import { StringValueObject } from '@/shared/domain/value-objects/string.vo';
 
 /**

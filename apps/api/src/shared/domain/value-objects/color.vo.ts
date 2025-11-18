@@ -1,4 +1,4 @@
-import { InvalidColorException } from '@/shared/domain/exceptions/value-objects/invalid-color.exception';
+import { InvalidColorException } from '@/shared/domain/exceptions/value-objects/invalid-color/invalid-color.exception';
 
 /**
  * Color Value Object

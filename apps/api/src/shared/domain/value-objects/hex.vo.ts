@@ -1,4 +1,4 @@
-import { InvalidHexException } from '@/shared/domain/exceptions/value-objects/invalid-hex.exception';
+import { InvalidHexException } from '@/shared/domain/exceptions/value-objects/invalid-hex/invalid-hex.exception';
 
 /**
  * Hex Value Object

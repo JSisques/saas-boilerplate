@@ -1,4 +1,4 @@
-import { InvalidNumberException } from '@/shared/domain/exceptions/value-objects/invalid-number.exception';
+import { InvalidNumberException } from '@/shared/domain/exceptions/value-objects/invalid-number/invalid-number.exception';
 
 /**
  * Number Value Object

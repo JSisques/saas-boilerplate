@@ -1,4 +1,4 @@
-import { InvalidPasswordException } from '@/shared/domain/exceptions/value-objects/invalid-password.exception';
+import { InvalidPasswordException } from '@/shared/domain/exceptions/value-objects/invalid-password/invalid-password.exception';
 
 /**
  * Password Value Object

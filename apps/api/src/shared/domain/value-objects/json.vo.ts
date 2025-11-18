@@ -1,4 +1,4 @@
-import { InvalidJsonException } from '@/shared/domain/exceptions/value-objects/invalid-json.exception';
+import { InvalidJsonException } from '@/shared/domain/exceptions/value-objects/invalid-json/invalid-json.exception';
 
 /**
  * JSON Value Object

@@ -1,4 +1,4 @@
-import { InvalidEnumValueException } from '@/shared/domain/exceptions/value-objects/invalid-enum-value.exception';
+import { InvalidEnumValueException } from '@/shared/domain/exceptions/value-objects/invalid-enum-value/invalid-enum-value.exception';
 
 /**
  * Enum Value Object

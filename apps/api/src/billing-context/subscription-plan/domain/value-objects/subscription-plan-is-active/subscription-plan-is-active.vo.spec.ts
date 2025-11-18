@@ -1,5 +1,5 @@
 import { SubscriptionPlanIsActiveValueObject } from '@/billing-context/subscription-plan/domain/value-objects/subscription-plan-is-active/subscription-plan-is-active.vo';
-import { InvalidBooleanException } from '@/shared/domain/exceptions/value-objects/invalid-boolean.exception';
+import { InvalidBooleanException } from '@/shared/domain/exceptions/value-objects/invalid-boolean/invalid-boolean.exception';
 
 describe('SubscriptionPlanIsActiveValueObject', () => {
   describe('constructor', () => {

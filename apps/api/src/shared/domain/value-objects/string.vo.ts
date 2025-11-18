@@ -1,4 +1,4 @@
-import { InvalidStringException } from '@/shared/domain/exceptions/value-objects/invalid-string.exception';
+import { InvalidStringException } from '@/shared/domain/exceptions/value-objects/invalid-string/invalid-string.exception';
 
 /**
  * String Value Object

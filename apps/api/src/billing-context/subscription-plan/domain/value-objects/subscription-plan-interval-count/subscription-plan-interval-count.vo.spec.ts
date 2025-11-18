@@ -1,5 +1,5 @@
 import { SubscriptionPlanIntervalCountValueObject } from '@/billing-context/subscription-plan/domain/value-objects/subscription-plan-interval-count/subscription-plan-interval-count.vo';
-import { InvalidNumberException } from '@/shared/domain/exceptions/value-objects/invalid-number.exception';
+import { InvalidNumberException } from '@/shared/domain/exceptions/value-objects/invalid-number/invalid-number.exception';
 
 describe('SubscriptionPlanIntervalCountValueObject', () => {
   describe('constructor', () => {

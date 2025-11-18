@@ -1,6 +1,6 @@
 import { HealthStatusEnum } from '@/health-context/health/domain/enum/health-status.enum';
 import { HealthStatusValueObject } from '@/health-context/health/domain/value-objects/health-status/health-status.vo';
-import { InvalidEnumValueException } from '@/shared/domain/exceptions/value-objects/invalid-enum-value.exception';
+import { InvalidEnumValueException } from '@/shared/domain/exceptions/value-objects/invalid-enum-value/invalid-enum-value.exception';
 
 describe('HealthStatusValueObject', () => {
   it('should accept valid enum values', () => {

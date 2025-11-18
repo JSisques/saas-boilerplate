@@ -1,4 +1,4 @@
-import { InvalidIpException } from '@/shared/domain/exceptions/value-objects/invalid-ip.exception';
+import { InvalidIpException } from '@/shared/domain/exceptions/value-objects/invalid-ip/invalid-ip.exception';
 
 /**
  * IP Value Object

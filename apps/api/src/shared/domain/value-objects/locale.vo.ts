@@ -1,4 +1,4 @@
-import { InvalidLocaleException } from '@/shared/domain/exceptions/value-objects/invalid-locale.exception';
+import { InvalidLocaleException } from '@/shared/domain/exceptions/value-objects/invalid-locale/invalid-locale.exception';
 import { StringValueObject } from '@/shared/domain/value-objects/string.vo';
 
 /**

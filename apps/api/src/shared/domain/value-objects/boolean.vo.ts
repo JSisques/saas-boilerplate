@@ -1,4 +1,4 @@
-import { InvalidBooleanException } from '@/shared/domain/exceptions/value-objects/invalid-boolean.exception';
+import { InvalidBooleanException } from '@/shared/domain/exceptions/value-objects/invalid-boolean/invalid-boolean.exception';
 
 /**
  * Boolean Value Object

@@ -1,4 +1,4 @@
-import { InvalidEmailException } from '@/shared/domain/exceptions/value-objects/invalid-email.exception';
+import { InvalidEmailException } from '@/shared/domain/exceptions/value-objects/invalid-email/invalid-email.exception';
 
 /**
  * Email Value Object

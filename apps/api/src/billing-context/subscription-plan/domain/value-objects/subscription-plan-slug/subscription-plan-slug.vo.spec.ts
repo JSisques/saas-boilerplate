@@ -1,5 +1,5 @@
 import { SubscriptionPlanSlugValueObject } from '@/billing-context/subscription-plan/domain/value-objects/subscription-plan-slug/subscription-plan-slug.vo';
-import { InvalidStringException } from '@/shared/domain/exceptions/value-objects/invalid-string.exception';
+import { InvalidStringException } from '@/shared/domain/exceptions/value-objects/invalid-string/invalid-string.exception';
 
 describe('SubscriptionPlanSlugValueObject', () => {
   describe('constructor', () => {

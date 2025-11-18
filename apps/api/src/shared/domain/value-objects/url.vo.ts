@@ -1,4 +1,4 @@
-import { InvalidUrlException } from '@/shared/domain/exceptions/value-objects/invalid-url.exception';
+import { InvalidUrlException } from '@/shared/domain/exceptions/value-objects/invalid-url/invalid-url.exception';
 
 /**
  * Url Value Object

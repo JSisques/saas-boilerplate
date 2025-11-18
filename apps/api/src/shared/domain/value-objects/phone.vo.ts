@@ -1,4 +1,4 @@
-import { InvalidPhoneException } from '@/shared/domain/exceptions/value-objects/invalid-phone.exception';
+import { InvalidPhoneException } from '@/shared/domain/exceptions/value-objects/invalid-phone/invalid-phone.exception';
 
 /**
  * Phone Value Object
