@@ -4,7 +4,7 @@ import {
   PromptReadRepository,
 } from '@/llm-context/prompt/domain/repositories/prompt-read/prompt-read.repository';
 import { PromptViewModel } from '@/llm-context/prompt/domain/view-models/prompt.view-model';
-import { IBaseService } from '@/shared/application/services/base-service.interface';
+import { IBaseService } from '@/shared/application/services/base-service/base-service.interface';
 import { Inject, Injectable, Logger } from '@nestjs/common';
 
 @Injectable()

@@ -2,8 +2,8 @@ import { EventAggregate } from '@/event-store-context/event/domain/aggregates/ev
 import { IEventFilterDto } from '@/event-store-context/event/domain/dtos/filters/event-filter.dto';
 import { EventWriteRepository } from '@/event-store-context/event/domain/repositories/event-write.repository';
 import { EventPrismaMapper } from '@/event-store-context/event/infrastructure/prisma/mappers/event-prisma.mapper';
-import { BasePrismaRepository } from '@/shared/infrastructure/database/prisma/base-prisma.repository';
-import { PrismaService } from '@/shared/infrastructure/database/prisma/prisma.service';
+import { BasePrismaRepository } from '@/shared/infrastructure/database/prisma/base-prisma/base-prisma.repository';
+import { PrismaService } from '@/shared/infrastructure/database/prisma/services/prisma.service';
 import { Injectable, Logger } from '@nestjs/common';
 
 @Injectable()

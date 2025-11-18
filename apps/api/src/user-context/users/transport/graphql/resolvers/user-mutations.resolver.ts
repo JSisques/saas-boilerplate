@@ -2,8 +2,8 @@ import { JwtAuthGuard } from '@/auth-context/auth/infrastructure/auth/jwt-auth.g
 import { Roles } from '@/auth-context/auth/infrastructure/decorators/roles/roles.decorator';
 import { OwnerGuard } from '@/auth-context/auth/infrastructure/guards/owner.guard';
 import { RolesGuard } from '@/auth-context/auth/infrastructure/guards/roles.guard';
-import { MutationResponseDto } from '@/shared/transport/graphql/dtos/success-response.dto';
-import { MutationResponseGraphQLMapper } from '@/shared/transport/graphql/mappers/mutation-response.mapper';
+import { MutationResponseDto } from '@/shared/transport/graphql/dtos/responses/success-response/success-response.dto';
+import { MutationResponseGraphQLMapper } from '@/shared/transport/graphql/mappers/mutation-response/mutation-response.mapper';
 import { UserDeleteCommand } from '@/user-context/users/application/commands/delete-user/delete-user.command';
 import { UserCreateCommand } from '@/user-context/users/application/commands/user-create/user-create.command';
 import { UserUpdateCommand } from '@/user-context/users/application/commands/user-update/user-update.command';

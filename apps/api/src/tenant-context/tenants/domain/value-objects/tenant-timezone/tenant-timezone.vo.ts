@@ -1,4 +1,4 @@
-import { TimezoneValueObject } from '@/shared/domain/value-objects/timezone.vo';
+import { TimezoneValueObject } from '@/shared/domain/value-objects/timezone/timezone.vo';
 
 /**
  * TenantTimezoneValueObject represents a tenant's timezone in the domain.

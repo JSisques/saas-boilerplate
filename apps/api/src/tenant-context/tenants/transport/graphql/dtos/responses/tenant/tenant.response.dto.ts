@@ -1,4 +1,4 @@
-import { BasePaginatedResultDto } from '@/shared/transport/graphql/dtos/responses';
+import { BasePaginatedResultDto } from '@/shared/transport/graphql/dtos/responses/base-paginated-result/base-paginated-result.dto';
 import { TenantMemberResponseDto } from '@/tenant-context/tenant-members/transport/graphql/dtos/responses/tenant-member.response.dto';
 import { Field, ObjectType } from '@nestjs/graphql';
 

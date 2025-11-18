@@ -1,4 +1,4 @@
-import { IBaseService } from '@/shared/application/services/base-service.interface';
+import { IBaseService } from '@/shared/application/services/base-service/base-service.interface';
 import { UserNotFoundException } from '@/user-context/users/application/exceptions/user-not-found/user-not-found.exception';
 import { UserAggregate } from '@/user-context/users/domain/aggregates/user.aggregate';
 import {

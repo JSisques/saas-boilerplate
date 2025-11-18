@@ -5,11 +5,15 @@ import { AggregateRoot } from '@nestjs/cqrs';
 
 export class HealthAggregate extends AggregateRoot {
   private readonly _status: HealthStatusValueObject;
+  private readonly _writeDatabaseStatus: HealthStatusValueObject;
+  private readonly _readDatabaseStatus: HealthStatusValueObject;
 
   constructor(props: IHealthCreateDto) {
     super();
 
     this._status = props.status;
+    this._writeDatabaseStatus = props.writeDatabaseStatus;
+    this._readDatabaseStatus = props.readDatabaseStatus;
   }
 
   /**
@@ -22,6 +26,24 @@ export class HealthAggregate extends AggregateRoot {
   }
 
   /**
+   * Get the status of the write database.
+   *
+   * @returns The status of the write database.
+   */
+  public get writeDatabaseStatus(): HealthStatusValueObject {
+    return this._writeDatabaseStatus;
+  }
+
+  /**
+   * Convert the health aggregate to primitives.
+   *
+   * @returns The status of the read database.
+   */
+  public get readDatabaseStatus(): HealthStatusValueObject {
+    return this._readDatabaseStatus;
+  }
+
+  /**
    * Convert the health aggregate to primitives.
    *
    * @returns The primitives of the health.
@@ -29,6 +51,8 @@ export class HealthAggregate extends AggregateRoot {
   public toPrimitives(): HealthPrimitives {
     return {
       status: this._status.value,
+      writeDatabaseStatus: this._writeDatabaseStatus.value,
+      readDatabaseStatus: this._readDatabaseStatus.value,
     };
   }
 }

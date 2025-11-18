@@ -1,4 +1,4 @@
-import { BasePaginatedResultDto } from '@/shared/transport/graphql/dtos/responses';
+import { BasePaginatedResultDto } from '@/shared/transport/graphql/dtos/responses/base-paginated-result/base-paginated-result.dto';
 import { Field, ObjectType } from '@nestjs/graphql';
 
 @ObjectType('UserResponseDto')
@@ -38,6 +38,18 @@ export class UserResponseDto {
 
   @Field(() => String, { nullable: true, description: 'The name of the user' })
   name?: string;
+
+  @Field(() => Date, {
+    nullable: true,
+    description: 'The created at of the user',
+  })
+  createdAt?: Date;
+
+  @Field(() => Date, {
+    nullable: true,
+    description: 'The updated at of the user',
+  })
+  updatedAt?: Date;
 }
 
 @ObjectType('PaginatedUserResultDto')

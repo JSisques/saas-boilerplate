@@ -2,7 +2,7 @@ import { Criteria } from '@/shared/domain/entities/criteria';
 import { PaginatedResult } from '@/shared/domain/entities/paginated-result.entity';
 import { FilterOperator } from '@/shared/domain/enums/filter-operator.enum';
 import { SortDirection } from '@/shared/domain/enums/sort-direction.enum';
-import { MongoService } from '@/shared/infrastructure/database/mongodb/mongo.service';
+import { MongoService } from '@/shared/infrastructure/database/mongodb/services/mongo.service';
 import { IUserCreateViewModelDto } from '@/user-context/users/domain/dtos/view-models/user-create/user-create-view-model.dto';
 import { UserRoleEnum } from '@/user-context/users/domain/enums/user-role/user-role.enum';
 import { UserStatusEnum } from '@/user-context/users/domain/enums/user-status/user-status.enum';

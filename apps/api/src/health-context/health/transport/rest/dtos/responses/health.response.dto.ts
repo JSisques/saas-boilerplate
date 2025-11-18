@@ -11,6 +11,18 @@ export class HealthRestResponseDto {
     example: 'OK',
   })
   status: string;
+
+  @ApiProperty({
+    description: 'The status of the write database check',
+    example: 'OK',
+  })
+  writeDatabaseStatus: string;
+
+  @ApiProperty({
+    description: 'The status of the read database check',
+    example: 'OK',
+  })
+  readDatabaseStatus: string;
 }
 
 @ApiResponse({

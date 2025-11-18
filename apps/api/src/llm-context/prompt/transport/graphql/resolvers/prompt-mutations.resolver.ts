@@ -15,8 +15,8 @@ import { PromptDeleteRequestDto } from '@/llm-context/prompt/transport/graphql/d
 import { PromptDeprecateRequestDto } from '@/llm-context/prompt/transport/graphql/dtos/requests/prompt-deprecate.request.dto';
 import { PromptDraftRequestDto } from '@/llm-context/prompt/transport/graphql/dtos/requests/prompt-draft.request.dto';
 import { PromptUpdateRequestDto } from '@/llm-context/prompt/transport/graphql/dtos/requests/prompt-update.request.dto';
-import { MutationResponseDto } from '@/shared/transport/graphql/dtos/success-response.dto';
-import { MutationResponseGraphQLMapper } from '@/shared/transport/graphql/mappers/mutation-response.mapper';
+import { MutationResponseDto } from '@/shared/transport/graphql/dtos/responses/success-response/success-response.dto';
+import { MutationResponseGraphQLMapper } from '@/shared/transport/graphql/mappers/mutation-response/mutation-response.mapper';
 import { Logger, UseGuards } from '@nestjs/common';
 import { CommandBus } from '@nestjs/cqrs';
 import { Args, Mutation, Resolver } from '@nestjs/graphql';

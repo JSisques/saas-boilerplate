@@ -1,3 +1,4 @@
+'use client';
 import { useMemo } from 'react';
 import { SDK } from '../../index.js';
 import type { Storage } from '../../shared/storage/storage.interface.js';

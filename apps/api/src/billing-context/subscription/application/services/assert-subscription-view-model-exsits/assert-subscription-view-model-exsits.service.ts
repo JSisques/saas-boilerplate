@@ -4,7 +4,7 @@ import {
   SubscriptionReadRepository,
 } from '@/billing-context/subscription/domain/repositories/subscription-read/subscription-read.repository';
 import { SubscriptionViewModel } from '@/billing-context/subscription/domain/view-models/subscription.view-model';
-import { IBaseService } from '@/shared/application/services/base-service.interface';
+import { IBaseService } from '@/shared/application/services/base-service/base-service.interface';
 import { Inject, Injectable, Logger } from '@nestjs/common';
 
 @Injectable()

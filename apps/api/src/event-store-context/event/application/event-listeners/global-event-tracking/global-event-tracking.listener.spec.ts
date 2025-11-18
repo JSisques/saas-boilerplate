@@ -131,7 +131,10 @@ describe('GlobalEventTrackingListener', () => {
       }).not.toThrow();
 
       // Wait a bit to ensure async error handling completes
-      await new Promise((resolve) => setTimeout(resolve, 10));
+      await new Promise((resolve) => {
+        const timeout = setTimeout(resolve, 10);
+        timeout.unref();
+      });
     }
   });
 

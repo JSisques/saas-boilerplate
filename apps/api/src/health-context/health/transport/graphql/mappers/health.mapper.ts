@@ -11,6 +11,8 @@ export class HealthGraphQLMapper {
   toResponseDto(health: HealthViewModel): HealthResponseDto {
     return {
       status: health.status,
+      writeDatabaseStatus: health.writeDatabaseStatus,
+      readDatabaseStatus: health.readDatabaseStatus,
     };
   }
 
