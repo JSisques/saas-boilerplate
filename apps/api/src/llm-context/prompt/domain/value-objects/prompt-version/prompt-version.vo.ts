@@ -1,4 +1,4 @@
-import { NumberValueObject } from '@/shared/domain/value-objects/number.vo';
+import { NumberValueObject } from '@/shared/domain/value-objects/number/number.vo';
 
 /**
  * PromptVersionValueObject represents a prompt's version number in the domain.

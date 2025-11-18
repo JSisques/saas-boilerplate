@@ -1,5 +1,5 @@
 import { SubscriptionPlanCurrencyEnum } from '@/billing-context/subscription-plan/domain/enum/subscription-plan-currency.enum';
-import { EnumValueObject } from '@/shared/domain/value-objects/enum.vo';
+import { EnumValueObject } from '@/shared/domain/value-objects/enum/enum.vo';
 
 export class SubscriptionPlanCurrencyValueObject extends EnumValueObject<
   typeof SubscriptionPlanCurrencyEnum

@@ -1,4 +1,4 @@
-import { LocaleValueObject } from '@/shared/domain/value-objects/locale.vo';
+import { LocaleValueObject } from '@/shared/domain/value-objects/locale/locale.vo';
 
 /**
  * TenantLocaleValueObject represents a tenant's locale in the domain.

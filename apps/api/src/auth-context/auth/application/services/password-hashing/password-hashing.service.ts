@@ -2,7 +2,7 @@ import { PasswordHashingFailedException } from '@/auth-context/auth/application/
 import { PasswordVerificationFailedException } from '@/auth-context/auth/application/exceptions/password-verification-failed/password-verification-failed.exception';
 import { InvalidHashFormatException } from '@/shared/application/exceptions/password-hashing/invalid-hash-format.exception';
 import { InvalidSaltRoundsException } from '@/shared/application/exceptions/password-hashing/invalid-salt-rounds.exception';
-import { PasswordValueObject } from '@/shared/domain/value-objects/password.vo';
+import { PasswordValueObject } from '@/shared/domain/value-objects/password/password.vo';
 import { Injectable, Logger, UnauthorizedException } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
 

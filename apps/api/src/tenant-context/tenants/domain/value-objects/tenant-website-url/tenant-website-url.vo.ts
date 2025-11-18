@@ -1,4 +1,4 @@
-import { UrlValueObject } from '@/shared/domain/value-objects/url.vo';
+import { UrlValueObject } from '@/shared/domain/value-objects/url/url.vo';
 
 /**
  * TenantWebsiteUrlValueObject represents a tenant's website URL in the domain.

@@ -1,4 +1,4 @@
-import { NumberValueObject } from '@/shared/domain/value-objects/number.vo';
+import { NumberValueObject } from '@/shared/domain/value-objects/number/number.vo';
 
 /**
  * TenantMaxStorageValueObject represents a tenant's maximum storage limit in the domain.

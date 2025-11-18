@@ -1,5 +1,5 @@
 import { SubscriptionRenewalMethodEnum } from '@/billing-context/subscription/domain/enum/subscription-renewal-method.enum';
-import { EnumValueObject } from '@/shared/domain/value-objects/enum.vo';
+import { EnumValueObject } from '@/shared/domain/value-objects/enum/enum.vo';
 
 export class SubscriptionRenewalMethodValueObject extends EnumValueObject<
   typeof SubscriptionRenewalMethodEnum

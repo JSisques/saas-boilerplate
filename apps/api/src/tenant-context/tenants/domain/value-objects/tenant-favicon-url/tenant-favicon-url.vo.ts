@@ -1,4 +1,4 @@
-import { UrlValueObject } from '@/shared/domain/value-objects/url.vo';
+import { UrlValueObject } from '@/shared/domain/value-objects/url/url.vo';
 
 /**
  * TenantFaviconUrlValueObject represents a tenant's favicon URL in the domain.
