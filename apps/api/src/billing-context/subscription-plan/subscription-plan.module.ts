@@ -9,6 +9,7 @@ import { FindSubscriptionPlanByIdQueryHandler } from '@/billing-context/subscrip
 import { FindSubscriptionPlanViewModelByIdQueryHandler } from '@/billing-context/subscription-plan/application/queries/subscription-plan-find-view-model-by-id/subscription-plan-find-view-model-by-id.query-handler';
 import { AssertSubscriptionPlanExsistsService } from '@/billing-context/subscription-plan/application/services/assert-subscription-plan-exsits/assert-subscription-plan-exsits.service';
 import { AssertSubscriptionPlanSlugIsUniqueService } from '@/billing-context/subscription-plan/application/services/assert-subscription-plan-slug-is-unique/assert-subscription-plan-slug-is-unique.service';
+import { AssertSubscriptionPlanTypeIsUniqueService } from '@/billing-context/subscription-plan/application/services/assert-subscription-plan-type-is-unique/assert-subscription-plan-type-is-unique.service';
 import { AssertSubscriptionPlanViewModelExsistsService } from '@/billing-context/subscription-plan/application/services/assert-subscription-plan-view-model-exsits/assert-subscription-plan-view-model-exsits.service';
 import { SubscriptionPlanAggregateFactory } from '@/billing-context/subscription-plan/domain/factories/subscription-plan-aggregate/subscription-plan-aggregate.factory';
 import { SubscriptionPlanViewModelFactory } from '@/billing-context/subscription-plan/domain/factories/subscription-plan-view-model/subscription-plan-view-model.factory';
@@ -32,6 +33,7 @@ const RESOLVERS = [
 const SERVICES = [
   AssertSubscriptionPlanExsistsService,
   AssertSubscriptionPlanSlugIsUniqueService,
+  AssertSubscriptionPlanTypeIsUniqueService,
   AssertSubscriptionPlanViewModelExsistsService,
 ];
 
