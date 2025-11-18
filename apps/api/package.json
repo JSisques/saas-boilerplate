@@ -93,7 +93,9 @@
     },
     "collectCoverageFrom": [
       "**/*.(t|j)s",
-      "!**/domain/repositories/**"
+      "!**/domain/repositories/**",
+      "!**/interfaces/**",
+      "!**/dtos/**"
     ],
     "coverageDirectory": "../coverage",
     "testEnvironment": "node",
