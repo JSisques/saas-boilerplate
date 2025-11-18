@@ -20,17 +20,16 @@ describe('LocaleValueObject', () => {
     });
 
     it('should throw InvalidStringException for invalid format', () => {
-      expect(() =>
-        new LocaleValueObject('invalid-locale-format', {
-          validateExistence: false,
-        }),
+      expect(
+        () =>
+          new LocaleValueObject('invalid-locale-format', {
+            validateExistence: false,
+          }),
       ).toThrow();
     });
 
     it('should throw InvalidLocaleException for locale not in common list', () => {
-      expect(() => new LocaleValueObject('xx')).toThrow(
-        InvalidLocaleException,
-      );
+      expect(() => new LocaleValueObject('xx')).toThrow(InvalidLocaleException);
     });
   });
 
@@ -80,8 +79,9 @@ describe('LocaleValueObject', () => {
 
     it('should check if has country code', () => {
       expect(
-        new LocaleValueObject('en', { validateExistence: false })
-          .hasCountryCode(),
+        new LocaleValueObject('en', {
+          validateExistence: false,
+        }).hasCountryCode(),
       ).toBe(false);
     });
 
@@ -103,4 +103,3 @@ describe('LocaleValueObject', () => {
     });
   });
 });
-

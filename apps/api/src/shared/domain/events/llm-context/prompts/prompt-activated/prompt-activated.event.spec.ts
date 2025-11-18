@@ -63,4 +63,3 @@ describe('PromptActivatedEvent', () => {
     expect(event1.eventId).not.toBe(event2.eventId);
   });
 });
-

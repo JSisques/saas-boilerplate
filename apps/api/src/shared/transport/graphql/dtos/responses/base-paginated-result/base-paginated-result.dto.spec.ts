@@ -64,4 +64,3 @@ describe('BasePaginatedResultDto', () => {
     expect(result.totalPages).toBe(20);
   });
 });
-

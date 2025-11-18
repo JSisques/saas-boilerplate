@@ -40,4 +40,3 @@ describe('BasePaginationInput', () => {
     expect(pagination.perPage).toBe(25);
   });
 });
-

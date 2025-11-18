@@ -40,8 +40,12 @@ describe('JsonValueObject', () => {
     });
 
     it('should throw InvalidJsonException when missing required keys', () => {
-      expect(() =>
-        new JsonValueObject({ key1: 'value1' }, { requiredKeys: ['key1', 'key2'] }),
+      expect(
+        () =>
+          new JsonValueObject(
+            { key1: 'value1' },
+            { requiredKeys: ['key1', 'key2'] },
+          ),
       ).toThrow(InvalidJsonException);
     });
   });
@@ -119,4 +123,3 @@ describe('JsonValueObject', () => {
     });
   });
 });
-

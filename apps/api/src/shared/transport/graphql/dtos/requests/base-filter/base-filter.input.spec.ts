@@ -80,4 +80,3 @@ describe('BaseFilterInput', () => {
     expect(filter.operator).toBe(FilterOperator.NOT_EQUALS);
   });
 });
-

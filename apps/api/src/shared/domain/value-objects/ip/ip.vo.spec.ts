@@ -29,9 +29,7 @@ describe('IpValueObject', () => {
       expect(() => new IpValueObject('256.256.256.256')).toThrow(
         InvalidIpException,
       );
-      expect(() => new IpValueObject('192.168.1')).toThrow(
-        InvalidIpException,
-      );
+      expect(() => new IpValueObject('192.168.1')).toThrow(InvalidIpException);
     });
   });
 
@@ -80,9 +78,10 @@ describe('IpValueObject', () => {
     it('should get IP version', () => {
       expect(new IpValueObject('192.168.1.1').getVersion()).toBe(4);
       expect(
-        new IpValueObject('2001:0db8:85a3:0000:0000:8a2e:0370:7334').getVersion(),
+        new IpValueObject(
+          '2001:0db8:85a3:0000:0000:8a2e:0370:7334',
+        ).getVersion(),
       ).toBe(6);
     });
   });
 });
-

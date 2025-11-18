@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
+import { Db, MongoClient } from 'mongodb';
 import { MongoService } from './mongo.service';
-import { MongoClient, Db } from 'mongodb';
 
 jest.mock('mongodb');
 
@@ -44,7 +44,7 @@ describe('MongoService', () => {
     if (module) {
       try {
         await module.close();
-      } catch (error) {
+      } catch {
         // Ignore errors during cleanup
       }
     }
@@ -66,10 +66,9 @@ describe('MongoService', () => {
     it('should connect to MongoDB', async () => {
       await service.onModuleInit();
 
-      expect(MongoClient).toHaveBeenCalledWith(
-        'mongodb://localhost:27017',
-        { authSource: 'admin' },
-      );
+      expect(MongoClient).toHaveBeenCalledWith('mongodb://localhost:27017', {
+        authSource: 'admin',
+      });
       expect(mockClient.connect).toHaveBeenCalledTimes(1);
       expect(mockClient.db).toHaveBeenCalledWith('test-db');
     });
@@ -121,4 +120,3 @@ describe('MongoService', () => {
     });
   });
 });
-

@@ -58,4 +58,3 @@ describe('MutationResponseDto', () => {
     expect(response.id).toBeUndefined();
   });
 });
-

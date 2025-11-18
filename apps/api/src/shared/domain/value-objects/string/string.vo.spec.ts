@@ -40,8 +40,8 @@ describe('StringValueObject', () => {
     });
 
     it('should throw InvalidStringException when string does not match pattern', () => {
-      expect(() =>
-        new StringValueObject('test', { pattern: /^[0-9]+$/ }),
+      expect(
+        () => new StringValueObject('test', { pattern: /^[0-9]+$/ }),
       ).toThrow(InvalidStringException);
     });
   });
@@ -174,4 +174,3 @@ describe('StringValueObject', () => {
     });
   });
 });
-

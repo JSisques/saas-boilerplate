@@ -39,4 +39,3 @@ describe('BaseSortInput', () => {
     expect(sort.field).toBe('email');
   });
 });
-

@@ -13,11 +13,14 @@ import {
   UserRoleEnum,
 } from '@prisma/client';
 
+// Import the module to trigger enum registration
+import './registered-enums.graphql';
+
 describe('registered-enums.graphql', () => {
   it('should be able to import the module without errors', () => {
-    expect(() => {
-      require('./registered-enums.graphql');
-    }).not.toThrow();
+    // The module is already imported at the top level
+    // This test verifies that the import doesn't throw
+    expect(true).toBe(true);
   });
 
   it('should have FilterOperator enum defined', () => {
@@ -103,4 +106,3 @@ describe('registered-enums.graphql', () => {
     });
   });
 });
-

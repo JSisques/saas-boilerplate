@@ -4,7 +4,6 @@ import { UuidValueObject } from '@/shared/domain/value-objects/uuid/uuid.vo';
 describe('UuidValueObject', () => {
   const validUuid = '123e4567-e89b-12d3-a456-426614174000';
   const validUuidV4 = '550e8400-e29b-41d4-a716-446655440000';
-  const nilUuid = '00000000-0000-0000-0000-000000000000';
 
   describe('constructor', () => {
     it('should create a UUID value object with a valid UUID', () => {

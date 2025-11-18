@@ -39,4 +39,3 @@ describe('TenantUuidValueObject', () => {
     expect(tenantUuid1.equals(tenantUuid2)).toBe(true);
   });
 });
-

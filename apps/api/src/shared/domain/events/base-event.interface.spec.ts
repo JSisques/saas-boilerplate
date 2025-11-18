@@ -9,7 +9,9 @@ class TestEvent extends BaseEvent<{ test: string }> {
 }
 
 describe('BaseEvent', () => {
-  const createMetadata = (overrides?: Partial<IEventMetadata>): IEventMetadata => {
+  const createMetadata = (
+    overrides?: Partial<IEventMetadata>,
+  ): IEventMetadata => {
     return {
       aggregateId: '123e4567-e89b-12d3-a456-426614174000',
       aggregateType: 'TestAggregate',
@@ -122,5 +124,3 @@ describe('BaseEvent', () => {
     });
   });
 });
-
-

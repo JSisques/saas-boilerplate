@@ -94,5 +94,3 @@ describe('AuthCreatedEvent', () => {
     expect(event.isReplay).toBe(true);
   });
 });
-
-

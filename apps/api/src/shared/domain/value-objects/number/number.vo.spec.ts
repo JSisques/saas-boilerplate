@@ -43,9 +43,9 @@ describe('NumberValueObject', () => {
     });
 
     it('should throw InvalidNumberException for decimal when allowDecimals is false', () => {
-      expect(() => new NumberValueObject(3.14, { allowDecimals: false })).toThrow(
-        InvalidNumberException,
-      );
+      expect(
+        () => new NumberValueObject(3.14, { allowDecimals: false }),
+      ).toThrow(InvalidNumberException);
     });
 
     it('should throw InvalidNumberException for number exceeding precision', () => {
@@ -61,9 +61,7 @@ describe('NumberValueObject', () => {
       expect(() => new NumberValueObject(-Infinity)).toThrow(
         InvalidNumberException,
       );
-      expect(() => new NumberValueObject(NaN)).toThrow(
-        InvalidNumberException,
-      );
+      expect(() => new NumberValueObject(NaN)).toThrow(InvalidNumberException);
     });
   });
 
@@ -166,4 +164,3 @@ describe('NumberValueObject', () => {
     });
   });
 });
-

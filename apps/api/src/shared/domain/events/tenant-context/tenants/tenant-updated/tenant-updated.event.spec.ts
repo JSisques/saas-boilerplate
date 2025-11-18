@@ -11,7 +11,9 @@ describe('TenantUpdatedEvent', () => {
     isReplay: false,
   });
 
-  const createPartialTenantData = (): Partial<Omit<ITenantEventData, 'id'>> => ({
+  const createPartialTenantData = (): Partial<
+    Omit<ITenantEventData, 'id'>
+  > => ({
     name: 'Updated Tenant Name',
     description: 'Updated description',
     status: 'active',
@@ -68,4 +70,3 @@ describe('TenantUpdatedEvent', () => {
     expect(event1.eventId).not.toBe(event2.eventId);
   });
 });
-

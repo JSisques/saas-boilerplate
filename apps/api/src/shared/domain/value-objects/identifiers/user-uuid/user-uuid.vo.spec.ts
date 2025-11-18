@@ -46,4 +46,3 @@ describe('UserUuidValueObject', () => {
     expect(typeof userUuid.isNil()).toBe('boolean');
   });
 });
-

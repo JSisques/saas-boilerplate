@@ -20,9 +20,7 @@ describe('HexValueObject', () => {
     });
 
     it('should throw InvalidHexException for invalid hex characters', () => {
-      expect(() => new HexValueObject('gg00ff')).toThrow(
-        InvalidHexException,
-      );
+      expect(() => new HexValueObject('gg00ff')).toThrow(InvalidHexException);
       expect(() => new HexValueObject('xyz')).toThrow(InvalidHexException);
     });
   });
@@ -58,4 +56,3 @@ describe('HexValueObject', () => {
     });
   });
 });
-

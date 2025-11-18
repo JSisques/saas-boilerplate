@@ -39,4 +39,3 @@ describe('AuthUuidValueObject', () => {
     expect(authUuid1.equals(authUuid2)).toBe(true);
   });
 });
-

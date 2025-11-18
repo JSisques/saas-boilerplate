@@ -39,4 +39,3 @@ describe('SubscriptionUuidValueObject', () => {
     expect(subscriptionUuid1.equals(subscriptionUuid2)).toBe(true);
   });
 });
-

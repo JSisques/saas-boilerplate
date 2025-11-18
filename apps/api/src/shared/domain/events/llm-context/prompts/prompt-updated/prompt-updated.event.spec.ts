@@ -11,7 +11,9 @@ describe('PromptUpdatedEvent', () => {
     isReplay: false,
   });
 
-  const createPartialPromptData = (): Partial<Omit<IPromptEventData, 'id'>> => ({
+  const createPartialPromptData = (): Partial<
+    Omit<IPromptEventData, 'id'>
+  > => ({
     title: 'Updated Prompt Title',
     description: 'Updated description',
     content: 'Updated content',
@@ -68,4 +70,3 @@ describe('PromptUpdatedEvent', () => {
     expect(event1.eventId).not.toBe(event2.eventId);
   });
 });
-

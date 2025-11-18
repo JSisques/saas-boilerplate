@@ -35,4 +35,3 @@ describe('PromptVariableUuidValueObject', () => {
     expect(uuid1.equals(uuid2)).toBe(true);
   });
 });
-
