@@ -8,10 +8,12 @@ import { UserAggregateFactory } from '@/user-context/users/domain/factories/user
 import { UserPrimitives } from '@/user-context/users/domain/primitives/user.primitives';
 import { UserAvatarUrlValueObject } from '@/user-context/users/domain/value-objects/user-avatar-url/user-avatar-url.vo';
 import { UserBioValueObject } from '@/user-context/users/domain/value-objects/user-bio/user-bio.vo';
+import { UserCreatedAtValueObject } from '@/user-context/users/domain/value-objects/user-created-at/user-created-at.vo';
 import { UserLastNameValueObject } from '@/user-context/users/domain/value-objects/user-last-name/user-last-name.vo';
 import { UserNameValueObject } from '@/user-context/users/domain/value-objects/user-name/user-name.vo';
 import { UserRoleValueObject } from '@/user-context/users/domain/value-objects/user-role/user-role.vo';
 import { UserStatusValueObject } from '@/user-context/users/domain/value-objects/user-status/user-status.vo';
+import { UserUpdatedAtValueObject } from '@/user-context/users/domain/value-objects/user-updated-at/user-updated-at.vo';
 import { UserUserNameValueObject } from '@/user-context/users/domain/value-objects/user-user-name/user-user-name.vo';
 
 describe('UserAggregateFactory', () => {
@@ -23,6 +25,8 @@ describe('UserAggregateFactory', () => {
 
   describe('create', () => {
     it('should create a UserAggregate from DTO with all fields and generate event by default', () => {
+      const now = new Date();
+
       const dto: IUserCreateDto = {
         id: new UserUuidValueObject('123e4567-e89b-12d3-a456-426614174000'),
         userName: new UserUserNameValueObject('johndoe'),
@@ -34,6 +38,8 @@ describe('UserAggregateFactory', () => {
         avatarUrl: new UserAvatarUrlValueObject(
           'https://example.com/avatar.jpg',
         ),
+        createdAt: new UserCreatedAtValueObject(now),
+        updatedAt: new UserUpdatedAtValueObject(now),
       };
 
       const aggregate = factory.create(dto);
@@ -47,6 +53,8 @@ describe('UserAggregateFactory', () => {
       expect(aggregate.status.value).toBe(dto.status.value);
       expect(aggregate.bio?.value).toBe(dto.bio?.value);
       expect(aggregate.avatarUrl?.value).toBe(dto.avatarUrl?.value);
+      expect(aggregate.createdAt.value).toEqual(dto.createdAt.value);
+      expect(aggregate.updatedAt.value).toEqual(dto.updatedAt.value);
 
       // Check that event was generated
       const uncommittedEvents = aggregate.getUncommittedEvents();
@@ -55,6 +63,8 @@ describe('UserAggregateFactory', () => {
     });
 
     it('should create a UserAggregate from DTO without generating event when generateEvent is false', () => {
+      const now = new Date();
+
       const dto: IUserCreateDto = {
         id: new UserUuidValueObject('123e4567-e89b-12d3-a456-426614174000'),
         userName: new UserUserNameValueObject('johndoe'),
@@ -62,6 +72,8 @@ describe('UserAggregateFactory', () => {
         lastName: new UserLastNameValueObject('Doe'),
         role: new UserRoleValueObject(UserRoleEnum.USER),
         status: new UserStatusValueObject(UserStatusEnum.ACTIVE),
+        createdAt: new UserCreatedAtValueObject(now),
+        updatedAt: new UserUpdatedAtValueObject(now),
       };
 
       const aggregate = factory.create(dto, false);
@@ -76,6 +88,8 @@ describe('UserAggregateFactory', () => {
     });
 
     it('should create a UserAggregate from DTO with null optional fields', () => {
+      const now = new Date();
+
       const dto: IUserCreateDto = {
         id: new UserUuidValueObject('123e4567-e89b-12d3-a456-426614174000'),
         userName: new UserUserNameValueObject('johndoe'),
@@ -85,6 +99,8 @@ describe('UserAggregateFactory', () => {
         status: new UserStatusValueObject(UserStatusEnum.INACTIVE),
         bio: null,
         avatarUrl: null,
+        createdAt: new UserCreatedAtValueObject(now),
+        updatedAt: new UserUpdatedAtValueObject(now),
       };
 
       const aggregate = factory.create(dto, false);
@@ -103,6 +119,7 @@ describe('UserAggregateFactory', () => {
 
   describe('fromPrimitives', () => {
     it('should create a UserAggregate from primitives with all fields', () => {
+      const now = new Date();
       const primitives: UserPrimitives = {
         id: '123e4567-e89b-12d3-a456-426614174000',
         userName: 'johndoe',
@@ -112,6 +129,8 @@ describe('UserAggregateFactory', () => {
         status: UserStatusEnum.ACTIVE,
         bio: 'Software developer',
         avatarUrl: 'https://example.com/avatar.jpg',
+        createdAt: now,
+        updatedAt: now,
       };
 
       const aggregate = factory.fromPrimitives(primitives);
@@ -125,9 +144,12 @@ describe('UserAggregateFactory', () => {
       expect(aggregate.status.value).toBe(primitives.status);
       expect(aggregate.bio?.value).toBe(primitives.bio);
       expect(aggregate.avatarUrl?.value).toBe(primitives.avatarUrl);
+      expect(aggregate.createdAt.value).toEqual(primitives.createdAt);
+      expect(aggregate.updatedAt.value).toEqual(primitives.updatedAt);
     });
 
     it('should create a UserAggregate from primitives with null string fields', () => {
+      const now = new Date();
       const primitives: UserPrimitives = {
         id: '123e4567-e89b-12d3-a456-426614174000',
         userName: 'johndoe',
@@ -137,6 +159,8 @@ describe('UserAggregateFactory', () => {
         status: UserStatusEnum.BLOCKED,
         bio: null,
         avatarUrl: null,
+        createdAt: now,
+        updatedAt: now,
       };
 
       // Note: UserAvatarUrlValueObject does not accept null or empty values,
@@ -166,6 +190,7 @@ describe('UserAggregateFactory', () => {
     });
 
     it('should create value objects correctly from primitives', () => {
+      const now = new Date();
       const primitives: UserPrimitives = {
         id: '123e4567-e89b-12d3-a456-426614174000',
         userName: 'johndoe',
@@ -175,6 +200,8 @@ describe('UserAggregateFactory', () => {
         status: UserStatusEnum.ACTIVE,
         bio: 'Software developer',
         avatarUrl: 'https://example.com/avatar.jpg',
+        createdAt: now,
+        updatedAt: now,
       };
 
       const aggregate = factory.fromPrimitives(primitives);
@@ -187,9 +214,12 @@ describe('UserAggregateFactory', () => {
       expect(aggregate.status).toBeInstanceOf(UserStatusValueObject);
       expect(aggregate.bio).toBeInstanceOf(UserBioValueObject);
       expect(aggregate.avatarUrl).toBeInstanceOf(UserAvatarUrlValueObject);
+      expect(aggregate.createdAt).toBeInstanceOf(UserCreatedAtValueObject);
+      expect(aggregate.updatedAt).toBeInstanceOf(UserUpdatedAtValueObject);
     });
 
     it('should generate events when creating from primitives (default behavior)', () => {
+      const now = new Date();
       const primitives: UserPrimitives = {
         id: '123e4567-e89b-12d3-a456-426614174000',
         userName: 'johndoe',
@@ -199,6 +229,8 @@ describe('UserAggregateFactory', () => {
         status: UserStatusEnum.ACTIVE,
         bio: 'Software developer',
         avatarUrl: 'https://example.com/avatar.jpg',
+        createdAt: now,
+        updatedAt: now,
       };
 
       const aggregate = factory.fromPrimitives(primitives);

@@ -7,4 +7,6 @@ export interface IUserEventData {
   role: string;
   status: string;
   userName: string;
+  createdAt: Date;
+  updatedAt: Date;
 }

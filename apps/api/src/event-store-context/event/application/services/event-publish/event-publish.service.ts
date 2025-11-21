@@ -1,5 +1,5 @@
 import { EventAggregate } from '@/event-store-context/event/domain/aggregates/event.aggregate';
-import { DomainEventFactory } from '@/event-store-context/event/domain/factories/event-domain.factory';
+import { DomainEventFactory } from '@/event-store-context/event/domain/factories/event-domain/event-domain.factory';
 import { IBaseService } from '@/shared/application/services/base-service/base-service.interface';
 import { Injectable, Logger } from '@nestjs/common';
 import { EventBus } from '@nestjs/cqrs';

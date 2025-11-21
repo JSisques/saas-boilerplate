@@ -1,11 +1,11 @@
-import { UserCreatedEventHandler } from './user-created.event-handler';
 import { UserCreatedEvent } from '@/shared/domain/events/users/user-created/user-created.event';
-import { UserReadRepository } from '@/user-context/users/domain/repositories/user-read.repository';
-import { UserViewModelFactory } from '@/user-context/users/domain/factories/user-view-model/user-view-model.factory';
-import { UserViewModel } from '@/user-context/users/domain/view-models/user.view-model';
-import { UserPrimitives } from '@/user-context/users/domain/primitives/user.primitives';
 import { UserRoleEnum } from '@/user-context/users/domain/enums/user-role/user-role.enum';
 import { UserStatusEnum } from '@/user-context/users/domain/enums/user-status/user-status.enum';
+import { UserViewModelFactory } from '@/user-context/users/domain/factories/user-view-model/user-view-model.factory';
+import { UserPrimitives } from '@/user-context/users/domain/primitives/user.primitives';
+import { UserReadRepository } from '@/user-context/users/domain/repositories/user-read.repository';
+import { UserViewModel } from '@/user-context/users/domain/view-models/user.view-model';
+import { UserCreatedEventHandler } from './user-created.event-handler';
 
 describe('UserCreatedEventHandler', () => {
   let handler: UserCreatedEventHandler;
@@ -48,6 +48,8 @@ describe('UserCreatedEventHandler', () => {
         status: UserStatusEnum.ACTIVE,
         bio: null,
         avatarUrl: null,
+        createdAt: new Date(),
+        updatedAt: new Date(),
       };
 
       const event = new UserCreatedEvent(
@@ -96,6 +98,8 @@ describe('UserCreatedEventHandler', () => {
         status: UserStatusEnum.INACTIVE,
         bio: 'Software developer',
         avatarUrl: 'https://example.com/avatar.jpg',
+        createdAt: new Date(),
+        updatedAt: new Date(),
       };
 
       const event = new UserCreatedEvent(
@@ -142,6 +146,8 @@ describe('UserCreatedEventHandler', () => {
         status: UserStatusEnum.ACTIVE,
         bio: null,
         avatarUrl: null,
+        createdAt: new Date(),
+        updatedAt: new Date(),
       };
 
       const event = new UserCreatedEvent(
@@ -188,6 +194,8 @@ describe('UserCreatedEventHandler', () => {
         status: UserStatusEnum.ACTIVE,
         bio: null,
         avatarUrl: null,
+        createdAt: new Date(),
+        updatedAt: new Date(),
       };
 
       const event = new UserCreatedEvent(
@@ -232,6 +240,8 @@ describe('UserCreatedEventHandler', () => {
         status: UserStatusEnum.ACTIVE,
         bio: null,
         avatarUrl: null,
+        createdAt: new Date(),
+        updatedAt: new Date(),
       };
 
       const event = new UserCreatedEvent(

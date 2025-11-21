@@ -1,12 +1,12 @@
-import { UserDeletedEventHandler } from './user-deleted.event-handler';
 import { UserDeletedEvent } from '@/shared/domain/events/users/user-deleted/user-deleted.event';
-import { UserReadRepository } from '@/user-context/users/domain/repositories/user-read.repository';
-import { UserViewModel } from '@/user-context/users/domain/view-models/user.view-model';
 import { UserNotFoundException } from '@/user-context/users/application/exceptions/user-not-found/user-not-found.exception';
+import { IUserCreateViewModelDto } from '@/user-context/users/domain/dtos/view-models/user-create/user-create-view-model.dto';
 import { UserRoleEnum } from '@/user-context/users/domain/enums/user-role/user-role.enum';
 import { UserStatusEnum } from '@/user-context/users/domain/enums/user-status/user-status.enum';
-import { IUserCreateViewModelDto } from '@/user-context/users/domain/dtos/view-models/user-create/user-create-view-model.dto';
 import { UserPrimitives } from '@/user-context/users/domain/primitives/user.primitives';
+import { UserReadRepository } from '@/user-context/users/domain/repositories/user-read.repository';
+import { UserViewModel } from '@/user-context/users/domain/view-models/user.view-model';
+import { UserDeletedEventHandler } from './user-deleted.event-handler';
 
 describe('UserDeletedEventHandler', () => {
   let handler: UserDeletedEventHandler;
@@ -30,6 +30,8 @@ describe('UserDeletedEventHandler', () => {
   describe('handle', () => {
     it('should delete user view model when event is handled', async () => {
       const userId = '123e4567-e89b-12d3-a456-426614174000';
+      const now = new Date();
+
       const userPrimitives: UserPrimitives = {
         id: userId,
         userName: 'johndoe',
@@ -39,6 +41,8 @@ describe('UserDeletedEventHandler', () => {
         status: UserStatusEnum.ACTIVE,
         bio: null,
         avatarUrl: null,
+        createdAt: now,
+        updatedAt: now,
       };
 
       const event = new UserDeletedEvent(
@@ -59,8 +63,8 @@ describe('UserDeletedEventHandler', () => {
         status: UserStatusEnum.ACTIVE,
         bio: null,
         avatarUrl: null,
-        createdAt: new Date(),
-        updatedAt: new Date(),
+        createdAt: now,
+        updatedAt: now,
       };
 
       const existingViewModel = new UserViewModel(existingViewModelDto);
@@ -78,6 +82,8 @@ describe('UserDeletedEventHandler', () => {
 
     it('should throw exception when user view model does not exist', async () => {
       const userId = '123e4567-e89b-12d3-a456-426614174000';
+      const now = new Date();
+
       const userPrimitives: UserPrimitives = {
         id: userId,
         userName: 'johndoe',
@@ -87,6 +93,8 @@ describe('UserDeletedEventHandler', () => {
         status: UserStatusEnum.ACTIVE,
         bio: null,
         avatarUrl: null,
+        createdAt: now,
+        updatedAt: now,
       };
 
       const event = new UserDeletedEvent(
@@ -113,6 +121,8 @@ describe('UserDeletedEventHandler', () => {
 
     it('should use correct aggregate id from event metadata', async () => {
       const userId = '123e4567-e89b-12d3-a456-426614174000';
+      const now = new Date();
+
       const userPrimitives: UserPrimitives = {
         id: userId,
         userName: 'johndoe',
@@ -122,6 +132,8 @@ describe('UserDeletedEventHandler', () => {
         status: UserStatusEnum.ACTIVE,
         bio: null,
         avatarUrl: null,
+        createdAt: now,
+        updatedAt: now,
       };
 
       const event = new UserDeletedEvent(
@@ -142,8 +154,8 @@ describe('UserDeletedEventHandler', () => {
         status: UserStatusEnum.ACTIVE,
         bio: null,
         avatarUrl: null,
-        createdAt: new Date(),
-        updatedAt: new Date(),
+        createdAt: now,
+        updatedAt: now,
       };
 
       const existingViewModel = new UserViewModel(existingViewModelDto);
@@ -160,6 +172,8 @@ describe('UserDeletedEventHandler', () => {
 
     it('should delete view model after finding it', async () => {
       const userId = '123e4567-e89b-12d3-a456-426614174000';
+      const now = new Date();
+
       const userPrimitives: UserPrimitives = {
         id: userId,
         userName: 'johndoe',
@@ -169,6 +183,8 @@ describe('UserDeletedEventHandler', () => {
         status: UserStatusEnum.ACTIVE,
         bio: null,
         avatarUrl: null,
+        createdAt: now,
+        updatedAt: now,
       };
 
       const event = new UserDeletedEvent(
@@ -189,8 +205,8 @@ describe('UserDeletedEventHandler', () => {
         status: UserStatusEnum.ACTIVE,
         bio: null,
         avatarUrl: null,
-        createdAt: new Date(),
-        updatedAt: new Date(),
+        createdAt: now,
+        updatedAt: now,
       };
 
       const existingViewModel = new UserViewModel(existingViewModelDto);
@@ -209,6 +225,8 @@ describe('UserDeletedEventHandler', () => {
 
     it('should delete view model with correct id', async () => {
       const userId = '123e4567-e89b-12d3-a456-426614174000';
+      const now = new Date();
+
       const userPrimitives: UserPrimitives = {
         id: userId,
         userName: 'johndoe',
@@ -218,6 +236,8 @@ describe('UserDeletedEventHandler', () => {
         status: UserStatusEnum.ACTIVE,
         bio: null,
         avatarUrl: null,
+        createdAt: now,
+        updatedAt: now,
       };
 
       const event = new UserDeletedEvent(
@@ -238,8 +258,8 @@ describe('UserDeletedEventHandler', () => {
         status: UserStatusEnum.ACTIVE,
         bio: null,
         avatarUrl: null,
-        createdAt: new Date(),
-        updatedAt: new Date(),
+        createdAt: now,
+        updatedAt: now,
       };
 
       const existingViewModel = new UserViewModel(existingViewModelDto);
@@ -257,6 +277,8 @@ describe('UserDeletedEventHandler', () => {
 
     it('should handle deletion for user with all properties', async () => {
       const userId = '123e4567-e89b-12d3-a456-426614174000';
+      const now = new Date();
+
       const userPrimitives: UserPrimitives = {
         id: userId,
         userName: 'johndoe',
@@ -266,6 +288,8 @@ describe('UserDeletedEventHandler', () => {
         status: UserStatusEnum.INACTIVE,
         bio: 'Software developer',
         avatarUrl: 'https://example.com/avatar.jpg',
+        createdAt: now,
+        updatedAt: now,
       };
 
       const event = new UserDeletedEvent(
@@ -286,8 +310,8 @@ describe('UserDeletedEventHandler', () => {
         status: UserStatusEnum.INACTIVE,
         bio: 'Software developer',
         avatarUrl: 'https://example.com/avatar.jpg',
-        createdAt: new Date(),
-        updatedAt: new Date(),
+        createdAt: now,
+        updatedAt: now,
       };
 
       const existingViewModel = new UserViewModel(existingViewModelDto);

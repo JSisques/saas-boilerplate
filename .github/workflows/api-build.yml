@@ -32,6 +32,8 @@ jobs:
         run: pnpm install --filter=./apps/api...
 
       - name: Generate Prisma client
+        env:
+          DATABASE_URL: postgresql://user:password@localhost:5432/dummy
         run: pnpm --filter=./apps/api... run prisma:generate
 
       - name: Lint code

@@ -5,9 +5,9 @@ import { FindEventsByCriteriaQueryHandler } from '@/event-store-context/event/ap
 import { EventPublishService } from '@/event-store-context/event/application/services/event-publish/event-publish.service';
 import { EventReplayService } from '@/event-store-context/event/application/services/event-replay/event-replay.service';
 import { EventTrackingService } from '@/event-store-context/event/application/services/event-tracking/event-tracking.service';
-import { EventAggregateFactory } from '@/event-store-context/event/domain/factories/event-aggregate.factory';
-import { DomainEventFactory } from '@/event-store-context/event/domain/factories/event-domain.factory';
-import { EventViewModelFactory } from '@/event-store-context/event/domain/factories/event-view-model.factory';
+import { EventAggregateFactory } from '@/event-store-context/event/domain/factories/event-aggregate/event-aggregate.factory';
+import { DomainEventFactory } from '@/event-store-context/event/domain/factories/event-domain/event-domain.factory';
+import { EventViewModelFactory } from '@/event-store-context/event/domain/factories/event-view-model/event-view-model.factory';
 import { EVENT_READ_REPOSITORY_TOKEN } from '@/event-store-context/event/domain/repositories/event-read.repository';
 import { EVENT_WRITE_REPOSITORY_TOKEN } from '@/event-store-context/event/domain/repositories/event-write.repository';
 import { EventMongoMapper } from '@/event-store-context/event/infrastructure/mongodb/mappers/event-mongodb.mapper';

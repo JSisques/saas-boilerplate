@@ -7,10 +7,12 @@ import { IUserUpdateDto } from '@/user-context/users/domain/dtos/entities/user-u
 import { UserPrimitives } from '@/user-context/users/domain/primitives/user.primitives';
 import { UserAvatarUrlValueObject } from '@/user-context/users/domain/value-objects/user-avatar-url/user-avatar-url.vo';
 import { UserBioValueObject } from '@/user-context/users/domain/value-objects/user-bio/user-bio.vo';
+import { UserCreatedAtValueObject } from '@/user-context/users/domain/value-objects/user-created-at/user-created-at.vo';
 import { UserLastNameValueObject } from '@/user-context/users/domain/value-objects/user-last-name/user-last-name.vo';
 import { UserNameValueObject } from '@/user-context/users/domain/value-objects/user-name/user-name.vo';
 import { UserRoleValueObject } from '@/user-context/users/domain/value-objects/user-role/user-role.vo';
 import { UserStatusValueObject } from '@/user-context/users/domain/value-objects/user-status/user-status.vo';
+import { UserUpdatedAtValueObject } from '@/user-context/users/domain/value-objects/user-updated-at/user-updated-at.vo';
 import { UserUserNameValueObject } from '@/user-context/users/domain/value-objects/user-user-name/user-user-name.vo';
 import { AggregateRoot } from '@nestjs/cqrs';
 
@@ -23,6 +25,8 @@ export class UserAggregate extends AggregateRoot {
   private _role: UserRoleValueObject;
   private _status: UserStatusValueObject;
   private _userName: UserUserNameValueObject | null;
+  private _createdAt: UserCreatedAtValueObject;
+  private _updatedAt: UserUpdatedAtValueObject;
 
   constructor(props: IUserCreateDto, generateEvent: boolean = true) {
     super();
@@ -36,6 +40,8 @@ export class UserAggregate extends AggregateRoot {
     this._role = props.role;
     this._status = props.status;
     this._userName = props.userName;
+    this._createdAt = props.createdAt;
+    this._updatedAt = props.updatedAt;
 
     // 02: Apply the creation event
     if (generateEvent) {
@@ -73,6 +79,8 @@ export class UserAggregate extends AggregateRoot {
     this._status = props.status !== undefined ? props.status : this._status;
     this._userName =
       props.userName !== undefined ? props.userName : this._userName;
+
+    this._updatedAt = new UserUpdatedAtValueObject(new Date());
 
     if (generateEvent) {
       this.apply(
@@ -180,6 +188,23 @@ export class UserAggregate extends AggregateRoot {
   }
 
   /**
+   * Get the created at of the user.
+   *
+   * @returns The created at of the user.
+   */
+  public get createdAt(): UserCreatedAtValueObject {
+    return this._createdAt;
+  }
+  /**
+   * Get the updated at of the user.
+   *
+   * @returns The updated at of the user.
+   */
+  public get updatedAt(): UserUpdatedAtValueObject {
+    return this._updatedAt;
+  }
+
+  /**
    * Convert the user aggregate to primitives.
    *
    * @returns The primitives of the user.
@@ -194,6 +219,8 @@ export class UserAggregate extends AggregateRoot {
       role: this._role.value,
       status: this._status.value,
       userName: this._userName ? this._userName.value : null,
+      createdAt: this._createdAt.value,
+      updatedAt: this._updatedAt.value,
     };
   }
 }

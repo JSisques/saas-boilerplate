@@ -1,6 +1,6 @@
-import { UserDeletedEvent } from '@/shared/domain/events/users/user-deleted/user-deleted.event';
-import { IUserEventData } from '@/shared/domain/events/users/interfaces/user-event-data.interface';
 import { BaseEvent } from '@/shared/domain/events/base-event.interface';
+import { IUserEventData } from '@/shared/domain/events/users/interfaces/user-event-data.interface';
+import { UserDeletedEvent } from '@/shared/domain/events/users/user-deleted/user-deleted.event';
 import { IEventMetadata } from '@/shared/domain/interfaces/event-metadata.interface';
 
 describe('UserDeletedEvent', () => {
@@ -20,6 +20,8 @@ describe('UserDeletedEvent', () => {
     role: 'user',
     status: 'deleted',
     userName: 'johndoe',
+    createdAt: new Date(),
+    updatedAt: new Date(),
   });
 
   it('should be an instance of BaseEvent', () => {

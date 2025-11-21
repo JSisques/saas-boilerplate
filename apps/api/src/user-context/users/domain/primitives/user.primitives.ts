@@ -7,4 +7,6 @@ export type UserPrimitives = {
   role: string;
   status: string;
   userName: string;
+  createdAt: Date;
+  updatedAt: Date;
 };
