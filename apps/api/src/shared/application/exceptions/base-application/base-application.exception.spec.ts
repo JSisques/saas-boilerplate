@@ -35,7 +35,9 @@ describe('BaseApplicationException', () => {
       expect(exception.timestamp.getTime()).toBeGreaterThanOrEqual(
         before.getTime(),
       );
-      expect(exception.timestamp.getTime()).toBeLessThanOrEqual(after.getTime());
+      expect(exception.timestamp.getTime()).toBeLessThanOrEqual(
+        after.getTime(),
+      );
     });
   });
 
@@ -108,4 +110,3 @@ describe('BaseApplicationException', () => {
     });
   });
 });
-
