@@ -1,14 +1,14 @@
+import { PrismaClientExtended } from '@/shared/infrastructure/database/prisma/clients/custom-prisma-client/custom-prisma-client';
 import {
   Injectable,
   Logger,
   OnModuleDestroy,
   OnModuleInit,
 } from '@nestjs/common';
-import { PrismaClient } from '@prisma/client';
 
 @Injectable()
 export class PrismaService
-  extends PrismaClient
+  extends PrismaClientExtended
   implements OnModuleInit, OnModuleDestroy
 {
   private readonly logger = new Logger(PrismaService.name);
