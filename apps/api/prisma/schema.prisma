@@ -37,6 +37,7 @@ model User {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  deletedAt DateTime?
 
   auth    Auth[]
   tenants TenantMember[]
@@ -59,6 +60,7 @@ model TenantMember {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  deletedAt DateTime?
 
   user   User   @relation(fields: [userId], references: [id])
   tenant Tenant @relation(fields: [tenantId], references: [id])
@@ -102,6 +104,7 @@ model Tenant {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  deletedAt DateTime?
 
   // Relationships
   members TenantMember[]
@@ -118,6 +121,7 @@ model Event {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  deletedAt DateTime?
 }
 
 enum AuthProviderEnum {
@@ -139,6 +143,7 @@ model Auth {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  deletedAt DateTime?
 
   userId String
   user   User   @relation(fields: [userId], references: [id])
@@ -180,6 +185,7 @@ model SubscriptionPlan{
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  deletedAt DateTime?
 }
 
 enum RenewalMethodEnum {
@@ -208,7 +214,8 @@ model Subscription{
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-
+  deletedAt DateTime?
+  
   tenant Tenant @relation(fields: [tenantId], references: [id])
 }
 
@@ -239,6 +246,7 @@ model SubscriptionPayment{
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  deletedAt DateTime?
 }
 
 // ============================================
@@ -264,6 +272,7 @@ model Prompt {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  deletedAt DateTime?
 
   // Relationships
   tags      PromptTagRelation[]
@@ -283,6 +292,7 @@ model PromptTag {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  deletedAt DateTime?
 
   prompts PromptTagRelation[]
 
@@ -314,6 +324,7 @@ model PromptVariable {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  deletedAt DateTime?
 
   prompt Prompt @relation(fields: [promptId], references: [id], onDelete: Cascade)
 
