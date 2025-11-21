@@ -1,5 +1,5 @@
 import { EventAggregate } from '@/event-store-context/event/domain/aggregates/event.aggregate';
-import { EventAggregateFactory } from '@/event-store-context/event/domain/factories/event-aggregate.factory';
+import { EventAggregateFactory } from '@/event-store-context/event/domain/factories/event-aggregate/event-aggregate.factory';
 import { EventPrismaDto } from '@/event-store-context/event/infrastructure/prisma/dtos/event-prisma.dto';
 import { Injectable, Logger } from '@nestjs/common';
 

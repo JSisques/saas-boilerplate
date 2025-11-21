@@ -1,4 +1,4 @@
-import { DomainEventFactory } from '@/event-store-context/event/domain/factories/event-domain.factory';
+import { DomainEventFactory } from '@/event-store-context/event/domain/factories/event-domain/event-domain.factory';
 import { EventCreatedEvent } from '@/shared/domain/events/event-store/event-created/event-created.event';
 
 describe('DomainEventFactory', () => {

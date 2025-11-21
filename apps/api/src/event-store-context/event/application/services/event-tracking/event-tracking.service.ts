@@ -1,4 +1,4 @@
-import { EventAggregateFactory } from '@/event-store-context/event/domain/factories/event-aggregate.factory';
+import { EventAggregateFactory } from '@/event-store-context/event/domain/factories/event-aggregate/event-aggregate.factory';
 import {
   EVENT_WRITE_REPOSITORY_TOKEN,
   EventWriteRepository,
@@ -36,6 +36,8 @@ export class EventTrackingService
    * 4. Mark the event events as committed.
    */
   async execute(event: BaseEvent<any>): Promise<void> {
+    this.logger.log(`Tracking event: ${event.eventType}`);
+
     if (event.isReplay) {
       this.logger.debug(
         `Skipping tracking for replayed event: ${event.eventType} (${event.aggregateId})`,

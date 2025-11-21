@@ -1,11 +1,11 @@
 import { EventAggregate } from '@/event-store-context/event/domain/aggregates/event.aggregate';
-import { EventViewModelFactory } from '@/event-store-context/event/domain/factories/event-view-model.factory';
-import { EventViewModel } from '@/event-store-context/event/domain/view-models/event-store.view-model';
+import { EventViewModelFactory } from '@/event-store-context/event/domain/factories/event-view-model/event-view-model.factory';
 import { EventAggregateIdValueObject } from '@/event-store-context/event/domain/value-objects/event-aggregate-id/event-aggregate-id.vo';
 import { EventAggregateTypeValueObject } from '@/event-store-context/event/domain/value-objects/event-aggregate-type/event-aggregate-type.vo';
 import { EventPayloadValueObject } from '@/event-store-context/event/domain/value-objects/event-payload/event-payload.vo';
 import { EventTimestampValueObject } from '@/event-store-context/event/domain/value-objects/event-timestamp/event-timestamp.vo';
 import { EventTypeValueObject } from '@/event-store-context/event/domain/value-objects/event-type/event-type.vo';
+import { EventViewModel } from '@/event-store-context/event/domain/view-models/event-store.view-model';
 import { EventUuidValueObject } from '@/shared/domain/value-objects/identifiers/event-uuid/event-uuid.vo';
 
 describe('EventViewModelFactory', () => {

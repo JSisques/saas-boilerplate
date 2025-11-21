@@ -28,6 +28,8 @@ export class UserCreatedEventHandler
   async handle(event: UserCreatedEvent) {
     this.logger.log(`Handling user created event: ${event.aggregateId}`);
 
+    this.logger.debug(`User created event data: ${JSON.stringify(event.data)}`);
+
     // 01: Create the user view model
     const userCreatedViewModel: UserViewModel =
       this.userViewModelFactory.fromPrimitives(event.data);

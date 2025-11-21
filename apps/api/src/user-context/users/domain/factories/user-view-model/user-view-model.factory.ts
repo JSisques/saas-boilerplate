@@ -43,8 +43,6 @@ export class UserViewModelFactory
       `Creating user view model from primitives: ${userPrimitives}`,
     );
 
-    const now = new Date();
-
     return new UserViewModel({
       id: userPrimitives.id,
       userName: userPrimitives.userName,
@@ -54,8 +52,8 @@ export class UserViewModelFactory
       status: userPrimitives.status,
       bio: userPrimitives.bio,
       avatarUrl: userPrimitives.avatarUrl,
-      createdAt: now,
-      updatedAt: now,
+      createdAt: userPrimitives.createdAt,
+      updatedAt: userPrimitives.updatedAt,
     });
   }
   /**
@@ -69,8 +67,6 @@ export class UserViewModelFactory
       `Creating user view model from aggregate: ${userAggregate}`,
     );
 
-    const now = new Date();
-
     return new UserViewModel({
       id: userAggregate.id.value,
       userName: userAggregate.userName?.value,
@@ -80,8 +76,8 @@ export class UserViewModelFactory
       status: userAggregate.status?.value || null,
       bio: userAggregate.bio?.value || null,
       avatarUrl: userAggregate.avatarUrl?.value || null,
-      createdAt: now,
-      updatedAt: now,
+      createdAt: userAggregate.createdAt.value,
+      updatedAt: userAggregate.updatedAt.value,
     });
   }
 }
