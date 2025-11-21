@@ -1,3 +1,5 @@
+import { EventFailedToRegisterDomainEventsException } from '@/event-store-context/event/domain/exceptions/event-failed-to-register-domain-events/event-failed-to-register-domain-events.exception';
+import { EventUnsupportedEventTypeException } from '@/event-store-context/event/domain/exceptions/event-unsupported-event-type/event-unsupported-event-type.exception';
 import { BaseEvent } from '@/shared/domain/events/base-event.interface';
 import { IEventMetadata } from '@/shared/domain/interfaces/event-metadata.interface';
 import { Injectable, Logger } from '@nestjs/common';
@@ -19,15 +21,23 @@ export class DomainEventFactory {
     this.registerDomainEvents();
   }
 
-  create(
+  /**
+   * Creates a new domain event.
+   *
+   * @param eventType - The type of the event.
+   * @param metadata - The metadata of the event.
+   * @param data - The data of the event.
+   * @returns The domain event.
+   */
+  public create(
     eventType: string,
     metadata: IEventMetadata,
     data: unknown,
   ): BaseEvent<unknown> {
     const EventCtor = this.registry.get(eventType);
     if (!EventCtor) {
-      // TODO: Handle this error gracefully by returning a custom error in domain/exceptions
-      throw new Error(`Unsupported eventType for replay: ${eventType}`);
+      this.logger.error(`Unsupported eventType for replay: ${eventType}`);
+      throw new EventUnsupportedEventTypeException(eventType);
     }
     return new EventCtor(metadata, data);
   }
@@ -43,7 +53,10 @@ export class DomainEventFactory {
    * @returns {void}
    */
   private registerDomainEvents(): void {
+    this.logger.log('Registering domain events');
+
     const eventsDirectory = this.resolveEventsDirectory();
+
     if (!existsSync(eventsDirectory)) {
       this.logger.warn(
         `Events directory not found, skipping domain events auto-registration: ${eventsDirectory}`,
@@ -67,6 +80,10 @@ export class DomainEventFactory {
         this.logger.error(
           `Failed to register domain events from file: ${file}`,
           stack,
+        );
+        throw new EventFailedToRegisterDomainEventsException(
+          file,
+          error as Error,
         );
       }
     });

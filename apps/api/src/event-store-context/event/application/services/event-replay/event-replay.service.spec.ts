@@ -2,7 +2,7 @@ import { EventReplayCommand } from '@/event-store-context/event/application/comm
 import { EventPublishService } from '@/event-store-context/event/application/services/event-publish/event-publish.service';
 import { EventReplayService } from '@/event-store-context/event/application/services/event-replay/event-replay.service';
 import { EventAggregate } from '@/event-store-context/event/domain/aggregates/event.aggregate';
-import { EventViewModelFactory } from '@/event-store-context/event/domain/factories/event-view-model.factory';
+import { EventViewModelFactory } from '@/event-store-context/event/domain/factories/event-view-model/event-view-model.factory';
 import { EventReadRepository } from '@/event-store-context/event/domain/repositories/event-read.repository';
 import { EventWriteRepository } from '@/event-store-context/event/domain/repositories/event-write.repository';
 import { EventAggregateIdValueObject } from '@/event-store-context/event/domain/value-objects/event-aggregate-id/event-aggregate-id.vo';

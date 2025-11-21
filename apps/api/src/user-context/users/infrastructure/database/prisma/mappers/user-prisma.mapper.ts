@@ -30,6 +30,8 @@ export class UserPrismaMapper {
       avatarUrl: userData.avatarUrl ?? null,
       role: userData.role,
       status: userData.status,
+      createdAt: userData.createdAt,
+      updatedAt: userData.updatedAt,
     });
   }
 
@@ -56,6 +58,8 @@ export class UserPrismaMapper {
       role: primitives.role as UserRoleEnum,
       status: primitives.status as StatusEnum,
       userName: primitives.userName,
+      createdAt: primitives.createdAt,
+      updatedAt: primitives.updatedAt,
     };
   }
 }

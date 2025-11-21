@@ -1,5 +1,5 @@
 import { EventTrackingService } from '@/event-store-context/event/application/services/event-tracking/event-tracking.service';
-import { EventAggregateFactory } from '@/event-store-context/event/domain/factories/event-aggregate.factory';
+import { EventAggregateFactory } from '@/event-store-context/event/domain/factories/event-aggregate/event-aggregate.factory';
 import { EventWriteRepository } from '@/event-store-context/event/domain/repositories/event-write.repository';
 import { BaseEvent } from '@/shared/domain/events/base-event.interface';
 import { EventBus } from '@nestjs/cqrs';

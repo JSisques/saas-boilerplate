@@ -9,4 +9,6 @@ export type UserPrismaDto = {
   role: UserRoleEnum;
   status: StatusEnum;
   userName: string;
+  createdAt: Date;
+  updatedAt: Date;
 };

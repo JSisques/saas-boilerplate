@@ -1,7 +1,7 @@
 import { EventReplayCommand } from '@/event-store-context/event/application/commands/event-replay/event-replay.command';
 import { EventPublishService } from '@/event-store-context/event/application/services/event-publish/event-publish.service';
 import { EventAggregate } from '@/event-store-context/event/domain/aggregates/event.aggregate';
-import { EventViewModelFactory } from '@/event-store-context/event/domain/factories/event-view-model.factory';
+import { EventViewModelFactory } from '@/event-store-context/event/domain/factories/event-view-model/event-view-model.factory';
 import {
   EVENT_READ_REPOSITORY_TOKEN,
   EventReadRepository,
