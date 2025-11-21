@@ -1,6 +1,6 @@
-import { UserCreatedEvent } from '@/shared/domain/events/users/user-created/user-created.event';
-import { IUserEventData } from '@/shared/domain/events/users/interfaces/user-event-data.interface';
 import { BaseEvent } from '@/shared/domain/events/base-event.interface';
+import { IUserEventData } from '@/shared/domain/events/users/interfaces/user-event-data.interface';
+import { UserCreatedEvent } from '@/shared/domain/events/users/user-created/user-created.event';
 import { IEventMetadata } from '@/shared/domain/interfaces/event-metadata.interface';
 
 describe('UserCreatedEvent', () => {
@@ -20,6 +20,8 @@ describe('UserCreatedEvent', () => {
     role: 'user',
     status: 'active',
     userName: 'johndoe',
+    createdAt: new Date(),
+    updatedAt: new Date(),
   });
 
   it('should be an instance of BaseEvent', () => {
