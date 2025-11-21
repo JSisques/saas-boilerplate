@@ -4,7 +4,7 @@ export const filterSoftDeletedExtension = Prisma.defineExtension({
   name: 'filterSoftDeleted',
   query: {
     $allModels: {
-      async $allOperations({ model, operation, args, query }) {
+      async $allOperations({ operation, args, query }) {
         if (
           operation === 'findUnique' ||
           operation === 'findFirst' ||
