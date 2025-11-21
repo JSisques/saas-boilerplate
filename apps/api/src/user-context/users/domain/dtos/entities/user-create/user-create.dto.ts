@@ -33,6 +33,6 @@ export interface IUserCreateDto {
   role?: UserRoleValueObject;
   status?: UserStatusValueObject;
   userName?: UserUserNameValueObject | null;
-  createdAt?: UserCreatedAtValueObject;
-  updatedAt?: UserUpdatedAtValueObject;
+  createdAt: UserCreatedAtValueObject;
+  updatedAt: UserUpdatedAtValueObject;
 }

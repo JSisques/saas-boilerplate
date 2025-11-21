@@ -7,10 +7,12 @@ import { UserStatusEnum } from '@/user-context/users/domain/enums/user-status/us
 import { UserWriteRepository } from '@/user-context/users/domain/repositories/user-write.repository';
 import { UserAvatarUrlValueObject } from '@/user-context/users/domain/value-objects/user-avatar-url/user-avatar-url.vo';
 import { UserBioValueObject } from '@/user-context/users/domain/value-objects/user-bio/user-bio.vo';
+import { UserCreatedAtValueObject } from '@/user-context/users/domain/value-objects/user-created-at/user-created-at.vo';
 import { UserLastNameValueObject } from '@/user-context/users/domain/value-objects/user-last-name/user-last-name.vo';
 import { UserNameValueObject } from '@/user-context/users/domain/value-objects/user-name/user-name.vo';
 import { UserRoleValueObject } from '@/user-context/users/domain/value-objects/user-role/user-role.vo';
 import { UserStatusValueObject } from '@/user-context/users/domain/value-objects/user-status/user-status.vo';
+import { UserUpdatedAtValueObject } from '@/user-context/users/domain/value-objects/user-updated-at/user-updated-at.vo';
 import { UserUserNameValueObject } from '@/user-context/users/domain/value-objects/user-user-name/user-user-name.vo';
 
 describe('AssertUserExsistsService', () => {
@@ -41,6 +43,8 @@ describe('AssertUserExsistsService', () => {
           userName: new UserUserNameValueObject('johndoe'),
           role: new UserRoleValueObject(UserRoleEnum.USER),
           status: new UserStatusValueObject(UserStatusEnum.ACTIVE),
+          createdAt: new UserCreatedAtValueObject(new Date()),
+          updatedAt: new UserUpdatedAtValueObject(new Date()),
         },
         false,
       );
@@ -78,6 +82,8 @@ describe('AssertUserExsistsService', () => {
           userName: new UserUserNameValueObject('johndoe'),
           role: new UserRoleValueObject(UserRoleEnum.USER),
           status: new UserStatusValueObject(UserStatusEnum.ACTIVE),
+          createdAt: new UserCreatedAtValueObject(new Date()),
+          updatedAt: new UserUpdatedAtValueObject(new Date()),
         },
         false,
       );
@@ -104,6 +110,8 @@ describe('AssertUserExsistsService', () => {
           ),
           role: new UserRoleValueObject(UserRoleEnum.ADMIN),
           status: new UserStatusValueObject(UserStatusEnum.INACTIVE),
+          createdAt: new UserCreatedAtValueObject(new Date()),
+          updatedAt: new UserUpdatedAtValueObject(new Date()),
         },
         false,
       );
@@ -131,6 +139,8 @@ describe('AssertUserExsistsService', () => {
           userName: new UserUserNameValueObject('johndoe'),
           role: new UserRoleValueObject(UserRoleEnum.USER),
           status: new UserStatusValueObject(UserStatusEnum.ACTIVE),
+          createdAt: new UserCreatedAtValueObject(new Date()),
+          updatedAt: new UserUpdatedAtValueObject(new Date()),
         },
         false,
       );
@@ -178,6 +188,8 @@ describe('AssertUserExsistsService', () => {
             userName: new UserUserNameValueObject('johndoe'),
             role: new UserRoleValueObject(testCase.role),
             status: new UserStatusValueObject(testCase.status),
+            createdAt: new UserCreatedAtValueObject(new Date()),
+            updatedAt: new UserUpdatedAtValueObject(new Date()),
           },
           false,
         );
