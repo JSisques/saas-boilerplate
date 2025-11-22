@@ -100,6 +100,10 @@ export class AuthViewModel {
         : this._lastLoginAt;
     this._password =
       updateData.password !== undefined ? updateData.password : this._password;
+    this._phoneNumber =
+      updateData.phoneNumber !== undefined
+        ? updateData.phoneNumber
+        : this._phoneNumber;
     this._provider =
       updateData.provider !== undefined ? updateData.provider : this._provider;
     this._providerId =
