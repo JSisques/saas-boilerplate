@@ -1,4 +1,4 @@
-import { AuthViewModelFactory } from '@/auth-context/auth/domain/factories/auth-view-model.factory';
+import { AuthViewModelFactory } from '@/auth-context/auth/domain/factories/auth-view-model/auth-view-model.factory';
 import {
   AUTH_READ_REPOSITORY_TOKEN,
   AuthReadRepository,

@@ -9,4 +9,6 @@ export interface IAuthEventData {
   provider: string;
   providerId: string | null;
   twoFactorEnabled: boolean;
+  createdAt: Date;
+  updatedAt: Date;
 }

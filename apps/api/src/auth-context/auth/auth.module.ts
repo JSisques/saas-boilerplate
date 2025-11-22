@@ -10,8 +10,8 @@ import { AssertAuthEmailNotExistsService } from '@/auth-context/auth/application
 import { AssertAuthExistsService } from '@/auth-context/auth/application/services/assert-auth-exsists/assert-auth-exsists.service';
 import { AssertAuthViewModelExsistsService } from '@/auth-context/auth/application/services/assert-auth-view-model-exsists/assert-auth-view-model-exsists.service';
 import { JwtAuthService } from '@/auth-context/auth/application/services/jwt-auth/jwt-auth.service';
-import { AuthAggregateFactory } from '@/auth-context/auth/domain/factories/auth-aggregate.factory';
-import { AuthViewModelFactory } from '@/auth-context/auth/domain/factories/auth-view-model.factory';
+import { AuthAggregateFactory } from '@/auth-context/auth/domain/factories/auth-aggregate/auth-aggregate.factory';
+import { AuthViewModelFactory } from '@/auth-context/auth/domain/factories/auth-view-model/auth-view-model.factory';
 import { AUTH_READ_REPOSITORY_TOKEN } from '@/auth-context/auth/domain/repositories/auth-read.repository';
 import { AUTH_WRITE_REPOSITORY_TOKEN } from '@/auth-context/auth/domain/repositories/auth-write.repository';
 import { JwtAuthGuard } from '@/auth-context/auth/infrastructure/auth/jwt-auth.guard';
