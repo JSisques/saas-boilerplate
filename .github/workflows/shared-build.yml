@@ -1,10 +1,6 @@
 name: Shared Build
 
 on:
-  push:
-    paths:
-      - "packages/shared/**"
-    branches: [main, dev]
   pull_request:
     paths:
       - "packages/shared/**"
