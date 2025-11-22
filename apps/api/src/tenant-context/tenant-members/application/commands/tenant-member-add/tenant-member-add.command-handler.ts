@@ -1,9 +1,11 @@
 import { AssertTenantMemberNotExsistsService } from '@/tenant-context/tenant-members/application/services/assert-tenant-member-not-exsits/assert-tenant-member-not-exsits.service';
-import { TenantMemberAggregateFactory } from '@/tenant-context/tenant-members/domain/factories/tenant-member-aggregate.factory';
+import { TenantMemberAggregateFactory } from '@/tenant-context/tenant-members/domain/factories/tenant-member-aggregate/tenant-member-aggregate.factory';
 import {
   TENANT_MEMBER_WRITE_REPOSITORY_TOKEN,
   TenantMemberWriteRepository,
 } from '@/tenant-context/tenant-members/domain/repositories/tenant-member-write.repository';
+import { TenantMemberCreatedAtValueObject } from '@/tenant-context/tenant-members/domain/value-objects/tenant-member-created-at/tenant-member-created-at.vo';
+import { TenantMemberUpdatedAtValueObject } from '@/tenant-context/tenant-members/domain/value-objects/tenant-member-updated-at/tenant-member-updated-at.vo';
 import { FindTenantByIdQuery } from '@/tenant-context/tenants/application/queries/find-tenant-by-id/find-tenant-by-id.query';
 import { UserFindByIdQuery } from '@/user-context/users/application/queries/user-find-by-id/user-find-by-id.query';
 import { Inject, Logger } from '@nestjs/common';
@@ -60,6 +62,8 @@ export class TenantMemberAddCommandHandler
     // 04: Create the tenant member entity
     const tenantMember = this.tenantMemberAggregateFactory.create({
       ...command,
+      createdAt: new TenantMemberCreatedAtValueObject(new Date()),
+      updatedAt: new TenantMemberUpdatedAtValueObject(new Date()),
     });
 
     // 05: Save the tenant member entity

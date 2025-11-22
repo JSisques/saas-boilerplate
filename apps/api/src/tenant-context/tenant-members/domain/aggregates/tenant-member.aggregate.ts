@@ -7,7 +7,9 @@ import { UserUuidValueObject } from '@/shared/domain/value-objects/identifiers/u
 import { ITenantMemberCreateDto } from '@/tenant-context/tenant-members/domain/dtos/entities/tenant-member-create/tenant-member-create.dto';
 import { ITenantMemberUpdateDto } from '@/tenant-context/tenant-members/domain/dtos/entities/tenant-member-update/tenant-member-update.dto';
 import { TenantMemberPrimitives } from '@/tenant-context/tenant-members/domain/primitives/tenant-member.primitives';
+import { TenantMemberCreatedAtValueObject } from '@/tenant-context/tenant-members/domain/value-objects/tenant-member-created-at/tenant-member-created-at.vo';
 import { TenantMemberRoleValueObject } from '@/tenant-context/tenant-members/domain/value-objects/tenant-member-role/tenant-member-role.vo';
+import { TenantMemberUpdatedAtValueObject } from '@/tenant-context/tenant-members/domain/value-objects/tenant-member-updated-at/tenant-member-updated-at.vo';
 import { AggregateRoot } from '@nestjs/cqrs';
 
 export class TenantMemberAggregate extends AggregateRoot {
@@ -15,6 +17,8 @@ export class TenantMemberAggregate extends AggregateRoot {
   private _tenantId: TenantUuidValueObject;
   private _userId: UserUuidValueObject;
   private _role: TenantMemberRoleValueObject;
+  private _createdAt: TenantMemberCreatedAtValueObject;
+  private _updatedAt: TenantMemberUpdatedAtValueObject;
 
   constructor(props: ITenantMemberCreateDto, generateEvent: boolean = true) {
     super();
@@ -24,6 +28,8 @@ export class TenantMemberAggregate extends AggregateRoot {
     this._tenantId = props.tenantId;
     this._userId = props.userId;
     this._role = props.role;
+    this._createdAt = props.createdAt;
+    this._updatedAt = props.updatedAt;
 
     // 02: Apply the creation event
     if (generateEvent) {
@@ -49,6 +55,8 @@ export class TenantMemberAggregate extends AggregateRoot {
   public update(props: ITenantMemberUpdateDto, generateEvent: boolean = true) {
     // 01: Update the properties
     this._role = props.role !== undefined ? props.role : this._role;
+
+    this._updatedAt = new TenantMemberUpdatedAtValueObject(new Date());
 
     if (generateEvent) {
       this.apply(
@@ -121,6 +129,23 @@ export class TenantMemberAggregate extends AggregateRoot {
   }
 
   /**
+   * Get the created at of the tenant member.
+   *
+   * @returns The created at of the tenant member.
+   */
+  public get createdAt(): TenantMemberCreatedAtValueObject {
+    return this._createdAt;
+  }
+  /**
+   * Get the updated at of the tenant member.
+   *
+   * @returns The updated at of the tenant member.
+   */
+  public get updatedAt(): TenantMemberUpdatedAtValueObject {
+    return this._updatedAt;
+  }
+
+  /**
    * Convert the tenant aggregate to primitives.
    *
    * @returns The primitives of the tenant member.
@@ -131,6 +156,8 @@ export class TenantMemberAggregate extends AggregateRoot {
       tenantId: this._tenantId.value,
       userId: this._userId.value,
       role: this._role.value,
+      createdAt: this._createdAt.value,
+      updatedAt: this._updatedAt.value,
     };
   }
 }

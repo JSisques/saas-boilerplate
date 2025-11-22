@@ -1,5 +1,5 @@
 import { TenantMemberAggregate } from '@/tenant-context/tenant-members/domain/aggregates/tenant-member.aggregate';
-import { TenantMemberAggregateFactory } from '@/tenant-context/tenant-members/domain/factories/tenant-member-aggregate.factory';
+import { TenantMemberAggregateFactory } from '@/tenant-context/tenant-members/domain/factories/tenant-member-aggregate/tenant-member-aggregate.factory';
 import { TenantMemberPrismaDto } from '@/tenant-context/tenant-members/infrastructure/database/prisma/dtos/tenant-member-prisma.dto';
 import { Injectable, Logger } from '@nestjs/common';
 import { TenantMemberRoleEnum } from '@prisma/client';
@@ -30,6 +30,8 @@ export class TenantMemberPrismaMapper {
       tenantId: tenantMemberData.tenantId,
       userId: tenantMemberData.userId,
       role: tenantMemberData.role,
+      createdAt: new Date(tenantMemberData.createdAt),
+      updatedAt: new Date(tenantMemberData.updatedAt),
     });
   }
 
@@ -54,6 +56,8 @@ export class TenantMemberPrismaMapper {
       tenantId: primitives.tenantId,
       userId: primitives.userId,
       role: primitives.role as TenantMemberRoleEnum,
+      createdAt: primitives.createdAt,
+      updatedAt: primitives.updatedAt,
     };
   }
 }
