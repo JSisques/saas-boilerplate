@@ -45,8 +45,6 @@ export class SubscriptionViewModelFactory
       `Creating subscription view model from primitives: ${subscriptionPrimitives}`,
     );
 
-    const now = new Date();
-
     return new SubscriptionViewModel({
       id: subscriptionPrimitives.id,
       tenantId: subscriptionPrimitives.tenantId,
@@ -58,8 +56,8 @@ export class SubscriptionViewModelFactory
       stripeSubscriptionId: subscriptionPrimitives.stripeSubscriptionId,
       stripeCustomerId: subscriptionPrimitives.stripeCustomerId,
       renewalMethod: subscriptionPrimitives.renewalMethod,
-      createdAt: now,
-      updatedAt: now,
+      createdAt: subscriptionPrimitives.createdAt,
+      updatedAt: subscriptionPrimitives.updatedAt,
     });
   }
   /**
@@ -75,8 +73,6 @@ export class SubscriptionViewModelFactory
       `Creating subscription view model from aggregate: ${subscriptionAggregate}`,
     );
 
-    const now = new Date();
-
     return new SubscriptionViewModel({
       id: subscriptionAggregate.id.value,
       tenantId: subscriptionAggregate.tenantId.value,
@@ -89,8 +85,8 @@ export class SubscriptionViewModelFactory
         subscriptionAggregate.stripeSubscriptionId?.value ?? null,
       stripeCustomerId: subscriptionAggregate.stripeCustomerId?.value ?? null,
       renewalMethod: subscriptionAggregate.renewalMethod.value,
-      createdAt: now,
-      updatedAt: now,
+      createdAt: subscriptionAggregate.createdAt.value,
+      updatedAt: subscriptionAggregate.updatedAt.value,
     });
   }
 }

@@ -9,6 +9,7 @@ import { SubscriptionStripeCustomerIdValueObject } from '@/billing-context/subsc
 import { SubscriptionStripeSubscriptionIdValueObject } from '@/billing-context/subscription/domain/value-objects/subscription-stripe-id/subscription-stripe-id.vo';
 import { SubscriptionTrialEndDateValueObject } from '@/billing-context/subscription/domain/value-objects/subscription-trial-end-date/subscription-trial-end-date.vo';
 import { IWriteFactory } from '@/shared/domain/interfaces/write-factory.interface';
+import { DateValueObject } from '@/shared/domain/value-objects/date/date.vo';
 import { SubscriptionPlanUuidValueObject } from '@/shared/domain/value-objects/identifiers/subscription-plan/subscription-plan-uuid.vo';
 import { SubscriptionUuidValueObject } from '@/shared/domain/value-objects/identifiers/subscription/subscription-uuid.vo';
 import { TenantUuidValueObject } from '@/shared/domain/value-objects/identifiers/tenant-uuid/tenant-uuid.vo';
@@ -38,6 +39,8 @@ export class SubscriptionAggregateFactory
    * @param data.stripeSubscriptionId - The subscription stripe subscription id.
    * @param data.stripeCustomerId - The subscription stripe customer id.
    * @param data.renewalMethod - The subscription renewal method.
+   * @param data.createdAt - The subscription created at.
+   * @param data.updatedAt - The subscription updated at.
    * @param generateEvent - Whether to generate a creation event (default: true).
    * @returns {SubscriptionAggregate} - The created subscription aggregate entity.
    */
@@ -62,6 +65,8 @@ export class SubscriptionAggregateFactory
    * @param data.stripeSubscriptionId - The subscription stripe subscription id.
    * @param data.stripeCustomerId - The subscription stripe customer id.
    * @param data.renewalMethod - The subscription renewal method.
+   * @param data.createdAt - The subscription created at.
+   * @param data.updatedAt - The subscription updated at.
    * @returns The created subscription aggregate entity.
    */
   public fromPrimitives(data: SubscriptionPrimitives): SubscriptionAggregate {
@@ -86,6 +91,8 @@ export class SubscriptionAggregateFactory
       renewalMethod: new SubscriptionRenewalMethodValueObject(
         data.renewalMethod,
       ),
+      createdAt: new DateValueObject(data.createdAt),
+      updatedAt: new DateValueObject(data.updatedAt),
     });
   }
 }

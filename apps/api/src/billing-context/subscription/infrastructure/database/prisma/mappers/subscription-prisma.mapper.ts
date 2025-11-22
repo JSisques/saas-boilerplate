@@ -36,6 +36,8 @@ export class SubscriptionPrismaMapper {
       stripeSubscriptionId: subscriptionData.stripeSubscriptionId,
       stripeCustomerId: subscriptionData.stripeCustomerId,
       renewalMethod: subscriptionData.renewalMethod,
+      createdAt: subscriptionData.createdAt,
+      updatedAt: subscriptionData.updatedAt,
     });
   }
 
@@ -66,6 +68,8 @@ export class SubscriptionPrismaMapper {
       stripeSubscriptionId: primitives.stripeSubscriptionId,
       stripeCustomerId: primitives.stripeCustomerId,
       renewalMethod: primitives.renewalMethod as RenewalMethodEnum,
+      createdAt: primitives.createdAt,
+      updatedAt: primitives.updatedAt,
     };
   }
 }

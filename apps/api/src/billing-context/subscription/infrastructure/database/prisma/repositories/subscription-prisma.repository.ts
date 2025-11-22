@@ -44,6 +44,8 @@ export class SubscriptionPrismaRepository
       stripeSubscriptionId: subscriptionData.stripeSubscriptionId,
       stripeCustomerId: subscriptionData.stripeCustomerId,
       renewalMethod: subscriptionData.renewalMethod,
+      createdAt: subscriptionData.createdAt,
+      updatedAt: subscriptionData.updatedAt,
     });
   }
 
@@ -75,6 +77,8 @@ export class SubscriptionPrismaRepository
       stripeSubscriptionId: subscriptionData.stripeSubscriptionId,
       stripeCustomerId: subscriptionData.stripeCustomerId,
       renewalMethod: subscriptionData.renewalMethod,
+      createdAt: subscriptionData.createdAt,
+      updatedAt: subscriptionData.updatedAt,
     });
   }
 
@@ -107,6 +111,8 @@ export class SubscriptionPrismaRepository
       stripeSubscriptionId: result.stripeSubscriptionId,
       stripeCustomerId: result.stripeCustomerId,
       renewalMethod: result.renewalMethod,
+      createdAt: result.createdAt,
+      updatedAt: result.updatedAt,
     });
   }
 

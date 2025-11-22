@@ -4,6 +4,7 @@ import {
   SUBSCRIPTION_WRITE_REPOSITORY_TOKEN,
   SubscriptionWriteRepository,
 } from '@/billing-context/subscription/domain/repositories/subscription-write/subscription-write.repository';
+import { DateValueObject } from '@/shared/domain/value-objects/date/date.vo';
 import { Inject } from '@nestjs/common';
 import { CommandHandler, EventBus, ICommandHandler } from '@nestjs/cqrs';
 import { SubscriptionCreateCommand } from './subscription-create.command';
@@ -35,6 +36,8 @@ export class SubscriptionCreateCommandHandler
     // 02: Create the subscription entity
     const subscription = this.subscriptionAggregateFactory.create({
       ...command,
+      createdAt: new DateValueObject(new Date()),
+      updatedAt: new DateValueObject(new Date()),
     });
 
     // 03: Save the subscription entity
