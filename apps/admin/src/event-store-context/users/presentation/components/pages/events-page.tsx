@@ -1,8 +1,10 @@
 'use client';
 
 import { EventFiltersEnum } from '@/event-store-context/users/domain/enums/event-filters/event-filters.enum';
+import { EventReplayModal } from '@/event-store-context/users/presentation/components/organisms/event-replay-modal/event-replay-modal';
 import { EventsTable } from '@/event-store-context/users/presentation/components/organisms/events-table/events-table';
 import { useEventFilterFields } from '@/event-store-context/users/presentation/hooks/use-event-filter-fields';
+import { useEventPageStore } from '@/event-store-context/users/presentation/stores/event-page-store';
 import { useDefaultTenantName } from '@/shared/presentation/hooks/use-default-tenant-name';
 import { useRoutes } from '@/shared/presentation/hooks/use-routes';
 import { BaseFilter, useEventsList } from '@repo/sdk';
@@ -30,6 +32,7 @@ const UsersPage = () => {
   const [perPage, setPerPage] = useState(10);
 
   const { defaultTenantName, defaultTenantSubtitle } = useDefaultTenantName();
+  const { setIsReplayModalOpen } = useEventPageStore();
 
   const { getSidebarData } = useRoutes();
   const filterFields = useEventFilterFields();
@@ -91,7 +94,10 @@ const UsersPage = () => {
         title="Events"
         description="Manage and view all events in the system"
         actions={[
-          <Button key="replay-events" onClick={() => {}}>
+          <Button
+            key="replay-events"
+            onClick={() => setIsReplayModalOpen(true)}
+          >
             <RepeatIcon className="size-4" />
             Replay Events
           </Button>,
@@ -126,6 +132,7 @@ const UsersPage = () => {
           />
         )}
       </TableLayout>
+      <EventReplayModal onReplayed={() => eventsList.refetch()} />
     </PageWithSidebarTemplate>
   );
 };

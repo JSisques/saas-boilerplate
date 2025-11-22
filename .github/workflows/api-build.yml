@@ -1,10 +1,6 @@
 name: API Build
 
 on:
-  push:
-    paths:
-      - "apps/api/**"
-    branches: [main, dev]
   pull_request:
     paths:
       - "apps/api/**"

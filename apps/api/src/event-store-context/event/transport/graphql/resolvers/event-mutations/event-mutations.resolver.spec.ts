@@ -1,6 +1,6 @@
 import { EventReplayCommand } from '@/event-store-context/event/application/commands/event-replay/event-replay.command';
 import { EventReplayRequestDto } from '@/event-store-context/event/transport/graphql/dtos/requests/event-replay.request.dto';
-import { EventMutationResolver } from '@/event-store-context/event/transport/graphql/resolvers/event-mutations.resolver';
+import { EventMutationResolver } from '@/event-store-context/event/transport/graphql/resolvers/event-mutations/event-mutations.resolver';
 import { MutationResponseGraphQLMapper } from '@/shared/transport/graphql/mappers/mutation-response/mutation-response.mapper';
 import { CommandBus } from '@nestjs/cqrs';
 
@@ -46,7 +46,7 @@ describe('EventMutationResolver', () => {
       responseDto as any,
     );
 
-    const result = await resolver.eventsReplay(input);
+    const result = await resolver.eventReplay(input);
 
     expect(mockCommandBus.execute).toHaveBeenCalledTimes(1);
     const executedCommand = mockCommandBus.execute.mock.calls[0][0];

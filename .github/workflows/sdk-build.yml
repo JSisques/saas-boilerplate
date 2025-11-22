@@ -1,10 +1,6 @@
 name: SDK Build
 
 on:
-  push:
-    paths:
-      - "packages/sdk/**"
-    branches: [main, dev]
   pull_request:
     paths:
       - "packages/sdk/**"

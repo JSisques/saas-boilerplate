@@ -5,7 +5,7 @@ import { GraphQLClient } from '../../shared/client/graphql-client';
 import { MutationResponse } from '../../shared/types/index';
 import { EVENT_REPLAY_MUTATION } from '../graphql/mutations/event.mutations';
 import { EVENT_FIND_BY_CRITERIA_QUERY } from '../graphql/queries/event.queries';
-import { EventReplayInput } from '../types/event-replay-input.type';
+import { EventReplayRequestDto } from '../types/event-replay-input.type';
 
 export class EventClient {
   constructor(private client: GraphQLClient) {}
@@ -33,7 +33,7 @@ export class EventClient {
    * @param input - The event replay input
    * @returns The mutation response
    */
-  async replay(input: EventReplayInput): Promise<MutationResponse> {
+  async replay(input: EventReplayRequestDto): Promise<MutationResponse> {
     const result = await this.client.request<{
       eventReplay: MutationResponse;
     }>({
