@@ -1,9 +1,9 @@
-name: Docs Build
+name: Web Build
 
 on:
   pull_request:
     paths:
-      - "apps/docs/**"
+      - "apps/web/**"
     branches: [main, dev]
 
 jobs:
@@ -25,7 +25,13 @@ jobs:
           version: latest
 
       - name: Install dependencies
-        run: pnpm install --filter=./apps/docs...
+        run: pnpm install --filter=./apps/web...
 
-      - name: Build the docs
-        run: pnpm build --filter=./apps/docs...
+      - name: Lint code
+        run: pnpm lint --filter=./apps/web...
+
+      - name: Run unit tests
+        run: pnpm test --filter=./apps/web...
+
+      - name: Build the app
+        run: pnpm build --filter=./apps/web...

@@ -1,10 +1,6 @@
 name: Admin Build
 
 on:
-  push:
-    paths:
-      - "apps/admin/**"
-    branches: [main, dev]
   pull_request:
     paths:
       - "apps/admin/**"
