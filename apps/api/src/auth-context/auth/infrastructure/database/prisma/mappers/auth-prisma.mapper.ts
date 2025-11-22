@@ -1,5 +1,5 @@
 import { AuthAggregate } from '@/auth-context/auth/domain/aggregate/auth.aggregate';
-import { AuthAggregateFactory } from '@/auth-context/auth/domain/factories/auth-aggregate.factory';
+import { AuthAggregateFactory } from '@/auth-context/auth/domain/factories/auth-aggregate/auth-aggregate.factory';
 import { Injectable, Logger } from '@nestjs/common';
 import { AuthProviderEnum } from '@prisma/client';
 import { AuthPrismaDto } from '../dtos/auth-prisma.dto';
@@ -32,6 +32,8 @@ export class AuthPrismaMapper {
       provider: authData.provider,
       providerId: authData.providerId,
       twoFactorEnabled: authData.twoFactorEnabled,
+      createdAt: authData.createdAt,
+      updatedAt: authData.updatedAt,
     });
   }
 
@@ -60,6 +62,8 @@ export class AuthPrismaMapper {
       provider: primitives.provider as AuthProviderEnum,
       providerId: primitives.providerId,
       twoFactorEnabled: primitives.twoFactorEnabled,
+      createdAt: primitives.createdAt,
+      updatedAt: primitives.updatedAt,
     };
   }
 }

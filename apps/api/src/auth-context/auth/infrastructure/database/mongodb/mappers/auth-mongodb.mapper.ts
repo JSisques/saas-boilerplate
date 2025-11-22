@@ -1,4 +1,4 @@
-import { AuthViewModelFactory } from '@/auth-context/auth/domain/factories/auth-view-model.factory';
+import { AuthViewModelFactory } from '@/auth-context/auth/domain/factories/auth-view-model/auth-view-model.factory';
 import { AuthViewModel } from '@/auth-context/auth/domain/view-models/auth.view-model';
 import { AuthMongoDbDto } from '@/auth-context/auth/infrastructure/database/mongodb/dtos/auth-mongodb.dto';
 import { Injectable, Logger } from '@nestjs/common';

@@ -1,3 +1,4 @@
+import { AuthCreatedAtValueObject } from '@/auth-context/auth/domain/value-objects/auth-created-at/auth-created-at.vo';
 import { AuthEmailVerifiedValueObject } from '@/auth-context/auth/domain/value-objects/auth-email-verified/auth-email-verified.vo';
 import { AuthEmailValueObject } from '@/auth-context/auth/domain/value-objects/auth-email/auth-email.vo';
 import { AuthLastLoginAtValueObject } from '@/auth-context/auth/domain/value-objects/auth-last-login-at/auth-last-login-at.vo';
@@ -6,6 +7,7 @@ import { AuthPhoneNumberValueObject } from '@/auth-context/auth/domain/value-obj
 import { AuthProviderIdValueObject } from '@/auth-context/auth/domain/value-objects/auth-provider-id/auth-provider-id.vo';
 import { AuthProviderValueObject } from '@/auth-context/auth/domain/value-objects/auth-provider/auth-provider.vo';
 import { AuthTwoFactorEnabledValueObject } from '@/auth-context/auth/domain/value-objects/auth-two-factor-enabled/auth-two-factor-enabled.vo';
+import { AuthUpdatedAtValueObject } from '@/auth-context/auth/domain/value-objects/auth-updated-at/auth-updated-at.vo';
 import { AuthUuidValueObject } from '@/shared/domain/value-objects/identifiers/auth-uuid/auth-uuid.vo';
 import { UserUuidValueObject } from '@/shared/domain/value-objects/identifiers/user-uuid/user-uuid.vo';
 
@@ -23,6 +25,8 @@ import { UserUuidValueObject } from '@/shared/domain/value-objects/identifiers/u
  * @property {AuthProviderValueObject} provider - The provider of the auth.
  * @property {AuthProviderIdValueObject} providerId - The provider id of the auth.
  * @property {AuthTwoFactorEnabledValueObject} twoFactorEnabled - The two factor enabled of the auth.
+ * @property {AuthCreatedAtValueObject} createdAt - The created at of the auth.
+ * @property {AuthUpdatedAtValueObject} updatedAt - The updated at of the auth.
  */
 export interface IAuthCreateDto {
   id: AuthUuidValueObject;
@@ -35,4 +39,6 @@ export interface IAuthCreateDto {
   provider: AuthProviderValueObject;
   providerId: AuthProviderIdValueObject | null;
   twoFactorEnabled: AuthTwoFactorEnabledValueObject;
+  createdAt: AuthCreatedAtValueObject;
+  updatedAt: AuthUpdatedAtValueObject;
 }

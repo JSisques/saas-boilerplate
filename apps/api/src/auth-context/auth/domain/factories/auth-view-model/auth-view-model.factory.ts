@@ -26,7 +26,9 @@ export class AuthViewModelFactory
    * @returns The created view model.
    */
   public create(data: IAuthCreateViewModelDto): AuthViewModel {
-    this.logger.log(`Creating auth view model from DTO: ${data}`);
+    this.logger.log(
+      `Creating auth view model from DTO: ${JSON.stringify(data)}`,
+    );
 
     return new AuthViewModel(data);
   }
@@ -38,10 +40,8 @@ export class AuthViewModelFactory
    */
   public fromPrimitives(authPrimitives: AuthPrimitives): AuthViewModel {
     this.logger.log(
-      `Creating auth view model from primitives: ${authPrimitives}`,
+      `Creating auth view model from primitives: ${JSON.stringify(authPrimitives)}`,
     );
-
-    const now = new Date();
 
     return new AuthViewModel({
       id: authPrimitives.id,
@@ -54,8 +54,8 @@ export class AuthViewModelFactory
       provider: authPrimitives.provider,
       providerId: authPrimitives.providerId,
       twoFactorEnabled: authPrimitives.twoFactorEnabled,
-      createdAt: now,
-      updatedAt: now,
+      createdAt: authPrimitives.createdAt,
+      updatedAt: authPrimitives.updatedAt,
     });
   }
   /**
@@ -69,8 +69,6 @@ export class AuthViewModelFactory
       `Creating auth view model from aggregate: ${authAggregate}`,
     );
 
-    const now = new Date();
-
     return new AuthViewModel({
       id: authAggregate.id.value,
       userId: authAggregate.userId.value,
@@ -82,8 +80,8 @@ export class AuthViewModelFactory
       provider: authAggregate.provider.value,
       providerId: authAggregate.providerId?.value,
       twoFactorEnabled: authAggregate.twoFactorEnabled.value,
-      createdAt: now,
-      updatedAt: now,
+      createdAt: authAggregate.createdAt.value,
+      updatedAt: authAggregate.updatedAt.value,
     });
   }
 }
