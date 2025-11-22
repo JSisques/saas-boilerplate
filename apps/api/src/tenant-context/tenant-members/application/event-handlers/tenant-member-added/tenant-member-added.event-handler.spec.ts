@@ -1,11 +1,8 @@
 import { TenantMemberAddedEvent } from '@/shared/domain/events/tenant-context/tenant-members/tenant-members-added/tenant-members-created.event';
-import { TenantMemberViewModelFactory } from '@/tenant-context/tenant-members/domain/factories/tenant-member-view-model/tenant-member-view-model.factory';
-import {
-  TENANT_MEMBER_READ_REPOSITORY_TOKEN,
-  TenantMemberReadRepository,
-} from '@/tenant-context/tenant-members/domain/repositories/tenant-member-read.repository';
-import { TenantMemberPrimitives } from '@/tenant-context/tenant-members/domain/primitives/tenant-member.primitives';
 import { TenantMemberRoleEnum } from '@/tenant-context/tenant-members/domain/enums/tenant-member-role/tenant-member-role.enum';
+import { TenantMemberViewModelFactory } from '@/tenant-context/tenant-members/domain/factories/tenant-member-view-model/tenant-member-view-model.factory';
+import { TenantMemberPrimitives } from '@/tenant-context/tenant-members/domain/primitives/tenant-member.primitives';
+import { TenantMemberReadRepository } from '@/tenant-context/tenant-members/domain/repositories/tenant-member-read.repository';
 import { TenantMemberViewModel } from '@/tenant-context/tenant-members/domain/view-models/tenant-member/tenant-member.view-model';
 import { TenantMemberAddedEventHandler } from './tenant-member-added.event-handler';
 
@@ -179,4 +176,3 @@ describe('TenantMemberAddedEventHandler', () => {
     });
   });
 });
-

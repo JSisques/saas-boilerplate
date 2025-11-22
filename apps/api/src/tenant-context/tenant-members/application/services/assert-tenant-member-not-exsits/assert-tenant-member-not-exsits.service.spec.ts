@@ -1,9 +1,6 @@
 import { TenantMemberAlreadyExistsException } from '@/tenant-context/tenant-members/application/exceptions/tenant-member-already-exists/tenant-member-already-exists.exception';
 import { TenantMemberAggregate } from '@/tenant-context/tenant-members/domain/aggregates/tenant-member.aggregate';
-import {
-  TENANT_MEMBER_WRITE_REPOSITORY_TOKEN,
-  TenantMemberWriteRepository,
-} from '@/tenant-context/tenant-members/domain/repositories/tenant-member-write.repository';
+import { TenantMemberWriteRepository } from '@/tenant-context/tenant-members/domain/repositories/tenant-member-write.repository';
 import { AssertTenantMemberNotExsistsService } from './assert-tenant-member-not-exsits.service';
 
 describe('AssertTenantMemberNotExsistsService', () => {
@@ -91,4 +88,3 @@ describe('AssertTenantMemberNotExsistsService', () => {
     });
   });
 });
-

@@ -7,10 +7,7 @@ import { TenantMemberNotFoundException } from '@/tenant-context/tenant-members/a
 import { AssertTenantMemberExsistsService } from '@/tenant-context/tenant-members/application/services/assert-tenant-member-exsits/assert-tenant-member-exsits.service';
 import { TenantMemberAggregate } from '@/tenant-context/tenant-members/domain/aggregates/tenant-member.aggregate';
 import { TenantMemberRoleEnum } from '@/tenant-context/tenant-members/domain/enums/tenant-member-role/tenant-member-role.enum';
-import {
-  TENANT_MEMBER_WRITE_REPOSITORY_TOKEN,
-  TenantMemberWriteRepository,
-} from '@/tenant-context/tenant-members/domain/repositories/tenant-member-write.repository';
+import { TenantMemberWriteRepository } from '@/tenant-context/tenant-members/domain/repositories/tenant-member-write.repository';
 import { TenantMemberCreatedAtValueObject } from '@/tenant-context/tenant-members/domain/value-objects/tenant-member-created-at/tenant-member-created-at.vo';
 import { TenantMemberRoleValueObject } from '@/tenant-context/tenant-members/domain/value-objects/tenant-member-role/tenant-member-role.vo';
 import { TenantMemberUpdatedAtValueObject } from '@/tenant-context/tenant-members/domain/value-objects/tenant-member-updated-at/tenant-member-updated-at.vo';
@@ -68,7 +65,9 @@ describe('TenantMemberUpdateCommandHandler', () => {
           tenantId: new TenantUuidValueObject(
             '223e4567-e89b-12d3-a456-426614174000',
           ),
-          userId: new UserUuidValueObject('323e4567-e89b-12d3-a456-426614174000'),
+          userId: new UserUuidValueObject(
+            '323e4567-e89b-12d3-a456-426614174000',
+          ),
           role: new TenantMemberRoleValueObject(TenantMemberRoleEnum.MEMBER),
           createdAt: new TenantMemberCreatedAtValueObject(now),
           updatedAt: new TenantMemberUpdatedAtValueObject(now),
@@ -131,7 +130,9 @@ describe('TenantMemberUpdateCommandHandler', () => {
           tenantId: new TenantUuidValueObject(
             '223e4567-e89b-12d3-a456-426614174000',
           ),
-          userId: new UserUuidValueObject('323e4567-e89b-12d3-a456-426614174000'),
+          userId: new UserUuidValueObject(
+            '323e4567-e89b-12d3-a456-426614174000',
+          ),
           role: new TenantMemberRoleValueObject(TenantMemberRoleEnum.MEMBER),
           createdAt: new TenantMemberCreatedAtValueObject(now),
           updatedAt: new TenantMemberUpdatedAtValueObject(now),
@@ -155,7 +156,9 @@ describe('TenantMemberUpdateCommandHandler', () => {
           tenantId: new TenantUuidValueObject(
             '223e4567-e89b-12d3-a456-426614174000',
           ),
-          userId: new UserUuidValueObject('323e4567-e89b-12d3-a456-426614174000'),
+          userId: new UserUuidValueObject(
+            '323e4567-e89b-12d3-a456-426614174000',
+          ),
           role: new TenantMemberRoleValueObject(TenantMemberRoleEnum.MEMBER),
           createdAt: new TenantMemberCreatedAtValueObject(now),
           updatedAt: new TenantMemberUpdatedAtValueObject(now),
@@ -193,7 +196,9 @@ describe('TenantMemberUpdateCommandHandler', () => {
           tenantId: new TenantUuidValueObject(
             '223e4567-e89b-12d3-a456-426614174000',
           ),
-          userId: new UserUuidValueObject('323e4567-e89b-12d3-a456-426614174000'),
+          userId: new UserUuidValueObject(
+            '323e4567-e89b-12d3-a456-426614174000',
+          ),
           role: new TenantMemberRoleValueObject(TenantMemberRoleEnum.MEMBER),
           createdAt: new TenantMemberCreatedAtValueObject(now),
           updatedAt: new TenantMemberUpdatedAtValueObject(now),
@@ -230,7 +235,9 @@ describe('TenantMemberUpdateCommandHandler', () => {
           tenantId: new TenantUuidValueObject(
             '223e4567-e89b-12d3-a456-426614174000',
           ),
-          userId: new UserUuidValueObject('323e4567-e89b-12d3-a456-426614174000'),
+          userId: new UserUuidValueObject(
+            '323e4567-e89b-12d3-a456-426614174000',
+          ),
           role: new TenantMemberRoleValueObject(originalRole),
           createdAt: new TenantMemberCreatedAtValueObject(now),
           updatedAt: new TenantMemberUpdatedAtValueObject(now),
@@ -252,4 +259,3 @@ describe('TenantMemberUpdateCommandHandler', () => {
     });
   });
 });
-

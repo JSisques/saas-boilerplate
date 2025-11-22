@@ -43,7 +43,9 @@ describe('FindTenantMemberByIdQueryHandler', () => {
           tenantId: new TenantUuidValueObject(
             '223e4567-e89b-12d3-a456-426614174000',
           ),
-          userId: new UserUuidValueObject('323e4567-e89b-12d3-a456-426614174000'),
+          userId: new UserUuidValueObject(
+            '323e4567-e89b-12d3-a456-426614174000',
+          ),
           role: new TenantMemberRoleValueObject(TenantMemberRoleEnum.MEMBER),
           createdAt: new TenantMemberCreatedAtValueObject(now),
           updatedAt: new TenantMemberUpdatedAtValueObject(now),
@@ -61,9 +63,9 @@ describe('FindTenantMemberByIdQueryHandler', () => {
       expect(mockAssertTenantMemberExsistsService.execute).toHaveBeenCalledWith(
         tenantMemberId,
       );
-      expect(mockAssertTenantMemberExsistsService.execute).toHaveBeenCalledTimes(
-        1,
-      );
+      expect(
+        mockAssertTenantMemberExsistsService.execute,
+      ).toHaveBeenCalledTimes(1);
     });
 
     it('should throw exception when tenant member does not exist', async () => {
@@ -96,7 +98,9 @@ describe('FindTenantMemberByIdQueryHandler', () => {
           tenantId: new TenantUuidValueObject(
             '223e4567-e89b-12d3-a456-426614174000',
           ),
-          userId: new UserUuidValueObject('323e4567-e89b-12d3-a456-426614174000'),
+          userId: new UserUuidValueObject(
+            '323e4567-e89b-12d3-a456-426614174000',
+          ),
           role: new TenantMemberRoleValueObject(TenantMemberRoleEnum.MEMBER),
           createdAt: new TenantMemberCreatedAtValueObject(now),
           updatedAt: new TenantMemberUpdatedAtValueObject(now),
@@ -118,4 +122,3 @@ describe('FindTenantMemberByIdQueryHandler', () => {
     });
   });
 });
-

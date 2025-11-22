@@ -196,8 +196,12 @@ describe('TenantMemberViewModelFactory', () => {
 
       expect(viewModel.createdAt).toBeInstanceOf(Date);
       expect(viewModel.updatedAt).toBeInstanceOf(Date);
-      expect(viewModel.createdAt.getTime()).toBe(aggregate.createdAt.value.getTime());
-      expect(viewModel.updatedAt.getTime()).toBe(aggregate.updatedAt.value.getTime());
+      expect(viewModel.createdAt.getTime()).toBe(
+        aggregate.createdAt.value.getTime(),
+      );
+      expect(viewModel.updatedAt.getTime()).toBe(
+        aggregate.updatedAt.value.getTime(),
+      );
     });
 
     it('should handle different role values from aggregate', () => {
@@ -235,4 +239,3 @@ describe('TenantMemberViewModelFactory', () => {
     });
   });
 });
-

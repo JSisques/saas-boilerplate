@@ -64,7 +64,9 @@ describe('TenantMemberRoleValueObject', () => {
 
     it('should return false for different roles', () => {
       const role1 = new TenantMemberRoleValueObject(TenantMemberRoleEnum.ADMIN);
-      const role2 = new TenantMemberRoleValueObject(TenantMemberRoleEnum.MEMBER);
+      const role2 = new TenantMemberRoleValueObject(
+        TenantMemberRoleEnum.MEMBER,
+      );
       expect(role1.equals(role2)).toBe(false);
     });
   });
@@ -106,18 +108,11 @@ describe('TenantMemberRoleValueObject', () => {
     it('should support isOneOf method to check multiple enum values', () => {
       const role = new TenantMemberRoleValueObject(TenantMemberRoleEnum.ADMIN);
       expect(
-        role.isOneOf([
-          TenantMemberRoleEnum.OWNER,
-          TenantMemberRoleEnum.ADMIN,
-        ]),
+        role.isOneOf([TenantMemberRoleEnum.OWNER, TenantMemberRoleEnum.ADMIN]),
       ).toBe(true);
       expect(
-        role.isOneOf([
-          TenantMemberRoleEnum.MEMBER,
-          TenantMemberRoleEnum.GUEST,
-        ]),
+        role.isOneOf([TenantMemberRoleEnum.MEMBER, TenantMemberRoleEnum.GUEST]),
       ).toBe(false);
     });
   });
 });
-

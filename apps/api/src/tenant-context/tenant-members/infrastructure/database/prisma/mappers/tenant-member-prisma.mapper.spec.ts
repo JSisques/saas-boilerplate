@@ -184,7 +184,9 @@ describe('TenantMemberPrismaMapper', () => {
           tenantId: new TenantUuidValueObject(
             '223e4567-e89b-12d3-a456-426614174000',
           ),
-          userId: new UserUuidValueObject('323e4567-e89b-12d3-a456-426614174000'),
+          userId: new UserUuidValueObject(
+            '323e4567-e89b-12d3-a456-426614174000',
+          ),
           role: new TenantMemberRoleValueObject(TenantMemberRoleEnum.MEMBER),
           createdAt: new TenantMemberCreatedAtValueObject(now),
           updatedAt: new TenantMemberUpdatedAtValueObject(now),
@@ -247,7 +249,9 @@ describe('TenantMemberPrismaMapper', () => {
           tenantId: new TenantUuidValueObject(
             '223e4567-e89b-12d3-a456-426614174000',
           ),
-          userId: new UserUuidValueObject('323e4567-e89b-12d3-a456-426614174000'),
+          userId: new UserUuidValueObject(
+            '323e4567-e89b-12d3-a456-426614174000',
+          ),
           role: new TenantMemberRoleValueObject(TenantMemberRoleEnum.ADMIN),
           createdAt: new TenantMemberCreatedAtValueObject(now),
           updatedAt: new TenantMemberUpdatedAtValueObject(now),
@@ -255,10 +259,7 @@ describe('TenantMemberPrismaMapper', () => {
         false,
       );
 
-      const toPrimitivesSpy = jest.spyOn(
-        tenantMemberAggregate,
-        'toPrimitives',
-      );
+      const toPrimitivesSpy = jest.spyOn(tenantMemberAggregate, 'toPrimitives');
 
       mapper.toPrismaData(tenantMemberAggregate);
 
@@ -266,4 +267,3 @@ describe('TenantMemberPrismaMapper', () => {
     });
   });
 });
-

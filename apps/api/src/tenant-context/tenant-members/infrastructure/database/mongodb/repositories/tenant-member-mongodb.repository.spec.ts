@@ -71,7 +71,9 @@ describe('TenantMemberMongoRepository', () => {
       const result = await repository.findById(tenantMemberId);
 
       expect(result).toBe(viewModel);
-      expect(mockCollection.findOne).toHaveBeenCalledWith({ id: tenantMemberId });
+      expect(mockCollection.findOne).toHaveBeenCalledWith({
+        id: tenantMemberId,
+      });
       expect(mockTenantMemberMongoDBMapper.toViewModel).toHaveBeenCalledWith({
         id: tenantMemberId,
         tenantId: mongoDoc.tenantId,
@@ -80,7 +82,9 @@ describe('TenantMemberMongoRepository', () => {
         createdAt: mongoDoc.createdAt,
         updatedAt: mongoDoc.updatedAt,
       });
-      expect(mockTenantMemberMongoDBMapper.toViewModel).toHaveBeenCalledTimes(1);
+      expect(mockTenantMemberMongoDBMapper.toViewModel).toHaveBeenCalledTimes(
+        1,
+      );
     });
 
     it('should return null when tenant member does not exist', async () => {
@@ -91,7 +95,9 @@ describe('TenantMemberMongoRepository', () => {
       const result = await repository.findById(tenantMemberId);
 
       expect(result).toBeNull();
-      expect(mockCollection.findOne).toHaveBeenCalledWith({ id: tenantMemberId });
+      expect(mockCollection.findOne).toHaveBeenCalledWith({
+        id: tenantMemberId,
+      });
       expect(mockTenantMemberMongoDBMapper.toViewModel).not.toHaveBeenCalled();
     });
   });
@@ -148,7 +154,9 @@ describe('TenantMemberMongoRepository', () => {
 
       expect(result).toHaveLength(2);
       expect(mockCollection.find).toHaveBeenCalledWith({ tenantId });
-      expect(mockTenantMemberMongoDBMapper.toViewModel).toHaveBeenCalledTimes(2);
+      expect(mockTenantMemberMongoDBMapper.toViewModel).toHaveBeenCalledTimes(
+        2,
+      );
     });
 
     it('should return empty array when no tenant members exist', async () => {
@@ -353,4 +361,3 @@ describe('TenantMemberMongoRepository', () => {
     });
   });
 });
-

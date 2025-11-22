@@ -63,9 +63,7 @@ describe('TenantMemberUpdatedAtValueObject', () => {
         date2,
       );
 
-      expect(tenantMemberUpdatedAt1.equals(tenantMemberUpdatedAt2)).toBe(
-        false,
-      );
+      expect(tenantMemberUpdatedAt1.equals(tenantMemberUpdatedAt2)).toBe(false);
     });
 
     it('should return true when comparing with another TenantMemberUpdatedAtValueObject with same date', () => {
@@ -79,4 +77,3 @@ describe('TenantMemberUpdatedAtValueObject', () => {
     });
   });
 });
-

@@ -251,4 +251,3 @@ describe('TenantMemberAggregate', () => {
     });
   });
 });
-

@@ -63,9 +63,7 @@ describe('TenantMemberCreatedAtValueObject', () => {
         date2,
       );
 
-      expect(tenantMemberCreatedAt1.equals(tenantMemberCreatedAt2)).toBe(
-        false,
-      );
+      expect(tenantMemberCreatedAt1.equals(tenantMemberCreatedAt2)).toBe(false);
     });
 
     it('should return true when comparing with another TenantMemberCreatedAtValueObject with same date', () => {
@@ -79,4 +77,3 @@ describe('TenantMemberCreatedAtValueObject', () => {
     });
   });
 });
-

@@ -1,10 +1,7 @@
 import { TenantMemberRemovedEvent } from '@/shared/domain/events/tenant-context/tenant-members/tenant-members-removed/tenant-members-removed.event';
 import { AssertTenantMemberViewModelExsistsService } from '@/tenant-context/tenant-members/application/services/assert-tenant-member-view-model-exsits/assert-tenant-member-view-model-exsits.service';
-import {
-  TENANT_MEMBER_READ_REPOSITORY_TOKEN,
-  TenantMemberReadRepository,
-} from '@/tenant-context/tenant-members/domain/repositories/tenant-member-read.repository';
 import { TenantMemberRoleEnum } from '@/tenant-context/tenant-members/domain/enums/tenant-member-role/tenant-member-role.enum';
+import { TenantMemberReadRepository } from '@/tenant-context/tenant-members/domain/repositories/tenant-member-read.repository';
 import { TenantMemberViewModel } from '@/tenant-context/tenant-members/domain/view-models/tenant-member/tenant-member.view-model';
 import { TenantMemberRemovedEventHandler } from './tenant-member-deleted.event-handler';
 
@@ -124,4 +121,3 @@ describe('TenantMemberRemovedEventHandler', () => {
     });
   });
 });
-
