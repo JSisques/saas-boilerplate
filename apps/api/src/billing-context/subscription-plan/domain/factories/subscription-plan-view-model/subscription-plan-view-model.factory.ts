@@ -47,8 +47,6 @@ export class SubscriptionPlanViewModelFactory
       `Creating subscription plan view model from primitives: ${subscriptionPlanPrimitives}`,
     );
 
-    const now = new Date();
-
     return new SubscriptionPlanViewModel({
       id: subscriptionPlanPrimitives.id,
       name: subscriptionPlanPrimitives.name,
@@ -65,8 +63,8 @@ export class SubscriptionPlanViewModelFactory
       features: subscriptionPlanPrimitives.features,
       limits: subscriptionPlanPrimitives.limits,
       stripePriceId: subscriptionPlanPrimitives.stripePriceId,
-      createdAt: now,
-      updatedAt: now,
+      createdAt: subscriptionPlanPrimitives.createdAt,
+      updatedAt: subscriptionPlanPrimitives.updatedAt,
     });
   }
   /**
@@ -81,8 +79,6 @@ export class SubscriptionPlanViewModelFactory
     this.logger.log(
       `Creating subscription plan view model from aggregate: ${subscriptionPlanAggregate}`,
     );
-
-    const now = new Date();
 
     return new SubscriptionPlanViewModel({
       id: subscriptionPlanAggregate.id.value,
@@ -100,8 +96,8 @@ export class SubscriptionPlanViewModelFactory
       features: subscriptionPlanAggregate.features?.value ?? null,
       limits: subscriptionPlanAggregate.limits?.value ?? null,
       stripePriceId: subscriptionPlanAggregate.stripePriceId?.value ?? null,
-      createdAt: now,
-      updatedAt: now,
+      createdAt: subscriptionPlanAggregate.createdAt.value,
+      updatedAt: subscriptionPlanAggregate.updatedAt.value,
     });
   }
 }

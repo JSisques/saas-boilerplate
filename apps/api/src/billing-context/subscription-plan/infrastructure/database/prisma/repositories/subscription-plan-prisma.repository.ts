@@ -51,6 +51,8 @@ export class SubscriptionPlanPrismaRepository
       features: subscriptionPlanData.features as Record<string, any>,
       limits: subscriptionPlanData.limits as Record<string, any>,
       stripePriceId: subscriptionPlanData.stripePriceId,
+      createdAt: subscriptionPlanData.createdAt,
+      updatedAt: subscriptionPlanData.updatedAt,
     });
   }
 
@@ -62,7 +64,7 @@ export class SubscriptionPlanPrismaRepository
    */
   async findBySlug(slug: string): Promise<SubscriptionPlanAggregate | null> {
     const subscriptionPlanData =
-      await this.prismaService.subscriptionPlan.findUnique({
+      await this.prismaService.subscriptionPlan.findFirst({
         where: { slug },
       });
 
@@ -86,6 +88,8 @@ export class SubscriptionPlanPrismaRepository
       features: subscriptionPlanData.features as Record<string, any>,
       limits: subscriptionPlanData.limits as Record<string, any>,
       stripePriceId: subscriptionPlanData.stripePriceId,
+      createdAt: subscriptionPlanData.createdAt,
+      updatedAt: subscriptionPlanData.updatedAt,
     });
   }
 
@@ -123,6 +127,8 @@ export class SubscriptionPlanPrismaRepository
       features: subscriptionPlanData.features as Record<string, any>,
       limits: subscriptionPlanData.limits as Record<string, any>,
       stripePriceId: subscriptionPlanData.stripePriceId,
+      createdAt: subscriptionPlanData.createdAt,
+      updatedAt: subscriptionPlanData.updatedAt,
     });
   }
 
@@ -160,6 +166,8 @@ export class SubscriptionPlanPrismaRepository
       features: result.features as Record<string, any>,
       limits: result.limits as Record<string, any>,
       stripePriceId: result.stripePriceId,
+      createdAt: result.createdAt,
+      updatedAt: result.updatedAt,
     });
   }
 

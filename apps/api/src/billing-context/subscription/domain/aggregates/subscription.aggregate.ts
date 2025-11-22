@@ -17,6 +17,7 @@ import { SubscriptionDeactivatedEvent } from '@/shared/domain/events/billing-con
 import { SubscriptionDeletedEvent } from '@/shared/domain/events/billing-context/subscription/subscription-deleted/subscription-deleted.event';
 import { SubscriptionRefundedEvent } from '@/shared/domain/events/billing-context/subscription/subscription-refunded/subscription-refunded.event';
 import { SubscriptionUpdatedEvent } from '@/shared/domain/events/billing-context/subscription/subscription-updated/subscription-updated.event';
+import { DateValueObject } from '@/shared/domain/value-objects/date/date.vo';
 import { SubscriptionPlanUuidValueObject } from '@/shared/domain/value-objects/identifiers/subscription-plan/subscription-plan-uuid.vo';
 import { SubscriptionUuidValueObject } from '@/shared/domain/value-objects/identifiers/subscription/subscription-uuid.vo';
 import { TenantUuidValueObject } from '@/shared/domain/value-objects/identifiers/tenant-uuid/tenant-uuid.vo';
@@ -92,6 +93,8 @@ export class SubscriptionAggregate extends BaseAggregate {
       props.renewalMethod !== undefined
         ? props.renewalMethod
         : this._renewalMethod;
+
+    this._updatedAt = new DateValueObject(new Date());
 
     if (generateEvent) {
       this.apply(

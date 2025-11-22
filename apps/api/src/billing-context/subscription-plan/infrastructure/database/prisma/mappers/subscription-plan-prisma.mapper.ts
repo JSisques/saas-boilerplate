@@ -45,6 +45,8 @@ export class SubscriptionPlanPrismaMapper {
       features: subscriptionPlanData.features,
       limits: subscriptionPlanData.limits,
       stripePriceId: subscriptionPlanData.stripePriceId,
+      createdAt: subscriptionPlanData.createdAt,
+      updatedAt: subscriptionPlanData.updatedAt,
     });
   }
 
@@ -80,6 +82,8 @@ export class SubscriptionPlanPrismaMapper {
       features: primitives.features,
       limits: primitives.limits,
       stripePriceId: primitives.stripePriceId,
+      createdAt: primitives.createdAt,
+      updatedAt: primitives.updatedAt,
     };
   }
 }
