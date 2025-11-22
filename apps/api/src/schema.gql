@@ -40,6 +40,12 @@ type AuthResponseDto {
 
   """The two factor enabled of the auth"""
   twoFactorEnabled: Boolean
+
+  """The created at of the auth"""
+  createdAt: DateTime
+
+  """The updated at of the auth"""
+  updatedAt: DateTime
 }
 
 """
@@ -320,6 +326,12 @@ type TenantMemberResponseDto {
 
   """The role of the tenant member"""
   role: String
+
+  """The created at of the tenant member"""
+  createdAt: DateTime
+
+  """The updated at of the tenant member"""
+  updatedAt: DateTime
 }
 
 type PaginatedTenantMemberResultDto {

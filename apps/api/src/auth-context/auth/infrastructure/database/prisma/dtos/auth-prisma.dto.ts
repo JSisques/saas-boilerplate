@@ -11,4 +11,6 @@ export type AuthPrismaDto = {
   provider: AuthProviderEnum;
   providerId: string | null;
   twoFactorEnabled: boolean;
+  createdAt: Date;
+  updatedAt: Date;
 };

@@ -1,9 +1,10 @@
-import { TenantMemberRemovedEvent } from '@/shared/domain/events/tenant-context/tenant-members/tenant-members-removed/tenant-members-removed.event';
-import { ITenantMemberEventData } from '@/shared/domain/events/tenant-context/tenant-members/interfaces/tenant-members-event-data.interface';
 import { BaseEvent } from '@/shared/domain/events/base-event.interface';
+import { ITenantMemberEventData } from '@/shared/domain/events/tenant-context/tenant-members/interfaces/tenant-members-event-data.interface';
+import { TenantMemberRemovedEvent } from '@/shared/domain/events/tenant-context/tenant-members/tenant-members-removed/tenant-members-removed.event';
 import { IEventMetadata } from '@/shared/domain/interfaces/event-metadata.interface';
 
 describe('TenantMemberRemovedEvent', () => {
+  const now = new Date();
   const createMetadata = (): IEventMetadata => ({
     aggregateId: '123e4567-e89b-12d3-a456-426614174000',
     aggregateType: 'TenantMemberAggregate',
@@ -16,6 +17,8 @@ describe('TenantMemberRemovedEvent', () => {
     tenantId: '123e4567-e89b-12d3-a456-426614174001',
     userId: '123e4567-e89b-12d3-a456-426614174002',
     role: 'member',
+    createdAt: now,
+    updatedAt: now,
   });
 
   it('should be an instance of BaseEvent', () => {

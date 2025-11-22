@@ -97,7 +97,8 @@
       "!**/interfaces/**",
       "!**/dtos/**",
       "!**/value-objects/**",
-      "!**/*.module.ts"
+      "!**/*.module.ts",
+      "!**/*.primitives.ts"
     ],
     "coverageDirectory": "../coverage",
     "testEnvironment": "node",

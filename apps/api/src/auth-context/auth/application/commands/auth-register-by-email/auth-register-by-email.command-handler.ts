@@ -1,14 +1,16 @@
 import { AssertAuthEmailNotExistsService } from '@/auth-context/auth/application/services/assert-auth-email-not-exists/assert-auth-email-not-exists.service';
 import { PasswordHashingService } from '@/auth-context/auth/application/services/password-hashing/password-hashing.service';
-import { AuthAggregateFactory } from '@/auth-context/auth/domain/factories/auth-aggregate.factory';
+import { AuthAggregateFactory } from '@/auth-context/auth/domain/factories/auth-aggregate/auth-aggregate.factory';
 import {
   AUTH_WRITE_REPOSITORY_TOKEN,
   AuthWriteRepository,
 } from '@/auth-context/auth/domain/repositories/auth-write.repository';
+import { AuthCreatedAtValueObject } from '@/auth-context/auth/domain/value-objects/auth-created-at/auth-created-at.vo';
 import { AuthEmailVerifiedValueObject } from '@/auth-context/auth/domain/value-objects/auth-email-verified/auth-email-verified.vo';
 import { AuthPasswordValueObject } from '@/auth-context/auth/domain/value-objects/auth-password/auth-password.vo';
 import { AuthProviderValueObject } from '@/auth-context/auth/domain/value-objects/auth-provider/auth-provider.vo';
 import { AuthTwoFactorEnabledValueObject } from '@/auth-context/auth/domain/value-objects/auth-two-factor-enabled/auth-two-factor-enabled.vo';
+import { AuthUpdatedAtValueObject } from '@/auth-context/auth/domain/value-objects/auth-updated-at/auth-updated-at.vo';
 import { AuthUuidValueObject } from '@/shared/domain/value-objects/identifiers/auth-uuid/auth-uuid.vo';
 import { UserUuidValueObject } from '@/shared/domain/value-objects/identifiers/user-uuid/user-uuid.vo';
 import { UserCreateCommand } from '@/user-context/users/application/commands/user-create/user-create.command';
@@ -78,6 +80,8 @@ export class AuthRegisterByEmailCommandHandler
       provider: new AuthProviderValueObject(AuthProviderEnum.LOCAL),
       providerId: null,
       twoFactorEnabled: new AuthTwoFactorEnabledValueObject(false),
+      createdAt: new AuthCreatedAtValueObject(new Date()),
+      updatedAt: new AuthUpdatedAtValueObject(new Date()),
     });
 
     // 02: Save the auth entity

@@ -1,5 +1,5 @@
-import { TenantMemberViewModelFactory } from '@/tenant-context/tenant-members/domain/factories/tenant-member-view-model.factory';
-import { TenantMemberViewModel } from '@/tenant-context/tenant-members/domain/view-models/tenant-member.view-model';
+import { TenantMemberViewModelFactory } from '@/tenant-context/tenant-members/domain/factories/tenant-member-view-model/tenant-member-view-model.factory';
+import { TenantMemberViewModel } from '@/tenant-context/tenant-members/domain/view-models/tenant-member/tenant-member.view-model';
 import { TenantMemberMongoDbDto } from '@/tenant-context/tenant-members/infrastructure/database/mongodb/dtos/tenant-member-mongodb.dto';
 import { Injectable, Logger } from '@nestjs/common';
 
@@ -21,7 +21,14 @@ export class TenantMemberMongoDBMapper {
       `Converting MongoDB document to tenant member view model with id ${doc.id}`,
     );
 
-    return this.tenantMemberViewModelFactory.create(doc);
+    return this.tenantMemberViewModelFactory.create({
+      id: doc.id,
+      tenantId: doc.tenantId,
+      userId: doc.userId,
+      role: doc.role,
+      createdAt: new Date(doc.createdAt),
+      updatedAt: new Date(doc.updatedAt),
+    });
   }
 
   /**

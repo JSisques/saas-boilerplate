@@ -2,7 +2,7 @@ import { IReadFactory } from '@/shared/domain/interfaces/read-factory.interface'
 import { TenantMemberAggregate } from '@/tenant-context/tenant-members/domain/aggregates/tenant-member.aggregate';
 import { ITenantMemberCreateViewModelDto } from '@/tenant-context/tenant-members/domain/dtos/view-models/tenant-member-create/tenant-member-create-view-model.dto';
 import { TenantMemberPrimitives } from '@/tenant-context/tenant-members/domain/primitives/tenant-member.primitives';
-import { TenantMemberViewModel } from '@/tenant-context/tenant-members/domain/view-models/tenant-member.view-model';
+import { TenantMemberViewModel } from '@/tenant-context/tenant-members/domain/view-models/tenant-member/tenant-member.view-model';
 import { Injectable, Logger } from '@nestjs/common';
 
 /**
@@ -43,15 +43,13 @@ export class TenantMemberViewModelFactory
       `Creating tenant member view model from primitives: ${tenantMemberPrimitives}`,
     );
 
-    const now = new Date();
-
     return new TenantMemberViewModel({
       id: tenantMemberPrimitives.id,
       tenantId: tenantMemberPrimitives.tenantId,
       userId: tenantMemberPrimitives.userId,
       role: tenantMemberPrimitives.role,
-      createdAt: now,
-      updatedAt: now,
+      createdAt: tenantMemberPrimitives.createdAt,
+      updatedAt: tenantMemberPrimitives.updatedAt,
     });
   }
   /**
@@ -67,15 +65,13 @@ export class TenantMemberViewModelFactory
       `Creating tenant member view model from aggregate: ${tenantMemberAggregate}`,
     );
 
-    const now = new Date();
-
     return new TenantMemberViewModel({
       id: tenantMemberAggregate.id.value,
       tenantId: tenantMemberAggregate.tenantId.value,
       userId: tenantMemberAggregate.userId.value,
       role: tenantMemberAggregate.role.value,
-      createdAt: now,
-      updatedAt: now,
+      createdAt: tenantMemberAggregate.createdAt.value,
+      updatedAt: tenantMemberAggregate.updatedAt.value,
     });
   }
 }

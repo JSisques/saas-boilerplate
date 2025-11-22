@@ -28,8 +28,8 @@ export class UserMongoDBMapper {
       status: doc.status,
       bio: doc.bio,
       avatarUrl: doc.avatarUrl,
-      createdAt: doc.createdAt,
-      updatedAt: doc.updatedAt,
+      createdAt: new Date(doc.createdAt),
+      updatedAt: new Date(doc.updatedAt),
     });
   }
 
