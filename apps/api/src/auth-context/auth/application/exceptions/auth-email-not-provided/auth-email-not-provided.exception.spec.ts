@@ -1,0 +1,51 @@
+import { BaseApplicationException } from '@/shared/application/exceptions/base-application/base-application.exception';
+import { AuthEmailNotProvidedException } from '@/auth-context/auth/application/exceptions/auth-email-not-provided/auth-email-not-provided.exception';
+
+describe('AuthEmailNotProvidedException', () => {
+  it('should be an instance of BaseApplicationException', () => {
+    const exception = new AuthEmailNotProvidedException();
+
+    expect(exception).toBeInstanceOf(BaseApplicationException);
+    expect(exception).toBeInstanceOf(Error);
+  });
+
+  it('should create an exception with the correct message', () => {
+    const exception = new AuthEmailNotProvidedException();
+
+    expect(exception.message).toBe('Auth email not provided');
+  });
+
+  it('should set the name to AuthEmailNotProvidedException', () => {
+    const exception = new AuthEmailNotProvidedException();
+
+    expect(exception.name).toBe('AuthEmailNotProvidedException');
+  });
+
+  it('should set the domain to Application', () => {
+    const exception = new AuthEmailNotProvidedException();
+
+    expect(exception.domain).toBe('Application');
+  });
+
+  it('should have a timestamp', () => {
+    const before = new Date();
+    const exception = new AuthEmailNotProvidedException();
+    const after = new Date();
+
+    expect(exception.timestamp).toBeInstanceOf(Date);
+    expect(exception.timestamp.getTime()).toBeGreaterThanOrEqual(
+      before.getTime(),
+    );
+    expect(exception.timestamp.getTime()).toBeLessThanOrEqual(after.getTime());
+  });
+
+  it('should return a detailed message', () => {
+    const exception = new AuthEmailNotProvidedException();
+    const detailedMessage = exception.getDetailedMessage();
+
+    expect(detailedMessage).toBe(
+      '[Application] AuthEmailNotProvidedException: Auth email not provided',
+    );
+  });
+});
+
