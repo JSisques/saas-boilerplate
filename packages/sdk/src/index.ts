@@ -1,5 +1,5 @@
-import { AuthClient } from './auth/auth-client.js';
-import type { AuthLogoutInput } from './auth/types/index.js';
+import { AuthClient } from './auth/client/auth-client.js';
+import type { AuthLogoutInput } from './auth/index.js';
 import { EventClient } from './event/client/event-client.js';
 import { HealthClient } from './health/client/health-client.js';
 import { GraphQLClient } from './shared/client/graphql-client.js';
@@ -26,15 +26,7 @@ export { MemoryStorage } from './shared/storage/memory-storage.js';
 export type { Storage } from './shared/storage/storage.interface.js';
 export { WebStorage } from './shared/storage/web-storage.js';
 
-// Re-export types from auth-context
-export type {
-  AuthLoginByEmailInput,
-  AuthLogoutInput,
-  AuthRegisterByEmailInput,
-  AuthResponse,
-  LoginResponse,
-} from './auth/types/index.js';
-
+export * from './auth/index.js';
 export * from './event/index.js';
 export * from './health/index.js';
 export * from './subscription-plan/index.js';
