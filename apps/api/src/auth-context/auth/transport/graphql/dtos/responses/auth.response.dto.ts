@@ -41,6 +41,18 @@ export class AuthResponseDto {
     description: 'The two factor enabled of the auth',
   })
   twoFactorEnabled?: boolean;
+
+  @Field(() => Date, {
+    nullable: true,
+    description: 'The created at of the auth',
+  })
+  createdAt?: Date;
+
+  @Field(() => Date, {
+    nullable: true,
+    description: 'The updated at of the auth',
+  })
+  updatedAt?: Date;
 }
 
 @ObjectType('PaginatedAuthResultDto')

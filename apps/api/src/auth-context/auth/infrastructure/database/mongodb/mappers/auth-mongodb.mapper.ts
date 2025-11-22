@@ -30,8 +30,8 @@ export class AuthMongoDBMapper {
       provider: doc.provider,
       providerId: doc.providerId || null,
       twoFactorEnabled: doc.twoFactorEnabled,
-      createdAt: doc.createdAt,
-      updatedAt: doc.updatedAt,
+      createdAt: new Date(doc.createdAt),
+      updatedAt: new Date(doc.updatedAt),
     });
   }
 

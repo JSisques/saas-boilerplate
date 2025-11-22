@@ -39,6 +39,8 @@ describe('AuthGraphQLMapper', () => {
         provider: AuthProviderEnum.LOCAL,
         providerId: null,
         twoFactorEnabled: false,
+        createdAt: now,
+        updatedAt: now,
       });
     });
 
@@ -70,6 +72,8 @@ describe('AuthGraphQLMapper', () => {
         provider: AuthProviderEnum.GOOGLE,
         providerId: 'google-123',
         twoFactorEnabled: true,
+        createdAt: now,
+        updatedAt: now,
       });
     });
   });
@@ -131,6 +135,8 @@ describe('AuthGraphQLMapper', () => {
         provider: AuthProviderEnum.LOCAL,
         providerId: null,
         twoFactorEnabled: false,
+        createdAt: now,
+        updatedAt: now,
       });
       expect(result.items[1]).toEqual({
         id: '223e4567-e89b-12d3-a456-426614174002',
@@ -141,6 +147,8 @@ describe('AuthGraphQLMapper', () => {
         provider: AuthProviderEnum.GOOGLE,
         providerId: 'google-123',
         twoFactorEnabled: true,
+        createdAt: now,
+        updatedAt: now,
       });
     });
 
