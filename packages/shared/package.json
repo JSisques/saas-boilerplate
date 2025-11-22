@@ -29,7 +29,8 @@
     "generate:component": "turbo gen react-component",
     "check-types": "tsc --noEmit",
     "build": "tsc",
-    "release": "semantic-release"
+    "release": "semantic-release",
+    "git:clean": "git branch --merged | grep -vE '^*|main|dev' | xargs -n 1 git branch -d"
   },
   "devDependencies": {
     "@repo/eslint-config": "workspace:*",

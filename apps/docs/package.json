@@ -7,7 +7,8 @@
     "start": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "git:clean": "git branch --merged | grep -vE '^*|main|dev' | xargs -n 1 git branch -d"
   },
   "dependencies": {
     "@astrojs/starlight": "^0.36.2",

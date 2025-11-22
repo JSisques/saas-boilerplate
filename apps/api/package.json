@@ -24,7 +24,8 @@
     "prisma:studio": "prisma studio",
     "prisma:seed": "prisma db seed",
     "prisma:push": "prisma db push",
-    "prisma:format": "prisma format"
+    "prisma:format": "prisma format",
+    "git:clean": "git branch --merged | grep -vE '^*|main|dev' | xargs -n 1 git branch -d"
   },
   "dependencies": {
     "@apollo/server": "^5.0.0",
