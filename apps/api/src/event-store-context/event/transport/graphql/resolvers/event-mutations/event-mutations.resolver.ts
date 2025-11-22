@@ -16,7 +16,7 @@ export class EventMutationResolver {
   ) {}
 
   @Mutation(() => MutationResponseDto)
-  async eventsReplay(
+  async eventReplay(
     @Args('input') input: EventReplayRequestDto,
   ): Promise<MutationResponseDto> {
     this.logger.log(`Replaying events with input: ${JSON.stringify(input)}`);

@@ -1,8 +1,8 @@
 import { FindEventsByCriteriaQuery } from '@/event-store-context/event/application/queries/event-find-by-criteria/event-find-by-criteria.command';
-import { EventGraphQLMapper } from '@/event-store-context/event/transport/graphql/mappers/event.mapper';
-import { EventQueryResolver } from '@/event-store-context/event/transport/graphql/resolvers/event-queries.resolver';
-import { EventFindByCriteriaRequestDto } from '@/event-store-context/event/transport/graphql/dtos/requests/event-find-by-criteria.request.dto';
 import { EventViewModel } from '@/event-store-context/event/domain/view-models/event-store.view-model';
+import { EventFindByCriteriaRequestDto } from '@/event-store-context/event/transport/graphql/dtos/requests/event-find-by-criteria.request.dto';
+import { EventGraphQLMapper } from '@/event-store-context/event/transport/graphql/mappers/event.mapper';
+import { EventQueryResolver } from '@/event-store-context/event/transport/graphql/resolvers/event-queries/event-queries.resolver';
 import { Criteria } from '@/shared/domain/entities/criteria';
 import { PaginatedResult } from '@/shared/domain/entities/paginated-result.entity';
 import { QueryBus } from '@nestjs/cqrs';
