@@ -5,8 +5,8 @@ import { HealthClient } from './health/client/health-client.js';
 import { GraphQLClient } from './shared/client/graphql-client.js';
 import type { GraphQLClientConfig } from './shared/types/index.js';
 import { SubscriptionPlanClient } from './subscription-plan/client/subscription-plan-client.js';
-import { TenantClient } from './tenant/tenant-client.js';
-import { TenantMemberClient } from './tenant/tenant-member-client.js';
+import { TenantMemberClient } from './tenant-member/client/tenant-member-client.js';
+import { TenantClient } from './tenant/client/tenant-client.js';
 import { UserClient } from './users/client/user-client.js';
 
 // Re-export types from shared
@@ -35,26 +35,11 @@ export type {
   LoginResponse,
 } from './auth/types/index.js';
 
-// Re-export types from tenant-context
-export type {
-  PaginatedTenantMemberResult,
-  PaginatedTenantResult,
-  TenantCreateInput,
-  TenantDeleteInput,
-  TenantFindByCriteriaInput,
-  TenantMemberAddInput,
-  TenantMemberFindByCriteriaInput,
-  TenantMemberRemoveInput,
-  TenantMemberResponse,
-  TenantMemberRole,
-  TenantMemberUpdateInput,
-  TenantResponse,
-  TenantUpdateInput,
-} from './tenant/types/index.js';
-
 export * from './event/index.js';
 export * from './health/index.js';
 export * from './subscription-plan/index.js';
+export * from './tenant-member/index.js';
+export * from './tenant/index.js';
 export * from './users/index.js';
 
 export class SDK {
@@ -178,6 +163,10 @@ export class SDK {
        */
       findByCriteria: this.tenantClient.findByCriteria.bind(this.tenantClient),
       /**
+       * Find a tenant by ID
+       */
+      findById: this.tenantClient.findById.bind(this.tenantClient),
+      /**
        * Create a new tenant
        */
       create: this.tenantClient.create.bind(this.tenantClient),
@@ -203,6 +192,10 @@ export class SDK {
       findByCriteria: this.tenantMemberClient.findByCriteria.bind(
         this.tenantMemberClient,
       ),
+      /**
+       * Find a tenant member by ID
+       */
+      findById: this.tenantMemberClient.findById.bind(this.tenantMemberClient),
       /**
        * Add a member to a tenant
        */
