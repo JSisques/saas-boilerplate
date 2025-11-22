@@ -1,13 +1,12 @@
 import { IWriteFactory } from '@/shared/domain/interfaces/write-factory.interface';
+import { DateValueObject } from '@/shared/domain/value-objects/date/date.vo';
 import { TenantMemberUuidValueObject } from '@/shared/domain/value-objects/identifiers/tenant-member-uuid/tenant-member-uuid.vo';
 import { TenantUuidValueObject } from '@/shared/domain/value-objects/identifiers/tenant-uuid/tenant-uuid.vo';
 import { UserUuidValueObject } from '@/shared/domain/value-objects/identifiers/user-uuid/user-uuid.vo';
 import { TenantMemberAggregate } from '@/tenant-context/tenant-members/domain/aggregates/tenant-member.aggregate';
 import { ITenantMemberCreateDto } from '@/tenant-context/tenant-members/domain/dtos/entities/tenant-member-create/tenant-member-create.dto';
 import { TenantMemberPrimitives } from '@/tenant-context/tenant-members/domain/primitives/tenant-member.primitives';
-import { TenantMemberCreatedAtValueObject } from '@/tenant-context/tenant-members/domain/value-objects/tenant-member-created-at/tenant-member-created-at.vo';
 import { TenantMemberRoleValueObject } from '@/tenant-context/tenant-members/domain/value-objects/tenant-member-role/tenant-member-role.vo';
-import { TenantMemberUpdatedAtValueObject } from '@/tenant-context/tenant-members/domain/value-objects/tenant-member-updated-at/tenant-member-updated-at.vo';
 import { Injectable } from '@nestjs/common';
 
 /**
@@ -58,8 +57,8 @@ export class TenantMemberAggregateFactory
       tenantId: new TenantUuidValueObject(data.tenantId),
       userId: new UserUuidValueObject(data.userId),
       role: new TenantMemberRoleValueObject(data.role),
-      createdAt: new TenantMemberCreatedAtValueObject(data.createdAt),
-      updatedAt: new TenantMemberUpdatedAtValueObject(data.updatedAt),
+      createdAt: new DateValueObject(data.createdAt),
+      updatedAt: new DateValueObject(data.updatedAt),
     });
   }
 }

@@ -11,6 +11,7 @@ import { SubscriptionStripeCustomerIdValueObject } from '@/billing-context/subsc
 import { SubscriptionStripeSubscriptionIdValueObject } from '@/billing-context/subscription/domain/value-objects/subscription-stripe-id/subscription-stripe-id.vo';
 import { SubscriptionTrialEndDateValueObject } from '@/billing-context/subscription/domain/value-objects/subscription-trial-end-date/subscription-trial-end-date.vo';
 import { SubscriptionCreatedEvent } from '@/shared/domain/events/billing-context/subscription/subscription-created/subscription-created.event';
+import { DateValueObject } from '@/shared/domain/value-objects/date/date.vo';
 import { SubscriptionPlanUuidValueObject } from '@/shared/domain/value-objects/identifiers/subscription-plan/subscription-plan-uuid.vo';
 import { SubscriptionUuidValueObject } from '@/shared/domain/value-objects/identifiers/subscription/subscription-uuid.vo';
 import { TenantUuidValueObject } from '@/shared/domain/value-objects/identifiers/tenant-uuid/tenant-uuid.vo';
@@ -50,6 +51,8 @@ describe('SubscriptionAggregateFactory', () => {
         renewalMethod: new SubscriptionRenewalMethodValueObject(
           RenewalMethodEnum.AUTOMATIC,
         ),
+        createdAt: new DateValueObject(new Date()),
+        updatedAt: new DateValueObject(new Date()),
       };
 
       const aggregate = factory.create(dto);
@@ -102,6 +105,8 @@ describe('SubscriptionAggregateFactory', () => {
         renewalMethod: new SubscriptionRenewalMethodValueObject(
           RenewalMethodEnum.AUTOMATIC,
         ),
+        createdAt: new DateValueObject(new Date()),
+        updatedAt: new DateValueObject(new Date()),
       };
 
       const aggregate = factory.create(dto, false);
@@ -138,6 +143,8 @@ describe('SubscriptionAggregateFactory', () => {
         renewalMethod: new SubscriptionRenewalMethodValueObject(
           RenewalMethodEnum.MANUAL,
         ),
+        createdAt: new DateValueObject(new Date()),
+        updatedAt: new DateValueObject(new Date()),
       };
 
       const aggregate = factory.create(dto, false);
@@ -167,6 +174,8 @@ describe('SubscriptionAggregateFactory', () => {
         stripeSubscriptionId: 'sub_1234567890',
         stripeCustomerId: 'cus_1234567890',
         renewalMethod: RenewalMethodEnum.AUTOMATIC,
+        createdAt: new Date(),
+        updatedAt: new Date(),
       };
 
       const aggregate = factory.fromPrimitives(primitives);
@@ -202,6 +211,8 @@ describe('SubscriptionAggregateFactory', () => {
         stripeSubscriptionId: null,
         stripeCustomerId: null,
         renewalMethod: RenewalMethodEnum.MANUAL,
+        createdAt: new Date(),
+        updatedAt: new Date(),
       };
 
       const aggregate = factory.fromPrimitives(primitives);
@@ -229,6 +240,8 @@ describe('SubscriptionAggregateFactory', () => {
         stripeSubscriptionId: 'sub_1234567890',
         stripeCustomerId: 'cus_1234567890',
         renewalMethod: RenewalMethodEnum.AUTOMATIC,
+        createdAt: new Date(),
+        updatedAt: new Date(),
       };
 
       const aggregate = factory.fromPrimitives(primitives);
@@ -269,6 +282,8 @@ describe('SubscriptionAggregateFactory', () => {
         stripeSubscriptionId: 'sub_1234567890',
         stripeCustomerId: 'cus_1234567890',
         renewalMethod: RenewalMethodEnum.AUTOMATIC,
+        createdAt: new Date(),
+        updatedAt: new Date(),
       };
 
       const aggregate = factory.fromPrimitives(primitives);

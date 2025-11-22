@@ -1,4 +1,5 @@
 import { TenantMemberAddedEvent } from '@/shared/domain/events/tenant-context/tenant-members/tenant-members-added/tenant-members-created.event';
+import { DateValueObject } from '@/shared/domain/value-objects/date/date.vo';
 import { TenantMemberUuidValueObject } from '@/shared/domain/value-objects/identifiers/tenant-member-uuid/tenant-member-uuid.vo';
 import { TenantUuidValueObject } from '@/shared/domain/value-objects/identifiers/tenant-uuid/tenant-uuid.vo';
 import { UserUuidValueObject } from '@/shared/domain/value-objects/identifiers/user-uuid/user-uuid.vo';
@@ -7,9 +8,7 @@ import { ITenantMemberCreateDto } from '@/tenant-context/tenant-members/domain/d
 import { TenantMemberRoleEnum } from '@/tenant-context/tenant-members/domain/enums/tenant-member-role/tenant-member-role.enum';
 import { TenantMemberAggregateFactory } from '@/tenant-context/tenant-members/domain/factories/tenant-member-aggregate/tenant-member-aggregate.factory';
 import { TenantMemberPrimitives } from '@/tenant-context/tenant-members/domain/primitives/tenant-member.primitives';
-import { TenantMemberCreatedAtValueObject } from '@/tenant-context/tenant-members/domain/value-objects/tenant-member-created-at/tenant-member-created-at.vo';
 import { TenantMemberRoleValueObject } from '@/tenant-context/tenant-members/domain/value-objects/tenant-member-role/tenant-member-role.vo';
-import { TenantMemberUpdatedAtValueObject } from '@/tenant-context/tenant-members/domain/value-objects/tenant-member-updated-at/tenant-member-updated-at.vo';
 
 describe('TenantMemberAggregateFactory', () => {
   let factory: TenantMemberAggregateFactory;
@@ -31,8 +30,8 @@ describe('TenantMemberAggregateFactory', () => {
         ),
         userId: new UserUuidValueObject('323e4567-e89b-12d3-a456-426614174000'),
         role: new TenantMemberRoleValueObject(TenantMemberRoleEnum.MEMBER),
-        createdAt: new TenantMemberCreatedAtValueObject(now),
-        updatedAt: new TenantMemberUpdatedAtValueObject(now),
+        createdAt: new DateValueObject(now),
+        updatedAt: new DateValueObject(now),
       };
 
       const aggregate = factory.create(dto);
@@ -63,8 +62,8 @@ describe('TenantMemberAggregateFactory', () => {
         ),
         userId: new UserUuidValueObject('323e4567-e89b-12d3-a456-426614174000'),
         role: new TenantMemberRoleValueObject(TenantMemberRoleEnum.ADMIN),
-        createdAt: new TenantMemberCreatedAtValueObject(now),
-        updatedAt: new TenantMemberUpdatedAtValueObject(now),
+        createdAt: new DateValueObject(now),
+        updatedAt: new DateValueObject(now),
       };
 
       const aggregate = factory.create(dto, false);
@@ -100,8 +99,8 @@ describe('TenantMemberAggregateFactory', () => {
             '323e4567-e89b-12d3-a456-426614174000',
           ),
           role: new TenantMemberRoleValueObject(role),
-          createdAt: new TenantMemberCreatedAtValueObject(now),
-          updatedAt: new TenantMemberUpdatedAtValueObject(now),
+          createdAt: new DateValueObject(now),
+          updatedAt: new DateValueObject(now),
         };
 
         const aggregate = factory.create(dto, false);
@@ -151,12 +150,8 @@ describe('TenantMemberAggregateFactory', () => {
       expect(aggregate.tenantId).toBeInstanceOf(TenantUuidValueObject);
       expect(aggregate.userId).toBeInstanceOf(UserUuidValueObject);
       expect(aggregate.role).toBeInstanceOf(TenantMemberRoleValueObject);
-      expect(aggregate.createdAt).toBeInstanceOf(
-        TenantMemberCreatedAtValueObject,
-      );
-      expect(aggregate.updatedAt).toBeInstanceOf(
-        TenantMemberUpdatedAtValueObject,
-      );
+      expect(aggregate.createdAt).toBeInstanceOf(DateValueObject);
+      expect(aggregate.updatedAt).toBeInstanceOf(DateValueObject);
     });
 
     it('should generate events when creating from primitives (default behavior)', () => {

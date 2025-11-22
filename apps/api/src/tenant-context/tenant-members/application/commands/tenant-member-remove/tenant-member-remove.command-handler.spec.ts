@@ -1,4 +1,5 @@
 import { TenantMemberRemovedEvent } from '@/shared/domain/events/tenant-context/tenant-members/tenant-members-removed/tenant-members-removed.event';
+import { DateValueObject } from '@/shared/domain/value-objects/date/date.vo';
 import { TenantMemberUuidValueObject } from '@/shared/domain/value-objects/identifiers/tenant-member-uuid/tenant-member-uuid.vo';
 import { TenantUuidValueObject } from '@/shared/domain/value-objects/identifiers/tenant-uuid/tenant-uuid.vo';
 import { UserUuidValueObject } from '@/shared/domain/value-objects/identifiers/user-uuid/user-uuid.vo';
@@ -8,9 +9,7 @@ import { AssertTenantMemberExsistsService } from '@/tenant-context/tenant-member
 import { TenantMemberAggregate } from '@/tenant-context/tenant-members/domain/aggregates/tenant-member.aggregate';
 import { TenantMemberRoleEnum } from '@/tenant-context/tenant-members/domain/enums/tenant-member-role/tenant-member-role.enum';
 import { TenantMemberWriteRepository } from '@/tenant-context/tenant-members/domain/repositories/tenant-member-write.repository';
-import { TenantMemberCreatedAtValueObject } from '@/tenant-context/tenant-members/domain/value-objects/tenant-member-created-at/tenant-member-created-at.vo';
 import { TenantMemberRoleValueObject } from '@/tenant-context/tenant-members/domain/value-objects/tenant-member-role/tenant-member-role.vo';
-import { TenantMemberUpdatedAtValueObject } from '@/tenant-context/tenant-members/domain/value-objects/tenant-member-updated-at/tenant-member-updated-at.vo';
 import { EventBus } from '@nestjs/cqrs';
 import { TenantMemberRemoveCommand } from './tenant-member-remove.command';
 import { TenantMemberRemoveCommandHandler } from './tenant-member-remove.command-handler';
@@ -68,8 +67,8 @@ describe('TenantMemberRemoveCommandHandler', () => {
             '323e4567-e89b-12d3-a456-426614174000',
           ),
           role: new TenantMemberRoleValueObject(TenantMemberRoleEnum.MEMBER),
-          createdAt: new TenantMemberCreatedAtValueObject(now),
-          updatedAt: new TenantMemberUpdatedAtValueObject(now),
+          createdAt: new DateValueObject(now),
+          updatedAt: new DateValueObject(now),
         },
         false,
       );
@@ -132,8 +131,8 @@ describe('TenantMemberRemoveCommandHandler', () => {
             '323e4567-e89b-12d3-a456-426614174000',
           ),
           role: new TenantMemberRoleValueObject(TenantMemberRoleEnum.MEMBER),
-          createdAt: new TenantMemberCreatedAtValueObject(now),
-          updatedAt: new TenantMemberUpdatedAtValueObject(now),
+          createdAt: new DateValueObject(now),
+          updatedAt: new DateValueObject(now),
         },
         false,
       );
@@ -154,8 +153,8 @@ describe('TenantMemberRemoveCommandHandler', () => {
             '323e4567-e89b-12d3-a456-426614174000',
           ),
           role: new TenantMemberRoleValueObject(TenantMemberRoleEnum.MEMBER),
-          createdAt: new TenantMemberCreatedAtValueObject(now),
-          updatedAt: new TenantMemberUpdatedAtValueObject(now),
+          createdAt: new DateValueObject(now),
+          updatedAt: new DateValueObject(now),
         },
         false,
       );
@@ -193,8 +192,8 @@ describe('TenantMemberRemoveCommandHandler', () => {
             '323e4567-e89b-12d3-a456-426614174000',
           ),
           role: new TenantMemberRoleValueObject(TenantMemberRoleEnum.MEMBER),
-          createdAt: new TenantMemberCreatedAtValueObject(now),
-          updatedAt: new TenantMemberUpdatedAtValueObject(now),
+          createdAt: new DateValueObject(now),
+          updatedAt: new DateValueObject(now),
         },
         false,
       );

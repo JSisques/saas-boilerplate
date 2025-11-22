@@ -1,6 +1,7 @@
+import { BasePrismaDto } from '@/shared/infrastructure/database/prisma/dtos/base-prisma.dto';
 import { AuthProviderEnum } from '@prisma/client';
 
-export type AuthPrismaDto = {
+export type AuthPrismaDto = BasePrismaDto & {
   id: string;
   userId: string;
   email: string | null;
@@ -11,6 +12,4 @@ export type AuthPrismaDto = {
   provider: AuthProviderEnum;
   providerId: string | null;
   twoFactorEnabled: boolean;
-  createdAt: Date;
-  updatedAt: Date;
 };

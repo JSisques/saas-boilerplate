@@ -1,16 +1,15 @@
 import { IWriteFactory } from '@/shared/domain/interfaces/write-factory.interface';
+import { DateValueObject } from '@/shared/domain/value-objects/date/date.vo';
 import { UserUuidValueObject } from '@/shared/domain/value-objects/identifiers/user-uuid/user-uuid.vo';
 import { UserAggregate } from '@/user-context/users/domain/aggregates/user.aggregate';
 import { IUserCreateDto } from '@/user-context/users/domain/dtos/entities/user-create/user-create.dto';
 import { UserPrimitives } from '@/user-context/users/domain/primitives/user.primitives';
 import { UserAvatarUrlValueObject } from '@/user-context/users/domain/value-objects/user-avatar-url/user-avatar-url.vo';
 import { UserBioValueObject } from '@/user-context/users/domain/value-objects/user-bio/user-bio.vo';
-import { UserCreatedAtValueObject } from '@/user-context/users/domain/value-objects/user-created-at/user-created-at.vo';
 import { UserLastNameValueObject } from '@/user-context/users/domain/value-objects/user-last-name/user-last-name.vo';
 import { UserNameValueObject } from '@/user-context/users/domain/value-objects/user-name/user-name.vo';
 import { UserRoleValueObject } from '@/user-context/users/domain/value-objects/user-role/user-role.vo';
 import { UserStatusValueObject } from '@/user-context/users/domain/value-objects/user-status/user-status.vo';
-import { UserUpdatedAtValueObject } from '@/user-context/users/domain/value-objects/user-updated-at/user-updated-at.vo';
 import { UserUserNameValueObject } from '@/user-context/users/domain/value-objects/user-user-name/user-user-name.vo';
 import { Injectable } from '@nestjs/common';
 
@@ -76,8 +75,8 @@ export class UserAggregateFactory
       userName: data.userName
         ? new UserUserNameValueObject(data.userName)
         : null,
-      createdAt: new UserCreatedAtValueObject(data.createdAt),
-      updatedAt: new UserUpdatedAtValueObject(data.updatedAt),
+      createdAt: new DateValueObject(data.createdAt),
+      updatedAt: new DateValueObject(data.updatedAt),
     });
   }
 }

@@ -5,12 +5,11 @@ import {
   AUTH_WRITE_REPOSITORY_TOKEN,
   AuthWriteRepository,
 } from '@/auth-context/auth/domain/repositories/auth-write.repository';
-import { AuthCreatedAtValueObject } from '@/auth-context/auth/domain/value-objects/auth-created-at/auth-created-at.vo';
 import { AuthEmailVerifiedValueObject } from '@/auth-context/auth/domain/value-objects/auth-email-verified/auth-email-verified.vo';
 import { AuthPasswordValueObject } from '@/auth-context/auth/domain/value-objects/auth-password/auth-password.vo';
 import { AuthProviderValueObject } from '@/auth-context/auth/domain/value-objects/auth-provider/auth-provider.vo';
 import { AuthTwoFactorEnabledValueObject } from '@/auth-context/auth/domain/value-objects/auth-two-factor-enabled/auth-two-factor-enabled.vo';
-import { AuthUpdatedAtValueObject } from '@/auth-context/auth/domain/value-objects/auth-updated-at/auth-updated-at.vo';
+import { DateValueObject } from '@/shared/domain/value-objects/date/date.vo';
 import { AuthUuidValueObject } from '@/shared/domain/value-objects/identifiers/auth-uuid/auth-uuid.vo';
 import { UserUuidValueObject } from '@/shared/domain/value-objects/identifiers/user-uuid/user-uuid.vo';
 import { UserCreateCommand } from '@/user-context/users/application/commands/user-create/user-create.command';
@@ -80,8 +79,8 @@ export class AuthRegisterByEmailCommandHandler
       provider: new AuthProviderValueObject(AuthProviderEnum.LOCAL),
       providerId: null,
       twoFactorEnabled: new AuthTwoFactorEnabledValueObject(false),
-      createdAt: new AuthCreatedAtValueObject(new Date()),
-      updatedAt: new AuthUpdatedAtValueObject(new Date()),
+      createdAt: new DateValueObject(new Date()),
+      updatedAt: new DateValueObject(new Date()),
     });
 
     // 02: Save the auth entity

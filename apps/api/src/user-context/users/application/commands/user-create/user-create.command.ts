@@ -4,12 +4,10 @@ import { UserRoleEnum } from '@/user-context/users/domain/enums/user-role/user-r
 import { UserStatusEnum } from '@/user-context/users/domain/enums/user-status/user-status.enum';
 import { UserAvatarUrlValueObject } from '@/user-context/users/domain/value-objects/user-avatar-url/user-avatar-url.vo';
 import { UserBioValueObject } from '@/user-context/users/domain/value-objects/user-bio/user-bio.vo';
-import { UserCreatedAtValueObject } from '@/user-context/users/domain/value-objects/user-created-at/user-created-at.vo';
 import { UserLastNameValueObject } from '@/user-context/users/domain/value-objects/user-last-name/user-last-name.vo';
 import { UserNameValueObject } from '@/user-context/users/domain/value-objects/user-name/user-name.vo';
 import { UserRoleValueObject } from '@/user-context/users/domain/value-objects/user-role/user-role.vo';
 import { UserStatusValueObject } from '@/user-context/users/domain/value-objects/user-status/user-status.vo';
-import { UserUpdatedAtValueObject } from '@/user-context/users/domain/value-objects/user-updated-at/user-updated-at.vo';
 import { UserUserNameValueObject } from '@/user-context/users/domain/value-objects/user-user-name/user-user-name.vo';
 
 export class UserCreateCommand {
@@ -21,8 +19,6 @@ export class UserCreateCommand {
   readonly role?: UserRoleValueObject;
   readonly status?: UserStatusValueObject;
   readonly userName: UserUserNameValueObject | null;
-  readonly createdAt: UserCreatedAtValueObject;
-  readonly updatedAt: UserUpdatedAtValueObject;
 
   constructor(props: IUserCreateCommandDto) {
     this.id = new UserUuidValueObject();
@@ -48,7 +44,5 @@ export class UserCreateCommand {
     this.userName = props.userName
       ? new UserUserNameValueObject(props.userName)
       : null;
-    this.createdAt = new UserCreatedAtValueObject(new Date());
-    this.updatedAt = new UserUpdatedAtValueObject(new Date());
   }
 }

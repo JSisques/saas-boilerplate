@@ -1,3 +1,4 @@
+import { DateValueObject } from '@/shared/domain/value-objects/date/date.vo';
 import { UserUuidValueObject } from '@/shared/domain/value-objects/identifiers/user-uuid/user-uuid.vo';
 import { UserUsernameIsNotUniqueException } from '@/user-context/users/application/exceptions/user-username-is-not-unique/user-username-is-not-unique.exception';
 import { AssertUserUsernameIsUniqueService } from '@/user-context/users/application/services/assert-user-username-is-unique/assert-user-username-is-unique.service';
@@ -5,10 +6,8 @@ import { UserAggregate } from '@/user-context/users/domain/aggregates/user.aggre
 import { UserRoleEnum } from '@/user-context/users/domain/enums/user-role/user-role.enum';
 import { UserStatusEnum } from '@/user-context/users/domain/enums/user-status/user-status.enum';
 import { UserWriteRepository } from '@/user-context/users/domain/repositories/user-write.repository';
-import { UserCreatedAtValueObject } from '@/user-context/users/domain/value-objects/user-created-at/user-created-at.vo';
 import { UserRoleValueObject } from '@/user-context/users/domain/value-objects/user-role/user-role.vo';
 import { UserStatusValueObject } from '@/user-context/users/domain/value-objects/user-status/user-status.vo';
-import { UserUpdatedAtValueObject } from '@/user-context/users/domain/value-objects/user-updated-at/user-updated-at.vo';
 import { UserUserNameValueObject } from '@/user-context/users/domain/value-objects/user-user-name/user-user-name.vo';
 
 describe('AssertUserUsernameIsUniqueService', () => {
@@ -52,8 +51,8 @@ describe('AssertUserUsernameIsUniqueService', () => {
           userName: new UserUserNameValueObject(username),
           role: new UserRoleValueObject(UserRoleEnum.USER),
           status: new UserStatusValueObject(UserStatusEnum.ACTIVE),
-          createdAt: new UserCreatedAtValueObject(new Date()),
-          updatedAt: new UserUpdatedAtValueObject(new Date()),
+          createdAt: new DateValueObject(new Date()),
+          updatedAt: new DateValueObject(new Date()),
         },
         false,
       );
@@ -114,8 +113,8 @@ describe('AssertUserUsernameIsUniqueService', () => {
           userName: new UserUserNameValueObject(username),
           role: new UserRoleValueObject(UserRoleEnum.USER),
           status: new UserStatusValueObject(UserStatusEnum.ACTIVE),
-          createdAt: new UserCreatedAtValueObject(new Date()),
-          updatedAt: new UserUpdatedAtValueObject(new Date()),
+          createdAt: new DateValueObject(new Date()),
+          updatedAt: new DateValueObject(new Date()),
         },
         false,
       );
@@ -178,8 +177,8 @@ describe('AssertUserUsernameIsUniqueService', () => {
             userName: new UserUserNameValueObject(username),
             role: new UserRoleValueObject(testCase.role),
             status: new UserStatusValueObject(testCase.status),
-            createdAt: new UserCreatedAtValueObject(new Date()),
-            updatedAt: new UserUpdatedAtValueObject(new Date()),
+            createdAt: new DateValueObject(new Date()),
+            updatedAt: new DateValueObject(new Date()),
           },
           false,
         );

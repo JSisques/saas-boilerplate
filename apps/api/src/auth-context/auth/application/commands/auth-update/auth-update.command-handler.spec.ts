@@ -3,12 +3,11 @@ import { AssertAuthExistsService } from '@/auth-context/auth/application/service
 import { AuthAggregate } from '@/auth-context/auth/domain/aggregate/auth.aggregate';
 import { AuthProviderEnum } from '@/auth-context/auth/domain/enums/auth-provider.enum';
 import { AuthWriteRepository } from '@/auth-context/auth/domain/repositories/auth-write.repository';
-import { AuthCreatedAtValueObject } from '@/auth-context/auth/domain/value-objects/auth-created-at/auth-created-at.vo';
 import { AuthEmailVerifiedValueObject } from '@/auth-context/auth/domain/value-objects/auth-email-verified/auth-email-verified.vo';
 import { AuthEmailValueObject } from '@/auth-context/auth/domain/value-objects/auth-email/auth-email.vo';
 import { AuthProviderValueObject } from '@/auth-context/auth/domain/value-objects/auth-provider/auth-provider.vo';
 import { AuthTwoFactorEnabledValueObject } from '@/auth-context/auth/domain/value-objects/auth-two-factor-enabled/auth-two-factor-enabled.vo';
-import { AuthUpdatedAtValueObject } from '@/auth-context/auth/domain/value-objects/auth-updated-at/auth-updated-at.vo';
+import { DateValueObject } from '@/shared/domain/value-objects/date/date.vo';
 import { AuthUuidValueObject } from '@/shared/domain/value-objects/identifiers/auth-uuid/auth-uuid.vo';
 import { UserUuidValueObject } from '@/shared/domain/value-objects/identifiers/user-uuid/user-uuid.vo';
 import { EventBus } from '@nestjs/cqrs';
@@ -72,8 +71,8 @@ describe('AuthUpdateCommandHandler', () => {
           provider: new AuthProviderValueObject(AuthProviderEnum.LOCAL),
           providerId: null,
           twoFactorEnabled: new AuthTwoFactorEnabledValueObject(false),
-          createdAt: new AuthCreatedAtValueObject(now),
-          updatedAt: new AuthUpdatedAtValueObject(now),
+          createdAt: new DateValueObject(now),
+          updatedAt: new DateValueObject(now),
         },
         false,
       );
