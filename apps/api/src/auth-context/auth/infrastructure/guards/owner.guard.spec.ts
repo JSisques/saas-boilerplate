@@ -75,9 +75,7 @@ describe('OwnerGuard', () => {
         input: { id: '123e4567-e89b-12d3-a456-426614174000' },
       });
 
-      expect(() => guard.canActivate(mockContext)).toThrow(
-        ForbiddenException,
-      );
+      expect(() => guard.canActivate(mockContext)).toThrow(ForbiddenException);
       expect(() => guard.canActivate(mockContext)).toThrow(
         'User not authenticated',
       );
@@ -88,9 +86,7 @@ describe('OwnerGuard', () => {
       mockRequest.user = { role: UserRoleEnum.USER, userId };
       mockGqlContext.getArgs.mockReturnValue({ input: {} });
 
-      expect(() => guard.canActivate(mockContext)).toThrow(
-        ForbiddenException,
-      );
+      expect(() => guard.canActivate(mockContext)).toThrow(ForbiddenException);
       expect(() => guard.canActivate(mockContext)).toThrow(
         'Resource ID is required',
       );
@@ -101,9 +97,7 @@ describe('OwnerGuard', () => {
       mockRequest.user = { role: UserRoleEnum.USER };
       mockGqlContext.getArgs.mockReturnValue({ input: { id: resourceId } });
 
-      expect(() => guard.canActivate(mockContext)).toThrow(
-        ForbiddenException,
-      );
+      expect(() => guard.canActivate(mockContext)).toThrow(ForbiddenException);
       expect(() => guard.canActivate(mockContext)).toThrow(
         'User ID not found in token',
       );
@@ -115,9 +109,7 @@ describe('OwnerGuard', () => {
       mockRequest.user = { role: UserRoleEnum.USER, userId };
       mockGqlContext.getArgs.mockReturnValue({ input: { id: resourceId } });
 
-      expect(() => guard.canActivate(mockContext)).toThrow(
-        ForbiddenException,
-      );
+      expect(() => guard.canActivate(mockContext)).toThrow(ForbiddenException);
       expect(() => guard.canActivate(mockContext)).toThrow(
         'You can only access/modify your own resources',
       );
@@ -128,13 +120,10 @@ describe('OwnerGuard', () => {
       mockRequest.user = { role: UserRoleEnum.USER, userId };
       mockGqlContext.getArgs.mockReturnValue({ input: null });
 
-      expect(() => guard.canActivate(mockContext)).toThrow(
-        ForbiddenException,
-      );
+      expect(() => guard.canActivate(mockContext)).toThrow(ForbiddenException);
       expect(() => guard.canActivate(mockContext)).toThrow(
         'Resource ID is required',
       );
     });
   });
 });
-

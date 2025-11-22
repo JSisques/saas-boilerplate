@@ -100,4 +100,3 @@ describe('CurrentUser', () => {
     expect(result).toBeUndefined();
   });
 });
-

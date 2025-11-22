@@ -1,12 +1,9 @@
-import { AssertAuthViewModelExsistsService } from '@/auth-context/auth/application/services/assert-auth-view-model-exsists/assert-auth-view-model-exsists.service';
 import { AuthUpdatedEventHandler } from '@/auth-context/auth/application/event-handlers/auth-updated/auth-updated.event-handler';
-import {
-  AUTH_READ_REPOSITORY_TOKEN,
-  AuthReadRepository,
-} from '@/auth-context/auth/domain/repositories/auth-read.repository';
+import { AssertAuthViewModelExsistsService } from '@/auth-context/auth/application/services/assert-auth-view-model-exsists/assert-auth-view-model-exsists.service';
+import { AuthProviderEnum } from '@/auth-context/auth/domain/enums/auth-provider.enum';
+import { AuthReadRepository } from '@/auth-context/auth/domain/repositories/auth-read.repository';
 import { AuthViewModel } from '@/auth-context/auth/domain/view-models/auth.view-model';
 import { AuthUpdatedEvent } from '@/shared/domain/events/auth/auth-updated/auth-updated.event';
-import { AuthProviderEnum } from '@/auth-context/auth/domain/enums/auth-provider.enum';
 
 describe('AuthUpdatedEventHandler', () => {
   let handler: AuthUpdatedEventHandler;
@@ -86,9 +83,9 @@ describe('AuthUpdatedEventHandler', () => {
 
       await handler.handle(event);
 
-      expect(mockAssertAuthViewModelExsistsService.execute).toHaveBeenCalledWith(
-        authId,
-      );
+      expect(
+        mockAssertAuthViewModelExsistsService.execute,
+      ).toHaveBeenCalledWith(authId);
       expect(updateSpy).toHaveBeenCalledWith(eventData);
       expect(mockAuthReadRepository.save).toHaveBeenCalledWith(mockViewModel);
       expect(mockAuthReadRepository.save).toHaveBeenCalledTimes(1);
@@ -97,4 +94,3 @@ describe('AuthUpdatedEventHandler', () => {
     });
   });
 });
-

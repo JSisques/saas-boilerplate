@@ -53,4 +53,3 @@ describe('Roles', () => {
     expect(SetMetadata).toHaveBeenCalledWith(ROLES_KEY, []);
   });
 });
-

@@ -1,21 +1,18 @@
-import { IJwtPayload } from '@/auth-context/auth/domain/interfaces/jwt-payload.interface';
-import {
-  AUTH_WRITE_REPOSITORY_TOKEN,
-  AuthWriteRepository,
-} from '@/auth-context/auth/domain/repositories/auth-write.repository';
-import { JwtStrategy } from '@/auth-context/auth/infrastructure/strategies/jwt/jwt.strategy';
 import { AuthAggregate } from '@/auth-context/auth/domain/aggregate/auth.aggregate';
-import { AuthEmailValueObject } from '@/auth-context/auth/domain/value-objects/auth-email/auth-email.vo';
+import { AuthProviderEnum } from '@/auth-context/auth/domain/enums/auth-provider.enum';
+import { IJwtPayload } from '@/auth-context/auth/domain/interfaces/jwt-payload.interface';
+import { AuthWriteRepository } from '@/auth-context/auth/domain/repositories/auth-write.repository';
+import { AuthCreatedAtValueObject } from '@/auth-context/auth/domain/value-objects/auth-created-at/auth-created-at.vo';
 import { AuthEmailVerifiedValueObject } from '@/auth-context/auth/domain/value-objects/auth-email-verified/auth-email-verified.vo';
+import { AuthEmailValueObject } from '@/auth-context/auth/domain/value-objects/auth-email/auth-email.vo';
 import { AuthProviderValueObject } from '@/auth-context/auth/domain/value-objects/auth-provider/auth-provider.vo';
 import { AuthTwoFactorEnabledValueObject } from '@/auth-context/auth/domain/value-objects/auth-two-factor-enabled/auth-two-factor-enabled.vo';
-import { AuthCreatedAtValueObject } from '@/auth-context/auth/domain/value-objects/auth-created-at/auth-created-at.vo';
 import { AuthUpdatedAtValueObject } from '@/auth-context/auth/domain/value-objects/auth-updated-at/auth-updated-at.vo';
-import { AuthProviderEnum } from '@/auth-context/auth/domain/enums/auth-provider.enum';
+import { JwtStrategy } from '@/auth-context/auth/infrastructure/strategies/jwt/jwt.strategy';
 import { AuthUuidValueObject } from '@/shared/domain/value-objects/identifiers/auth-uuid/auth-uuid.vo';
 import { UserUuidValueObject } from '@/shared/domain/value-objects/identifiers/user-uuid/user-uuid.vo';
-import { ConfigService } from '@nestjs/config';
 import { UnauthorizedException } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { UserRoleEnum } from '@prisma/client';
 
 describe('JwtStrategy', () => {
@@ -107,10 +104,7 @@ describe('JwtStrategy', () => {
       await expect(strategy.validate(payload)).rejects.toThrow(
         'User not found',
       );
-      expect(mockAuthWriteRepository.findById).toHaveBeenCalledWith(
-        payload.id,
-      );
+      expect(mockAuthWriteRepository.findById).toHaveBeenCalledWith(payload.id);
     });
   });
 });
-

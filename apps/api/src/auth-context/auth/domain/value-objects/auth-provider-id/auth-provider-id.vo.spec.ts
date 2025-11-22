@@ -24,8 +24,8 @@ describe('AuthProviderIdValueObject', () => {
   });
 
   it('should throw InvalidStringException when string is empty and allowEmpty is false', () => {
-    expect(() =>
-      new AuthProviderIdValueObject('', { allowEmpty: false }),
+    expect(
+      () => new AuthProviderIdValueObject('', { allowEmpty: false }),
     ).toThrow(InvalidStringException);
   });
 
@@ -56,4 +56,3 @@ describe('AuthProviderIdValueObject', () => {
     });
   });
 });
-

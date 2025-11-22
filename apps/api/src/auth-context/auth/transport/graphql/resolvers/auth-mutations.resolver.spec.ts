@@ -108,13 +108,13 @@ describe('AuthMutationsResolver', () => {
       expect(command).toBeInstanceOf(AuthRegisterByEmailCommand);
       expect(command.email.value).toBe('newuser@example.com');
       expect(command.password.value).toBe('SecureP@ssw0rd789');
-      expect(mockMutationResponseGraphQLMapper.toResponseDto).toHaveBeenCalledWith(
-        {
-          success: true,
-          message: 'Auth registered successfully',
-          id: authId,
-        },
-      );
+      expect(
+        mockMutationResponseGraphQLMapper.toResponseDto,
+      ).toHaveBeenCalledWith({
+        success: true,
+        message: 'Auth registered successfully',
+        id: authId,
+      });
     });
 
     it('should handle registration with different email', async () => {
@@ -162,13 +162,13 @@ describe('AuthMutationsResolver', () => {
       const result = await resolver.logout(input);
 
       expect(result).toBe(mutationResponse);
-      expect(mockMutationResponseGraphQLMapper.toResponseDto).toHaveBeenCalledWith(
-        {
-          success: true,
-          message: 'User updated successfully',
-          id: userId,
-        },
-      );
+      expect(
+        mockMutationResponseGraphQLMapper.toResponseDto,
+      ).toHaveBeenCalledWith({
+        success: true,
+        message: 'User updated successfully',
+        id: userId,
+      });
     });
 
     it('should handle logout with different user id', async () => {
@@ -190,10 +190,9 @@ describe('AuthMutationsResolver', () => {
       const result = await resolver.logout(input);
 
       expect(result).toBe(mutationResponse);
-      expect(mockMutationResponseGraphQLMapper.toResponseDto).toHaveBeenCalledTimes(
-        1,
-      );
+      expect(
+        mockMutationResponseGraphQLMapper.toResponseDto,
+      ).toHaveBeenCalledTimes(1);
     });
   });
 });
-

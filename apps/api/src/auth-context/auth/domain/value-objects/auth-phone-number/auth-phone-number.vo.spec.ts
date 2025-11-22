@@ -51,9 +51,9 @@ describe('AuthPhoneNumberValueObject', () => {
   });
 
   it('should throw InvalidPhoneException for phone number too long', () => {
-    expect(() =>
-      new AuthPhoneNumberValueObject('+12345678901234567'),
-    ).toThrow(InvalidPhoneException);
+    expect(() => new AuthPhoneNumberValueObject('+12345678901234567')).toThrow(
+      InvalidPhoneException,
+    );
   });
 
   it('should support equals method from PhoneValueObject', () => {
@@ -78,4 +78,3 @@ describe('AuthPhoneNumberValueObject', () => {
     expect(authPhoneNumber.toE164()).toMatch(/^\+/);
   });
 });
-

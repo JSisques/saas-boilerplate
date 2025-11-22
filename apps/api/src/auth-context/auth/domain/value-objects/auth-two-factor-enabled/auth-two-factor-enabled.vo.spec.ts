@@ -58,4 +58,3 @@ describe('AuthTwoFactorEnabledValueObject', () => {
     expect(authTwoFactorEnabled.isFalse()).toBe(true);
   });
 });
-

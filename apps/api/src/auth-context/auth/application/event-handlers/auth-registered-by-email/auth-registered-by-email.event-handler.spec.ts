@@ -1,13 +1,10 @@
 import { AuthRegisteredByEmailEventHandler } from '@/auth-context/auth/application/event-handlers/auth-registered-by-email/auth-registered-by-email.event-handler';
-import { AuthViewModelFactory } from '@/auth-context/auth/domain/factories/auth-view-model/auth-view-model.factory';
-import {
-  AUTH_READ_REPOSITORY_TOKEN,
-  AuthReadRepository,
-} from '@/auth-context/auth/domain/repositories/auth-read.repository';
-import { AuthViewModel } from '@/auth-context/auth/domain/view-models/auth.view-model';
-import { AuthPrimitives } from '@/auth-context/auth/domain/primitives/auth.primitives';
-import { AuthRegisteredByEmailEvent } from '@/shared/domain/events/auth/auth-registered-by-email/auth-registered-by-email.event';
 import { AuthProviderEnum } from '@/auth-context/auth/domain/enums/auth-provider.enum';
+import { AuthViewModelFactory } from '@/auth-context/auth/domain/factories/auth-view-model/auth-view-model.factory';
+import { AuthPrimitives } from '@/auth-context/auth/domain/primitives/auth.primitives';
+import { AuthReadRepository } from '@/auth-context/auth/domain/repositories/auth-read.repository';
+import { AuthViewModel } from '@/auth-context/auth/domain/view-models/auth.view-model';
+import { AuthRegisteredByEmailEvent } from '@/shared/domain/events/auth/auth-registered-by-email/auth-registered-by-email.event';
 
 describe('AuthRegisteredByEmailEventHandler', () => {
   let handler: AuthRegisteredByEmailEventHandler;
@@ -94,4 +91,3 @@ describe('AuthRegisteredByEmailEventHandler', () => {
     });
   });
 });
-

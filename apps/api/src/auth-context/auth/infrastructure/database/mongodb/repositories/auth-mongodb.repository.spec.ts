@@ -39,7 +39,10 @@ describe('AuthMongoRepository', () => {
       toMongoData: jest.fn(),
     } as unknown as jest.Mocked<AuthMongoDBMapper>;
 
-    repository = new AuthMongoRepository(mockMongoService, mockAuthMongoDBMapper);
+    repository = new AuthMongoRepository(
+      mockMongoService,
+      mockAuthMongoDBMapper,
+    );
   });
 
   afterEach(() => {
@@ -278,4 +281,3 @@ describe('AuthMongoRepository', () => {
     });
   });
 });
-

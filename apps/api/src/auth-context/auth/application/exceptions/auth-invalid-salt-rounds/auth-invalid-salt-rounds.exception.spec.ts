@@ -63,4 +63,3 @@ describe('InvalidSaltRoundsException', () => {
     expect(exceptionHigh.message).toContain(`${highRounds}`);
   });
 });
-

@@ -25,7 +25,9 @@ describe('AuthEmailValueObject', () => {
 
   it('should throw InvalidEmailException for empty string', () => {
     expect(() => new AuthEmailValueObject('')).toThrow(InvalidEmailException);
-    expect(() => new AuthEmailValueObject('   ')).toThrow(InvalidEmailException);
+    expect(() => new AuthEmailValueObject('   ')).toThrow(
+      InvalidEmailException,
+    );
   });
 
   it('should throw InvalidEmailException for invalid email format', () => {
@@ -68,4 +70,3 @@ describe('AuthEmailValueObject', () => {
     expect(authEmail.value).toBe(email.toLowerCase());
   });
 });
-

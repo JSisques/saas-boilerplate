@@ -1,12 +1,9 @@
 import { FindAuthsByCriteriaQueryHandler } from '@/auth-context/auth/application/queries/find-auths-by-criteria/find-auths-by-criteria.query-handler';
-import {
-  AUTH_READ_REPOSITORY_TOKEN,
-  AuthReadRepository,
-} from '@/auth-context/auth/domain/repositories/auth-read.repository';
-import { AuthViewModel } from '@/auth-context/auth/domain/view-models/auth.view-model';
-import { PaginatedResult } from '@/shared/domain/entities/paginated-result.entity';
-import { Criteria } from '@/shared/domain/entities/criteria';
 import { AuthProviderEnum } from '@/auth-context/auth/domain/enums/auth-provider.enum';
+import { AuthReadRepository } from '@/auth-context/auth/domain/repositories/auth-read.repository';
+import { AuthViewModel } from '@/auth-context/auth/domain/view-models/auth.view-model';
+import { Criteria } from '@/shared/domain/entities/criteria';
+import { PaginatedResult } from '@/shared/domain/entities/paginated-result.entity';
 import { FindAuthsByCriteriaQuery } from './find-auths-by-criteria.query';
 
 describe('FindAuthsByCriteriaQueryHandler', () => {
@@ -98,4 +95,3 @@ describe('FindAuthsByCriteriaQueryHandler', () => {
     });
   });
 });
-

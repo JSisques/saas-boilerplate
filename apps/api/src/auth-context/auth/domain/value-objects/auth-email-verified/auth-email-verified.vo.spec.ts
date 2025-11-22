@@ -58,4 +58,3 @@ describe('AuthEmailVerifiedValueObject', () => {
     expect(authEmailVerified.isFalse()).toBe(true);
   });
 });
-

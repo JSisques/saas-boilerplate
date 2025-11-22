@@ -1,37 +1,30 @@
+import { AuthLoginByEmailCommandHandler } from '@/auth-context/auth/application/commands/auth-login-by-email/auth-login-by-email.command-handler';
 import { AssertAuthEmailExistsService } from '@/auth-context/auth/application/services/assert-auth-email-exists/assert-auth-email-exists.service';
 import { JwtAuthService } from '@/auth-context/auth/application/services/jwt-auth/jwt-auth.service';
 import { PasswordHashingService } from '@/auth-context/auth/application/services/password-hashing/password-hashing.service';
-import { AuthLoginByEmailCommandHandler } from '@/auth-context/auth/application/commands/auth-login-by-email/auth-login-by-email.command-handler';
 import { AuthAggregate } from '@/auth-context/auth/domain/aggregate/auth.aggregate';
+import { AuthProviderEnum } from '@/auth-context/auth/domain/enums/auth-provider.enum';
 import { ITokenPair } from '@/auth-context/auth/domain/interfaces/token-pair.interface';
-import {
-  AUTH_READ_REPOSITORY_TOKEN,
-  AuthReadRepository,
-} from '@/auth-context/auth/domain/repositories/auth-read.repository';
-import {
-  AUTH_WRITE_REPOSITORY_TOKEN,
-  AuthWriteRepository,
-} from '@/auth-context/auth/domain/repositories/auth-write.repository';
-import { AuthEmailValueObject } from '@/auth-context/auth/domain/value-objects/auth-email/auth-email.vo';
+import { AuthReadRepository } from '@/auth-context/auth/domain/repositories/auth-read.repository';
+import { AuthWriteRepository } from '@/auth-context/auth/domain/repositories/auth-write.repository';
+import { AuthCreatedAtValueObject } from '@/auth-context/auth/domain/value-objects/auth-created-at/auth-created-at.vo';
 import { AuthEmailVerifiedValueObject } from '@/auth-context/auth/domain/value-objects/auth-email-verified/auth-email-verified.vo';
-import { AuthLastLoginAtValueObject } from '@/auth-context/auth/domain/value-objects/auth-last-login-at/auth-last-login-at.vo';
+import { AuthEmailValueObject } from '@/auth-context/auth/domain/value-objects/auth-email/auth-email.vo';
 import { AuthPasswordValueObject } from '@/auth-context/auth/domain/value-objects/auth-password/auth-password.vo';
 import { AuthProviderValueObject } from '@/auth-context/auth/domain/value-objects/auth-provider/auth-provider.vo';
 import { AuthTwoFactorEnabledValueObject } from '@/auth-context/auth/domain/value-objects/auth-two-factor-enabled/auth-two-factor-enabled.vo';
-import { AuthCreatedAtValueObject } from '@/auth-context/auth/domain/value-objects/auth-created-at/auth-created-at.vo';
 import { AuthUpdatedAtValueObject } from '@/auth-context/auth/domain/value-objects/auth-updated-at/auth-updated-at.vo';
-import { AuthProviderEnum } from '@/auth-context/auth/domain/enums/auth-provider.enum';
+import { AuthUuidValueObject } from '@/shared/domain/value-objects/identifiers/auth-uuid/auth-uuid.vo';
+import { UserUuidValueObject } from '@/shared/domain/value-objects/identifiers/user-uuid/user-uuid.vo';
 import { UserFindByIdQuery } from '@/user-context/users/application/queries/user-find-by-id/user-find-by-id.query';
 import { UserAggregate } from '@/user-context/users/domain/aggregates/user.aggregate';
 import { UserRoleEnum } from '@/user-context/users/domain/enums/user-role/user-role.enum';
 import { UserStatusEnum } from '@/user-context/users/domain/enums/user-status/user-status.enum';
-import { UserUserNameValueObject } from '@/user-context/users/domain/value-objects/user-user-name/user-user-name.vo';
+import { UserCreatedAtValueObject } from '@/user-context/users/domain/value-objects/user-created-at/user-created-at.vo';
 import { UserRoleValueObject } from '@/user-context/users/domain/value-objects/user-role/user-role.vo';
 import { UserStatusValueObject } from '@/user-context/users/domain/value-objects/user-status/user-status.vo';
-import { UserCreatedAtValueObject } from '@/user-context/users/domain/value-objects/user-created-at/user-created-at.vo';
 import { UserUpdatedAtValueObject } from '@/user-context/users/domain/value-objects/user-updated-at/user-updated-at.vo';
-import { AuthUuidValueObject } from '@/shared/domain/value-objects/identifiers/auth-uuid/auth-uuid.vo';
-import { UserUuidValueObject } from '@/shared/domain/value-objects/identifiers/user-uuid/user-uuid.vo';
+import { UserUserNameValueObject } from '@/user-context/users/domain/value-objects/user-user-name/user-user-name.vo';
 import { UnauthorizedException } from '@nestjs/common';
 import { EventBus, QueryBus } from '@nestjs/cqrs';
 import { AuthLoginByEmailCommand } from './auth-login-by-email.command';
@@ -206,7 +199,9 @@ describe('AuthLoginByEmailCommandHandler', () => {
       const mockAuth = new AuthAggregate(
         {
           id: new AuthUuidValueObject('123e4567-e89b-12d3-a456-426614174000'),
-          userId: new UserUuidValueObject('123e4567-e89b-12d3-a456-426614174001'),
+          userId: new UserUuidValueObject(
+            '123e4567-e89b-12d3-a456-426614174001',
+          ),
           email: new AuthEmailValueObject(email),
           emailVerified: new AuthEmailVerifiedValueObject(false),
           lastLoginAt: null,
@@ -241,7 +236,9 @@ describe('AuthLoginByEmailCommandHandler', () => {
       const mockAuth = new AuthAggregate(
         {
           id: new AuthUuidValueObject('123e4567-e89b-12d3-a456-426614174000'),
-          userId: new UserUuidValueObject('123e4567-e89b-12d3-a456-426614174001'),
+          userId: new UserUuidValueObject(
+            '123e4567-e89b-12d3-a456-426614174001',
+          ),
           email: new AuthEmailValueObject(email),
           emailVerified: new AuthEmailVerifiedValueObject(false),
           lastLoginAt: null,
@@ -269,4 +266,3 @@ describe('AuthLoginByEmailCommandHandler', () => {
     });
   });
 });
-

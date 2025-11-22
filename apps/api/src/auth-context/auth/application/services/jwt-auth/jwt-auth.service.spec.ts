@@ -1,6 +1,5 @@
 import { JwtAuthService } from '@/auth-context/auth/application/services/jwt-auth/jwt-auth.service';
 import { IJwtPayload } from '@/auth-context/auth/domain/interfaces/jwt-payload.interface';
-import { ITokenPair } from '@/auth-context/auth/domain/interfaces/token-pair.interface';
 import { UnauthorizedException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
@@ -201,4 +200,3 @@ describe('JwtAuthService', () => {
     });
   });
 });
-

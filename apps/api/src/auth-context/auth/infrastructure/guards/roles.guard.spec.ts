@@ -89,9 +89,7 @@ describe('RolesGuard', () => {
       mockReflector.getAllAndOverride.mockReturnValue(requiredRoles);
       mockRequest.user = null;
 
-      expect(() => guard.canActivate(mockContext)).toThrow(
-        ForbiddenException,
-      );
+      expect(() => guard.canActivate(mockContext)).toThrow(ForbiddenException);
       expect(() => guard.canActivate(mockContext)).toThrow(
         'User not authenticated',
       );
@@ -102,9 +100,7 @@ describe('RolesGuard', () => {
       mockReflector.getAllAndOverride.mockReturnValue(requiredRoles);
       mockRequest.user = {};
 
-      expect(() => guard.canActivate(mockContext)).toThrow(
-        ForbiddenException,
-      );
+      expect(() => guard.canActivate(mockContext)).toThrow(ForbiddenException);
       expect(() => guard.canActivate(mockContext)).toThrow(
         'User role not found',
       );
@@ -115,9 +111,7 @@ describe('RolesGuard', () => {
       mockReflector.getAllAndOverride.mockReturnValue(requiredRoles);
       mockRequest.user = { role: UserRoleEnum.USER };
 
-      expect(() => guard.canActivate(mockContext)).toThrow(
-        ForbiddenException,
-      );
+      expect(() => guard.canActivate(mockContext)).toThrow(ForbiddenException);
       expect(() => guard.canActivate(mockContext)).toThrow(
         'Insufficient permissions. Required roles: ADMIN',
       );
@@ -134,4 +128,3 @@ describe('RolesGuard', () => {
     });
   });
 });
-

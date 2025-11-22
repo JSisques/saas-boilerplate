@@ -31,4 +31,3 @@ describe('Public', () => {
     expect(typeof result).toBe('function');
   });
 });
-

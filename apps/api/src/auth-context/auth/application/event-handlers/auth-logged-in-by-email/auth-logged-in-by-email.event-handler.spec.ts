@@ -1,12 +1,9 @@
-import { AssertAuthViewModelExsistsService } from '@/auth-context/auth/application/services/assert-auth-view-model-exsists/assert-auth-view-model-exsists.service';
 import { AuthLoggedInByEmailEventHandler } from '@/auth-context/auth/application/event-handlers/auth-logged-in-by-email/auth-logged-in-by-email.event-handler';
-import {
-  AUTH_READ_REPOSITORY_TOKEN,
-  AuthReadRepository,
-} from '@/auth-context/auth/domain/repositories/auth-read.repository';
+import { AssertAuthViewModelExsistsService } from '@/auth-context/auth/application/services/assert-auth-view-model-exsists/assert-auth-view-model-exsists.service';
+import { AuthProviderEnum } from '@/auth-context/auth/domain/enums/auth-provider.enum';
+import { AuthReadRepository } from '@/auth-context/auth/domain/repositories/auth-read.repository';
 import { AuthViewModel } from '@/auth-context/auth/domain/view-models/auth.view-model';
 import { AuthLoggedInByEmailEvent } from '@/shared/domain/events/auth/auth-logged-in-by-email/auth-logged-in-by-email.event';
-import { AuthProviderEnum } from '@/auth-context/auth/domain/enums/auth-provider.enum';
 
 describe('AuthLoggedInByEmailEventHandler', () => {
   let handler: AuthLoggedInByEmailEventHandler;
@@ -86,9 +83,9 @@ describe('AuthLoggedInByEmailEventHandler', () => {
 
       await handler.handle(event);
 
-      expect(mockAssertAuthViewModelExsistsService.execute).toHaveBeenCalledWith(
-        authId,
-      );
+      expect(
+        mockAssertAuthViewModelExsistsService.execute,
+      ).toHaveBeenCalledWith(authId);
       expect(updateSpy).toHaveBeenCalledWith(eventData);
       expect(mockAuthReadRepository.save).toHaveBeenCalledWith(mockViewModel);
       expect(mockAuthReadRepository.save).toHaveBeenCalledTimes(1);
@@ -97,4 +94,3 @@ describe('AuthLoggedInByEmailEventHandler', () => {
     });
   });
 });
-

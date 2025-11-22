@@ -1,8 +1,7 @@
+import { AuthProviderEnum } from '@/auth-context/auth/domain/enums/auth-provider.enum';
 import { AuthViewModel } from '@/auth-context/auth/domain/view-models/auth.view-model';
-import { AuthResponseDto } from '@/auth-context/auth/transport/graphql/dtos/responses/auth.response.dto';
 import { AuthGraphQLMapper } from '@/auth-context/auth/transport/graphql/mappers/auth.mapper';
 import { PaginatedResult } from '@/shared/domain/entities/paginated-result.entity';
-import { AuthProviderEnum } from '@/auth-context/auth/domain/enums/auth-provider.enum';
 
 describe('AuthGraphQLMapper', () => {
   let mapper: AuthGraphQLMapper;
@@ -193,4 +192,3 @@ describe('AuthGraphQLMapper', () => {
     });
   });
 });
-

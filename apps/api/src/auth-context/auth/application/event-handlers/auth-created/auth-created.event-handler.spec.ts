@@ -1,13 +1,10 @@
 import { AuthCreatedEventHandler } from '@/auth-context/auth/application/event-handlers/auth-created/auth-created.event-handler';
-import { AuthViewModelFactory } from '@/auth-context/auth/domain/factories/auth-view-model/auth-view-model.factory';
-import {
-  AUTH_READ_REPOSITORY_TOKEN,
-  AuthReadRepository,
-} from '@/auth-context/auth/domain/repositories/auth-read.repository';
-import { AuthViewModel } from '@/auth-context/auth/domain/view-models/auth.view-model';
-import { AuthPrimitives } from '@/auth-context/auth/domain/primitives/auth.primitives';
-import { AuthCreatedEvent } from '@/shared/domain/events/auth/auth-created/auth-created.event';
 import { AuthProviderEnum } from '@/auth-context/auth/domain/enums/auth-provider.enum';
+import { AuthViewModelFactory } from '@/auth-context/auth/domain/factories/auth-view-model/auth-view-model.factory';
+import { AuthPrimitives } from '@/auth-context/auth/domain/primitives/auth.primitives';
+import { AuthReadRepository } from '@/auth-context/auth/domain/repositories/auth-read.repository';
+import { AuthViewModel } from '@/auth-context/auth/domain/view-models/auth.view-model';
+import { AuthCreatedEvent } from '@/shared/domain/events/auth/auth-created/auth-created.event';
 
 describe('AuthCreatedEventHandler', () => {
   let handler: AuthCreatedEventHandler;
@@ -94,4 +91,3 @@ describe('AuthCreatedEventHandler', () => {
     });
   });
 });
-

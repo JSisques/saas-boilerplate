@@ -62,7 +62,9 @@ describe('AuthPrismaMapper', () => {
         false,
       );
 
-      mockAuthAggregateFactory.fromPrimitives.mockReturnValue(mockAuthAggregate);
+      mockAuthAggregateFactory.fromPrimitives.mockReturnValue(
+        mockAuthAggregate,
+      );
 
       const result = mapper.toDomainEntity(prismaData);
 
@@ -122,7 +124,9 @@ describe('AuthPrismaMapper', () => {
         false,
       );
 
-      mockAuthAggregateFactory.fromPrimitives.mockReturnValue(mockAuthAggregate);
+      mockAuthAggregateFactory.fromPrimitives.mockReturnValue(
+        mockAuthAggregate,
+      );
 
       const result = mapper.toDomainEntity(prismaData);
 
@@ -267,4 +271,3 @@ describe('AuthPrismaMapper', () => {
     });
   });
 });
-

@@ -1,17 +1,14 @@
-import { AssertAuthExistsService } from '@/auth-context/auth/application/services/assert-auth-exsists/assert-auth-exsists.service';
 import { AuthUpdateCommandHandler } from '@/auth-context/auth/application/commands/auth-update/auth-update.command-handler';
+import { AssertAuthExistsService } from '@/auth-context/auth/application/services/assert-auth-exsists/assert-auth-exsists.service';
 import { AuthAggregate } from '@/auth-context/auth/domain/aggregate/auth.aggregate';
-import {
-  AUTH_WRITE_REPOSITORY_TOKEN,
-  AuthWriteRepository,
-} from '@/auth-context/auth/domain/repositories/auth-write.repository';
-import { AuthEmailValueObject } from '@/auth-context/auth/domain/value-objects/auth-email/auth-email.vo';
+import { AuthProviderEnum } from '@/auth-context/auth/domain/enums/auth-provider.enum';
+import { AuthWriteRepository } from '@/auth-context/auth/domain/repositories/auth-write.repository';
+import { AuthCreatedAtValueObject } from '@/auth-context/auth/domain/value-objects/auth-created-at/auth-created-at.vo';
 import { AuthEmailVerifiedValueObject } from '@/auth-context/auth/domain/value-objects/auth-email-verified/auth-email-verified.vo';
+import { AuthEmailValueObject } from '@/auth-context/auth/domain/value-objects/auth-email/auth-email.vo';
 import { AuthProviderValueObject } from '@/auth-context/auth/domain/value-objects/auth-provider/auth-provider.vo';
 import { AuthTwoFactorEnabledValueObject } from '@/auth-context/auth/domain/value-objects/auth-two-factor-enabled/auth-two-factor-enabled.vo';
-import { AuthCreatedAtValueObject } from '@/auth-context/auth/domain/value-objects/auth-created-at/auth-created-at.vo';
 import { AuthUpdatedAtValueObject } from '@/auth-context/auth/domain/value-objects/auth-updated-at/auth-updated-at.vo';
-import { AuthProviderEnum } from '@/auth-context/auth/domain/enums/auth-provider.enum';
 import { AuthUuidValueObject } from '@/shared/domain/value-objects/identifiers/auth-uuid/auth-uuid.vo';
 import { UserUuidValueObject } from '@/shared/domain/value-objects/identifiers/user-uuid/user-uuid.vo';
 import { EventBus } from '@nestjs/cqrs';
@@ -64,7 +61,9 @@ describe('AuthUpdateCommandHandler', () => {
       const existingAuth = new AuthAggregate(
         {
           id: new AuthUuidValueObject(authId),
-          userId: new UserUuidValueObject('123e4567-e89b-12d3-a456-426614174001'),
+          userId: new UserUuidValueObject(
+            '123e4567-e89b-12d3-a456-426614174001',
+          ),
           email: new AuthEmailValueObject('old@example.com'),
           emailVerified: new AuthEmailVerifiedValueObject(false),
           lastLoginAt: null,
@@ -119,4 +118,3 @@ describe('AuthUpdateCommandHandler', () => {
     });
   });
 });
-

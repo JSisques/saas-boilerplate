@@ -52,4 +52,3 @@ describe('AuthPasswordValueObject', () => {
     expect(authPassword1.equals(authPassword2)).toBe(false);
   });
 });
-
