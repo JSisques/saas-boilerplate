@@ -20,6 +20,7 @@ import { SubscriptionPlanStripePriceIdValueObject } from '@/billing-context/subs
 import { SubscriptionPlanTrialPeriodDaysValueObject } from '@/billing-context/subscription-plan/domain/value-objects/subscription-plan-trial-period-days/subscription-plan-trial-period-days.vo';
 import { SubscriptionPlanTypeValueObject } from '@/billing-context/subscription-plan/domain/value-objects/subscription-plan-type/subscription-plan-type.vo';
 import { SubscriptionPlanViewModel } from '@/billing-context/subscription-plan/domain/view-models/subscription-plan.view-model';
+import { DateValueObject } from '@/shared/domain/value-objects/date/date.vo';
 import { SubscriptionPlanUuidValueObject } from '@/shared/domain/value-objects/identifiers/subscription-plan/subscription-plan-uuid.vo';
 
 describe('SubscriptionPlanViewModelFactory', () => {
@@ -127,6 +128,8 @@ describe('SubscriptionPlanViewModelFactory', () => {
         features: { apiAccess: true, support: 'priority' },
         limits: { maxUsers: 100, storage: '500GB' },
         stripePriceId: 'price_1234567890',
+        createdAt: new Date('2024-01-01T00:00:00Z'),
+        updatedAt: new Date('2024-01-02T00:00:00Z'),
       };
 
       const beforeDate = new Date();
@@ -180,6 +183,8 @@ describe('SubscriptionPlanViewModelFactory', () => {
         features: null,
         limits: null,
         stripePriceId: null,
+        createdAt: new Date('2024-01-01T00:00:00Z'),
+        updatedAt: new Date('2024-01-02T00:00:00Z'),
       };
 
       const viewModel = factory.fromPrimitives(primitives);
@@ -213,6 +218,8 @@ describe('SubscriptionPlanViewModelFactory', () => {
         features: null,
         limits: null,
         stripePriceId: null,
+        createdAt: new Date('2024-01-01T00:00:00Z'),
+        updatedAt: new Date('2024-01-02T00:00:00Z'),
       };
 
       const viewModel = factory.fromPrimitives(primitives);
@@ -260,6 +267,8 @@ describe('SubscriptionPlanViewModelFactory', () => {
           stripePriceId: new SubscriptionPlanStripePriceIdValueObject(
             'price_1234567890',
           ),
+          createdAt: new DateValueObject(new Date('2024-01-01T00:00:00Z')),
+          updatedAt: new DateValueObject(new Date('2024-01-02T00:00:00Z')),
         },
         false,
       );
@@ -324,6 +333,8 @@ describe('SubscriptionPlanViewModelFactory', () => {
           features: null,
           limits: null,
           stripePriceId: null,
+          createdAt: new DateValueObject(new Date('2024-01-01T00:00:00Z')),
+          updatedAt: new DateValueObject(new Date('2024-01-02T00:00:00Z')),
         },
         false,
       );
@@ -368,6 +379,8 @@ describe('SubscriptionPlanViewModelFactory', () => {
           features: null,
           limits: null,
           stripePriceId: null,
+          createdAt: new DateValueObject(new Date('2024-01-01T00:00:00Z')),
+          updatedAt: new DateValueObject(new Date('2024-01-01T00:00:00Z')),
         },
         false,
       );
@@ -405,6 +418,8 @@ describe('SubscriptionPlanViewModelFactory', () => {
           features: null,
           limits: null,
           stripePriceId: null,
+          createdAt: new DateValueObject(new Date('2024-01-01T00:00:00Z')),
+          updatedAt: new DateValueObject(new Date('2024-01-01T00:00:00Z')),
         },
         false,
       );

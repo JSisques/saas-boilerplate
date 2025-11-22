@@ -1,5 +1,8 @@
 import { UserDeletedEvent } from '@/shared/domain/events/users/user-deleted/user-deleted.event';
+import { DateValueObject } from '@/shared/domain/value-objects/date/date.vo';
 import { UserUuidValueObject } from '@/shared/domain/value-objects/identifiers/user-uuid/user-uuid.vo';
+import { UserDeleteCommand } from '@/user-context/users/application/commands/delete-user/delete-user.command';
+import { UserDeleteCommandHandler } from '@/user-context/users/application/commands/delete-user/delete-user.command-handler';
 import { IUserDeleteCommandDto } from '@/user-context/users/application/dtos/commands/user-delete/user-delete-command.dto';
 import { UserNotFoundException } from '@/user-context/users/application/exceptions/user-not-found/user-not-found.exception';
 import { AssertUserExsistsService } from '@/user-context/users/application/services/assert-user-exsits/assert-user-exsits.service';
@@ -7,14 +10,10 @@ import { UserAggregate } from '@/user-context/users/domain/aggregates/user.aggre
 import { UserRoleEnum } from '@/user-context/users/domain/enums/user-role/user-role.enum';
 import { UserStatusEnum } from '@/user-context/users/domain/enums/user-status/user-status.enum';
 import { UserWriteRepository } from '@/user-context/users/domain/repositories/user-write.repository';
-import { UserCreatedAtValueObject } from '@/user-context/users/domain/value-objects/user-created-at/user-created-at.vo';
 import { UserRoleValueObject } from '@/user-context/users/domain/value-objects/user-role/user-role.vo';
 import { UserStatusValueObject } from '@/user-context/users/domain/value-objects/user-status/user-status.vo';
-import { UserUpdatedAtValueObject } from '@/user-context/users/domain/value-objects/user-updated-at/user-updated-at.vo';
 import { UserUserNameValueObject } from '@/user-context/users/domain/value-objects/user-user-name/user-user-name.vo';
 import { EventBus } from '@nestjs/cqrs';
-import { UserDeleteCommand } from './delete-user.command';
-import { UserDeleteCommandHandler } from './delete-user.command-handler';
 
 describe('UserDeleteCommandHandler', () => {
   let handler: UserDeleteCommandHandler;
@@ -64,8 +63,8 @@ describe('UserDeleteCommandHandler', () => {
           userName: new UserUserNameValueObject('johndoe'),
           role: new UserRoleValueObject(UserRoleEnum.USER),
           status: new UserStatusValueObject(UserStatusEnum.ACTIVE),
-          createdAt: new UserCreatedAtValueObject(new Date()),
-          updatedAt: new UserUpdatedAtValueObject(new Date()),
+          createdAt: new DateValueObject(new Date()),
+          updatedAt: new DateValueObject(new Date()),
         },
         false,
       );
@@ -120,8 +119,8 @@ describe('UserDeleteCommandHandler', () => {
           userName: new UserUserNameValueObject('johndoe'),
           role: new UserRoleValueObject(UserRoleEnum.USER),
           status: new UserStatusValueObject(UserStatusEnum.ACTIVE),
-          createdAt: new UserCreatedAtValueObject(new Date()),
-          updatedAt: new UserUpdatedAtValueObject(new Date()),
+          createdAt: new DateValueObject(new Date()),
+          updatedAt: new DateValueObject(new Date()),
         },
         false,
       );
@@ -139,8 +138,8 @@ describe('UserDeleteCommandHandler', () => {
           userName: new UserUserNameValueObject('johndoe'),
           role: new UserRoleValueObject(UserRoleEnum.USER),
           status: new UserStatusValueObject(UserStatusEnum.ACTIVE),
-          createdAt: new UserCreatedAtValueObject(new Date()),
-          updatedAt: new UserUpdatedAtValueObject(new Date()),
+          createdAt: new DateValueObject(new Date()),
+          updatedAt: new DateValueObject(new Date()),
         },
         false,
       );
@@ -173,8 +172,8 @@ describe('UserDeleteCommandHandler', () => {
           userName: new UserUserNameValueObject('johndoe'),
           role: new UserRoleValueObject(UserRoleEnum.USER),
           status: new UserStatusValueObject(UserStatusEnum.ACTIVE),
-          createdAt: new UserCreatedAtValueObject(new Date()),
-          updatedAt: new UserUpdatedAtValueObject(new Date()),
+          createdAt: new DateValueObject(new Date()),
+          updatedAt: new DateValueObject(new Date()),
         },
         false,
       );
@@ -205,8 +204,8 @@ describe('UserDeleteCommandHandler', () => {
           userName: new UserUserNameValueObject('johndoe'),
           role: new UserRoleValueObject(UserRoleEnum.USER),
           status: new UserStatusValueObject(UserStatusEnum.ACTIVE),
-          createdAt: new UserCreatedAtValueObject(new Date()),
-          updatedAt: new UserUpdatedAtValueObject(new Date()),
+          createdAt: new DateValueObject(new Date()),
+          updatedAt: new DateValueObject(new Date()),
         },
         false,
       );
@@ -237,8 +236,8 @@ describe('UserDeleteCommandHandler', () => {
           userName: new UserUserNameValueObject('johndoe'),
           role: new UserRoleValueObject(UserRoleEnum.USER),
           status: new UserStatusValueObject(UserStatusEnum.ACTIVE),
-          createdAt: new UserCreatedAtValueObject(new Date()),
-          updatedAt: new UserUpdatedAtValueObject(new Date()),
+          createdAt: new DateValueObject(new Date()),
+          updatedAt: new DateValueObject(new Date()),
         },
         false,
       );
@@ -268,8 +267,8 @@ describe('UserDeleteCommandHandler', () => {
           userName: new UserUserNameValueObject('johndoe'),
           role: new UserRoleValueObject(UserRoleEnum.USER),
           status: new UserStatusValueObject(UserStatusEnum.ACTIVE),
-          createdAt: new UserCreatedAtValueObject(new Date()),
-          updatedAt: new UserUpdatedAtValueObject(new Date()),
+          createdAt: new DateValueObject(new Date()),
+          updatedAt: new DateValueObject(new Date()),
         },
         false,
       );

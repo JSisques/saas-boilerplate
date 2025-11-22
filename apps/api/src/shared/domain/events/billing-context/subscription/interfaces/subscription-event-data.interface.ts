@@ -1,4 +1,6 @@
-export interface ISubscriptionEventData {
+import { IBaseEventData } from '@/shared/domain/interfaces/base-event-data.interface';
+
+export interface ISubscriptionEventData extends IBaseEventData {
   id: string;
   tenantId: string;
   planId: string;

@@ -1,6 +1,6 @@
-import { SubscriptionActivatedEvent } from '@/shared/domain/events/billing-context/subscription/subscription-activated/subscription-activated.event';
-import { ISubscriptionEventData } from '@/shared/domain/events/billing-context/subscription/interfaces/subscription-event-data.interface';
 import { BaseEvent } from '@/shared/domain/events/base-event.interface';
+import { ISubscriptionEventData } from '@/shared/domain/events/billing-context/subscription/interfaces/subscription-event-data.interface';
+import { SubscriptionActivatedEvent } from '@/shared/domain/events/billing-context/subscription/subscription-activated/subscription-activated.event';
 import { IEventMetadata } from '@/shared/domain/interfaces/event-metadata.interface';
 
 describe('SubscriptionActivatedEvent', () => {
@@ -22,6 +22,8 @@ describe('SubscriptionActivatedEvent', () => {
     stripeSubscriptionId: 'sub_1234567890',
     stripeCustomerId: 'cus_1234567890',
     renewalMethod: 'automatic',
+    createdAt: new Date('2024-01-01T00:00:00Z'),
+    updatedAt: new Date('2024-01-01T00:00:00Z'),
   });
 
   it('should be an instance of BaseEvent', () => {

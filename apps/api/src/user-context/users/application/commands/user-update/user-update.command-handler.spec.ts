@@ -1,4 +1,5 @@
 import { UserUpdatedEvent } from '@/shared/domain/events/users/user-updated/user-updated.event';
+import { DateValueObject } from '@/shared/domain/value-objects/date/date.vo';
 import { UserUuidValueObject } from '@/shared/domain/value-objects/identifiers/user-uuid/user-uuid.vo';
 import { IUserUpdateCommandDto } from '@/user-context/users/application/dtos/commands/user-update/user-update-command.dto';
 import { UserNotFoundException } from '@/user-context/users/application/exceptions/user-not-found/user-not-found.exception';
@@ -7,11 +8,9 @@ import { UserAggregate } from '@/user-context/users/domain/aggregates/user.aggre
 import { UserRoleEnum } from '@/user-context/users/domain/enums/user-role/user-role.enum';
 import { UserStatusEnum } from '@/user-context/users/domain/enums/user-status/user-status.enum';
 import { UserWriteRepository } from '@/user-context/users/domain/repositories/user-write.repository';
-import { UserCreatedAtValueObject } from '@/user-context/users/domain/value-objects/user-created-at/user-created-at.vo';
 import { UserNameValueObject } from '@/user-context/users/domain/value-objects/user-name/user-name.vo';
 import { UserRoleValueObject } from '@/user-context/users/domain/value-objects/user-role/user-role.vo';
 import { UserStatusValueObject } from '@/user-context/users/domain/value-objects/user-status/user-status.vo';
-import { UserUpdatedAtValueObject } from '@/user-context/users/domain/value-objects/user-updated-at/user-updated-at.vo';
 import { UserUserNameValueObject } from '@/user-context/users/domain/value-objects/user-user-name/user-user-name.vo';
 import { EventBus } from '@nestjs/cqrs';
 import { UserUpdateCommand } from './user-update.command';
@@ -68,8 +67,8 @@ describe('UserUpdateCommandHandler', () => {
           userName: new UserUserNameValueObject('johndoe'),
           role: new UserRoleValueObject(UserRoleEnum.USER),
           status: new UserStatusValueObject(UserStatusEnum.ACTIVE),
-          createdAt: new UserCreatedAtValueObject(now),
-          updatedAt: new UserUpdatedAtValueObject(now),
+          createdAt: new DateValueObject(now),
+          updatedAt: new DateValueObject(now),
         },
         false,
       );
@@ -126,8 +125,8 @@ describe('UserUpdateCommandHandler', () => {
           userName: new UserUserNameValueObject('johndoe'),
           role: new UserRoleValueObject(UserRoleEnum.USER),
           status: new UserStatusValueObject(UserStatusEnum.ACTIVE),
-          createdAt: new UserCreatedAtValueObject(now),
-          updatedAt: new UserUpdatedAtValueObject(now),
+          createdAt: new DateValueObject(now),
+          updatedAt: new DateValueObject(now),
         },
         false,
       );
@@ -163,8 +162,8 @@ describe('UserUpdateCommandHandler', () => {
           userName: new UserUserNameValueObject('johndoe'),
           role: new UserRoleValueObject(UserRoleEnum.USER),
           status: new UserStatusValueObject(UserStatusEnum.ACTIVE),
-          createdAt: new UserCreatedAtValueObject(now),
-          updatedAt: new UserUpdatedAtValueObject(now),
+          createdAt: new DateValueObject(now),
+          updatedAt: new DateValueObject(now),
         },
         false,
       );
@@ -199,8 +198,8 @@ describe('UserUpdateCommandHandler', () => {
           userName: new UserUserNameValueObject('johndoe'),
           role: new UserRoleValueObject(UserRoleEnum.USER),
           status: new UserStatusValueObject(UserStatusEnum.ACTIVE),
-          createdAt: new UserCreatedAtValueObject(now),
-          updatedAt: new UserUpdatedAtValueObject(now),
+          createdAt: new DateValueObject(now),
+          updatedAt: new DateValueObject(now),
         },
         false,
       );
@@ -217,8 +216,8 @@ describe('UserUpdateCommandHandler', () => {
           userName: new UserUserNameValueObject('johndoe'),
           role: new UserRoleValueObject(UserRoleEnum.USER),
           status: new UserStatusValueObject(UserStatusEnum.ACTIVE),
-          createdAt: new UserCreatedAtValueObject(now),
-          updatedAt: new UserUpdatedAtValueObject(now),
+          createdAt: new DateValueObject(now),
+          updatedAt: new DateValueObject(now),
         },
         false,
       );
@@ -254,8 +253,8 @@ describe('UserUpdateCommandHandler', () => {
           userName: new UserUserNameValueObject('johndoe'),
           role: new UserRoleValueObject(UserRoleEnum.USER),
           status: new UserStatusValueObject(UserStatusEnum.ACTIVE),
-          createdAt: new UserCreatedAtValueObject(now),
-          updatedAt: new UserUpdatedAtValueObject(now),
+          createdAt: new DateValueObject(now),
+          updatedAt: new DateValueObject(now),
         },
         false,
       );
@@ -288,8 +287,8 @@ describe('UserUpdateCommandHandler', () => {
           userName: new UserUserNameValueObject('johndoe'),
           role: new UserRoleValueObject(UserRoleEnum.USER),
           status: new UserStatusValueObject(UserStatusEnum.ACTIVE),
-          createdAt: new UserCreatedAtValueObject(now),
-          updatedAt: new UserUpdatedAtValueObject(now),
+          createdAt: new DateValueObject(now),
+          updatedAt: new DateValueObject(now),
         },
         false,
       );

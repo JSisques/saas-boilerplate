@@ -2,9 +2,8 @@ import { AuthNotFoundByEmailException } from '@/auth-context/auth/application/ex
 import { AssertAuthEmailExistsService } from '@/auth-context/auth/application/services/assert-auth-email-exists/assert-auth-email-exists.service';
 import { AuthAggregate } from '@/auth-context/auth/domain/aggregate/auth.aggregate';
 import { AuthWriteRepository } from '@/auth-context/auth/domain/repositories/auth-write.repository';
-import { AuthCreatedAtValueObject } from '@/auth-context/auth/domain/value-objects/auth-created-at/auth-created-at.vo';
 import { AuthEmailValueObject } from '@/auth-context/auth/domain/value-objects/auth-email/auth-email.vo';
-import { AuthUpdatedAtValueObject } from '@/auth-context/auth/domain/value-objects/auth-updated-at/auth-updated-at.vo';
+import { DateValueObject } from '@/shared/domain/value-objects/date/date.vo';
 import { AuthUuidValueObject } from '@/shared/domain/value-objects/identifiers/auth-uuid/auth-uuid.vo';
 import { UserUuidValueObject } from '@/shared/domain/value-objects/identifiers/user-uuid/user-uuid.vo';
 
@@ -42,8 +41,8 @@ describe('AssertAuthEmailExistsService', () => {
           provider: null as any,
           providerId: null,
           twoFactorEnabled: null as any,
-          createdAt: new AuthCreatedAtValueObject(new Date()),
-          updatedAt: new AuthUpdatedAtValueObject(new Date()),
+          createdAt: new DateValueObject(new Date()),
+          updatedAt: new DateValueObject(new Date()),
         },
         false,
       );

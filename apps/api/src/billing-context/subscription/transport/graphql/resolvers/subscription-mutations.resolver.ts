@@ -24,7 +24,7 @@ import { UserRoleEnum } from '@prisma/client';
 
 @Resolver()
 @UseGuards(JwtAuthGuard, RolesGuard)
-@Roles(UserRoleEnum.USER) // TODO: Check, only can create subscription for owner of the tenant
+@Roles(UserRoleEnum.ADMIN, UserRoleEnum.USER) // TODO: Check, only can create subscription for owner of the tenant
 export class SubscriptionMutationsResolver {
   private readonly logger = new Logger(SubscriptionMutationsResolver.name);
 

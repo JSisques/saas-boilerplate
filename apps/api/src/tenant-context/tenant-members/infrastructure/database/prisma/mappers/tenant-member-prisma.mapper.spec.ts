@@ -1,13 +1,12 @@
+import { DateValueObject } from '@/shared/domain/value-objects/date/date.vo';
 import { TenantMemberUuidValueObject } from '@/shared/domain/value-objects/identifiers/tenant-member-uuid/tenant-member-uuid.vo';
 import { TenantUuidValueObject } from '@/shared/domain/value-objects/identifiers/tenant-uuid/tenant-uuid.vo';
 import { UserUuidValueObject } from '@/shared/domain/value-objects/identifiers/user-uuid/user-uuid.vo';
 import { TenantMemberAggregate } from '@/tenant-context/tenant-members/domain/aggregates/tenant-member.aggregate';
-import { TenantMemberAggregateFactory } from '@/tenant-context/tenant-members/domain/factories/tenant-member-aggregate/tenant-member-aggregate.factory';
 import { TenantMemberRoleEnum } from '@/tenant-context/tenant-members/domain/enums/tenant-member-role/tenant-member-role.enum';
-import { TenantMemberPrismaDto } from '@/tenant-context/tenant-members/infrastructure/database/prisma/dtos/tenant-member-prisma.dto';
-import { TenantMemberCreatedAtValueObject } from '@/tenant-context/tenant-members/domain/value-objects/tenant-member-created-at/tenant-member-created-at.vo';
+import { TenantMemberAggregateFactory } from '@/tenant-context/tenant-members/domain/factories/tenant-member-aggregate/tenant-member-aggregate.factory';
 import { TenantMemberRoleValueObject } from '@/tenant-context/tenant-members/domain/value-objects/tenant-member-role/tenant-member-role.vo';
-import { TenantMemberUpdatedAtValueObject } from '@/tenant-context/tenant-members/domain/value-objects/tenant-member-updated-at/tenant-member-updated-at.vo';
+import { TenantMemberPrismaDto } from '@/tenant-context/tenant-members/infrastructure/database/prisma/dtos/tenant-member-prisma.dto';
 import { TenantMemberRoleEnum as PrismaTenantMemberRoleEnum } from '@prisma/client';
 import { TenantMemberPrismaMapper } from './tenant-member-prisma.mapper';
 
@@ -48,8 +47,8 @@ describe('TenantMemberPrismaMapper', () => {
           tenantId: new TenantUuidValueObject(prismaData.tenantId),
           userId: new UserUuidValueObject(prismaData.userId),
           role: new TenantMemberRoleValueObject(TenantMemberRoleEnum.MEMBER),
-          createdAt: new TenantMemberCreatedAtValueObject(now),
-          updatedAt: new TenantMemberUpdatedAtValueObject(now),
+          createdAt: new DateValueObject(now),
+          updatedAt: new DateValueObject(now),
         },
         false,
       );
@@ -102,8 +101,8 @@ describe('TenantMemberPrismaMapper', () => {
             tenantId: new TenantUuidValueObject(prismaData.tenantId),
             userId: new UserUuidValueObject(prismaData.userId),
             role: new TenantMemberRoleValueObject(role as TenantMemberRoleEnum),
-            createdAt: new TenantMemberCreatedAtValueObject(now),
-            updatedAt: new TenantMemberUpdatedAtValueObject(now),
+            createdAt: new DateValueObject(now),
+            updatedAt: new DateValueObject(now),
           },
           false,
         );
@@ -150,8 +149,8 @@ describe('TenantMemberPrismaMapper', () => {
           tenantId: new TenantUuidValueObject(prismaData.tenantId),
           userId: new UserUuidValueObject(prismaData.userId),
           role: new TenantMemberRoleValueObject(TenantMemberRoleEnum.MEMBER),
-          createdAt: new TenantMemberCreatedAtValueObject(createdAt),
-          updatedAt: new TenantMemberUpdatedAtValueObject(updatedAt),
+          createdAt: new DateValueObject(createdAt),
+          updatedAt: new DateValueObject(updatedAt),
         },
         false,
       );
@@ -188,8 +187,8 @@ describe('TenantMemberPrismaMapper', () => {
             '323e4567-e89b-12d3-a456-426614174000',
           ),
           role: new TenantMemberRoleValueObject(TenantMemberRoleEnum.MEMBER),
-          createdAt: new TenantMemberCreatedAtValueObject(now),
-          updatedAt: new TenantMemberUpdatedAtValueObject(now),
+          createdAt: new DateValueObject(now),
+          updatedAt: new DateValueObject(now),
         },
         false,
       );
@@ -227,8 +226,8 @@ describe('TenantMemberPrismaMapper', () => {
               '323e4567-e89b-12d3-a456-426614174000',
             ),
             role: new TenantMemberRoleValueObject(role),
-            createdAt: new TenantMemberCreatedAtValueObject(now),
-            updatedAt: new TenantMemberUpdatedAtValueObject(now),
+            createdAt: new DateValueObject(now),
+            updatedAt: new DateValueObject(now),
           },
           false,
         );
@@ -253,8 +252,8 @@ describe('TenantMemberPrismaMapper', () => {
             '323e4567-e89b-12d3-a456-426614174000',
           ),
           role: new TenantMemberRoleValueObject(TenantMemberRoleEnum.ADMIN),
-          createdAt: new TenantMemberCreatedAtValueObject(now),
-          updatedAt: new TenantMemberUpdatedAtValueObject(now),
+          createdAt: new DateValueObject(now),
+          updatedAt: new DateValueObject(now),
         },
         false,
       );

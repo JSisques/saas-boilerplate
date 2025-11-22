@@ -1,6 +1,6 @@
-import { SubscriptionPlanCreatedEvent } from '@/shared/domain/events/billing-context/subscription-plan/subscription-plan-created/subscription-plan-created.event';
-import { ISubscriptionPlanEventData } from '@/shared/domain/events/billing-context/subscription-plan/interfaces/subscription-plan-event-data.interface';
 import { BaseEvent } from '@/shared/domain/events/base-event.interface';
+import { ISubscriptionPlanEventData } from '@/shared/domain/events/billing-context/subscription-plan/interfaces/subscription-plan-event-data.interface';
+import { SubscriptionPlanCreatedEvent } from '@/shared/domain/events/billing-context/subscription-plan/subscription-plan-created/subscription-plan-created.event';
 import { IEventMetadata } from '@/shared/domain/interfaces/event-metadata.interface';
 
 describe('SubscriptionPlanCreatedEvent', () => {
@@ -27,6 +27,8 @@ describe('SubscriptionPlanCreatedEvent', () => {
     features: { storage: '10GB', users: 5 },
     limits: { apiCalls: 1000 },
     stripePriceId: 'price_1234567890',
+    createdAt: new Date('2024-01-01T00:00:00Z'),
+    updatedAt: new Date('2024-01-01T00:00:00Z'),
   });
 
   it('should be an instance of BaseEvent', () => {
