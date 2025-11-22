@@ -15,8 +15,8 @@ import { EventMongoRepository } from '@/event-store-context/event/infrastructure
 import { EventPrismaMapper } from '@/event-store-context/event/infrastructure/prisma/mappers/event-prisma.mapper';
 import { EventPrismaRepository } from '@/event-store-context/event/infrastructure/prisma/repositories/event-prisma.repository';
 import { EventGraphQLMapper } from '@/event-store-context/event/transport/graphql/mappers/event.mapper';
-import { EventMutationResolver } from '@/event-store-context/event/transport/graphql/resolvers/event-mutations.resolver';
-import { EventQueryResolver } from '@/event-store-context/event/transport/graphql/resolvers/event-queries.resolver';
+import { EventMutationResolver } from '@/event-store-context/event/transport/graphql/resolvers/event-mutations/event-mutations.resolver';
+import { EventQueryResolver } from '@/event-store-context/event/transport/graphql/resolvers/event-queries/event-queries.resolver';
 import { SharedModule } from '@/shared/shared.module';
 import { Module } from '@nestjs/common';
 

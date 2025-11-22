@@ -675,7 +675,7 @@ input PromptFindByIdRequestDto {
 }
 
 type Mutation {
-  eventsReplay(input: EventReplayRequestDto!): MutationResponseDto!
+  eventReplay(input: EventReplayRequestDto!): MutationResponseDto!
   loginByEmail(input: AuthLoginByEmailRequestDto!): LoginResponseDto!
   registerByEmail(input: AuthRegisterByEmailRequestDto!): MutationResponseDto!
   logout(input: UpdateUserRequestDto!): MutationResponseDto!

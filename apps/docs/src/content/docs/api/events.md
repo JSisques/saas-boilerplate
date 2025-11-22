@@ -60,7 +60,7 @@ query EventsByAggregate {
 }
 ```
 
-## Mutation: `eventsReplay`
+## Mutation: `eventReplay`
 
 - **Purpose**: Re-run events that match the provided filters, typically to rebuild read models.
 - **Arguments**: `input` (`EventReplayRequestDto`)
@@ -68,7 +68,7 @@ query EventsByAggregate {
 
 ```graphql
 mutation ReplayTenantEvents {
-  eventsReplay(
+  (
     input: {
       aggregateType: "Tenant"
       from: "2025-01-01T00:00:00.000Z"

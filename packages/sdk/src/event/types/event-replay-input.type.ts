@@ -1,4 +1,4 @@
-export type EventReplayInput = {
+export type EventReplayRequestDto = {
   id?: string;
   eventType?: string;
   aggregateId?: string;
