@@ -5,7 +5,9 @@ import { UserUuidValueObject } from '@/shared/domain/value-objects/identifiers/u
 import { TenantMemberAggregate } from '@/tenant-context/tenant-members/domain/aggregates/tenant-member.aggregate';
 import { ITenantMemberCreateDto } from '@/tenant-context/tenant-members/domain/dtos/entities/tenant-member-create/tenant-member-create.dto';
 import { TenantMemberPrimitives } from '@/tenant-context/tenant-members/domain/primitives/tenant-member.primitives';
+import { TenantMemberCreatedAtValueObject } from '@/tenant-context/tenant-members/domain/value-objects/tenant-member-created-at/tenant-member-created-at.vo';
 import { TenantMemberRoleValueObject } from '@/tenant-context/tenant-members/domain/value-objects/tenant-member-role/tenant-member-role.vo';
+import { TenantMemberUpdatedAtValueObject } from '@/tenant-context/tenant-members/domain/value-objects/tenant-member-updated-at/tenant-member-updated-at.vo';
 import { Injectable } from '@nestjs/common';
 
 /**
@@ -26,6 +28,8 @@ export class TenantMemberAggregateFactory
    * @param data.tenantId - The tenant id.
    * @param data.userId - The user id.
    * @param data.role - The tenant member role.
+   * @param data.createdAt - The tenant member created at.
+   * @param data.updatedAt - The tenant member updated at.
    * @param generateEvent - Whether to generate a creation event (default: true).
    * @returns {TenantMemberAggregate} - The created tenant member aggregate entity.
    */
@@ -44,6 +48,8 @@ export class TenantMemberAggregateFactory
    * @param data.tenantId - The tenant id.
    * @param data.userId - The user id.
    * @param data.role - The tenant member role.
+   * @param data.createdAt - The tenant member created at.
+   * @param data.updatedAt - The tenant member updated at.
    * @returns The created tenant member aggregate entity.
    */
   public fromPrimitives(data: TenantMemberPrimitives): TenantMemberAggregate {
@@ -52,6 +58,8 @@ export class TenantMemberAggregateFactory
       tenantId: new TenantUuidValueObject(data.tenantId),
       userId: new UserUuidValueObject(data.userId),
       role: new TenantMemberRoleValueObject(data.role),
+      createdAt: new TenantMemberCreatedAtValueObject(data.createdAt),
+      updatedAt: new TenantMemberUpdatedAtValueObject(data.updatedAt),
     });
   }
 }

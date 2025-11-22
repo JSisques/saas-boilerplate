@@ -30,6 +30,8 @@ export class TenantMemberPrismaMapper {
       tenantId: tenantMemberData.tenantId,
       userId: tenantMemberData.userId,
       role: tenantMemberData.role,
+      createdAt: new Date(tenantMemberData.createdAt),
+      updatedAt: new Date(tenantMemberData.updatedAt),
     });
   }
 
@@ -54,6 +56,8 @@ export class TenantMemberPrismaMapper {
       tenantId: primitives.tenantId,
       userId: primitives.userId,
       role: primitives.role as TenantMemberRoleEnum,
+      createdAt: primitives.createdAt,
+      updatedAt: primitives.updatedAt,
     };
   }
 }

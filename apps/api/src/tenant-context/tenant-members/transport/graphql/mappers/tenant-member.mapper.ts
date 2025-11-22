@@ -14,6 +14,8 @@ export class TenantMemberGraphQLMapper {
       tenantId: tenantMember.tenantId,
       userId: tenantMember.userId,
       role: tenantMember.role,
+      createdAt: tenantMember.createdAt,
+      updatedAt: tenantMember.updatedAt,
     };
   }
 

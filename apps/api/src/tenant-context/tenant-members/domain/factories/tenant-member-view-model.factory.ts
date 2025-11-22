@@ -43,15 +43,13 @@ export class TenantMemberViewModelFactory
       `Creating tenant member view model from primitives: ${tenantMemberPrimitives}`,
     );
 
-    const now = new Date();
-
     return new TenantMemberViewModel({
       id: tenantMemberPrimitives.id,
       tenantId: tenantMemberPrimitives.tenantId,
       userId: tenantMemberPrimitives.userId,
       role: tenantMemberPrimitives.role,
-      createdAt: now,
-      updatedAt: now,
+      createdAt: tenantMemberPrimitives.createdAt,
+      updatedAt: tenantMemberPrimitives.updatedAt,
     });
   }
   /**
@@ -67,15 +65,13 @@ export class TenantMemberViewModelFactory
       `Creating tenant member view model from aggregate: ${tenantMemberAggregate}`,
     );
 
-    const now = new Date();
-
     return new TenantMemberViewModel({
       id: tenantMemberAggregate.id.value,
       tenantId: tenantMemberAggregate.tenantId.value,
       userId: tenantMemberAggregate.userId.value,
       role: tenantMemberAggregate.role.value,
-      createdAt: now,
-      updatedAt: now,
+      createdAt: tenantMemberAggregate.createdAt.value,
+      updatedAt: tenantMemberAggregate.updatedAt.value,
     });
   }
 }

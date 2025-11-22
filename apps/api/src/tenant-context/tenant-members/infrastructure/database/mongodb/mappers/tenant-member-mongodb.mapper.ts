@@ -21,7 +21,14 @@ export class TenantMemberMongoDBMapper {
       `Converting MongoDB document to tenant member view model with id ${doc.id}`,
     );
 
-    return this.tenantMemberViewModelFactory.create(doc);
+    return this.tenantMemberViewModelFactory.create({
+      id: doc.id,
+      tenantId: doc.tenantId,
+      userId: doc.userId,
+      role: doc.role,
+      createdAt: new Date(doc.createdAt),
+      updatedAt: new Date(doc.updatedAt),
+    });
   }
 
   /**

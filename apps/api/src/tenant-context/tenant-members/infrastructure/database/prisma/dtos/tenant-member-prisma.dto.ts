@@ -5,4 +5,6 @@ export type TenantMemberPrismaDto = {
   tenantId: string;
   userId: string;
   role: TenantMemberRoleEnum;
+  createdAt: Date;
+  updatedAt: Date;
 };

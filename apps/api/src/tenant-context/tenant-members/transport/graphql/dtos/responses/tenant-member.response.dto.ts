@@ -23,6 +23,18 @@ export class TenantMemberResponseDto {
     description: 'The role of the tenant member',
   })
   role?: string;
+
+  @Field(() => Date, {
+    nullable: true,
+    description: 'The created at of the tenant member',
+  })
+  createdAt?: Date;
+
+  @Field(() => Date, {
+    nullable: true,
+    description: 'The updated at of the tenant member',
+  })
+  updatedAt?: Date;
 }
 
 @ObjectType('PaginatedTenantMemberResultDto')

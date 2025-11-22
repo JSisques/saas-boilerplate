@@ -320,6 +320,12 @@ type TenantMemberResponseDto {
 
   """The role of the tenant member"""
   role: String
+
+  """The created at of the tenant member"""
+  createdAt: DateTime
+
+  """The updated at of the tenant member"""
+  updatedAt: DateTime
 }
 
 type PaginatedTenantMemberResultDto {
