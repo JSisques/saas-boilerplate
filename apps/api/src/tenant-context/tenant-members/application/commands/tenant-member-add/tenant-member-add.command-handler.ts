@@ -1,5 +1,5 @@
 import { AssertTenantMemberNotExsistsService } from '@/tenant-context/tenant-members/application/services/assert-tenant-member-not-exsits/assert-tenant-member-not-exsits.service';
-import { TenantMemberAggregateFactory } from '@/tenant-context/tenant-members/domain/factories/tenant-member-aggregate.factory';
+import { TenantMemberAggregateFactory } from '@/tenant-context/tenant-members/domain/factories/tenant-member-aggregate/tenant-member-aggregate.factory';
 import {
   TENANT_MEMBER_WRITE_REPOSITORY_TOKEN,
   TenantMemberWriteRepository,

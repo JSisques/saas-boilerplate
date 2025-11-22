@@ -1,5 +1,5 @@
-import { TenantMemberViewModelFactory } from '@/tenant-context/tenant-members/domain/factories/tenant-member-view-model.factory';
-import { TenantMemberViewModel } from '@/tenant-context/tenant-members/domain/view-models/tenant-member.view-model';
+import { TenantMemberViewModelFactory } from '@/tenant-context/tenant-members/domain/factories/tenant-member-view-model/tenant-member-view-model.factory';
+import { TenantMemberViewModel } from '@/tenant-context/tenant-members/domain/view-models/tenant-member/tenant-member.view-model';
 import { TenantMemberMongoDbDto } from '@/tenant-context/tenant-members/infrastructure/database/mongodb/dtos/tenant-member-mongodb.dto';
 import { Injectable, Logger } from '@nestjs/common';
 
