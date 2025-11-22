@@ -1,4 +1,5 @@
 import { UserCreatedEvent } from '@/shared/domain/events/users/user-created/user-created.event';
+import { DateValueObject } from '@/shared/domain/value-objects/date/date.vo';
 import { UserUuidValueObject } from '@/shared/domain/value-objects/identifiers/user-uuid/user-uuid.vo';
 import { UserAggregate } from '@/user-context/users/domain/aggregates/user.aggregate';
 import { IUserCreateDto } from '@/user-context/users/domain/dtos/entities/user-create/user-create.dto';
@@ -8,12 +9,10 @@ import { UserAggregateFactory } from '@/user-context/users/domain/factories/user
 import { UserPrimitives } from '@/user-context/users/domain/primitives/user.primitives';
 import { UserAvatarUrlValueObject } from '@/user-context/users/domain/value-objects/user-avatar-url/user-avatar-url.vo';
 import { UserBioValueObject } from '@/user-context/users/domain/value-objects/user-bio/user-bio.vo';
-import { UserCreatedAtValueObject } from '@/user-context/users/domain/value-objects/user-created-at/user-created-at.vo';
 import { UserLastNameValueObject } from '@/user-context/users/domain/value-objects/user-last-name/user-last-name.vo';
 import { UserNameValueObject } from '@/user-context/users/domain/value-objects/user-name/user-name.vo';
 import { UserRoleValueObject } from '@/user-context/users/domain/value-objects/user-role/user-role.vo';
 import { UserStatusValueObject } from '@/user-context/users/domain/value-objects/user-status/user-status.vo';
-import { UserUpdatedAtValueObject } from '@/user-context/users/domain/value-objects/user-updated-at/user-updated-at.vo';
 import { UserUserNameValueObject } from '@/user-context/users/domain/value-objects/user-user-name/user-user-name.vo';
 
 describe('UserAggregateFactory', () => {
@@ -38,8 +37,8 @@ describe('UserAggregateFactory', () => {
         avatarUrl: new UserAvatarUrlValueObject(
           'https://example.com/avatar.jpg',
         ),
-        createdAt: new UserCreatedAtValueObject(now),
-        updatedAt: new UserUpdatedAtValueObject(now),
+        createdAt: new DateValueObject(now),
+        updatedAt: new DateValueObject(now),
       };
 
       const aggregate = factory.create(dto);
@@ -72,8 +71,8 @@ describe('UserAggregateFactory', () => {
         lastName: new UserLastNameValueObject('Doe'),
         role: new UserRoleValueObject(UserRoleEnum.USER),
         status: new UserStatusValueObject(UserStatusEnum.ACTIVE),
-        createdAt: new UserCreatedAtValueObject(now),
-        updatedAt: new UserUpdatedAtValueObject(now),
+        createdAt: new DateValueObject(now),
+        updatedAt: new DateValueObject(now),
       };
 
       const aggregate = factory.create(dto, false);
@@ -99,8 +98,8 @@ describe('UserAggregateFactory', () => {
         status: new UserStatusValueObject(UserStatusEnum.INACTIVE),
         bio: null,
         avatarUrl: null,
-        createdAt: new UserCreatedAtValueObject(now),
-        updatedAt: new UserUpdatedAtValueObject(now),
+        createdAt: new DateValueObject(now),
+        updatedAt: new DateValueObject(now),
       };
 
       const aggregate = factory.create(dto, false);
@@ -214,8 +213,8 @@ describe('UserAggregateFactory', () => {
       expect(aggregate.status).toBeInstanceOf(UserStatusValueObject);
       expect(aggregate.bio).toBeInstanceOf(UserBioValueObject);
       expect(aggregate.avatarUrl).toBeInstanceOf(UserAvatarUrlValueObject);
-      expect(aggregate.createdAt).toBeInstanceOf(UserCreatedAtValueObject);
-      expect(aggregate.updatedAt).toBeInstanceOf(UserUpdatedAtValueObject);
+      expect(aggregate.createdAt).toBeInstanceOf(DateValueObject);
+      expect(aggregate.updatedAt).toBeInstanceOf(DateValueObject);
     });
 
     it('should generate events when creating from primitives (default behavior)', () => {

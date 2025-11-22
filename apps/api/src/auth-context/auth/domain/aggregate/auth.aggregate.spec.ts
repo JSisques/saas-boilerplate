@@ -1,7 +1,6 @@
 import { AuthAggregate } from '@/auth-context/auth/domain/aggregate/auth.aggregate';
 import { IAuthCreateDto } from '@/auth-context/auth/domain/dtos/entities/auth-create/auth-create.dto';
 import { AuthProviderEnum } from '@/auth-context/auth/domain/enums/auth-provider.enum';
-import { AuthCreatedAtValueObject } from '@/auth-context/auth/domain/value-objects/auth-created-at/auth-created-at.vo';
 import { AuthEmailVerifiedValueObject } from '@/auth-context/auth/domain/value-objects/auth-email-verified/auth-email-verified.vo';
 import { AuthEmailValueObject } from '@/auth-context/auth/domain/value-objects/auth-email/auth-email.vo';
 import { AuthLastLoginAtValueObject } from '@/auth-context/auth/domain/value-objects/auth-last-login-at/auth-last-login-at.vo';
@@ -10,11 +9,11 @@ import { AuthPhoneNumberValueObject } from '@/auth-context/auth/domain/value-obj
 import { AuthProviderIdValueObject } from '@/auth-context/auth/domain/value-objects/auth-provider-id/auth-provider-id.vo';
 import { AuthProviderValueObject } from '@/auth-context/auth/domain/value-objects/auth-provider/auth-provider.vo';
 import { AuthTwoFactorEnabledValueObject } from '@/auth-context/auth/domain/value-objects/auth-two-factor-enabled/auth-two-factor-enabled.vo';
-import { AuthUpdatedAtValueObject } from '@/auth-context/auth/domain/value-objects/auth-updated-at/auth-updated-at.vo';
 import { AuthCreatedEvent } from '@/shared/domain/events/auth/auth-created/auth-created.event';
 import { AuthDeletedEvent } from '@/shared/domain/events/auth/auth-deleted/auth-deleted.event';
 import { AuthUpdatedLastLoginAtEvent } from '@/shared/domain/events/auth/auth-updated-last-login-at/auth-updated-last-login-at.event';
 import { AuthUpdatedEvent } from '@/shared/domain/events/auth/auth-updated/auth-updated.event';
+import { DateValueObject } from '@/shared/domain/value-objects/date/date.vo';
 import { AuthUuidValueObject } from '@/shared/domain/value-objects/identifiers/auth-uuid/auth-uuid.vo';
 import { UserUuidValueObject } from '@/shared/domain/value-objects/identifiers/user-uuid/user-uuid.vo';
 
@@ -34,8 +33,8 @@ describe('AuthAggregate', () => {
       provider: new AuthProviderValueObject(AuthProviderEnum.LOCAL),
       providerId: null,
       twoFactorEnabled: new AuthTwoFactorEnabledValueObject(false),
-      createdAt: new AuthCreatedAtValueObject(now),
-      updatedAt: new AuthUpdatedAtValueObject(now),
+      createdAt: new DateValueObject(now),
+      updatedAt: new DateValueObject(now),
       ...overrides,
     };
   };
@@ -160,7 +159,7 @@ describe('AuthAggregate', () => {
       const dto = createAuthDto();
       const aggregate = new AuthAggregate(dto, false);
 
-      expect(aggregate.createdAt).toBeInstanceOf(AuthCreatedAtValueObject);
+      expect(aggregate.createdAt).toBeInstanceOf(DateValueObject);
       expect(aggregate.createdAt.value).toEqual(dto.createdAt.value);
     });
 
@@ -168,7 +167,7 @@ describe('AuthAggregate', () => {
       const dto = createAuthDto();
       const aggregate = new AuthAggregate(dto, false);
 
-      expect(aggregate.updatedAt).toBeInstanceOf(AuthUpdatedAtValueObject);
+      expect(aggregate.updatedAt).toBeInstanceOf(DateValueObject);
       expect(aggregate.updatedAt.value).toEqual(dto.updatedAt.value);
     });
   });

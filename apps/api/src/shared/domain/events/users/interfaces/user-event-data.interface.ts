@@ -1,4 +1,6 @@
-export interface IUserEventData {
+import { IBaseEventData } from '@/shared/domain/interfaces/base-event-data.interface';
+
+export interface IUserEventData extends IBaseEventData {
   id: string;
   avatarUrl: string | null;
   bio: string | null;
@@ -7,6 +9,4 @@ export interface IUserEventData {
   role: string;
   status: string;
   userName: string;
-  createdAt: Date;
-  updatedAt: Date;
 }

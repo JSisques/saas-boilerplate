@@ -1,3 +1,4 @@
+import { DateValueObject } from '@/shared/domain/value-objects/date/date.vo';
 import { TenantMemberUuidValueObject } from '@/shared/domain/value-objects/identifiers/tenant-member-uuid/tenant-member-uuid.vo';
 import { TenantUuidValueObject } from '@/shared/domain/value-objects/identifiers/tenant-uuid/tenant-uuid.vo';
 import { UserUuidValueObject } from '@/shared/domain/value-objects/identifiers/user-uuid/user-uuid.vo';
@@ -6,9 +7,7 @@ import { ITenantMemberCreateViewModelDto } from '@/tenant-context/tenant-members
 import { TenantMemberRoleEnum } from '@/tenant-context/tenant-members/domain/enums/tenant-member-role/tenant-member-role.enum';
 import { TenantMemberViewModelFactory } from '@/tenant-context/tenant-members/domain/factories/tenant-member-view-model/tenant-member-view-model.factory';
 import { TenantMemberPrimitives } from '@/tenant-context/tenant-members/domain/primitives/tenant-member.primitives';
-import { TenantMemberCreatedAtValueObject } from '@/tenant-context/tenant-members/domain/value-objects/tenant-member-created-at/tenant-member-created-at.vo';
 import { TenantMemberRoleValueObject } from '@/tenant-context/tenant-members/domain/value-objects/tenant-member-role/tenant-member-role.vo';
-import { TenantMemberUpdatedAtValueObject } from '@/tenant-context/tenant-members/domain/value-objects/tenant-member-updated-at/tenant-member-updated-at.vo';
 import { TenantMemberViewModel } from '@/tenant-context/tenant-members/domain/view-models/tenant-member/tenant-member.view-model';
 
 describe('TenantMemberViewModelFactory', () => {
@@ -154,8 +153,8 @@ describe('TenantMemberViewModelFactory', () => {
             '323e4567-e89b-12d3-a456-426614174000',
           ),
           role: new TenantMemberRoleValueObject(TenantMemberRoleEnum.MEMBER),
-          createdAt: new TenantMemberCreatedAtValueObject(now),
-          updatedAt: new TenantMemberUpdatedAtValueObject(now),
+          createdAt: new DateValueObject(now),
+          updatedAt: new DateValueObject(now),
         },
         false,
       );
@@ -186,8 +185,8 @@ describe('TenantMemberViewModelFactory', () => {
             '323e4567-e89b-12d3-a456-426614174000',
           ),
           role: new TenantMemberRoleValueObject(TenantMemberRoleEnum.OWNER),
-          createdAt: new TenantMemberCreatedAtValueObject(now),
-          updatedAt: new TenantMemberUpdatedAtValueObject(now),
+          createdAt: new DateValueObject(now),
+          updatedAt: new DateValueObject(now),
         },
         false,
       );
@@ -226,8 +225,8 @@ describe('TenantMemberViewModelFactory', () => {
               '323e4567-e89b-12d3-a456-426614174000',
             ),
             role: new TenantMemberRoleValueObject(role),
-            createdAt: new TenantMemberCreatedAtValueObject(now),
-            updatedAt: new TenantMemberUpdatedAtValueObject(now),
+            createdAt: new DateValueObject(now),
+            updatedAt: new DateValueObject(now),
           },
           false,
         );

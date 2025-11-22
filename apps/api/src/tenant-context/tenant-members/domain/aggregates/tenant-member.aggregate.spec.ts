@@ -1,6 +1,7 @@
 import { TenantMemberAddedEvent } from '@/shared/domain/events/tenant-context/tenant-members/tenant-members-added/tenant-members-created.event';
 import { TenantMemberRemovedEvent } from '@/shared/domain/events/tenant-context/tenant-members/tenant-members-removed/tenant-members-removed.event';
 import { TenantMemberUpdatedEvent } from '@/shared/domain/events/tenant-context/tenant-members/tenant-members-updated/tenant-members-updated.event';
+import { DateValueObject } from '@/shared/domain/value-objects/date/date.vo';
 import { TenantMemberUuidValueObject } from '@/shared/domain/value-objects/identifiers/tenant-member-uuid/tenant-member-uuid.vo';
 import { TenantUuidValueObject } from '@/shared/domain/value-objects/identifiers/tenant-uuid/tenant-uuid.vo';
 import { UserUuidValueObject } from '@/shared/domain/value-objects/identifiers/user-uuid/user-uuid.vo';
@@ -8,9 +9,7 @@ import { TenantMemberAggregate } from '@/tenant-context/tenant-members/domain/ag
 import { ITenantMemberCreateDto } from '@/tenant-context/tenant-members/domain/dtos/entities/tenant-member-create/tenant-member-create.dto';
 import { ITenantMemberUpdateDto } from '@/tenant-context/tenant-members/domain/dtos/entities/tenant-member-update/tenant-member-update.dto';
 import { TenantMemberRoleEnum } from '@/tenant-context/tenant-members/domain/enums/tenant-member-role/tenant-member-role.enum';
-import { TenantMemberCreatedAtValueObject } from '@/tenant-context/tenant-members/domain/value-objects/tenant-member-created-at/tenant-member-created-at.vo';
 import { TenantMemberRoleValueObject } from '@/tenant-context/tenant-members/domain/value-objects/tenant-member-role/tenant-member-role.vo';
-import { TenantMemberUpdatedAtValueObject } from '@/tenant-context/tenant-members/domain/value-objects/tenant-member-updated-at/tenant-member-updated-at.vo';
 
 describe('TenantMemberAggregate', () => {
   const createProps = (): ITenantMemberCreateDto => {
@@ -24,8 +23,8 @@ describe('TenantMemberAggregate', () => {
       ),
       userId: new UserUuidValueObject('323e4567-e89b-12d3-a456-426614174000'),
       role: new TenantMemberRoleValueObject(TenantMemberRoleEnum.MEMBER),
-      createdAt: new TenantMemberCreatedAtValueObject(now),
-      updatedAt: new TenantMemberUpdatedAtValueObject(now),
+      createdAt: new DateValueObject(now),
+      updatedAt: new DateValueObject(now),
     };
   };
 
@@ -198,9 +197,7 @@ describe('TenantMemberAggregate', () => {
       const props = createProps();
       const aggregate = new TenantMemberAggregate(props, false);
 
-      expect(aggregate.createdAt).toBeInstanceOf(
-        TenantMemberCreatedAtValueObject,
-      );
+      expect(aggregate.createdAt).toBeInstanceOf(DateValueObject);
       expect(aggregate.createdAt.value).toEqual(props.createdAt.value);
     });
 
@@ -208,9 +205,7 @@ describe('TenantMemberAggregate', () => {
       const props = createProps();
       const aggregate = new TenantMemberAggregate(props, false);
 
-      expect(aggregate.updatedAt).toBeInstanceOf(
-        TenantMemberUpdatedAtValueObject,
-      );
+      expect(aggregate.updatedAt).toBeInstanceOf(DateValueObject);
       expect(aggregate.updatedAt.value).toEqual(props.updatedAt.value);
     });
   });

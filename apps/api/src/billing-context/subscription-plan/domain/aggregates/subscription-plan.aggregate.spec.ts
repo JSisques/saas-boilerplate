@@ -20,6 +20,7 @@ import { SubscriptionPlanTrialPeriodDaysValueObject } from '@/billing-context/su
 import { SubscriptionPlanTypeValueObject } from '@/billing-context/subscription-plan/domain/value-objects/subscription-plan-type/subscription-plan-type.vo';
 import { SubscriptionPlanDeletedEvent } from '@/shared/domain/events/billing-context/subscription-plan/subscription-plan-deleted/subscription-plan-deleted.event';
 import { SubscriptionPlanUpdatedEvent } from '@/shared/domain/events/billing-context/subscription-plan/subscription-plan-updated/subscription-plan-updated.event';
+import { DateValueObject } from '@/shared/domain/value-objects/date/date.vo';
 import { SubscriptionPlanUuidValueObject } from '@/shared/domain/value-objects/identifiers/subscription-plan/subscription-plan-uuid.vo';
 
 describe('SubscriptionPlanAggregate', () => {
@@ -52,6 +53,8 @@ describe('SubscriptionPlanAggregate', () => {
       stripePriceId: new SubscriptionPlanStripePriceIdValueObject(
         'price_original123',
       ),
+      createdAt: new DateValueObject(new Date()),
+      updatedAt: new DateValueObject(new Date()),
     };
 
     return new SubscriptionPlanAggregate(dto, generateEvent);

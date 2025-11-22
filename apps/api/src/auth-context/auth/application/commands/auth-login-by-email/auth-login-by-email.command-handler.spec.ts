@@ -7,23 +7,20 @@ import { AuthProviderEnum } from '@/auth-context/auth/domain/enums/auth-provider
 import { ITokenPair } from '@/auth-context/auth/domain/interfaces/token-pair.interface';
 import { AuthReadRepository } from '@/auth-context/auth/domain/repositories/auth-read.repository';
 import { AuthWriteRepository } from '@/auth-context/auth/domain/repositories/auth-write.repository';
-import { AuthCreatedAtValueObject } from '@/auth-context/auth/domain/value-objects/auth-created-at/auth-created-at.vo';
 import { AuthEmailVerifiedValueObject } from '@/auth-context/auth/domain/value-objects/auth-email-verified/auth-email-verified.vo';
 import { AuthEmailValueObject } from '@/auth-context/auth/domain/value-objects/auth-email/auth-email.vo';
 import { AuthPasswordValueObject } from '@/auth-context/auth/domain/value-objects/auth-password/auth-password.vo';
 import { AuthProviderValueObject } from '@/auth-context/auth/domain/value-objects/auth-provider/auth-provider.vo';
 import { AuthTwoFactorEnabledValueObject } from '@/auth-context/auth/domain/value-objects/auth-two-factor-enabled/auth-two-factor-enabled.vo';
-import { AuthUpdatedAtValueObject } from '@/auth-context/auth/domain/value-objects/auth-updated-at/auth-updated-at.vo';
+import { DateValueObject } from '@/shared/domain/value-objects/date/date.vo';
 import { AuthUuidValueObject } from '@/shared/domain/value-objects/identifiers/auth-uuid/auth-uuid.vo';
 import { UserUuidValueObject } from '@/shared/domain/value-objects/identifiers/user-uuid/user-uuid.vo';
 import { UserFindByIdQuery } from '@/user-context/users/application/queries/user-find-by-id/user-find-by-id.query';
 import { UserAggregate } from '@/user-context/users/domain/aggregates/user.aggregate';
 import { UserRoleEnum } from '@/user-context/users/domain/enums/user-role/user-role.enum';
 import { UserStatusEnum } from '@/user-context/users/domain/enums/user-status/user-status.enum';
-import { UserCreatedAtValueObject } from '@/user-context/users/domain/value-objects/user-created-at/user-created-at.vo';
 import { UserRoleValueObject } from '@/user-context/users/domain/value-objects/user-role/user-role.vo';
 import { UserStatusValueObject } from '@/user-context/users/domain/value-objects/user-status/user-status.vo';
-import { UserUpdatedAtValueObject } from '@/user-context/users/domain/value-objects/user-updated-at/user-updated-at.vo';
 import { UserUserNameValueObject } from '@/user-context/users/domain/value-objects/user-user-name/user-user-name.vo';
 import { UnauthorizedException } from '@nestjs/common';
 import { EventBus, QueryBus } from '@nestjs/cqrs';
@@ -123,8 +120,8 @@ describe('AuthLoginByEmailCommandHandler', () => {
           provider: new AuthProviderValueObject(AuthProviderEnum.LOCAL),
           providerId: null,
           twoFactorEnabled: new AuthTwoFactorEnabledValueObject(false),
-          createdAt: new AuthCreatedAtValueObject(now),
-          updatedAt: new AuthUpdatedAtValueObject(now),
+          createdAt: new DateValueObject(now),
+          updatedAt: new DateValueObject(now),
         },
         false,
       );
@@ -135,8 +132,8 @@ describe('AuthLoginByEmailCommandHandler', () => {
           userName: new UserUserNameValueObject('johndoe'),
           role: new UserRoleValueObject(UserRoleEnum.USER),
           status: new UserStatusValueObject(UserStatusEnum.ACTIVE),
-          createdAt: new UserCreatedAtValueObject(now),
-          updatedAt: new UserUpdatedAtValueObject(now),
+          createdAt: new DateValueObject(now),
+          updatedAt: new DateValueObject(now),
         },
         false,
       );
@@ -210,8 +207,8 @@ describe('AuthLoginByEmailCommandHandler', () => {
           provider: new AuthProviderValueObject(AuthProviderEnum.LOCAL),
           providerId: null,
           twoFactorEnabled: new AuthTwoFactorEnabledValueObject(false),
-          createdAt: new AuthCreatedAtValueObject(now),
-          updatedAt: new AuthUpdatedAtValueObject(now),
+          createdAt: new DateValueObject(now),
+          updatedAt: new DateValueObject(now),
         },
         false,
       );
@@ -247,8 +244,8 @@ describe('AuthLoginByEmailCommandHandler', () => {
           provider: new AuthProviderValueObject(AuthProviderEnum.LOCAL),
           providerId: null,
           twoFactorEnabled: new AuthTwoFactorEnabledValueObject(false),
-          createdAt: new AuthCreatedAtValueObject(now),
-          updatedAt: new AuthUpdatedAtValueObject(now),
+          createdAt: new DateValueObject(now),
+          updatedAt: new DateValueObject(now),
         },
         false,
       );

@@ -1,13 +1,12 @@
+import { DateValueObject } from '@/shared/domain/value-objects/date/date.vo';
 import { TenantMemberUuidValueObject } from '@/shared/domain/value-objects/identifiers/tenant-member-uuid/tenant-member-uuid.vo';
 import { TenantUuidValueObject } from '@/shared/domain/value-objects/identifiers/tenant-uuid/tenant-uuid.vo';
 import { UserUuidValueObject } from '@/shared/domain/value-objects/identifiers/user-uuid/user-uuid.vo';
 import { TenantMemberAggregate } from '@/tenant-context/tenant-members/domain/aggregates/tenant-member.aggregate';
 import { TenantMemberRoleEnum } from '@/tenant-context/tenant-members/domain/enums/tenant-member-role/tenant-member-role.enum';
+import { TenantMemberRoleValueObject } from '@/tenant-context/tenant-members/domain/value-objects/tenant-member-role/tenant-member-role.vo';
 import { TenantMemberPrismaDto } from '@/tenant-context/tenant-members/infrastructure/database/prisma/dtos/tenant-member-prisma.dto';
 import { TenantMemberPrismaMapper } from '@/tenant-context/tenant-members/infrastructure/database/prisma/mappers/tenant-member-prisma.mapper';
-import { TenantMemberCreatedAtValueObject } from '@/tenant-context/tenant-members/domain/value-objects/tenant-member-created-at/tenant-member-created-at.vo';
-import { TenantMemberRoleValueObject } from '@/tenant-context/tenant-members/domain/value-objects/tenant-member-role/tenant-member-role.vo';
-import { TenantMemberUpdatedAtValueObject } from '@/tenant-context/tenant-members/domain/value-objects/tenant-member-updated-at/tenant-member-updated-at.vo';
 import { TenantMemberRoleEnum as PrismaTenantMemberRoleEnum } from '@prisma/client';
 import { TenantMemberPrismaRepository } from './tenant-member-prisma.repository';
 
@@ -73,8 +72,8 @@ describe('TenantMemberPrismaRepository', () => {
           tenantId: new TenantUuidValueObject(prismaData.tenantId),
           userId: new UserUuidValueObject(prismaData.userId),
           role: new TenantMemberRoleValueObject(TenantMemberRoleEnum.MEMBER),
-          createdAt: new TenantMemberCreatedAtValueObject(now),
-          updatedAt: new TenantMemberUpdatedAtValueObject(now),
+          createdAt: new DateValueObject(now),
+          updatedAt: new DateValueObject(now),
         },
         false,
       );
@@ -149,8 +148,8 @@ describe('TenantMemberPrismaRepository', () => {
               role: new TenantMemberRoleValueObject(
                 data.role as TenantMemberRoleEnum,
               ),
-              createdAt: new TenantMemberCreatedAtValueObject(now),
-              updatedAt: new TenantMemberUpdatedAtValueObject(now),
+              createdAt: new DateValueObject(now),
+              updatedAt: new DateValueObject(now),
             },
             false,
           ),
@@ -214,8 +213,8 @@ describe('TenantMemberPrismaRepository', () => {
               role: new TenantMemberRoleValueObject(
                 data.role as TenantMemberRoleEnum,
               ),
-              createdAt: new TenantMemberCreatedAtValueObject(now),
-              updatedAt: new TenantMemberUpdatedAtValueObject(now),
+              createdAt: new DateValueObject(now),
+              updatedAt: new DateValueObject(now),
             },
             false,
           ),
@@ -256,8 +255,8 @@ describe('TenantMemberPrismaRepository', () => {
           tenantId: new TenantUuidValueObject(tenantId),
           userId: new UserUuidValueObject(userId),
           role: new TenantMemberRoleValueObject(TenantMemberRoleEnum.MEMBER),
-          createdAt: new TenantMemberCreatedAtValueObject(now),
-          updatedAt: new TenantMemberUpdatedAtValueObject(now),
+          createdAt: new DateValueObject(now),
+          updatedAt: new DateValueObject(now),
         },
         false,
       );
@@ -311,8 +310,8 @@ describe('TenantMemberPrismaRepository', () => {
             '323e4567-e89b-12d3-a456-426614174000',
           ),
           role: new TenantMemberRoleValueObject(TenantMemberRoleEnum.MEMBER),
-          createdAt: new TenantMemberCreatedAtValueObject(now),
-          updatedAt: new TenantMemberUpdatedAtValueObject(now),
+          createdAt: new DateValueObject(now),
+          updatedAt: new DateValueObject(now),
         },
         false,
       );
@@ -336,8 +335,8 @@ describe('TenantMemberPrismaRepository', () => {
           tenantId: new TenantUuidValueObject(prismaData.tenantId),
           userId: new UserUuidValueObject(prismaData.userId),
           role: new TenantMemberRoleValueObject(TenantMemberRoleEnum.MEMBER),
-          createdAt: new TenantMemberCreatedAtValueObject(now),
-          updatedAt: new TenantMemberUpdatedAtValueObject(now),
+          createdAt: new DateValueObject(now),
+          updatedAt: new DateValueObject(now),
         },
         false,
       );

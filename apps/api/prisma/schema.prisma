@@ -169,8 +169,8 @@ enum SubscriptionPlanTypeEnum {
 model SubscriptionPlan{
   id String @id @default(uuid())
   name String // Name of the plan
-  slug String @unique // Slug of the plan
-  type SubscriptionPlanTypeEnum @unique // Type of the plan
+  slug String // Slug of the plan
+  type SubscriptionPlanTypeEnum // Type of the plan
   description String? // Description of the plan
   priceMonthly Decimal // Price of the plan
   priceYearly Decimal // Price of the plan

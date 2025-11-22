@@ -1,4 +1,6 @@
-export type AuthPrimitives = {
+import { BasePrimitives } from '@/shared/domain/primitives/base-primitives/base.primitives';
+
+export type AuthPrimitives = BasePrimitives & {
   id: string;
   userId: string;
   email: string | null;

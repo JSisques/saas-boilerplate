@@ -1,7 +1,6 @@
 import { AuthAggregate } from '@/auth-context/auth/domain/aggregate/auth.aggregate';
 import { IAuthCreateDto } from '@/auth-context/auth/domain/dtos/entities/auth-create/auth-create.dto';
 import { AuthPrimitives } from '@/auth-context/auth/domain/primitives/auth.primitives';
-import { AuthCreatedAtValueObject } from '@/auth-context/auth/domain/value-objects/auth-created-at/auth-created-at.vo';
 import { AuthEmailVerifiedValueObject } from '@/auth-context/auth/domain/value-objects/auth-email-verified/auth-email-verified.vo';
 import { AuthEmailValueObject } from '@/auth-context/auth/domain/value-objects/auth-email/auth-email.vo';
 import { AuthLastLoginAtValueObject } from '@/auth-context/auth/domain/value-objects/auth-last-login-at/auth-last-login-at.vo';
@@ -10,8 +9,8 @@ import { AuthPhoneNumberValueObject } from '@/auth-context/auth/domain/value-obj
 import { AuthProviderIdValueObject } from '@/auth-context/auth/domain/value-objects/auth-provider-id/auth-provider-id.vo';
 import { AuthProviderValueObject } from '@/auth-context/auth/domain/value-objects/auth-provider/auth-provider.vo';
 import { AuthTwoFactorEnabledValueObject } from '@/auth-context/auth/domain/value-objects/auth-two-factor-enabled/auth-two-factor-enabled.vo';
-import { AuthUpdatedAtValueObject } from '@/auth-context/auth/domain/value-objects/auth-updated-at/auth-updated-at.vo';
 import { IWriteFactory } from '@/shared/domain/interfaces/write-factory.interface';
+import { DateValueObject } from '@/shared/domain/value-objects/date/date.vo';
 import { AuthUuidValueObject } from '@/shared/domain/value-objects/identifiers/auth-uuid/auth-uuid.vo';
 import { UserUuidValueObject } from '@/shared/domain/value-objects/identifiers/user-uuid/user-uuid.vo';
 import { Injectable } from '@nestjs/common';
@@ -92,8 +91,8 @@ export class AuthAggregateFactory
       phoneNumber: data.phoneNumber
         ? new AuthPhoneNumberValueObject(data.phoneNumber)
         : null,
-      createdAt: new AuthCreatedAtValueObject(data.createdAt),
-      updatedAt: new AuthUpdatedAtValueObject(data.updatedAt),
+      createdAt: new DateValueObject(data.createdAt),
+      updatedAt: new DateValueObject(data.updatedAt),
     });
   }
 }

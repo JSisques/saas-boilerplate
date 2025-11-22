@@ -1,11 +1,10 @@
+import { DateValueObject } from '@/shared/domain/value-objects/date/date.vo';
 import { UserUuidValueObject } from '@/shared/domain/value-objects/identifiers/user-uuid/user-uuid.vo';
 import { UserAggregate } from '@/user-context/users/domain/aggregates/user.aggregate';
 import { UserRoleEnum } from '@/user-context/users/domain/enums/user-role/user-role.enum';
 import { UserStatusEnum } from '@/user-context/users/domain/enums/user-status/user-status.enum';
-import { UserCreatedAtValueObject } from '@/user-context/users/domain/value-objects/user-created-at/user-created-at.vo';
 import { UserRoleValueObject } from '@/user-context/users/domain/value-objects/user-role/user-role.vo';
 import { UserStatusValueObject } from '@/user-context/users/domain/value-objects/user-status/user-status.vo';
-import { UserUpdatedAtValueObject } from '@/user-context/users/domain/value-objects/user-updated-at/user-updated-at.vo';
 import { UserUserNameValueObject } from '@/user-context/users/domain/value-objects/user-user-name/user-user-name.vo';
 import { UserPrismaDto } from '@/user-context/users/infrastructure/database/prisma/dtos/user-prisma.dto';
 import { UserPrismaMapper } from '@/user-context/users/infrastructure/database/prisma/mappers/user-prisma.mapper';
@@ -75,8 +74,8 @@ describe('UserPrismaRepository', () => {
           userName: new UserUserNameValueObject('johndoe'),
           role: new UserRoleValueObject(UserRoleEnum.USER),
           status: new UserStatusValueObject(UserStatusEnum.ACTIVE),
-          createdAt: new UserCreatedAtValueObject(now),
-          updatedAt: new UserUpdatedAtValueObject(now),
+          createdAt: new DateValueObject(now),
+          updatedAt: new DateValueObject(now),
         },
         false,
       );
@@ -135,8 +134,8 @@ describe('UserPrismaRepository', () => {
           userName: new UserUserNameValueObject(userName),
           role: new UserRoleValueObject(UserRoleEnum.USER),
           status: new UserStatusValueObject(UserStatusEnum.ACTIVE),
-          createdAt: new UserCreatedAtValueObject(now),
-          updatedAt: new UserUpdatedAtValueObject(now),
+          createdAt: new DateValueObject(now),
+          updatedAt: new DateValueObject(now),
         },
         false,
       );
@@ -182,8 +181,8 @@ describe('UserPrismaRepository', () => {
           userName: new UserUserNameValueObject('johndoe'),
           role: new UserRoleValueObject(UserRoleEnum.USER),
           status: new UserStatusValueObject(UserStatusEnum.ACTIVE),
-          createdAt: new UserCreatedAtValueObject(now),
-          updatedAt: new UserUpdatedAtValueObject(now),
+          createdAt: new DateValueObject(now),
+          updatedAt: new DateValueObject(now),
         },
         false,
       );
@@ -213,8 +212,8 @@ describe('UserPrismaRepository', () => {
           userName: new UserUserNameValueObject('johndoe'),
           role: new UserRoleValueObject(UserRoleEnum.USER),
           status: new UserStatusValueObject(UserStatusEnum.ACTIVE),
-          createdAt: new UserCreatedAtValueObject(now),
-          updatedAt: new UserUpdatedAtValueObject(now),
+          createdAt: new DateValueObject(now),
+          updatedAt: new DateValueObject(now),
         },
         false,
       );
@@ -249,8 +248,8 @@ describe('UserPrismaRepository', () => {
           userName: new UserUserNameValueObject('johndoe'),
           role: new UserRoleValueObject(UserRoleEnum.ADMIN),
           status: new UserStatusValueObject(UserStatusEnum.INACTIVE),
-          createdAt: new UserCreatedAtValueObject(now),
-          updatedAt: new UserUpdatedAtValueObject(now),
+          createdAt: new DateValueObject(now),
+          updatedAt: new DateValueObject(now),
         },
         false,
       );

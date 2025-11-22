@@ -21,7 +21,20 @@ export class SubscriptionMongoDBMapper {
       `Converting MongoDB document to subscription view model with id ${doc.id}`,
     );
 
-    return this.subscriptionViewModelFactory.create(doc);
+    return this.subscriptionViewModelFactory.create({
+      id: doc.id,
+      tenantId: doc.tenantId,
+      planId: doc.planId,
+      startDate: doc.startDate,
+      endDate: doc.endDate,
+      trialEndDate: doc.trialEndDate,
+      status: doc.status,
+      stripeSubscriptionId: doc.stripeSubscriptionId,
+      stripeCustomerId: doc.stripeCustomerId,
+      renewalMethod: doc.renewalMethod,
+      createdAt: new Date(doc.createdAt),
+      updatedAt: new Date(doc.updatedAt),
+    });
   }
 
   /**

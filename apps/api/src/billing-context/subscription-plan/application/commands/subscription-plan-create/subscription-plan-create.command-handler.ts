@@ -8,6 +8,7 @@ import {
   SubscriptionPlanWriteRepository,
 } from '@/billing-context/subscription-plan/domain/repositories/subscription-plan-write/subscription-plan-write.repository';
 import { IBaseCommandHandler } from '@/shared/application/commands/interfaces/base-command-handler.interface';
+import { DateValueObject } from '@/shared/domain/value-objects/date/date.vo';
 import { Inject } from '@nestjs/common';
 import { CommandHandler, EventBus, ICommandHandler } from '@nestjs/cqrs';
 
@@ -39,6 +40,8 @@ export class SubscriptionPlanCreateCommandHandler
     // 02: Create the subscription plan entity
     const subscriptionPlan = this.subscriptionPlanAggregateFactory.create({
       ...command,
+      createdAt: new DateValueObject(new Date()),
+      updatedAt: new DateValueObject(new Date()),
     });
 
     // 03: Save the subscription plan entity

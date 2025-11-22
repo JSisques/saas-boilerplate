@@ -1,4 +1,5 @@
 import { TenantMemberAddedEvent } from '@/shared/domain/events/tenant-context/tenant-members/tenant-members-added/tenant-members-created.event';
+import { DateValueObject } from '@/shared/domain/value-objects/date/date.vo';
 import { TenantMemberUuidValueObject } from '@/shared/domain/value-objects/identifiers/tenant-member-uuid/tenant-member-uuid.vo';
 import { ITenantMemberAddCommandDto } from '@/tenant-context/tenant-members/application/dtos/commands/tenant-member-add/tenant-member-add-command.dto';
 import { TenantMemberAlreadyExistsException } from '@/tenant-context/tenant-members/application/exceptions/tenant-member-already-exists/tenant-member-already-exists.exception';
@@ -7,8 +8,6 @@ import { TenantMemberAggregate } from '@/tenant-context/tenant-members/domain/ag
 import { TenantMemberRoleEnum } from '@/tenant-context/tenant-members/domain/enums/tenant-member-role/tenant-member-role.enum';
 import { TenantMemberAggregateFactory } from '@/tenant-context/tenant-members/domain/factories/tenant-member-aggregate/tenant-member-aggregate.factory';
 import { TenantMemberWriteRepository } from '@/tenant-context/tenant-members/domain/repositories/tenant-member-write.repository';
-import { TenantMemberCreatedAtValueObject } from '@/tenant-context/tenant-members/domain/value-objects/tenant-member-created-at/tenant-member-created-at.vo';
-import { TenantMemberUpdatedAtValueObject } from '@/tenant-context/tenant-members/domain/value-objects/tenant-member-updated-at/tenant-member-updated-at.vo';
 import { FindTenantByIdQuery } from '@/tenant-context/tenants/application/queries/find-tenant-by-id/find-tenant-by-id.query';
 import { UserFindByIdQuery } from '@/user-context/users/application/queries/user-find-by-id/user-find-by-id.query';
 import { EventBus, QueryBus } from '@nestjs/cqrs';
@@ -78,8 +77,8 @@ describe('TenantMemberAddCommandHandler', () => {
           tenantId: command.tenantId,
           userId: command.userId,
           role: command.role,
-          createdAt: new TenantMemberCreatedAtValueObject(now),
-          updatedAt: new TenantMemberUpdatedAtValueObject(now),
+          createdAt: new DateValueObject(now),
+          updatedAt: new DateValueObject(now),
         },
         true,
       );
@@ -160,8 +159,8 @@ describe('TenantMemberAddCommandHandler', () => {
           tenantId: command.tenantId,
           userId: command.userId,
           role: command.role,
-          createdAt: new TenantMemberCreatedAtValueObject(now),
-          updatedAt: new TenantMemberUpdatedAtValueObject(now),
+          createdAt: new DateValueObject(now),
+          updatedAt: new DateValueObject(now),
         },
         true,
       );
@@ -177,8 +176,8 @@ describe('TenantMemberAddCommandHandler', () => {
           tenantId: command.tenantId,
           userId: command.userId,
           role: command.role,
-          createdAt: new TenantMemberCreatedAtValueObject(now),
-          updatedAt: new TenantMemberUpdatedAtValueObject(now),
+          createdAt: new DateValueObject(now),
+          updatedAt: new DateValueObject(now),
         },
         true,
       );
@@ -215,8 +214,8 @@ describe('TenantMemberAddCommandHandler', () => {
           tenantId: command.tenantId,
           userId: command.userId,
           role: command.role,
-          createdAt: new TenantMemberCreatedAtValueObject(now),
-          updatedAt: new TenantMemberUpdatedAtValueObject(now),
+          createdAt: new DateValueObject(now),
+          updatedAt: new DateValueObject(now),
         },
         true,
       );
@@ -252,8 +251,8 @@ describe('TenantMemberAddCommandHandler', () => {
           tenantId: command.tenantId,
           userId: command.userId,
           role: command.role,
-          createdAt: new TenantMemberCreatedAtValueObject(now),
-          updatedAt: new TenantMemberUpdatedAtValueObject(now),
+          createdAt: new DateValueObject(now),
+          updatedAt: new DateValueObject(now),
         },
         true,
       );
@@ -286,8 +285,8 @@ describe('TenantMemberAddCommandHandler', () => {
           tenantId: command.tenantId,
           userId: command.userId,
           role: command.role,
-          createdAt: new TenantMemberCreatedAtValueObject(now),
-          updatedAt: new TenantMemberUpdatedAtValueObject(now),
+          createdAt: new DateValueObject(now),
+          updatedAt: new DateValueObject(now),
         },
         true,
       );
