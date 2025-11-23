@@ -1,0 +1,13 @@
+{
+  "LandingPage": {
+    "HeroSection": {
+      "title": "Hello World",
+      "description": "This is a hero section description"
+    },
+    "TestimonialSection": {
+      "title": "Testimonials",
+      "description": "This is a testimonials section description"
+    }
+  }
+}
+
