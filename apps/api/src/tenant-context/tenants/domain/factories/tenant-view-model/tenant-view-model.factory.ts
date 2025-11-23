@@ -41,8 +41,6 @@ export class TenantViewModelFactory
       `Creating tenant view model from primitives: ${tenantPrimitives}`,
     );
 
-    const now = new Date();
-
     return new TenantViewModel({
       id: tenantPrimitives.id,
       name: tenantPrimitives.name,
@@ -68,8 +66,8 @@ export class TenantViewModelFactory
       maxStorage: tenantPrimitives.maxStorage,
       maxApiCalls: tenantPrimitives.maxApiCalls,
       tenantMembers: [],
-      createdAt: now,
-      updatedAt: now,
+      createdAt: tenantPrimitives.createdAt,
+      updatedAt: tenantPrimitives.updatedAt,
     });
   }
   /**
@@ -82,8 +80,6 @@ export class TenantViewModelFactory
     this.logger.log(
       `Creating tenant view model from aggregate: ${tenantAggregate}`,
     );
-
-    const now = new Date();
 
     return new TenantViewModel({
       id: tenantAggregate.id.value,
@@ -110,8 +106,8 @@ export class TenantViewModelFactory
       maxStorage: tenantAggregate.maxStorage?.value || null,
       maxApiCalls: tenantAggregate.maxApiCalls?.value || null,
       tenantMembers: [],
-      createdAt: now,
-      updatedAt: now,
+      createdAt: tenantAggregate.createdAt.value,
+      updatedAt: tenantAggregate.updatedAt.value,
     });
   }
 }

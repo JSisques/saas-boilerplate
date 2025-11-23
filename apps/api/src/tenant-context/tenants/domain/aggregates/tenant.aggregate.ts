@@ -1,6 +1,8 @@
+import { BaseAggregate } from '@/shared/domain/aggregates/base-aggregate/base.aggregate';
 import { TenantCreatedEvent } from '@/shared/domain/events/tenant-context/tenants/tenant-created/tenant-created.event';
 import { TenantDeletedEvent } from '@/shared/domain/events/tenant-context/tenants/tenant-deleted/tenant-deleted.event';
 import { TenantUpdatedEvent } from '@/shared/domain/events/tenant-context/tenants/tenant-updated/tenant-updated.event';
+import { DateValueObject } from '@/shared/domain/value-objects/date/date.vo';
 import { TenantUuidValueObject } from '@/shared/domain/value-objects/identifiers/tenant-uuid/tenant-uuid.vo';
 import { ITenantCreateDto } from '@/tenant-context/tenants/domain/dtos/entities/tenant-create/tenant-create.dto';
 import { ITenantUpdateDto } from '@/tenant-context/tenants/domain/dtos/entities/tenant-update/tenant-update.dto';
@@ -27,9 +29,8 @@ import { TenantStateValueObject } from '@/tenant-context/tenants/domain/value-ob
 import { TenantStatusValueObject } from '@/tenant-context/tenants/domain/value-objects/tenant-status/tenant-status.vo';
 import { TenantTimezoneValueObject } from '@/tenant-context/tenants/domain/value-objects/tenant-timezone/tenant-timezone.vo';
 import { TenantWebsiteUrlValueObject } from '@/tenant-context/tenants/domain/value-objects/tenant-website-url/tenant-website-url.vo';
-import { AggregateRoot } from '@nestjs/cqrs';
 
-export class TenantAggregate extends AggregateRoot {
+export class TenantAggregate extends BaseAggregate {
   private readonly _id: TenantUuidValueObject;
   private _name: TenantNameValueObject;
   private _slug: TenantSlugValueObject;
@@ -55,7 +56,7 @@ export class TenantAggregate extends AggregateRoot {
   private _maxApiCalls: TenantMaxApiCallsValueObject | null;
 
   constructor(props: ITenantCreateDto, generateEvent: boolean = true) {
-    super();
+    super(props.createdAt, props.updatedAt);
 
     // 01: Set the properties
     this._id = props.id;
@@ -163,6 +164,8 @@ export class TenantAggregate extends AggregateRoot {
       props.maxStorage !== undefined ? props.maxStorage : this._maxStorage;
     this._maxApiCalls =
       props.maxApiCalls !== undefined ? props.maxApiCalls : this._maxApiCalls;
+
+    this._updatedAt = new DateValueObject(new Date());
 
     if (generateEvent) {
       this.apply(
@@ -429,6 +432,8 @@ export class TenantAggregate extends AggregateRoot {
       maxUsers: this._maxUsers ? this._maxUsers.value : null,
       maxStorage: this._maxStorage ? this._maxStorage.value : null,
       maxApiCalls: this._maxApiCalls ? this._maxApiCalls.value : null,
+      createdAt: this._createdAt.value,
+      updatedAt: this._updatedAt.value,
     };
   }
 }
