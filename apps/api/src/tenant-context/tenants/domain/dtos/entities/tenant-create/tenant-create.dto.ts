@@ -1,3 +1,4 @@
+import { IBaseAggregateDto } from '@/shared/domain/interfaces/base-aggregate-dto.interface';
 import { TenantUuidValueObject } from '@/shared/domain/value-objects/identifiers/tenant-uuid/tenant-uuid.vo';
 import { TenantAddressValueObject } from '@/tenant-context/tenants/domain/value-objects/tenant-address/tenant-address.vo';
 import { TenantCityValueObject } from '@/tenant-context/tenants/domain/value-objects/tenant-city/tenant-city.vo';
@@ -47,8 +48,10 @@ import { TenantWebsiteUrlValueObject } from '@/tenant-context/tenants/domain/val
  * @property {TenantMaxUsersValueObject} [maxUsers] - The max users of the tenant. Optional.
  * @property {TenantMaxStorageValueObject} [maxStorage] - The max storage of the tenant. Optional.
  * @property {TenantMaxApiCallsValueObject} [maxApiCalls] - The max API calls of the tenant. Optional.
+ * @property {DateValueObject} createdAt - The created at date value object.
+ * @property {DateValueObject} updatedAt - The updated at date value object.
  */
-export interface ITenantCreateDto {
+export interface ITenantCreateDto extends IBaseAggregateDto {
   id: TenantUuidValueObject;
   name: TenantNameValueObject;
   slug: TenantSlugValueObject;

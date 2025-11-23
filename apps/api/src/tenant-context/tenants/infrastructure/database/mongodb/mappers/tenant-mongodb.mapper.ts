@@ -1,8 +1,7 @@
-import { TenantViewModelFactory } from '@/tenant-context/tenants/domain/factories/tenant-view-model.factory';
+import { TenantViewModelFactory } from '@/tenant-context/tenants/domain/factories/tenant-view-model/tenant-view-model.factory';
 import { TenantViewModel } from '@/tenant-context/tenants/domain/view-models/tenant/tenant.view-model';
 import { TenantMongoDbDto } from '@/tenant-context/tenants/infrastructure/database/mongodb/dtos/tenant/tenant-mongodb.dto';
 import { Injectable, Logger } from '@nestjs/common';
-import { QueryBus } from '@nestjs/cqrs';
 
 @Injectable()
 export class TenantMongoDBMapper {
@@ -10,7 +9,6 @@ export class TenantMongoDBMapper {
 
   constructor(
     private readonly tenantViewModelFactory: TenantViewModelFactory,
-    private readonly queryBus: QueryBus,
   ) {}
   /**
    * Converts a MongoDB document to a tenant view model
@@ -23,7 +21,34 @@ export class TenantMongoDBMapper {
       `Converting MongoDB document to tenant view model with id ${doc.id}`,
     );
 
-    return this.tenantViewModelFactory.create(doc);
+    return this.tenantViewModelFactory.create({
+      id: doc.id,
+      name: doc.name,
+      slug: doc.slug,
+      description: doc.description,
+      websiteUrl: doc.websiteUrl,
+      logoUrl: doc.logoUrl,
+      faviconUrl: doc.faviconUrl,
+      primaryColor: doc.primaryColor,
+      secondaryColor: doc.secondaryColor,
+      status: doc.status,
+      email: doc.email,
+      phoneNumber: doc.phoneNumber,
+      phoneCode: doc.phoneCode,
+      address: doc.address,
+      city: doc.city,
+      state: doc.state,
+      country: doc.country,
+      postalCode: doc.postalCode,
+      timezone: doc.timezone,
+      locale: doc.locale,
+      maxUsers: doc.maxUsers,
+      maxStorage: doc.maxStorage,
+      maxApiCalls: doc.maxApiCalls,
+      tenantMembers: doc.tenantMembers,
+      createdAt: new Date(doc.createdAt),
+      updatedAt: new Date(doc.updatedAt),
+    });
   }
 
   /**

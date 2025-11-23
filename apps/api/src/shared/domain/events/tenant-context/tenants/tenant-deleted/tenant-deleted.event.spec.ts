@@ -1,6 +1,6 @@
-import { TenantDeletedEvent } from '@/shared/domain/events/tenant-context/tenants/tenant-deleted/tenant-deleted.event';
-import { ITenantEventData } from '@/shared/domain/events/tenant-context/tenants/interfaces/tenant-event-data.interface';
 import { BaseEvent } from '@/shared/domain/events/base-event.interface';
+import { ITenantEventData } from '@/shared/domain/events/tenant-context/tenants/interfaces/tenant-event-data.interface';
+import { TenantDeletedEvent } from '@/shared/domain/events/tenant-context/tenants/tenant-deleted/tenant-deleted.event';
 import { IEventMetadata } from '@/shared/domain/interfaces/event-metadata.interface';
 
 describe('TenantDeletedEvent', () => {
@@ -10,6 +10,8 @@ describe('TenantDeletedEvent', () => {
     eventType: 'TenantDeletedEvent',
     isReplay: false,
   });
+
+  const now = new Date();
 
   const createTenantData = (): ITenantEventData => ({
     id: '123e4567-e89b-12d3-a456-426614174000',
@@ -35,6 +37,8 @@ describe('TenantDeletedEvent', () => {
     maxUsers: null,
     maxStorage: null,
     maxApiCalls: null,
+    createdAt: now,
+    updatedAt: now,
   });
 
   it('should be an instance of BaseEvent', () => {

@@ -1,6 +1,6 @@
-import { TenantCreatedEvent } from '@/shared/domain/events/tenant-context/tenants/tenant-created/tenant-created.event';
-import { ITenantEventData } from '@/shared/domain/events/tenant-context/tenants/interfaces/tenant-event-data.interface';
 import { BaseEvent } from '@/shared/domain/events/base-event.interface';
+import { ITenantEventData } from '@/shared/domain/events/tenant-context/tenants/interfaces/tenant-event-data.interface';
+import { TenantCreatedEvent } from '@/shared/domain/events/tenant-context/tenants/tenant-created/tenant-created.event';
 import { IEventMetadata } from '@/shared/domain/interfaces/event-metadata.interface';
 
 describe('TenantCreatedEvent', () => {
@@ -10,6 +10,8 @@ describe('TenantCreatedEvent', () => {
     eventType: 'TenantCreatedEvent',
     isReplay: false,
   });
+
+  const now = new Date();
 
   const createTenantData = (): ITenantEventData => ({
     id: '123e4567-e89b-12d3-a456-426614174000',
@@ -35,6 +37,8 @@ describe('TenantCreatedEvent', () => {
     maxUsers: 100,
     maxStorage: 1000,
     maxApiCalls: 10000,
+    createdAt: now,
+    updatedAt: now,
   });
 
   it('should be an instance of BaseEvent', () => {

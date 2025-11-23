@@ -1,4 +1,5 @@
 import { IWriteFactory } from '@/shared/domain/interfaces/write-factory.interface';
+import { DateValueObject } from '@/shared/domain/value-objects/date/date.vo';
 import { TenantUuidValueObject } from '@/shared/domain/value-objects/identifiers/tenant-uuid/tenant-uuid.vo';
 import { TenantAggregate } from '@/tenant-context/tenants/domain/aggregates/tenant.aggregate';
 import { ITenantCreateDto } from '@/tenant-context/tenants/domain/dtos/entities/tenant-create/tenant-create.dto';
@@ -102,6 +103,8 @@ export class TenantAggregateFactory
    * @param data.maxUsers - The tenant max users.
    * @param data.maxStorage - The tenant max storage.
    * @param data.maxApiCalls - The tenant max API calls.
+   * @param data.createdAt - The tenant created at.
+   * @param data.updatedAt - The tenant updated at.
    * @returns The created tenant aggregate entity.
    */
   public fromPrimitives(data: TenantPrimitives): TenantAggregate {
@@ -153,6 +156,8 @@ export class TenantAggregateFactory
       maxApiCalls: data.maxApiCalls
         ? new TenantMaxApiCallsValueObject(data.maxApiCalls)
         : null,
+      createdAt: new DateValueObject(data.createdAt),
+      updatedAt: new DateValueObject(data.updatedAt),
     });
   }
 }

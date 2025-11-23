@@ -1,5 +1,5 @@
 import { TenantAggregate } from '@/tenant-context/tenants/domain/aggregates/tenant.aggregate';
-import { TenantAggregateFactory } from '@/tenant-context/tenants/domain/factories/tenant-aggregate.factory';
+import { TenantAggregateFactory } from '@/tenant-context/tenants/domain/factories/tenant-aggregate/tenant-aggregate.factory';
 import { TenantPrismaDto } from '@/tenant-context/tenants/infrastructure/database/prisma/dtos/tenant-prisma.dto';
 import { Injectable, Logger } from '@nestjs/common';
 import { TenantStatusEnum } from '@prisma/client';
@@ -47,6 +47,8 @@ export class TenantPrismaMapper {
       maxUsers: tenantData.maxUsers,
       maxStorage: tenantData.maxStorage,
       maxApiCalls: tenantData.maxApiCalls,
+      createdAt: tenantData.createdAt,
+      updatedAt: tenantData.updatedAt,
     });
   }
 
@@ -88,6 +90,8 @@ export class TenantPrismaMapper {
       maxUsers: primitives.maxUsers,
       maxStorage: primitives.maxStorage,
       maxApiCalls: primitives.maxApiCalls,
+      createdAt: primitives.createdAt,
+      updatedAt: primitives.updatedAt,
     };
   }
 }

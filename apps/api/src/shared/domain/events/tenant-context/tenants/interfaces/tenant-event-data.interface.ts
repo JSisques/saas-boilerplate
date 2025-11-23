@@ -1,4 +1,6 @@
-export interface ITenantEventData {
+import { IBaseEventData } from '@/shared/domain/interfaces/base-event-data.interface';
+
+export interface ITenantEventData extends IBaseEventData {
   id: string;
   name: string;
   slug: string;
