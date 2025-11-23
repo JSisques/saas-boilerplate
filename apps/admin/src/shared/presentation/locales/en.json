@@ -1,13 +1,35 @@
 {
-  "LandingPage": {
-    "HeroSection": {
-      "title": "Hello World",
-      "description": "This is a hero section description"
+  "common": {
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success",
+    "noData": "No data found"
+  },
+  "usersPage": {
+    "title": "Users",
+    "description": "Manage and view all users in the system",
+    "actions": {
+      "addUser": "Add User",
+      "exportUsers": "Export Users",
+      "importUsers": "Import Users",
+      "deleteUsers": "Delete Users"
     },
-    "TestimonialSection": {
-      "title": "Testimonials",
-      "description": "This is a testimonials section description"
+    "organisms": {
+      "usersTable": {
+        "searchPlaceholder": "Search users by name...",
+        "emptyMessage": "No users found"
+      },
+      "usersTableColumns": {
+        "avatar": "Avatar",
+        "userName": "Username",
+        "bio": "Bio",
+        "name": "Name",
+        "lastName": "Last Name",
+        "role": "Role",
+        "status": "Status",
+        "createdAt": "Created At",
+        "updatedAt": "Updated At"
+      }
     }
   }
 }
-

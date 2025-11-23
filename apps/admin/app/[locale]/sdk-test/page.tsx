@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import { SDK } from "@repo/sdk";
-import { useState } from "react";
+import { SDK } from '@repo/sdk';
+import { useState } from 'react';
 
 type User = {
   id: string;
@@ -45,7 +45,7 @@ type Event = {
 };
 
 export default function SDKTestPage() {
-  const [healthStatus, setHealthStatus] = useState<string>("Loading...");
+  const [healthStatus, setHealthStatus] = useState<string>('Loading...');
   const [users, setUsers] = useState<User[]>([]);
   const [tenants, setTenants] = useState<Tenant[]>([]);
   const [tenantMembers, setTenantMembers] = useState<TenantMember[]>([]);
@@ -56,11 +56,11 @@ export default function SDKTestPage() {
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
-  const [activeTab, setActiveTab] = useState<string>("auth");
+  const [activeTab, setActiveTab] = useState<string>('auth');
 
   // Initialize SDK
   const sdk = new SDK({
-    apiUrl: process.env.NEXT_PUBLIC_API_URL || "http://localhost:4100",
+    apiUrl: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4100',
   });
 
   const clearMessages = () => {
@@ -74,10 +74,10 @@ export default function SDKTestPage() {
       clearMessages();
       const health = await sdk.health.check();
       setHealthStatus(health.status);
-      setSuccess("Health check successful!");
+      setSuccess('Health check successful!');
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Unknown error");
-      setHealthStatus("Error");
+      setError(err instanceof Error ? err.message : 'Unknown error');
+      setHealthStatus('Error');
     } finally {
       setLoading(false);
     }
@@ -90,11 +90,11 @@ export default function SDKTestPage() {
       clearMessages();
       const result = await sdk.auth.registerByEmail({
         email: `test${Date.now()}@example.com`,
-        password: "password123",
+        password: 'password123',
       });
-      setSuccess(`Registration successful! ID: ${result.id || "N/A"}`);
+      setSuccess(`Registration successful! ID: ${result.id || 'N/A'}`);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Registration failed");
+      setError(err instanceof Error ? err.message : 'Registration failed');
     } finally {
       setLoading(false);
     }
@@ -105,14 +105,14 @@ export default function SDKTestPage() {
       setLoading(true);
       clearMessages();
       const result = await sdk.auth.loginByEmail({
-        email: "mail@mail.com",
-        password: "12345678",
+        email: 'javi@mail.com',
+        password: '12345678',
       });
       setSuccess(
-        `Login successful! Tokens saved automatically.\nAccess Token: ${result.accessToken.substring(0, 30)}...`
+        `Login successful! Tokens saved automatically.\nAccess Token: ${result.accessToken.substring(0, 30)}...`,
       );
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Login failed");
+      setError(err instanceof Error ? err.message : 'Login failed');
     } finally {
       setLoading(false);
     }
@@ -125,9 +125,9 @@ export default function SDKTestPage() {
       await sdk.logout();
       setUsers([]);
       setTenants([]);
-      setSuccess("Logged out successfully! Tokens cleared.");
+      setSuccess('Logged out successfully! Tokens cleared.');
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Logout failed");
+      setError(err instanceof Error ? err.message : 'Logout failed');
     } finally {
       setLoading(false);
     }
@@ -144,7 +144,7 @@ export default function SDKTestPage() {
       setUsers(result.items);
       setSuccess(`Found ${result.total} users`);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to fetch users");
+      setError(err instanceof Error ? err.message : 'Failed to fetch users');
       setUsers([]);
     } finally {
       setLoading(false);
@@ -158,13 +158,13 @@ export default function SDKTestPage() {
       const result = await sdk.users.create({
         name: `Test User ${Date.now()}`,
         userName: `testuser${Date.now()}`,
-        role: "USER",
-        status: "ACTIVE",
+        role: 'USER',
+        status: 'ACTIVE',
       });
-      setSuccess(`User created successfully! ID: ${result.id || "N/A"}`);
+      setSuccess(`User created successfully! ID: ${result.id || 'N/A'}`);
       await fetchUsers();
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to create user");
+      setError(err instanceof Error ? err.message : 'Failed to create user');
     } finally {
       setLoading(false);
     }
@@ -181,7 +181,7 @@ export default function SDKTestPage() {
       setSuccess(`User updated successfully!`);
       await fetchUsers();
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to update user");
+      setError(err instanceof Error ? err.message : 'Failed to update user');
     } finally {
       setLoading(false);
     }
@@ -195,7 +195,7 @@ export default function SDKTestPage() {
       setSuccess(`User deleted successfully!`);
       await fetchUsers();
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to delete user");
+      setError(err instanceof Error ? err.message : 'Failed to delete user');
     } finally {
       setLoading(false);
     }
@@ -212,7 +212,7 @@ export default function SDKTestPage() {
       setTenants(result.items);
       setSuccess(`Found ${result.total} tenants`);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to fetch tenants");
+      setError(err instanceof Error ? err.message : 'Failed to fetch tenants');
       setTenants([]);
     } finally {
       setLoading(false);
@@ -225,13 +225,13 @@ export default function SDKTestPage() {
       clearMessages();
       const result = await sdk.tenants.create({
         name: `Test Tenant ${Date.now()}`,
-        description: "A test tenant created from SDK",
+        description: 'A test tenant created from SDK',
         email: `tenant${Date.now()}@example.com`,
       });
-      setSuccess(`Tenant created successfully! ID: ${result.id || "N/A"}`);
+      setSuccess(`Tenant created successfully! ID: ${result.id || 'N/A'}`);
       await fetchTenants();
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to create tenant");
+      setError(err instanceof Error ? err.message : 'Failed to create tenant');
     } finally {
       setLoading(false);
     }
@@ -248,7 +248,7 @@ export default function SDKTestPage() {
       setSuccess(`Tenant updated successfully!`);
       await fetchTenants();
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to update tenant");
+      setError(err instanceof Error ? err.message : 'Failed to update tenant');
     } finally {
       setLoading(false);
     }
@@ -262,7 +262,7 @@ export default function SDKTestPage() {
       setSuccess(`Tenant deleted successfully!`);
       await fetchTenants();
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to delete tenant");
+      setError(err instanceof Error ? err.message : 'Failed to delete tenant');
     } finally {
       setLoading(false);
     }
@@ -280,7 +280,7 @@ export default function SDKTestPage() {
       setSuccess(`Found ${result.total} tenant members`);
     } catch (err) {
       setError(
-        err instanceof Error ? err.message : "Failed to fetch tenant members"
+        err instanceof Error ? err.message : 'Failed to fetch tenant members',
       );
       setTenantMembers([]);
     } finally {
@@ -295,13 +295,13 @@ export default function SDKTestPage() {
       await sdk.tenantMembers.add({
         tenantId,
         userId,
-        role: "MEMBER",
+        role: 'MEMBER',
       });
       setSuccess(`Tenant member added successfully!`);
       await fetchTenantMembers();
     } catch (err) {
       setError(
-        err instanceof Error ? err.message : "Failed to add tenant member"
+        err instanceof Error ? err.message : 'Failed to add tenant member',
       );
     } finally {
       setLoading(false);
@@ -322,7 +322,7 @@ export default function SDKTestPage() {
       setError(
         err instanceof Error
           ? err.message
-          : "Failed to fetch subscription plans"
+          : 'Failed to fetch subscription plans',
       );
       setSubscriptionPlans([]);
     } finally {
@@ -336,23 +336,23 @@ export default function SDKTestPage() {
       clearMessages();
       const result = await sdk.subscriptionPlans.create({
         name: `Test Plan ${Date.now()}`,
-        type: "BASIC",
+        type: 'BASIC',
         priceMonthly: 9.99,
-        currency: "USD",
-        interval: "MONTHLY",
+        currency: 'USD',
+        interval: 'MONTHLY',
         intervalCount: 1,
-        description: "A test subscription plan",
-        features: ["Feature 1", "Feature 2"],
+        description: 'A test subscription plan',
+        features: ['Feature 1', 'Feature 2'],
       });
       setSuccess(
-        `Subscription plan created successfully! ID: ${result.id || "N/A"}`
+        `Subscription plan created successfully! ID: ${result.id || 'N/A'}`,
       );
       await fetchSubscriptionPlans();
     } catch (err) {
       setError(
         err instanceof Error
           ? err.message
-          : "Failed to create subscription plan"
+          : 'Failed to create subscription plan',
       );
     } finally {
       setLoading(false);
@@ -366,12 +366,12 @@ export default function SDKTestPage() {
       clearMessages();
       const result = await sdk.events.findByCriteria({
         pagination: { page: 1, perPage: 10 },
-        sorts: [{ field: "timestamp", direction: "DESC" }],
+        sorts: [{ field: 'timestamp', direction: 'DESC' }],
       });
       setEvents(result.items);
       setSuccess(`Found ${result.total} events`);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to fetch events");
+      setError(err instanceof Error ? err.message : 'Failed to fetch events');
       setEvents([]);
     } finally {
       setLoading(false);
@@ -379,12 +379,12 @@ export default function SDKTestPage() {
   };
 
   const tabs = [
-    { id: "auth", label: "Auth" },
-    { id: "users", label: "Users" },
-    { id: "tenants", label: "Tenants" },
-    { id: "tenant-members", label: "Tenant Members" },
-    { id: "subscription-plans", label: "Subscription Plans" },
-    { id: "events", label: "Events" },
+    { id: 'auth', label: 'Auth' },
+    { id: 'users', label: 'Users' },
+    { id: 'tenants', label: 'Tenants' },
+    { id: 'tenant-members', label: 'Tenant Members' },
+    { id: 'subscription-plans', label: 'Subscription Plans' },
+    { id: 'events', label: 'Events' },
   ];
 
   return (
@@ -411,11 +411,11 @@ export default function SDKTestPage() {
               </p>
               <p
                 className={`text-lg font-medium ${
-                  healthStatus === "ok" || healthStatus === "healthy"
-                    ? "text-green-600 dark:text-green-400"
-                    : healthStatus === "Error"
-                      ? "text-red-600 dark:text-red-400"
-                      : "text-zinc-600 dark:text-zinc-400"
+                  healthStatus === 'ok' || healthStatus === 'healthy'
+                    ? 'text-green-600 dark:text-green-400'
+                    : healthStatus === 'Error'
+                      ? 'text-red-600 dark:text-red-400'
+                      : 'text-zinc-600 dark:text-zinc-400'
                 }`}
               >
                 {healthStatus}
@@ -426,7 +426,7 @@ export default function SDKTestPage() {
               disabled={loading}
               className="px-4 py-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
             >
-              {loading ? "Loading..." : "Refresh"}
+              {loading ? 'Loading...' : 'Refresh'}
             </button>
           </div>
         </div>
@@ -459,8 +459,8 @@ export default function SDKTestPage() {
                 onClick={() => setActiveTab(tab.id)}
                 className={`px-4 py-2 border-b-2 transition-colors ${
                   activeTab === tab.id
-                    ? "border-blue-600 text-blue-600 dark:text-blue-400"
-                    : "border-transparent text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100"
+                    ? 'border-blue-600 text-blue-600 dark:text-blue-400'
+                    : 'border-transparent text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100'
                 }`}
               >
                 {tab.label}
@@ -470,7 +470,7 @@ export default function SDKTestPage() {
         </div>
 
         {/* Auth Tab */}
-        {activeTab === "auth" && (
+        {activeTab === 'auth' && (
           <div className="space-y-4">
             <div className="rounded-lg border border-zinc-200 dark:border-zinc-800 p-6">
               <h2 className="text-xl font-semibold text-black dark:text-zinc-50 mb-4">
@@ -482,21 +482,21 @@ export default function SDKTestPage() {
                   disabled={loading}
                   className="px-4 py-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                 >
-                  {loading ? "Loading..." : "Register"}
+                  {loading ? 'Loading...' : 'Register'}
                 </button>
                 <button
                   onClick={handleLogin}
                   disabled={loading}
                   className="px-4 py-2 rounded-lg bg-purple-600 text-white hover:bg-purple-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                 >
-                  {loading ? "Loading..." : "Login"}
+                  {loading ? 'Loading...' : 'Login'}
                 </button>
                 <button
                   onClick={handleLogout}
                   disabled={loading}
                   className="px-4 py-2 rounded-lg bg-red-600 text-white hover:bg-red-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                 >
-                  {loading ? "Loading..." : "Logout"}
+                  {loading ? 'Loading...' : 'Logout'}
                 </button>
               </div>
               <p className="text-sm text-zinc-600 dark:text-zinc-400 mt-4">
@@ -508,7 +508,7 @@ export default function SDKTestPage() {
         )}
 
         {/* Users Tab */}
-        {activeTab === "users" && (
+        {activeTab === 'users' && (
           <div className="space-y-4">
             <div className="rounded-lg border border-zinc-200 dark:border-zinc-800 p-6">
               <div className="flex items-center justify-between mb-4">
@@ -521,7 +521,7 @@ export default function SDKTestPage() {
                     disabled={loading}
                     className="px-4 py-2 rounded-lg bg-green-600 text-white hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-sm"
                   >
-                    {loading ? "Loading..." : "Fetch"}
+                    {loading ? 'Loading...' : 'Fetch'}
                   </button>
                   <button
                     onClick={createUser}
@@ -541,11 +541,11 @@ export default function SDKTestPage() {
                     >
                       <div>
                         <p className="font-medium text-black dark:text-zinc-50">
-                          {user.name || user.userName || "No name"}
+                          {user.name || user.userName || 'No name'}
                         </p>
                         <p className="text-sm text-zinc-600 dark:text-zinc-400">
-                          ID: {user.id} | Role: {user.role || "N/A"} | Status:{" "}
-                          {user.status || "N/A"}
+                          ID: {user.id} | Role: {user.role || 'N/A'} | Status:{' '}
+                          {user.status || 'N/A'}
                         </p>
                       </div>
                       <div className="flex gap-2">
@@ -577,7 +577,7 @@ export default function SDKTestPage() {
         )}
 
         {/* Tenants Tab */}
-        {activeTab === "tenants" && (
+        {activeTab === 'tenants' && (
           <div className="space-y-4">
             <div className="rounded-lg border border-zinc-200 dark:border-zinc-800 p-6">
               <div className="flex items-center justify-between mb-4">
@@ -590,7 +590,7 @@ export default function SDKTestPage() {
                     disabled={loading}
                     className="px-4 py-2 rounded-lg bg-green-600 text-white hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-sm"
                   >
-                    {loading ? "Loading..." : "Fetch"}
+                    {loading ? 'Loading...' : 'Fetch'}
                   </button>
                   <button
                     onClick={createTenant}
@@ -610,11 +610,11 @@ export default function SDKTestPage() {
                     >
                       <div>
                         <p className="font-medium text-black dark:text-zinc-50">
-                          {tenant.name || "No name"}
+                          {tenant.name || 'No name'}
                         </p>
                         <p className="text-sm text-zinc-600 dark:text-zinc-400">
-                          ID: {tenant.id} | Slug: {tenant.slug || "N/A"} |
-                          Status: {tenant.status || "N/A"}
+                          ID: {tenant.id} | Slug: {tenant.slug || 'N/A'} |
+                          Status: {tenant.status || 'N/A'}
                         </p>
                         {tenant.description && (
                           <p className="text-sm text-zinc-500 dark:text-zinc-500 mt-1">
@@ -651,7 +651,7 @@ export default function SDKTestPage() {
         )}
 
         {/* Tenant Members Tab */}
-        {activeTab === "tenant-members" && (
+        {activeTab === 'tenant-members' && (
           <div className="space-y-4">
             <div className="rounded-lg border border-zinc-200 dark:border-zinc-800 p-6">
               <div className="flex items-center justify-between mb-4">
@@ -663,7 +663,7 @@ export default function SDKTestPage() {
                   disabled={loading}
                   className="px-4 py-2 rounded-lg bg-green-600 text-white hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-sm"
                 >
-                  {loading ? "Loading..." : "Fetch"}
+                  {loading ? 'Loading...' : 'Fetch'}
                 </button>
               </div>
               {tenantMembers.length > 0 ? (
@@ -677,8 +677,8 @@ export default function SDKTestPage() {
                         Member ID: {member.id}
                       </p>
                       <p className="text-sm text-zinc-600 dark:text-zinc-400">
-                        Tenant ID: {member.tenantId || "N/A"} | User ID:{" "}
-                        {member.userId || "N/A"} | Role: {member.role || "N/A"}
+                        Tenant ID: {member.tenantId || 'N/A'} | User ID:{' '}
+                        {member.userId || 'N/A'} | Role: {member.role || 'N/A'}
                       </p>
                     </div>
                   ))}
@@ -693,7 +693,7 @@ export default function SDKTestPage() {
         )}
 
         {/* Subscription Plans Tab */}
-        {activeTab === "subscription-plans" && (
+        {activeTab === 'subscription-plans' && (
           <div className="space-y-4">
             <div className="rounded-lg border border-zinc-200 dark:border-zinc-800 p-6">
               <div className="flex items-center justify-between mb-4">
@@ -706,7 +706,7 @@ export default function SDKTestPage() {
                     disabled={loading}
                     className="px-4 py-2 rounded-lg bg-green-600 text-white hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-sm"
                   >
-                    {loading ? "Loading..." : "Fetch"}
+                    {loading ? 'Loading...' : 'Fetch'}
                   </button>
                   <button
                     onClick={createSubscriptionPlan}
@@ -730,9 +730,9 @@ export default function SDKTestPage() {
                             {plan.name}
                           </p>
                           <p className="text-sm text-zinc-600 dark:text-zinc-400">
-                            {plan.currency} {plan.priceMonthly}/month | Type:{" "}
-                            {plan.type || "N/A"} | Active:{" "}
-                            {plan.isActive ? "Yes" : "No"}
+                            {plan.currency} {plan.priceMonthly}/month | Type:{' '}
+                            {plan.type || 'N/A'} | Active:{' '}
+                            {plan.isActive ? 'Yes' : 'No'}
                           </p>
                           <p className="text-xs text-zinc-500 dark:text-zinc-500 mt-1">
                             Slug: {plan.slug}
@@ -752,7 +752,7 @@ export default function SDKTestPage() {
         )}
 
         {/* Events Tab */}
-        {activeTab === "events" && (
+        {activeTab === 'events' && (
           <div className="space-y-4">
             <div className="rounded-lg border border-zinc-200 dark:border-zinc-800 p-6">
               <div className="flex items-center justify-between mb-4">
@@ -764,7 +764,7 @@ export default function SDKTestPage() {
                   disabled={loading}
                   className="px-4 py-2 rounded-lg bg-green-600 text-white hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-sm"
                 >
-                  {loading ? "Loading..." : "Fetch"}
+                  {loading ? 'Loading...' : 'Fetch'}
                 </button>
               </div>
               {events.length > 0 ? (
@@ -775,13 +775,13 @@ export default function SDKTestPage() {
                       className="rounded border border-zinc-200 dark:border-zinc-800 p-4"
                     >
                       <p className="font-medium text-black dark:text-zinc-50">
-                        {event.eventType || "Unknown Event"}
+                        {event.eventType || 'Unknown Event'}
                       </p>
                       <p className="text-sm text-zinc-600 dark:text-zinc-400">
-                        Aggregate: {event.aggregateType || "N/A"} | Timestamp:{" "}
+                        Aggregate: {event.aggregateType || 'N/A'} | Timestamp:{' '}
                         {event.timestamp
                           ? new Date(event.timestamp).toLocaleString()
-                          : "N/A"}
+                          : 'N/A'}
                       </p>
                       <p className="text-xs text-zinc-500 dark:text-zinc-500 mt-1">
                         ID: {event.id}
@@ -801,8 +801,8 @@ export default function SDKTestPage() {
         {/* API URL Info */}
         <div className="rounded-lg border border-zinc-200 dark:border-zinc-800 p-4 bg-zinc-50 dark:bg-zinc-900">
           <p className="text-sm text-zinc-600 dark:text-zinc-400">
-            <strong>API URL:</strong>{" "}
-            {process.env.NEXT_PUBLIC_API_URL || "http://localhost:4100/api/v1"}
+            <strong>API URL:</strong>{' '}
+            {process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4100/api/v1'}
           </p>
           <p className="text-xs text-zinc-500 dark:text-zinc-500 mt-2">
             Set NEXT_PUBLIC_API_URL environment variable to change the API
