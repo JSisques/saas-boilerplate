@@ -1,25 +1,26 @@
-import { SubscriptionPlanCurrencyEnum } from "@/billing-context/subscription-plan/domain/enum/subscription-plan-currency.enum";
-import { SubscriptionPlanIntervalEnum } from "@/billing-context/subscription-plan/domain/enum/subscription-plan-interval.enum";
-import { SubscriptionPlanTypeEnum } from "@/billing-context/subscription-plan/domain/enum/subscription-plan-type.enum";
-import { useSubscriptionPlanPageStore } from "@/billing-context/subscription-plan/presentation/stores/subscription-plan-page-store";
-import { useSubscriptionPlans } from "@repo/sdk";
-import GenericModal from "@repo/shared/presentation/components/molecules/generic-modal";
-import { Input } from "@repo/shared/presentation/components/ui/input";
-import { Label } from "@repo/shared/presentation/components/ui/label";
+import { SubscriptionPlanCurrencyEnum } from '@/billing-context/subscription-plan/domain/enum/subscription-plan-currency.enum';
+import { SubscriptionPlanIntervalEnum } from '@/billing-context/subscription-plan/domain/enum/subscription-plan-interval.enum';
+import { SubscriptionPlanTypeEnum } from '@/billing-context/subscription-plan/domain/enum/subscription-plan-type.enum';
+import { useSubscriptionPlanPageStore } from '@/billing-context/subscription-plan/presentation/stores/subscription-plan-page-store';
+import { useSubscriptionPlans } from '@repo/sdk';
+import GenericModal from '@repo/shared/presentation/components/molecules/generic-modal';
+import { Input } from '@repo/shared/presentation/components/ui/input';
+import { Label } from '@repo/shared/presentation/components/ui/label';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@repo/shared/presentation/components/ui/select";
+} from '@repo/shared/presentation/components/ui/select';
 import {
   Tabs,
   TabsContent,
   TabsList,
   TabsTrigger,
-} from "@repo/shared/presentation/components/ui/tabs";
-import { Textarea } from "@repo/shared/presentation/components/ui/textarea";
+} from '@repo/shared/presentation/components/ui/tabs';
+import { Textarea } from '@repo/shared/presentation/components/ui/textarea';
+import { useTranslations } from 'next-intl';
 
 type SubscriptionPlanCreateModalProps = {
   onCreated?: () => void;
@@ -28,14 +29,17 @@ type SubscriptionPlanCreateModalProps = {
 export const SubscriptionPlanCreateModal = ({
   onCreated,
 }: SubscriptionPlanCreateModalProps) => {
+  const t = useTranslations(
+    'subscriptionPlansPage.organisms.subscriptionPlanCreateModal',
+  );
   const { isAddModalOpen, setIsAddModalOpen } = useSubscriptionPlanPageStore();
   const { create } = useSubscriptionPlans();
 
   const handleCreate = async () => {
     await create.fetch({
-      name: "Test 3",
+      name: 'Test 3',
       type: SubscriptionPlanTypeEnum.FREE,
-      description: "Test",
+      description: 'Test',
       priceMonthly: 0,
       currency: SubscriptionPlanCurrencyEnum.USD,
       interval: SubscriptionPlanIntervalEnum.MONTHLY,
@@ -52,36 +56,36 @@ export const SubscriptionPlanCreateModal = ({
       onOpenChange={setIsAddModalOpen}
       contentClassName="sm:max-w-2xl"
       contentBodyClassName="max-h-[75vh] overflow-y-auto"
-      title="Create subscription plan"
-      description="Define the properties for the new subscription plan."
+      title={t('title')}
+      description={t('description')}
       primaryAction={{
-        label: "Create",
+        label: t('actions.create'),
         onClick: () => {
           handleCreate();
         },
       }}
       secondaryAction={{
-        label: "Cancel",
-        variant: "outline",
+        label: t('actions.cancel'),
+        variant: 'outline',
         onClick: () => setIsAddModalOpen(false),
       }}
     >
       <Tabs defaultValue="general" className="w-full">
         <TabsList className="grid grid-cols-4 w-full">
-          <TabsTrigger value="general">General</TabsTrigger>
-          <TabsTrigger value="pricing">Pricing</TabsTrigger>
-          <TabsTrigger value="limits">Limits</TabsTrigger>
-          <TabsTrigger value="integration">Integration</TabsTrigger>
+          <TabsTrigger value="general">{t('tabs.general')}</TabsTrigger>
+          <TabsTrigger value="pricing">{t('tabs.pricing')}</TabsTrigger>
+          <TabsTrigger value="limits">{t('tabs.limits')}</TabsTrigger>
+          <TabsTrigger value="integration">{t('tabs.integration')}</TabsTrigger>
         </TabsList>
 
         <TabsContent value="general" className="mt-4">
           <div className="grid gap-4">
             <div className="grid gap-2">
-              <Label>Name</Label>
+              <Label>{t('nameLabel')}</Label>
               <Input />
             </div>
             <div className="grid gap-2">
-              <Label>Type</Label>
+              <Label>{t('typeLabel')}</Label>
               <Select defaultValue={SubscriptionPlanTypeEnum.FREE}>
                 <SelectTrigger>
                   <SelectValue placeholder="Select a type" />
@@ -103,7 +107,7 @@ export const SubscriptionPlanCreateModal = ({
               </Select>
             </div>
             <div className="grid gap-2">
-              <Label>Description</Label>
+              <Label>{t('descriptionLabel')}</Label>
               <Textarea />
             </div>
           </div>
@@ -113,11 +117,11 @@ export const SubscriptionPlanCreateModal = ({
           <div className="grid gap-4">
             <div className="flex gap-2 w-full">
               <div className="grid gap-2 basis-6/12">
-                <Label>Price Monthly</Label>
+                <Label>{t('priceMonthlyLabel')}</Label>
                 <Input type="number" />
               </div>
               <div className="grid gap-2 basis-3/12">
-                <Label>Currency</Label>
+                <Label>{t('currencyLabel')}</Label>
                 <Select defaultValue={SubscriptionPlanCurrencyEnum.USD}>
                   <SelectTrigger>
                     <SelectValue placeholder="Select a currency" />
@@ -133,7 +137,7 @@ export const SubscriptionPlanCreateModal = ({
                 </Select>
               </div>
               <div className="grid gap-2 basis-3/12">
-                <Label>Interval</Label>
+                <Label>{t('intervalLabel')}</Label>
                 <Select defaultValue={SubscriptionPlanIntervalEnum.MONTHLY}>
                   <SelectTrigger>
                     <SelectValue placeholder="Select an interval" />
@@ -150,11 +154,11 @@ export const SubscriptionPlanCreateModal = ({
               </div>
             </div>
             <div className="grid gap-2">
-              <Label>Interval Count</Label>
+              <Label>{t('intervalCountLabel')}</Label>
               <Input type="number" />
             </div>
             <div className="grid gap-2">
-              <Label>Trial Period Days</Label>
+              <Label>{t('trialPeriodDaysLabel')}</Label>
               <Input type="number" />
             </div>
           </div>
@@ -163,11 +167,11 @@ export const SubscriptionPlanCreateModal = ({
         <TabsContent value="limits" className="mt-4">
           <div className="grid gap-4">
             <div className="grid gap-2">
-              <Label>Features</Label>
+              <Label>{t('featuresLabel')}</Label>
               <Input type="text" />
             </div>
             <div className="grid gap-2">
-              <Label>Limits</Label>
+              <Label>{t('limitsLabel')}</Label>
               <Input type="text" />
             </div>
           </div>
@@ -176,7 +180,7 @@ export const SubscriptionPlanCreateModal = ({
         <TabsContent value="integration" className="mt-4">
           <div className="grid gap-4">
             <div className="grid gap-2">
-              <Label>Stripe Price ID</Label>
+              <Label>{t('stripePriceIdLabel')}</Label>
               <Input type="text" />
             </div>
           </div>

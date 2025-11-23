@@ -3,7 +3,7 @@
 import { SubscriptionPlanFiltersEnum } from '@/billing-context/subscription-plan/domain/enum/subscription-plan-filters/user-filters.enum';
 import { SubscriptionPlanCreateModal } from '@/billing-context/subscription-plan/presentation/components/organisms/subscription-plan-create-modal/subscription-plan-create-modal';
 import { SubscriptionPlansTable } from '@/billing-context/subscription-plan/presentation/components/organisms/subscription-plans-table/subscription-plans-table';
-import { useSubscriptionPlanFilterFields } from '@/billing-context/subscription-plan/presentation/hooks/use-subscription-plan-filter-fields';
+import { useSubscriptionPlanFilterFields } from '@/billing-context/subscription-plan/presentation/hooks/use-subscription-plan-filter-fields/use-subscription-plan-filter-fields';
 import { useSubscriptionPlanPageStore } from '@/billing-context/subscription-plan/presentation/stores/subscription-plan-page-store';
 import { useDefaultTenantName } from '@/shared/presentation/hooks/use-default-tenant-name';
 import { useRoutes } from '@/shared/presentation/hooks/use-routes';
@@ -22,9 +22,13 @@ import { useFilterOperators } from '@repo/shared/presentation/hooks/use-filter-o
 import { dynamicFiltersToApiFiltersMapper } from '@repo/shared/presentation/mappers/convert-filters.mapper';
 import { dynamicSortsToApiSortsMapper } from '@repo/shared/presentation/mappers/convert-sorts.mapper';
 import { PlusIcon, TrashIcon } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 import { useMemo, useState } from 'react';
 
 const SubscriptionPlansPage = () => {
+  const t = useTranslations('subscriptionPlansPage');
+  const tCommon = useTranslations('common');
+
   const [search, setSearch] = useState('');
   const [filters, setFilters] = useState<DynamicFilter[]>([]);
   const [sorts, setSorts] = useState<Sort[]>([]);
@@ -73,7 +77,7 @@ const SubscriptionPlansPage = () => {
     return (
       <div className="p-4">
         <div className="text-destructive">
-          Error: {subscriptionPlansList.error.message}
+          {tCommon('error')}: {subscriptionPlansList.error.message}
         </div>
       </div>
     );
@@ -88,19 +92,19 @@ const SubscriptionPlansPage = () => {
       }}
     >
       <PageHeader
-        title="Subscription Plans"
-        description="Manage and view all subscription plans in the system"
+        title={t('title')}
+        description={t('description')}
         actions={[
           <Button
             key="add-subscription-plan"
             onClick={() => setIsAddModalOpen(true)}
           >
             <PlusIcon className="size-4" />
-            Add Subscription Plan
+            {t('actions.addSubscriptionPlan')}
           </Button>,
           <Button key="delete-subscription-plans" variant="destructive">
             <TrashIcon className="size-4" />
-            Delete Subscription Plans
+            {t('actions.deleteSubscriptionPlans')}
           </Button>,
         ]}
       />
@@ -109,7 +113,9 @@ const SubscriptionPlansPage = () => {
       <TableLayout
         searchValue={search}
         onSearchChange={setSearch}
-        searchPlaceholder="Search subscription plans by name..."
+        searchPlaceholder={t(
+          'organisms.subscriptionPlansTable.searchPlaceholder',
+        )}
         filterFields={filterFields}
         filterOperators={filterOperators}
         filters={filters}
@@ -122,7 +128,9 @@ const SubscriptionPlansPage = () => {
       >
         {subscriptionPlansList.loading ? (
           <div className="flex items-center justify-center p-8">
-            <div className="text-sm text-muted-foreground">Loading...</div>
+            <div className="text-sm text-muted-foreground">
+              {tCommon('loading')}
+            </div>
           </div>
         ) : (
           <SubscriptionPlansTable

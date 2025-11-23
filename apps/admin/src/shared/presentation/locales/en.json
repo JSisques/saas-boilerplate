@@ -24,6 +24,68 @@
       }
     }
   },
+  "subscriptionPlansPage": {
+    "title": "Subscription Plans",
+    "description": "Manage and view all subscription plans in the system",
+    "actions": {
+      "addSubscriptionPlan": "Add Subscription Plan",
+      "deleteSubscriptionPlans": "Delete Subscription Plans"
+    },
+    "organisms": {
+      "subscriptionPlansTable": {
+        "searchPlaceholder": "Search subscription plans by name...",
+        "emptyMessage": "No subscription plans found"
+      },
+      "subscriptionPlansTableColumns": {
+        "id": "ID",
+        "name": "Name",
+        "slug": "Slug",
+        "type": "Type",
+        "description": "Description",
+        "priceMonthly": "Price Monthly",
+        "priceYearly": "Price Yearly",
+        "currency": "Currency",
+        "interval": "Interval",
+        "intervalCount": "Interval Count",
+        "trialPeriodDays": "Trial Period Days",
+        "isActive": "Is Active",
+        "features": "Features",
+        "limits": "Limits",
+        "stripePriceId": "Stripe Price ID",
+        "createdAt": "Created At",
+        "updatedAt": "Updated At"
+      },
+      "subscriptionPlanCreateModal": {
+        "title": "Create Subscription Plan",
+        "description": "Create a new subscription plan",
+        "actions": {
+          "create": "Create",
+          "cancel": "Cancel"
+        },
+        "tabs": {
+          "general": "General",
+          "pricing": "Pricing",
+          "limits": "Limits",
+          "integration": "Integration"
+        },
+        "nameLabel": "Name",
+        "namePlaceholder": "Enter name",
+        "slugLabel": "Slug",
+        "slugPlaceholder": "Enter slug",
+        "typeLabel": "Type",
+        "descriptionLabel": "Description",
+        "priceMonthlyLabel": "Price Monthly",
+        "priceYearlyLabel": "Price Yearly",
+        "currencyLabel": "Currency",
+        "intervalLabel": "Interval",
+        "intervalCountLabel": "Interval Count",
+        "trialPeriodDaysLabel": "Trial Period Days",
+        "featuresLabel": "Features",
+        "limitsLabel": "Limits",
+        "stripePriceIdLabel": "Stripe Price ID"
+      }
+    }
+  },
   "eventsPage": {
     "title": "Events",
     "description": "Manage and view all events in the system",
