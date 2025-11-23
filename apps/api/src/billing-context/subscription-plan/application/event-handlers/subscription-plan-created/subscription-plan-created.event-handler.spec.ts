@@ -1,15 +1,12 @@
 import { SubscriptionPlanCreatedEventHandler } from '@/billing-context/subscription-plan/application/event-handlers/subscription-plan-created/subscription-plan-created.event-handler';
-import { SubscriptionPlanViewModelFactory } from '@/billing-context/subscription-plan/domain/factories/subscription-plan-view-model/subscription-plan-view-model.factory';
-import {
-  SUBSCRIPTION_PLAN_READ_REPOSITORY_TOKEN,
-  SubscriptionPlanReadRepository,
-} from '@/billing-context/subscription-plan/domain/repositories/subscription-plan-read/subscription-plan-read.repository';
-import { SubscriptionPlanViewModel } from '@/billing-context/subscription-plan/domain/view-models/subscription-plan.view-model';
-import { SubscriptionPlanPrimitives } from '@/billing-context/subscription-plan/domain/primitives/subscription-plan.primitives';
-import { SubscriptionPlanCreatedEvent } from '@/shared/domain/events/billing-context/subscription-plan/subscription-plan-created/subscription-plan-created.event';
-import { SubscriptionPlanTypeEnum } from '@/billing-context/subscription-plan/domain/enum/subscription-plan-type.enum';
 import { SubscriptionPlanCurrencyEnum } from '@/billing-context/subscription-plan/domain/enum/subscription-plan-currency.enum';
 import { SubscriptionPlanIntervalEnum } from '@/billing-context/subscription-plan/domain/enum/subscription-plan-interval.enum';
+import { SubscriptionPlanTypeEnum } from '@/billing-context/subscription-plan/domain/enum/subscription-plan-type.enum';
+import { SubscriptionPlanViewModelFactory } from '@/billing-context/subscription-plan/domain/factories/subscription-plan-view-model/subscription-plan-view-model.factory';
+import { SubscriptionPlanPrimitives } from '@/billing-context/subscription-plan/domain/primitives/subscription-plan.primitives';
+import { SubscriptionPlanReadRepository } from '@/billing-context/subscription-plan/domain/repositories/subscription-plan-read/subscription-plan-read.repository';
+import { SubscriptionPlanViewModel } from '@/billing-context/subscription-plan/domain/view-models/subscription-plan.view-model';
+import { SubscriptionPlanCreatedEvent } from '@/shared/domain/events/billing-context/subscription-plan/subscription-plan-created/subscription-plan-created.event';
 
 describe('SubscriptionPlanCreatedEventHandler', () => {
   let handler: SubscriptionPlanCreatedEventHandler;
@@ -299,7 +296,9 @@ describe('SubscriptionPlanCreatedEventHandler', () => {
       mockSubscriptionPlanViewModelFactory.fromPrimitives.mockReturnValue(
         mockViewModel,
       );
-      mockSubscriptionPlanReadRepository.save.mockRejectedValue(repositoryError);
+      mockSubscriptionPlanReadRepository.save.mockRejectedValue(
+        repositoryError,
+      );
 
       await expect(handler.handle(event)).rejects.toThrow(repositoryError);
 
@@ -312,4 +311,3 @@ describe('SubscriptionPlanCreatedEventHandler', () => {
     });
   });
 });
-

@@ -99,9 +99,9 @@ describe('SubscriptionPlanMongoDBMapper', () => {
         createdAt,
         updatedAt,
       });
-      expect(
-        mockSubscriptionPlanViewModelFactory.create,
-      ).toHaveBeenCalledTimes(1);
+      expect(mockSubscriptionPlanViewModelFactory.create).toHaveBeenCalledTimes(
+        1,
+      );
     });
 
     it('should convert MongoDB document to view model with null optional properties', () => {
@@ -397,4 +397,3 @@ describe('SubscriptionPlanMongoDBMapper', () => {
     });
   });
 });
-

@@ -1,13 +1,10 @@
-import { AssertSubscriptionPlanViewModelExsistsService } from '@/billing-context/subscription-plan/application/services/assert-subscription-plan-view-model-exsits/assert-subscription-plan-view-model-exsits.service';
 import { SubscriptionPlanNotFoundException } from '@/billing-context/subscription-plan/application/exceptions/subscription-plan-not-found/subscription-plan-not-found.exception';
-import { SubscriptionPlanViewModel } from '@/billing-context/subscription-plan/domain/view-models/subscription-plan.view-model';
-import {
-  SUBSCRIPTION_PLAN_READ_REPOSITORY_TOKEN,
-  SubscriptionPlanReadRepository,
-} from '@/billing-context/subscription-plan/domain/repositories/subscription-plan-read/subscription-plan-read.repository';
-import { SubscriptionPlanTypeEnum } from '@/billing-context/subscription-plan/domain/enum/subscription-plan-type.enum';
+import { AssertSubscriptionPlanViewModelExsistsService } from '@/billing-context/subscription-plan/application/services/assert-subscription-plan-view-model-exsits/assert-subscription-plan-view-model-exsits.service';
 import { SubscriptionPlanCurrencyEnum } from '@/billing-context/subscription-plan/domain/enum/subscription-plan-currency.enum';
 import { SubscriptionPlanIntervalEnum } from '@/billing-context/subscription-plan/domain/enum/subscription-plan-interval.enum';
+import { SubscriptionPlanTypeEnum } from '@/billing-context/subscription-plan/domain/enum/subscription-plan-type.enum';
+import { SubscriptionPlanReadRepository } from '@/billing-context/subscription-plan/domain/repositories/subscription-plan-read/subscription-plan-read.repository';
+import { SubscriptionPlanViewModel } from '@/billing-context/subscription-plan/domain/view-models/subscription-plan.view-model';
 
 describe('AssertSubscriptionPlanViewModelExsistsService', () => {
   let service: AssertSubscriptionPlanViewModelExsistsService;
@@ -53,7 +50,9 @@ describe('AssertSubscriptionPlanViewModelExsistsService', () => {
         updatedAt: new Date(),
       });
 
-      mockSubscriptionPlanReadRepository.findById.mockResolvedValue(mockViewModel);
+      mockSubscriptionPlanReadRepository.findById.mockResolvedValue(
+        mockViewModel,
+      );
 
       const result = await service.execute(subscriptionPlanId);
 
@@ -61,7 +60,9 @@ describe('AssertSubscriptionPlanViewModelExsistsService', () => {
       expect(mockSubscriptionPlanReadRepository.findById).toHaveBeenCalledWith(
         subscriptionPlanId,
       );
-      expect(mockSubscriptionPlanReadRepository.findById).toHaveBeenCalledTimes(1);
+      expect(mockSubscriptionPlanReadRepository.findById).toHaveBeenCalledTimes(
+        1,
+      );
     });
 
     it('should throw SubscriptionPlanNotFoundException when subscription plan does not exist', async () => {
@@ -79,7 +80,9 @@ describe('AssertSubscriptionPlanViewModelExsistsService', () => {
       expect(mockSubscriptionPlanReadRepository.findById).toHaveBeenCalledWith(
         subscriptionPlanId,
       );
-      expect(mockSubscriptionPlanReadRepository.findById).toHaveBeenCalledTimes(2);
+      expect(mockSubscriptionPlanReadRepository.findById).toHaveBeenCalledTimes(
+        2,
+      );
     });
 
     it('should call repository with correct id', async () => {
@@ -104,21 +107,27 @@ describe('AssertSubscriptionPlanViewModelExsistsService', () => {
         updatedAt: new Date(),
       });
 
-      mockSubscriptionPlanReadRepository.findById.mockResolvedValue(mockViewModel);
+      mockSubscriptionPlanReadRepository.findById.mockResolvedValue(
+        mockViewModel,
+      );
 
       await service.execute(subscriptionPlanId);
 
       expect(mockSubscriptionPlanReadRepository.findById).toHaveBeenCalledWith(
         subscriptionPlanId,
       );
-      expect(mockSubscriptionPlanReadRepository.findById).toHaveBeenCalledTimes(1);
+      expect(mockSubscriptionPlanReadRepository.findById).toHaveBeenCalledTimes(
+        1,
+      );
     });
 
     it('should handle repository errors correctly', async () => {
       const subscriptionPlanId = '123e4567-e89b-12d3-a456-426614174000';
       const repositoryError = new Error('Database connection error');
 
-      mockSubscriptionPlanReadRepository.findById.mockRejectedValue(repositoryError);
+      mockSubscriptionPlanReadRepository.findById.mockRejectedValue(
+        repositoryError,
+      );
 
       await expect(service.execute(subscriptionPlanId)).rejects.toThrow(
         repositoryError,
@@ -127,8 +136,9 @@ describe('AssertSubscriptionPlanViewModelExsistsService', () => {
       expect(mockSubscriptionPlanReadRepository.findById).toHaveBeenCalledWith(
         subscriptionPlanId,
       );
-      expect(mockSubscriptionPlanReadRepository.findById).toHaveBeenCalledTimes(1);
+      expect(mockSubscriptionPlanReadRepository.findById).toHaveBeenCalledTimes(
+        1,
+      );
     });
   });
 });
-

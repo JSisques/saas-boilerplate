@@ -1,16 +1,13 @@
 import { SubscriptionPlanDeletedEventHandler } from '@/billing-context/subscription-plan/application/event-handlers/subscription-plan-deleted/subscription-plan-deleted.event-handler';
-import { AssertSubscriptionPlanViewModelExsistsService } from '@/billing-context/subscription-plan/application/services/assert-subscription-plan-view-model-exsits/assert-subscription-plan-view-model-exsits.service';
-import {
-  SUBSCRIPTION_PLAN_READ_REPOSITORY_TOKEN,
-  SubscriptionPlanReadRepository,
-} from '@/billing-context/subscription-plan/domain/repositories/subscription-plan-read/subscription-plan-read.repository';
-import { SubscriptionPlanViewModel } from '@/billing-context/subscription-plan/domain/view-models/subscription-plan.view-model';
-import { SubscriptionPlanDeletedEvent } from '@/shared/domain/events/billing-context/subscription-plan/subscription-plan-deleted/subscription-plan-deleted.event';
 import { SubscriptionPlanNotFoundException } from '@/billing-context/subscription-plan/application/exceptions/subscription-plan-not-found/subscription-plan-not-found.exception';
-import { SubscriptionPlanPrimitives } from '@/billing-context/subscription-plan/domain/primitives/subscription-plan.primitives';
-import { SubscriptionPlanTypeEnum } from '@/billing-context/subscription-plan/domain/enum/subscription-plan-type.enum';
+import { AssertSubscriptionPlanViewModelExsistsService } from '@/billing-context/subscription-plan/application/services/assert-subscription-plan-view-model-exsits/assert-subscription-plan-view-model-exsits.service';
 import { SubscriptionPlanCurrencyEnum } from '@/billing-context/subscription-plan/domain/enum/subscription-plan-currency.enum';
 import { SubscriptionPlanIntervalEnum } from '@/billing-context/subscription-plan/domain/enum/subscription-plan-interval.enum';
+import { SubscriptionPlanTypeEnum } from '@/billing-context/subscription-plan/domain/enum/subscription-plan-type.enum';
+import { SubscriptionPlanPrimitives } from '@/billing-context/subscription-plan/domain/primitives/subscription-plan.primitives';
+import { SubscriptionPlanReadRepository } from '@/billing-context/subscription-plan/domain/repositories/subscription-plan-read/subscription-plan-read.repository';
+import { SubscriptionPlanViewModel } from '@/billing-context/subscription-plan/domain/view-models/subscription-plan.view-model';
+import { SubscriptionPlanDeletedEvent } from '@/shared/domain/events/billing-context/subscription-plan/subscription-plan-deleted/subscription-plan-deleted.event';
 
 describe('SubscriptionPlanDeletedEventHandler', () => {
   let handler: SubscriptionPlanDeletedEventHandler;
@@ -109,7 +106,9 @@ describe('SubscriptionPlanDeletedEventHandler', () => {
       expect(mockSubscriptionPlanReadRepository.delete).toHaveBeenCalledWith(
         existingViewModel.id,
       );
-      expect(mockSubscriptionPlanReadRepository.delete).toHaveBeenCalledTimes(1);
+      expect(mockSubscriptionPlanReadRepository.delete).toHaveBeenCalledTimes(
+        1,
+      );
     });
 
     it('should throw exception when subscription plan view model does not exist', async () => {
@@ -216,7 +215,9 @@ describe('SubscriptionPlanDeletedEventHandler', () => {
       mockAssertSubscriptionPlanViewModelExsistsService.execute.mockResolvedValue(
         existingViewModel,
       );
-      mockSubscriptionPlanReadRepository.delete.mockRejectedValue(repositoryError);
+      mockSubscriptionPlanReadRepository.delete.mockRejectedValue(
+        repositoryError,
+      );
 
       await expect(handler.handle(event)).rejects.toThrow(repositoryError);
 
@@ -229,4 +230,3 @@ describe('SubscriptionPlanDeletedEventHandler', () => {
     });
   });
 });
-

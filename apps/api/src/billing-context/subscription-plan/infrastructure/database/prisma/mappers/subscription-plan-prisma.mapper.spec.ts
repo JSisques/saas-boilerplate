@@ -255,7 +255,9 @@ describe('SubscriptionPlanPrismaMapper', () => {
           id: new SubscriptionPlanUuidValueObject(subscriptionPlanId),
           name: new SubscriptionPlanNameValueObject('Pro Plan'),
           slug: new SubscriptionPlanSlugValueObject('pro-plan'),
-          type: new SubscriptionPlanTypeValueObject(SubscriptionPlanTypeEnum.PRO),
+          type: new SubscriptionPlanTypeValueObject(
+            SubscriptionPlanTypeEnum.PRO,
+          ),
           description: new SubscriptionPlanDescriptionValueObject(
             'Professional plan',
           ),
@@ -356,25 +358,27 @@ describe('SubscriptionPlanPrismaMapper', () => {
       );
 
       // Mock toPrimitives to return expected data
-      const spy = jest.spyOn(subscriptionPlanAggregate, 'toPrimitives').mockReturnValue({
-        id: subscriptionPlanId,
-        name: 'Basic Plan',
-        slug: 'basic-plan',
-        type: SubscriptionPlanTypeEnum.BASIC,
-        description: 'Basic subscription plan',
-        priceMonthly: 10.0,
-        priceYearly: 100.0,
-        currency: SubscriptionPlanCurrencyEnum.USD,
-        interval: SubscriptionPlanIntervalEnum.MONTHLY,
-        intervalCount: 1,
-        trialPeriodDays: 7,
-        isActive: true,
-        features: { apiAccess: true },
-        limits: { maxUsers: 10 },
-        stripePriceId: 'price_1234567890',
-        createdAt: now,
-        updatedAt: now,
-      });
+      const spy = jest
+        .spyOn(subscriptionPlanAggregate, 'toPrimitives')
+        .mockReturnValue({
+          id: subscriptionPlanId,
+          name: 'Basic Plan',
+          slug: 'basic-plan',
+          type: SubscriptionPlanTypeEnum.BASIC,
+          description: 'Basic subscription plan',
+          priceMonthly: 10.0,
+          priceYearly: 100.0,
+          currency: SubscriptionPlanCurrencyEnum.USD,
+          interval: SubscriptionPlanIntervalEnum.MONTHLY,
+          intervalCount: 1,
+          trialPeriodDays: 7,
+          isActive: true,
+          features: { apiAccess: true },
+          limits: { maxUsers: 10 },
+          stripePriceId: 'price_1234567890',
+          createdAt: now,
+          updatedAt: now,
+        });
       spies.push(spy);
 
       const result = mapper.toPrismaData(subscriptionPlanAggregate);
@@ -434,25 +438,27 @@ describe('SubscriptionPlanPrismaMapper', () => {
         false,
       );
 
-      const spy = jest.spyOn(subscriptionPlanAggregate, 'toPrimitives').mockReturnValue({
-        id: subscriptionPlanId,
-        name: 'Basic Plan',
-        slug: 'basic-plan',
-        type: SubscriptionPlanTypeEnum.BASIC,
-        description: null,
-        priceMonthly: 10.0,
-        priceYearly: 100.0,
-        currency: SubscriptionPlanCurrencyEnum.USD,
-        interval: SubscriptionPlanIntervalEnum.MONTHLY,
-        intervalCount: 1,
-        trialPeriodDays: null,
-        isActive: true,
-        features: null,
-        limits: null,
-        stripePriceId: null,
-        createdAt: now,
-        updatedAt: now,
-      });
+      const spy = jest
+        .spyOn(subscriptionPlanAggregate, 'toPrimitives')
+        .mockReturnValue({
+          id: subscriptionPlanId,
+          name: 'Basic Plan',
+          slug: 'basic-plan',
+          type: SubscriptionPlanTypeEnum.BASIC,
+          description: null,
+          priceMonthly: 10.0,
+          priceYearly: 100.0,
+          currency: SubscriptionPlanCurrencyEnum.USD,
+          interval: SubscriptionPlanIntervalEnum.MONTHLY,
+          intervalCount: 1,
+          trialPeriodDays: null,
+          isActive: true,
+          features: null,
+          limits: null,
+          stripePriceId: null,
+          createdAt: now,
+          updatedAt: now,
+        });
       spies.push(spy);
 
       const result = mapper.toPrismaData(subscriptionPlanAggregate);
@@ -487,7 +493,9 @@ describe('SubscriptionPlanPrismaMapper', () => {
           id: new SubscriptionPlanUuidValueObject(subscriptionPlanId),
           name: new SubscriptionPlanNameValueObject('Pro Plan'),
           slug: new SubscriptionPlanSlugValueObject('pro-plan'),
-          type: new SubscriptionPlanTypeValueObject(SubscriptionPlanTypeEnum.PRO),
+          type: new SubscriptionPlanTypeValueObject(
+            SubscriptionPlanTypeEnum.PRO,
+          ),
           description: new SubscriptionPlanDescriptionValueObject(
             'Professional plan',
           ),
@@ -516,25 +524,27 @@ describe('SubscriptionPlanPrismaMapper', () => {
         false,
       );
 
-      const spy = jest.spyOn(subscriptionPlanAggregate, 'toPrimitives').mockReturnValue({
-        id: subscriptionPlanId,
-        name: 'Pro Plan',
-        slug: 'pro-plan',
-        type: SubscriptionPlanTypeEnum.PRO,
-        description: 'Professional plan',
-        priceMonthly: 29.99,
-        priceYearly: 299.99,
-        currency: SubscriptionPlanCurrencyEnum.EUR,
-        interval: SubscriptionPlanIntervalEnum.YEARLY,
-        intervalCount: 1,
-        trialPeriodDays: 14,
-        isActive: true,
-        features: { apiAccess: true, prioritySupport: true },
-        limits: { maxUsers: 100 },
-        stripePriceId: 'price_pro123',
-        createdAt: now,
-        updatedAt: now,
-      });
+      const spy = jest
+        .spyOn(subscriptionPlanAggregate, 'toPrimitives')
+        .mockReturnValue({
+          id: subscriptionPlanId,
+          name: 'Pro Plan',
+          slug: 'pro-plan',
+          type: SubscriptionPlanTypeEnum.PRO,
+          description: 'Professional plan',
+          priceMonthly: 29.99,
+          priceYearly: 299.99,
+          currency: SubscriptionPlanCurrencyEnum.EUR,
+          interval: SubscriptionPlanIntervalEnum.YEARLY,
+          intervalCount: 1,
+          trialPeriodDays: 14,
+          isActive: true,
+          features: { apiAccess: true, prioritySupport: true },
+          limits: { maxUsers: 100 },
+          stripePriceId: 'price_pro123',
+          createdAt: now,
+          updatedAt: now,
+        });
       spies.push(spy);
 
       const result = mapper.toPrismaData(subscriptionPlanAggregate);
@@ -561,4 +571,3 @@ describe('SubscriptionPlanPrismaMapper', () => {
     });
   });
 });
-

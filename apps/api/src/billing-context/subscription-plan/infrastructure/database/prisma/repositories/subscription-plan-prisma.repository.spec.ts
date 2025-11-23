@@ -1,31 +1,31 @@
-import { DateValueObject } from '@/shared/domain/value-objects/date/date.vo';
-import { SubscriptionPlanUuidValueObject } from '@/shared/domain/value-objects/identifiers/subscription-plan/subscription-plan-uuid.vo';
 import { SubscriptionPlanAggregate } from '@/billing-context/subscription-plan/domain/aggregates/subscription-plan.aggregate';
+import { SubscriptionPlanCurrencyEnum } from '@/billing-context/subscription-plan/domain/enum/subscription-plan-currency.enum';
+import { SubscriptionPlanIntervalEnum } from '@/billing-context/subscription-plan/domain/enum/subscription-plan-interval.enum';
 import { SubscriptionPlanTypeEnum } from '@/billing-context/subscription-plan/domain/enum/subscription-plan-type.enum';
+import { SubscriptionPlanCurrencyValueObject } from '@/billing-context/subscription-plan/domain/value-objects/subscription-plan-currency/subscription-plan-currency.vo';
+import { SubscriptionPlanDescriptionValueObject } from '@/billing-context/subscription-plan/domain/value-objects/subscription-plan-description/subscription-plan-description.vo';
+import { SubscriptionPlanFeaturesValueObject } from '@/billing-context/subscription-plan/domain/value-objects/subscription-plan-features/subscription-plan-features.vo';
+import { SubscriptionPlanIntervalCountValueObject } from '@/billing-context/subscription-plan/domain/value-objects/subscription-plan-interval-count/subscription-plan-interval-count.vo';
+import { SubscriptionPlanIntervalValueObject } from '@/billing-context/subscription-plan/domain/value-objects/subscription-plan-interval/subscription-plan-interval.vo';
+import { SubscriptionPlanIsActiveValueObject } from '@/billing-context/subscription-plan/domain/value-objects/subscription-plan-is-active/subscription-plan-is-active.vo';
+import { SubscriptionPlanLimitsValueObject } from '@/billing-context/subscription-plan/domain/value-objects/subscription-plan-limits/subscription-plan-limits.vo';
+import { SubscriptionPlanNameValueObject } from '@/billing-context/subscription-plan/domain/value-objects/subscription-plan-name/subscription-plan-name.vo';
+import { SubscriptionPlanPriceMonthlyValueObject } from '@/billing-context/subscription-plan/domain/value-objects/subscription-plan-price-monthly/subscription-plan-price-monthly.vo';
+import { SubscriptionPlanPriceYearlyValueObject } from '@/billing-context/subscription-plan/domain/value-objects/subscription-plan-price-yearly/subscription-plan-price-yearly.vo';
+import { SubscriptionPlanSlugValueObject } from '@/billing-context/subscription-plan/domain/value-objects/subscription-plan-slug/subscription-plan-slug.vo';
+import { SubscriptionPlanStripePriceIdValueObject } from '@/billing-context/subscription-plan/domain/value-objects/subscription-plan-stripe-price-id/subscription-plan-stripe-price-id.vo';
+import { SubscriptionPlanTrialPeriodDaysValueObject } from '@/billing-context/subscription-plan/domain/value-objects/subscription-plan-trial-period-days/subscription-plan-trial-period-days.vo';
+import { SubscriptionPlanTypeValueObject } from '@/billing-context/subscription-plan/domain/value-objects/subscription-plan-type/subscription-plan-type.vo';
 import { SubscriptionPlanPrismaDto } from '@/billing-context/subscription-plan/infrastructure/database/prisma/dtos/subscription-plan-prisma.dto';
 import { SubscriptionPlanPrismaMapper } from '@/billing-context/subscription-plan/infrastructure/database/prisma/mappers/subscription-plan-prisma.mapper';
 import { SubscriptionPlanPrismaRepository } from '@/billing-context/subscription-plan/infrastructure/database/prisma/repositories/subscription-plan-prisma.repository';
+import { DateValueObject } from '@/shared/domain/value-objects/date/date.vo';
+import { SubscriptionPlanUuidValueObject } from '@/shared/domain/value-objects/identifiers/subscription-plan/subscription-plan-uuid.vo';
 import {
-  SubscriptionPlanTypeEnum as PrismaSubscriptionPlanTypeEnum,
   CurrencyEnum as PrismaCurrencyEnum,
   SubscriptionPlanIntervalEnum as PrismaSubscriptionPlanIntervalEnum,
+  SubscriptionPlanTypeEnum as PrismaSubscriptionPlanTypeEnum,
 } from '@prisma/client';
-import { SubscriptionPlanCurrencyEnum } from '@/billing-context/subscription-plan/domain/enum/subscription-plan-currency.enum';
-import { SubscriptionPlanIntervalEnum } from '@/billing-context/subscription-plan/domain/enum/subscription-plan-interval.enum';
-import { SubscriptionPlanNameValueObject } from '@/billing-context/subscription-plan/domain/value-objects/subscription-plan-name/subscription-plan-name.vo';
-import { SubscriptionPlanSlugValueObject } from '@/billing-context/subscription-plan/domain/value-objects/subscription-plan-slug/subscription-plan-slug.vo';
-import { SubscriptionPlanTypeValueObject } from '@/billing-context/subscription-plan/domain/value-objects/subscription-plan-type/subscription-plan-type.vo';
-import { SubscriptionPlanDescriptionValueObject } from '@/billing-context/subscription-plan/domain/value-objects/subscription-plan-description/subscription-plan-description.vo';
-import { SubscriptionPlanPriceMonthlyValueObject } from '@/billing-context/subscription-plan/domain/value-objects/subscription-plan-price-monthly/subscription-plan-price-monthly.vo';
-import { SubscriptionPlanPriceYearlyValueObject } from '@/billing-context/subscription-plan/domain/value-objects/subscription-plan-price-yearly/subscription-plan-price-yearly.vo';
-import { SubscriptionPlanCurrencyValueObject } from '@/billing-context/subscription-plan/domain/value-objects/subscription-plan-currency/subscription-plan-currency.vo';
-import { SubscriptionPlanIntervalValueObject } from '@/billing-context/subscription-plan/domain/value-objects/subscription-plan-interval/subscription-plan-interval.vo';
-import { SubscriptionPlanIntervalCountValueObject } from '@/billing-context/subscription-plan/domain/value-objects/subscription-plan-interval-count/subscription-plan-interval-count.vo';
-import { SubscriptionPlanTrialPeriodDaysValueObject } from '@/billing-context/subscription-plan/domain/value-objects/subscription-plan-trial-period-days/subscription-plan-trial-period-days.vo';
-import { SubscriptionPlanIsActiveValueObject } from '@/billing-context/subscription-plan/domain/value-objects/subscription-plan-is-active/subscription-plan-is-active.vo';
-import { SubscriptionPlanFeaturesValueObject } from '@/billing-context/subscription-plan/domain/value-objects/subscription-plan-features/subscription-plan-features.vo';
-import { SubscriptionPlanLimitsValueObject } from '@/billing-context/subscription-plan/domain/value-objects/subscription-plan-limits/subscription-plan-limits.vo';
-import { SubscriptionPlanStripePriceIdValueObject } from '@/billing-context/subscription-plan/domain/value-objects/subscription-plan-stripe-price-id/subscription-plan-stripe-price-id.vo';
 
 describe('SubscriptionPlanPrismaRepository', () => {
   let repository: SubscriptionPlanPrismaRepository;
@@ -70,26 +70,6 @@ describe('SubscriptionPlanPrismaRepository', () => {
     it('should return subscription plan aggregate when plan exists', async () => {
       const subscriptionPlanId = '123e4567-e89b-12d3-a456-426614174000';
       const now = new Date();
-
-      const prismaData: SubscriptionPlanPrismaDto = {
-        id: subscriptionPlanId,
-        name: 'Basic Plan',
-        slug: 'basic-plan',
-        type: PrismaSubscriptionPlanTypeEnum.BASIC,
-        description: 'Basic subscription plan',
-        priceMonthly: 10.0,
-        priceYearly: 100.0,
-        currency: PrismaCurrencyEnum.USD,
-        interval: PrismaSubscriptionPlanIntervalEnum.MONTHLY,
-        intervalCount: 1,
-        trialPeriodDays: 7,
-        isActive: true,
-        features: { apiAccess: true },
-        limits: { maxUsers: 10 },
-        stripePriceId: 'price_1234567890',
-        createdAt: now,
-        updatedAt: now,
-      };
 
       const subscriptionPlanAggregate = new SubscriptionPlanAggregate(
         {
@@ -203,25 +183,6 @@ describe('SubscriptionPlanPrismaRepository', () => {
       const subscriptionPlanId = '123e4567-e89b-12d3-a456-426614174000';
       const slug = 'basic-plan';
       const now = new Date();
-      const prismaData: SubscriptionPlanPrismaDto = {
-        id: subscriptionPlanId,
-        name: 'Basic Plan',
-        slug,
-        type: PrismaSubscriptionPlanTypeEnum.BASIC,
-        description: 'Basic subscription plan',
-        priceMonthly: 10.0,
-        priceYearly: 100.0,
-        currency: PrismaCurrencyEnum.USD,
-        interval: PrismaSubscriptionPlanIntervalEnum.MONTHLY,
-        intervalCount: 1,
-        trialPeriodDays: 7,
-        isActive: true,
-        features: { apiAccess: true },
-        limits: { maxUsers: 10 },
-        stripePriceId: 'price_1234567890',
-        createdAt: now,
-        updatedAt: now,
-      };
 
       const subscriptionPlanAggregate = new SubscriptionPlanAggregate(
         {
@@ -332,25 +293,6 @@ describe('SubscriptionPlanPrismaRepository', () => {
       const subscriptionPlanId = '123e4567-e89b-12d3-a456-426614174000';
       const type = PrismaSubscriptionPlanTypeEnum.BASIC;
       const now = new Date();
-      const prismaData: SubscriptionPlanPrismaDto = {
-        id: subscriptionPlanId,
-        name: 'Basic Plan',
-        slug: 'basic-plan',
-        type,
-        description: 'Basic subscription plan',
-        priceMonthly: 10.0,
-        priceYearly: 100.0,
-        currency: PrismaCurrencyEnum.USD,
-        interval: PrismaSubscriptionPlanIntervalEnum.MONTHLY,
-        intervalCount: 1,
-        trialPeriodDays: 7,
-        isActive: true,
-        features: { apiAccess: true },
-        limits: { maxUsers: 10 },
-        stripePriceId: 'price_1234567890',
-        createdAt: now,
-        updatedAt: now,
-      };
 
       const subscriptionPlanAggregate = new SubscriptionPlanAggregate(
         {
@@ -620,7 +562,9 @@ describe('SubscriptionPlanPrismaRepository', () => {
           id: new SubscriptionPlanUuidValueObject(subscriptionPlanId),
           name: new SubscriptionPlanNameValueObject('Pro Plan'),
           slug: new SubscriptionPlanSlugValueObject('pro-plan'),
-          type: new SubscriptionPlanTypeValueObject(SubscriptionPlanTypeEnum.PRO),
+          type: new SubscriptionPlanTypeValueObject(
+            SubscriptionPlanTypeEnum.PRO,
+          ),
           description: new SubscriptionPlanDescriptionValueObject(
             'Professional plan',
           ),
@@ -727,4 +671,3 @@ describe('SubscriptionPlanPrismaRepository', () => {
     });
   });
 });
-

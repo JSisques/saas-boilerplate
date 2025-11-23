@@ -1,24 +1,21 @@
-import { AssertSubscriptionPlanExsistsService } from '@/billing-context/subscription-plan/application/services/assert-subscription-plan-exsits/assert-subscription-plan-exsits.service';
 import { SubscriptionPlanNotFoundException } from '@/billing-context/subscription-plan/application/exceptions/subscription-plan-not-found/subscription-plan-not-found.exception';
+import { AssertSubscriptionPlanExsistsService } from '@/billing-context/subscription-plan/application/services/assert-subscription-plan-exsits/assert-subscription-plan-exsits.service';
 import { SubscriptionPlanAggregate } from '@/billing-context/subscription-plan/domain/aggregates/subscription-plan.aggregate';
-import {
-  SUBSCRIPTION_PLAN_WRITE_REPOSITORY_TOKEN,
-  SubscriptionPlanWriteRepository,
-} from '@/billing-context/subscription-plan/domain/repositories/subscription-plan-write/subscription-plan-write.repository';
 import { SubscriptionPlanCurrencyEnum } from '@/billing-context/subscription-plan/domain/enum/subscription-plan-currency.enum';
 import { SubscriptionPlanIntervalEnum } from '@/billing-context/subscription-plan/domain/enum/subscription-plan-interval.enum';
 import { SubscriptionPlanTypeEnum } from '@/billing-context/subscription-plan/domain/enum/subscription-plan-type.enum';
-import { DateValueObject } from '@/shared/domain/value-objects/date/date.vo';
-import { SubscriptionPlanUuidValueObject } from '@/shared/domain/value-objects/identifiers/subscription-plan/subscription-plan-uuid.vo';
+import { SubscriptionPlanWriteRepository } from '@/billing-context/subscription-plan/domain/repositories/subscription-plan-write/subscription-plan-write.repository';
+import { SubscriptionPlanCurrencyValueObject } from '@/billing-context/subscription-plan/domain/value-objects/subscription-plan-currency/subscription-plan-currency.vo';
+import { SubscriptionPlanIntervalCountValueObject } from '@/billing-context/subscription-plan/domain/value-objects/subscription-plan-interval-count/subscription-plan-interval-count.vo';
+import { SubscriptionPlanIntervalValueObject } from '@/billing-context/subscription-plan/domain/value-objects/subscription-plan-interval/subscription-plan-interval.vo';
+import { SubscriptionPlanIsActiveValueObject } from '@/billing-context/subscription-plan/domain/value-objects/subscription-plan-is-active/subscription-plan-is-active.vo';
 import { SubscriptionPlanNameValueObject } from '@/billing-context/subscription-plan/domain/value-objects/subscription-plan-name/subscription-plan-name.vo';
-import { SubscriptionPlanSlugValueObject } from '@/billing-context/subscription-plan/domain/value-objects/subscription-plan-slug/subscription-plan-slug.vo';
-import { SubscriptionPlanTypeValueObject } from '@/billing-context/subscription-plan/domain/value-objects/subscription-plan-type/subscription-plan-type.vo';
 import { SubscriptionPlanPriceMonthlyValueObject } from '@/billing-context/subscription-plan/domain/value-objects/subscription-plan-price-monthly/subscription-plan-price-monthly.vo';
 import { SubscriptionPlanPriceYearlyValueObject } from '@/billing-context/subscription-plan/domain/value-objects/subscription-plan-price-yearly/subscription-plan-price-yearly.vo';
-import { SubscriptionPlanCurrencyValueObject } from '@/billing-context/subscription-plan/domain/value-objects/subscription-plan-currency/subscription-plan-currency.vo';
-import { SubscriptionPlanIntervalValueObject } from '@/billing-context/subscription-plan/domain/value-objects/subscription-plan-interval/subscription-plan-interval.vo';
-import { SubscriptionPlanIntervalCountValueObject } from '@/billing-context/subscription-plan/domain/value-objects/subscription-plan-interval-count/subscription-plan-interval-count.vo';
-import { SubscriptionPlanIsActiveValueObject } from '@/billing-context/subscription-plan/domain/value-objects/subscription-plan-is-active/subscription-plan-is-active.vo';
+import { SubscriptionPlanSlugValueObject } from '@/billing-context/subscription-plan/domain/value-objects/subscription-plan-slug/subscription-plan-slug.vo';
+import { SubscriptionPlanTypeValueObject } from '@/billing-context/subscription-plan/domain/value-objects/subscription-plan-type/subscription-plan-type.vo';
+import { DateValueObject } from '@/shared/domain/value-objects/date/date.vo';
+import { SubscriptionPlanUuidValueObject } from '@/shared/domain/value-objects/identifiers/subscription-plan/subscription-plan-uuid.vo';
 
 describe('AssertSubscriptionPlanExsistsService', () => {
   let service: AssertSubscriptionPlanExsistsService;
@@ -50,7 +47,9 @@ describe('AssertSubscriptionPlanExsistsService', () => {
           id: new SubscriptionPlanUuidValueObject(subscriptionPlanId),
           name: new SubscriptionPlanNameValueObject('Basic Plan'),
           slug: new SubscriptionPlanSlugValueObject('basic-plan'),
-          type: new SubscriptionPlanTypeValueObject(SubscriptionPlanTypeEnum.BASIC),
+          type: new SubscriptionPlanTypeValueObject(
+            SubscriptionPlanTypeEnum.BASIC,
+          ),
           description: null,
           priceMonthly: new SubscriptionPlanPriceMonthlyValueObject(10.0),
           priceYearly: new SubscriptionPlanPriceYearlyValueObject(120.0),
@@ -82,7 +81,9 @@ describe('AssertSubscriptionPlanExsistsService', () => {
       expect(mockSubscriptionPlanWriteRepository.findById).toHaveBeenCalledWith(
         subscriptionPlanId,
       );
-      expect(mockSubscriptionPlanWriteRepository.findById).toHaveBeenCalledTimes(1);
+      expect(
+        mockSubscriptionPlanWriteRepository.findById,
+      ).toHaveBeenCalledTimes(1);
     });
 
     it('should throw SubscriptionPlanNotFoundException when subscription plan does not exist', async () => {
@@ -100,7 +101,9 @@ describe('AssertSubscriptionPlanExsistsService', () => {
       expect(mockSubscriptionPlanWriteRepository.findById).toHaveBeenCalledWith(
         subscriptionPlanId,
       );
-      expect(mockSubscriptionPlanWriteRepository.findById).toHaveBeenCalledTimes(2);
+      expect(
+        mockSubscriptionPlanWriteRepository.findById,
+      ).toHaveBeenCalledTimes(2);
     });
 
     it('should call repository with correct id', async () => {
@@ -110,7 +113,9 @@ describe('AssertSubscriptionPlanExsistsService', () => {
           id: new SubscriptionPlanUuidValueObject(subscriptionPlanId),
           name: new SubscriptionPlanNameValueObject('Basic Plan'),
           slug: new SubscriptionPlanSlugValueObject('basic-plan'),
-          type: new SubscriptionPlanTypeValueObject(SubscriptionPlanTypeEnum.BASIC),
+          type: new SubscriptionPlanTypeValueObject(
+            SubscriptionPlanTypeEnum.BASIC,
+          ),
           description: null,
           priceMonthly: new SubscriptionPlanPriceMonthlyValueObject(10.0),
           priceYearly: new SubscriptionPlanPriceYearlyValueObject(120.0),
@@ -141,7 +146,9 @@ describe('AssertSubscriptionPlanExsistsService', () => {
       expect(mockSubscriptionPlanWriteRepository.findById).toHaveBeenCalledWith(
         subscriptionPlanId,
       );
-      expect(mockSubscriptionPlanWriteRepository.findById).toHaveBeenCalledTimes(1);
+      expect(
+        mockSubscriptionPlanWriteRepository.findById,
+      ).toHaveBeenCalledTimes(1);
     });
 
     it('should handle repository errors correctly', async () => {
@@ -159,8 +166,9 @@ describe('AssertSubscriptionPlanExsistsService', () => {
       expect(mockSubscriptionPlanWriteRepository.findById).toHaveBeenCalledWith(
         subscriptionPlanId,
       );
-      expect(mockSubscriptionPlanWriteRepository.findById).toHaveBeenCalledTimes(1);
+      expect(
+        mockSubscriptionPlanWriteRepository.findById,
+      ).toHaveBeenCalledTimes(1);
     });
   });
 });
-

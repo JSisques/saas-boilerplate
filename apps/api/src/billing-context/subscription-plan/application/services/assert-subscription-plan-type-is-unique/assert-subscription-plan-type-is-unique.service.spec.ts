@@ -1,24 +1,21 @@
-import { AssertSubscriptionPlanTypeIsUniqueService } from '@/billing-context/subscription-plan/application/services/assert-subscription-plan-type-is-unique/assert-subscription-plan-type-is-unique.service';
 import { SubscriptionPlanTypeIsAlreadyTakenException } from '@/billing-context/subscription-plan/application/exceptions/subscription-plan-type-is-not-unique copy/subscription-plan-type-is-not-unique.exception';
+import { AssertSubscriptionPlanTypeIsUniqueService } from '@/billing-context/subscription-plan/application/services/assert-subscription-plan-type-is-unique/assert-subscription-plan-type-is-unique.service';
 import { SubscriptionPlanAggregate } from '@/billing-context/subscription-plan/domain/aggregates/subscription-plan.aggregate';
-import {
-  SUBSCRIPTION_PLAN_WRITE_REPOSITORY_TOKEN,
-  SubscriptionPlanWriteRepository,
-} from '@/billing-context/subscription-plan/domain/repositories/subscription-plan-write/subscription-plan-write.repository';
-import { SubscriptionPlanTypeEnum } from '@/billing-context/subscription-plan/domain/enum/subscription-plan-type.enum';
 import { SubscriptionPlanCurrencyEnum } from '@/billing-context/subscription-plan/domain/enum/subscription-plan-currency.enum';
 import { SubscriptionPlanIntervalEnum } from '@/billing-context/subscription-plan/domain/enum/subscription-plan-interval.enum';
-import { DateValueObject } from '@/shared/domain/value-objects/date/date.vo';
-import { SubscriptionPlanUuidValueObject } from '@/shared/domain/value-objects/identifiers/subscription-plan/subscription-plan-uuid.vo';
+import { SubscriptionPlanTypeEnum } from '@/billing-context/subscription-plan/domain/enum/subscription-plan-type.enum';
+import { SubscriptionPlanWriteRepository } from '@/billing-context/subscription-plan/domain/repositories/subscription-plan-write/subscription-plan-write.repository';
+import { SubscriptionPlanCurrencyValueObject } from '@/billing-context/subscription-plan/domain/value-objects/subscription-plan-currency/subscription-plan-currency.vo';
+import { SubscriptionPlanIntervalCountValueObject } from '@/billing-context/subscription-plan/domain/value-objects/subscription-plan-interval-count/subscription-plan-interval-count.vo';
+import { SubscriptionPlanIntervalValueObject } from '@/billing-context/subscription-plan/domain/value-objects/subscription-plan-interval/subscription-plan-interval.vo';
+import { SubscriptionPlanIsActiveValueObject } from '@/billing-context/subscription-plan/domain/value-objects/subscription-plan-is-active/subscription-plan-is-active.vo';
 import { SubscriptionPlanNameValueObject } from '@/billing-context/subscription-plan/domain/value-objects/subscription-plan-name/subscription-plan-name.vo';
-import { SubscriptionPlanSlugValueObject } from '@/billing-context/subscription-plan/domain/value-objects/subscription-plan-slug/subscription-plan-slug.vo';
-import { SubscriptionPlanTypeValueObject } from '@/billing-context/subscription-plan/domain/value-objects/subscription-plan-type/subscription-plan-type.vo';
 import { SubscriptionPlanPriceMonthlyValueObject } from '@/billing-context/subscription-plan/domain/value-objects/subscription-plan-price-monthly/subscription-plan-price-monthly.vo';
 import { SubscriptionPlanPriceYearlyValueObject } from '@/billing-context/subscription-plan/domain/value-objects/subscription-plan-price-yearly/subscription-plan-price-yearly.vo';
-import { SubscriptionPlanCurrencyValueObject } from '@/billing-context/subscription-plan/domain/value-objects/subscription-plan-currency/subscription-plan-currency.vo';
-import { SubscriptionPlanIntervalValueObject } from '@/billing-context/subscription-plan/domain/value-objects/subscription-plan-interval/subscription-plan-interval.vo';
-import { SubscriptionPlanIntervalCountValueObject } from '@/billing-context/subscription-plan/domain/value-objects/subscription-plan-interval-count/subscription-plan-interval-count.vo';
-import { SubscriptionPlanIsActiveValueObject } from '@/billing-context/subscription-plan/domain/value-objects/subscription-plan-is-active/subscription-plan-is-active.vo';
+import { SubscriptionPlanSlugValueObject } from '@/billing-context/subscription-plan/domain/value-objects/subscription-plan-slug/subscription-plan-slug.vo';
+import { SubscriptionPlanTypeValueObject } from '@/billing-context/subscription-plan/domain/value-objects/subscription-plan-type/subscription-plan-type.vo';
+import { DateValueObject } from '@/shared/domain/value-objects/date/date.vo';
+import { SubscriptionPlanUuidValueObject } from '@/shared/domain/value-objects/identifiers/subscription-plan/subscription-plan-uuid.vo';
 
 describe('AssertSubscriptionPlanTypeIsUniqueService', () => {
   let service: AssertSubscriptionPlanTypeIsUniqueService;
@@ -50,10 +47,12 @@ describe('AssertSubscriptionPlanTypeIsUniqueService', () => {
 
       await expect(service.execute(type)).resolves.toBeUndefined();
 
-      expect(mockSubscriptionPlanWriteRepository.findByType).toHaveBeenCalledWith(
-        type,
-      );
-      expect(mockSubscriptionPlanWriteRepository.findByType).toHaveBeenCalledTimes(1);
+      expect(
+        mockSubscriptionPlanWriteRepository.findByType,
+      ).toHaveBeenCalledWith(type);
+      expect(
+        mockSubscriptionPlanWriteRepository.findByType,
+      ).toHaveBeenCalledTimes(1);
     });
 
     it('should throw SubscriptionPlanTypeIsAlreadyTakenException when type already exists', async () => {
@@ -98,10 +97,12 @@ describe('AssertSubscriptionPlanTypeIsUniqueService', () => {
         `Subscription plan type ${type} is already taken`,
       );
 
-      expect(mockSubscriptionPlanWriteRepository.findByType).toHaveBeenCalledWith(
-        type,
-      );
-      expect(mockSubscriptionPlanWriteRepository.findByType).toHaveBeenCalledTimes(2);
+      expect(
+        mockSubscriptionPlanWriteRepository.findByType,
+      ).toHaveBeenCalledWith(type);
+      expect(
+        mockSubscriptionPlanWriteRepository.findByType,
+      ).toHaveBeenCalledTimes(2);
     });
 
     it('should call repository with correct type', async () => {
@@ -111,10 +112,12 @@ describe('AssertSubscriptionPlanTypeIsUniqueService', () => {
 
       await service.execute(type);
 
-      expect(mockSubscriptionPlanWriteRepository.findByType).toHaveBeenCalledWith(
-        type,
-      );
-      expect(mockSubscriptionPlanWriteRepository.findByType).toHaveBeenCalledTimes(1);
+      expect(
+        mockSubscriptionPlanWriteRepository.findByType,
+      ).toHaveBeenCalledWith(type);
+      expect(
+        mockSubscriptionPlanWriteRepository.findByType,
+      ).toHaveBeenCalledTimes(1);
     });
 
     it('should handle different types correctly', async () => {
@@ -128,13 +131,15 @@ describe('AssertSubscriptionPlanTypeIsUniqueService', () => {
       await expect(service.execute(type1)).resolves.toBeUndefined();
       await expect(service.execute(type2)).resolves.toBeUndefined();
 
-      expect(mockSubscriptionPlanWriteRepository.findByType).toHaveBeenCalledWith(
-        type1,
-      );
-      expect(mockSubscriptionPlanWriteRepository.findByType).toHaveBeenCalledWith(
-        type2,
-      );
-      expect(mockSubscriptionPlanWriteRepository.findByType).toHaveBeenCalledTimes(2);
+      expect(
+        mockSubscriptionPlanWriteRepository.findByType,
+      ).toHaveBeenCalledWith(type1);
+      expect(
+        mockSubscriptionPlanWriteRepository.findByType,
+      ).toHaveBeenCalledWith(type2);
+      expect(
+        mockSubscriptionPlanWriteRepository.findByType,
+      ).toHaveBeenCalledTimes(2);
     });
 
     it('should handle repository errors correctly', async () => {
@@ -147,11 +152,12 @@ describe('AssertSubscriptionPlanTypeIsUniqueService', () => {
 
       await expect(service.execute(type)).rejects.toThrow(repositoryError);
 
-      expect(mockSubscriptionPlanWriteRepository.findByType).toHaveBeenCalledWith(
-        type,
-      );
-      expect(mockSubscriptionPlanWriteRepository.findByType).toHaveBeenCalledTimes(1);
+      expect(
+        mockSubscriptionPlanWriteRepository.findByType,
+      ).toHaveBeenCalledWith(type);
+      expect(
+        mockSubscriptionPlanWriteRepository.findByType,
+      ).toHaveBeenCalledTimes(1);
     });
   });
 });
-
