@@ -24,6 +24,7 @@ import {
   RefreshCwIcon,
   ServerIcon,
 } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 
 interface HealthStatusPanelProps {
   status?: string;
@@ -44,6 +45,8 @@ export function HealthStatusPanel({
   onRefresh,
   lastChecked,
 }: HealthStatusPanelProps) {
+  const t = useTranslations('healthPage.organisms.healthStatusPanel');
+  const tCommon = useTranslations('common');
   return (
     <Card>
       <CardHeader>
@@ -51,11 +54,9 @@ export function HealthStatusPanel({
           <div className="space-y-1">
             <CardTitle className="flex items-center gap-2">
               <ServerIcon className="size-5 text-muted-foreground" />
-              PRO
+              {t('environment')}
             </CardTitle>
-            <CardDescription>
-              Production environment health status
-            </CardDescription>
+            <CardDescription>{t('environmentDescription')}</CardDescription>
           </div>
           {status && <HealthStatusBadge status={status} />}
         </div>
@@ -66,7 +67,7 @@ export function HealthStatusPanel({
           <div className="flex items-center justify-center py-8">
             <Spinner className="size-6" />
             <span className="ml-2 text-sm text-muted-foreground">
-              Checking health...
+              {t('checkingHealth')}
             </span>
           </div>
         )}
@@ -74,7 +75,7 @@ export function HealthStatusPanel({
         {/* Error State */}
         {error && (
           <Alert variant="destructive">
-            <AlertTitle>Error</AlertTitle>
+            <AlertTitle>{tCommon('error')}</AlertTitle>
             <AlertDescription>{error.message}</AlertDescription>
           </Alert>
         )}
@@ -87,8 +88,8 @@ export function HealthStatusPanel({
               <ActivityIcon className="size-4" />
               <span>
                 {status === HealthStatusEnum.OK
-                  ? 'All systems operational'
-                  : 'System experiencing issues'}
+                  ? t('allSystemsOperational')
+                  : t('systemExperiencingIssues')}
               </span>
             </div>
 
@@ -97,7 +98,7 @@ export function HealthStatusPanel({
               <div className="space-y-2">
                 <div className="flex items-center gap-2 text-sm font-medium">
                   <GlobeIcon className="size-4 text-muted-foreground" />
-                  API Endpoint
+                  {t('apiEndpoint')}
                 </div>
                 <div className="text-sm text-muted-foreground break-all">
                   {process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4100'}
@@ -107,7 +108,7 @@ export function HealthStatusPanel({
               <div className="space-y-2">
                 <div className="flex items-center gap-2 text-sm font-medium">
                   <DatabaseIcon className="size-4 text-muted-foreground" />
-                  Write Database
+                  {t('writeDatabase')}
                 </div>
                 <div className="flex items-center gap-2">
                   {writeDatabaseStatus ? (
@@ -129,7 +130,7 @@ export function HealthStatusPanel({
                     <>
                       <div className="size-2 rounded-full bg-gray-400" />
                       <span className="text-sm text-muted-foreground">
-                        Unknown
+                        {tCommon('unknown')}
                       </span>
                     </>
                   )}
@@ -139,7 +140,7 @@ export function HealthStatusPanel({
               <div className="space-y-2">
                 <div className="flex items-center gap-2 text-sm font-medium">
                   <DatabaseIcon className="size-4 text-muted-foreground" />
-                  Read Database
+                  {t('readDatabase')}
                 </div>
                 <div className="flex items-center gap-2">
                   {readDatabaseStatus ? (
@@ -161,7 +162,7 @@ export function HealthStatusPanel({
                     <>
                       <div className="size-2 rounded-full bg-gray-400" />
                       <span className="text-sm text-muted-foreground">
-                        Unknown
+                        {tCommon('unknown')}
                       </span>
                     </>
                   )}
@@ -173,7 +174,7 @@ export function HealthStatusPanel({
             <div className="flex items-center justify-between pt-4 border-t">
               {lastChecked && (
                 <div className="text-xs text-muted-foreground">
-                  Last checked: {lastChecked.toLocaleTimeString()}
+                  {t('lastChecked')} {lastChecked.toLocaleTimeString()}
                 </div>
               )}
               {onRefresh && (
@@ -186,7 +187,7 @@ export function HealthStatusPanel({
                   <RefreshCwIcon
                     className={cn('size-4 mr-2', loading && 'animate-spin')}
                   />
-                  Refresh Status
+                  {t('refreshStatus')}
                 </Button>
               )}
             </div>

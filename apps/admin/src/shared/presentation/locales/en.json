@@ -3,7 +3,26 @@
     "loading": "Loading...",
     "error": "Error",
     "success": "Success",
-    "noData": "No data found"
+    "noData": "No data found",
+    "unknown": "Unknown"
+  },
+  "healthPage": {
+    "title": "Health Status",
+    "description": "Monitor the health and status of the system",
+    "organisms": {
+      "healthStatusPanel": {
+        "environment": "Environment",
+        "environmentDescription": "Production environment health status",
+        "checkingHealth": "Checking health...",
+        "allSystemsOperational": "All systems operational",
+        "systemExperiencingIssues": "System experiencing issues",
+        "apiEndpoint": "API Endpoint",
+        "writeDatabase": "Write Database",
+        "readDatabase": "Read Database",
+        "lastChecked": "Last checked: ",
+        "refreshStatus": "Refresh Status"
+      }
+    }
   },
   "usersPage": {
     "title": "Users",
