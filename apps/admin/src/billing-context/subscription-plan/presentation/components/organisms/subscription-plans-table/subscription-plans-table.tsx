@@ -1,13 +1,14 @@
-"use client";
+'use client';
 
-import type { SubscriptionPlanResponse } from "@repo/sdk";
+import type { SubscriptionPlanResponse } from '@repo/sdk';
 import {
   DynamicFilter,
   TableLayout,
-} from "@repo/shared/presentation/components/organisms/table-layout";
-import type { Sort } from "@repo/shared/presentation/components/ui/data-table";
-import { DataTable } from "@repo/shared/presentation/components/ui/data-table";
-import { subscriptionPlansTableColumns } from "../subscription-plans-table-columns/subscription-plans-table-columns";
+} from '@repo/shared/presentation/components/organisms/table-layout';
+import type { Sort } from '@repo/shared/presentation/components/ui/data-table';
+import { DataTable } from '@repo/shared/presentation/components/ui/data-table';
+import { useTranslations } from 'next-intl';
+import { useSubscriptionPlansTableColumns } from '../../../hooks/use-subscription-plans-table-columns/use-subscription-plans-table-columns';
 
 interface SubscriptionPlansTableProps {
   subscriptionPlans: SubscriptionPlanResponse[];
@@ -36,11 +37,15 @@ export function SubscriptionPlansTable({
   sorts,
   onSortChange,
 }: SubscriptionPlansTableProps) {
+  const t = useTranslations(
+    'subscriptionPlansPage.organisms.subscriptionPlansTable',
+  );
+  const subscriptionPlansTableColumns = useSubscriptionPlansTableColumns();
   return (
     <TableLayout
       searchValue={searchValue}
       onSearchChange={onSearchChange}
-      searchPlaceholder="Search subscription plans by name..."
+      searchPlaceholder={t('searchPlaceholder')}
       filters={filters}
       page={page}
       totalPages={totalPages || 0}
@@ -57,7 +62,7 @@ export function SubscriptionPlansTable({
         }
         sorts={sorts}
         onSortChange={onSortChange}
-        emptyMessage="No subscription plans found"
+        emptyMessage={t('emptyMessage')}
         className={className}
       />
     </TableLayout>
