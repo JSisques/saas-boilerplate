@@ -24,6 +24,50 @@
       }
     }
   },
+  "eventsPage": {
+    "title": "Events",
+    "description": "Manage and view all events in the system",
+    "actions": {
+      "replayEvents": "Replay Events"
+    },
+    "organisms": {
+      "eventsTable": {
+        "searchPlaceholder": "Search events by type...",
+        "emptyMessage": "No events found"
+      },
+      "eventsTableColumns": {
+        "eventType": "Event Type",
+        "aggregateType": "Aggregate Type",
+        "aggregateId": "Aggregate ID",
+        "payload": "Payload",
+        "timestamp": "Timestamp",
+        "createdAt": "Created At",
+        "updatedAt": "Updated At"
+      },
+      "eventReplayModal": {
+        "title": "Replay Events",
+        "description": "Replay events from the event store",
+        "eventId": "Event ID (optional)",
+        "eventIdPlaceholder": "Enter event ID",
+        "eventType": "Event Type (optional)",
+        "eventTypePlaceholder": "Enter event type",
+        "aggregateType": "Aggregate Type (optional)",
+        "aggregateTypePlaceholder": "Enter aggregate type",
+        "aggregateId": "Aggregate ID (optional)",
+        "aggregateIdPlaceholder": "Enter aggregate ID",
+        "from": "From Date",
+        "fromPlaceholder": "Enter from date",
+        "to": "To Date",
+        "toPlaceholder": "Enter to date",
+        "batchSize": "Batch Size (optional)",
+        "batchSizePlaceholder": "Enter batch size (default: 500)",
+        "actions": {
+          "replay": "Replay",
+          "cancel": "Cancel"
+        }
+      }
+    }
+  },
   "usersPage": {
     "title": "Users",
     "description": "Manage and view all users in the system",
