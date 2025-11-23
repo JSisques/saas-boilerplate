@@ -1,0 +1,30 @@
+{
+  "LandingPage": {
+    "HeroSection": {
+      "title": "Sisques Labs",
+      "description1": "Desarrollador Full Stack",
+      "description2": "Creo aplicaciones web y móviles",
+      "description3": "Creo aplicaciones web y móviles"
+    },
+    "PortfolioSection": {
+      "title": "Portafolio",
+      "description": "Esta es una descripción de la sección de portafolio"
+    },
+    "WorkProcessSection": {
+      "title": "¿Cómo trabajamos?",
+      "description": "¿Cómo trabajamos?"
+    },
+    "TechnologiesSection": {
+      "title": "Tecnologías",
+      "description": "Tecnologías"
+    },
+    "TestimonialSection": {
+      "title": "Testimonios",
+      "description": "Testimonios"
+    },
+    "ContactSection": {
+      "title": "Contacto",
+      "description": "Contacto"
+    }
+  }
+}

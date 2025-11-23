@@ -1,13 +1,14 @@
-"use client";
+'use client';
 
-import { userTableColumns } from "@/user-context/users/presentation/components/organisms/users-table-columns/users-table-columns";
-import type { UserResponse } from "@repo/sdk";
+import { useUserTableColumns } from '@/user-context/users/presentation/hooks/use-users-table-columns/use-users-table-columns';
+import type { UserResponse } from '@repo/sdk';
 import {
   DynamicFilter,
   TableLayout,
-} from "@repo/shared/presentation/components/organisms/table-layout";
-import type { Sort } from "@repo/shared/presentation/components/ui/data-table";
-import { DataTable } from "@repo/shared/presentation/components/ui/data-table";
+} from '@repo/shared/presentation/components/organisms/table-layout';
+import type { Sort } from '@repo/shared/presentation/components/ui/data-table';
+import { DataTable } from '@repo/shared/presentation/components/ui/data-table';
+import { useTranslations } from 'next-intl';
 
 interface UsersTableProps {
   users: UserResponse[];
@@ -38,11 +39,13 @@ export function UsersTable({
   onSortChange,
   onCellEdit,
 }: UsersTableProps) {
+  const t = useTranslations('usersPage.organisms.usersTable');
+  const userTableColumns = useUserTableColumns();
   return (
     <TableLayout
       searchValue={searchValue}
       onSearchChange={onSearchChange}
-      searchPlaceholder="Search users by name..."
+      searchPlaceholder={t('searchPlaceholder')}
       filters={filters}
       page={page}
       totalPages={totalPages || 0}
@@ -55,7 +58,7 @@ export function UsersTable({
         onRowClick={onUserClick ? (user) => onUserClick(user.id) : undefined}
         sorts={sorts}
         onSortChange={onSortChange}
-        emptyMessage="No users found"
+        emptyMessage={t('emptyMessage')}
         className={className}
         onCellEdit={onCellEdit}
       />

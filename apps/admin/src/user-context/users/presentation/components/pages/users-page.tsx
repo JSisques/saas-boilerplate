@@ -4,7 +4,7 @@ import { useDefaultTenantName } from '@/shared/presentation/hooks/use-default-te
 import { useRoutes } from '@/shared/presentation/hooks/use-routes';
 import { UserFiltersEnum } from '@/user-context/users/domain/enums/user-filters/user-filters.enum';
 import { UsersTable } from '@/user-context/users/presentation/components/organisms/users-table/users-table';
-import { useUserFilterFields } from '@/user-context/users/presentation/hooks/use-user-filter-fields';
+import { useUserFilterFields } from '@/user-context/users/presentation/hooks/use-user-filter-fields/use-user-filter-fields';
 import { BaseFilter, useUsersList } from '@repo/sdk';
 import { FilterOperator } from '@repo/shared/domain/enums/filter-operator.enum';
 import { PageHeader } from '@repo/shared/presentation/components/organisms/page-header';
@@ -20,9 +20,13 @@ import { useFilterOperators } from '@repo/shared/presentation/hooks/use-filter-o
 import { dynamicFiltersToApiFiltersMapper } from '@repo/shared/presentation/mappers/convert-filters.mapper';
 import { dynamicSortsToApiSortsMapper } from '@repo/shared/presentation/mappers/convert-sorts.mapper';
 import { DownloadIcon, PlusIcon, TrashIcon, UploadIcon } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 import { useMemo, useState } from 'react';
 
 const UsersPage = () => {
+  const tCommon = useTranslations('common');
+  const t = useTranslations('usersPage');
+
   const [search, setSearch] = useState('');
   const [filters, setFilters] = useState<DynamicFilter[]>([]);
   const [sorts, setSorts] = useState<Sort[]>([]);
@@ -86,24 +90,24 @@ const UsersPage = () => {
       }}
     >
       <PageHeader
-        title="Users"
-        description="Manage and view all users in the system"
+        title={t('title')}
+        description={t('description')}
         actions={[
           <Button key="add-user" onClick={() => {}}>
             <PlusIcon className="size-4" />
-            Add User
+            {t('actions.addUser')}
           </Button>,
           <Button key="export-users" variant="outline">
             <DownloadIcon className="size-4" />
-            Export Users
+            {t('actions.exportUsers')}
           </Button>,
           <Button key="import-users" variant="outline">
             <UploadIcon className="size-4" />
-            Import Users
+            {t('actions.importUsers')}
           </Button>,
           <Button key="delete-users" variant="destructive">
             <TrashIcon className="size-4" />
-            Delete Users
+            {t('actions.deleteUsers')}
           </Button>,
         ]}
       />
@@ -112,7 +116,7 @@ const UsersPage = () => {
       <TableLayout
         searchValue={search}
         onSearchChange={setSearch}
-        searchPlaceholder="Search users by name..."
+        searchPlaceholder={t('organisms.usersTable.searchPlaceholder')}
         filterFields={filterFields}
         filterOperators={filterOperators}
         filters={filters}
@@ -125,7 +129,9 @@ const UsersPage = () => {
       >
         {usersList.loading ? (
           <div className="flex items-center justify-center p-8">
-            <div className="text-sm text-muted-foreground">Loading...</div>
+            <div className="text-sm text-muted-foreground">
+              {tCommon('loading')}
+            </div>
           </div>
         ) : (
           <UsersTable

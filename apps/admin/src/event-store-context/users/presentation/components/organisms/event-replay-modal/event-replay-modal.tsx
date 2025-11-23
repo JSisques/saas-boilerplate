@@ -5,6 +5,7 @@ import { EventReplayRequestDto, useEvents } from '@repo/sdk';
 import GenericModal from '@repo/shared/presentation/components/molecules/generic-modal';
 import { Input } from '@repo/shared/presentation/components/ui/input';
 import { Label } from '@repo/shared/presentation/components/ui/label';
+import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 
 type EventReplayModalProps = {
@@ -12,6 +13,9 @@ type EventReplayModalProps = {
 };
 
 export const EventReplayModal = ({ onReplayed }: EventReplayModalProps) => {
+  const t = useTranslations('eventsPage.organisms.eventReplayModal');
+  const tCommon = useTranslations('common');
+
   const { isReplayModalOpen, setIsReplayModalOpen } = useEventPageStore();
   const { replay } = useEvents();
 
@@ -74,59 +78,59 @@ export const EventReplayModal = ({ onReplayed }: EventReplayModalProps) => {
       onOpenChange={setIsReplayModalOpen}
       contentClassName="sm:max-w-2xl"
       contentBodyClassName="max-h-[75vh] overflow-y-auto"
-      title="Replay Events"
-      description="Configure the parameters to replay events from the event store."
+      title={t('title')}
+      description={t('description')}
       primaryAction={{
-        label: 'Replay',
+        label: t('actions.replay'),
         onClick: handleReplay,
         disabled: replay.loading || !from || !to,
       }}
       secondaryAction={{
-        label: 'Cancel',
+        label: t('actions.cancel'),
         variant: 'outline',
         onClick: handleClose,
       }}
     >
       <div className="grid gap-4">
         <div className="grid gap-2">
-          <Label htmlFor="id">Event ID (optional)</Label>
+          <Label htmlFor="id">{t('eventId')}</Label>
           <Input
             id="id"
             type="text"
-            placeholder="Enter event ID"
+            placeholder={t('eventIdPlaceholder')}
             value={id}
             onChange={(e) => setId(e.target.value)}
           />
         </div>
 
         <div className="grid gap-2">
-          <Label htmlFor="eventType">Event Type (optional)</Label>
+          <Label htmlFor="eventType">{t('eventType')}</Label>
           <Input
             id="eventType"
             type="text"
-            placeholder="Enter event type"
+            placeholder={t('eventTypePlaceholder')}
             value={eventType}
             onChange={(e) => setEventType(e.target.value)}
           />
         </div>
 
         <div className="grid gap-2">
-          <Label htmlFor="aggregateId">Aggregate ID (optional)</Label>
+          <Label htmlFor="aggregateId">{t('aggregateId')}</Label>
           <Input
             id="aggregateId"
             type="text"
-            placeholder="Enter aggregate ID"
+            placeholder={t('aggregateIdPlaceholder')}
             value={aggregateId}
             onChange={(e) => setAggregateId(e.target.value)}
           />
         </div>
 
         <div className="grid gap-2">
-          <Label htmlFor="aggregateType">Aggregate Type (optional)</Label>
+          <Label htmlFor="aggregateType">{t('aggregateType')}</Label>
           <Input
             id="aggregateType"
             type="text"
-            placeholder="Enter aggregate type"
+            placeholder={t('aggregateTypePlaceholder')}
             value={aggregateType}
             onChange={(e) => setAggregateType(e.target.value)}
           />
@@ -134,7 +138,7 @@ export const EventReplayModal = ({ onReplayed }: EventReplayModalProps) => {
 
         <div className="grid gap-2">
           <Label htmlFor="from">
-            From Date <span className="text-destructive">*</span>
+            {t('from')} <span className="text-destructive">*</span>
           </Label>
           <Input
             id="from"
@@ -147,7 +151,7 @@ export const EventReplayModal = ({ onReplayed }: EventReplayModalProps) => {
 
         <div className="grid gap-2">
           <Label htmlFor="to">
-            To Date <span className="text-destructive">*</span>
+            {t('to')} <span className="text-destructive">*</span>
           </Label>
           <Input
             id="to"
@@ -159,11 +163,11 @@ export const EventReplayModal = ({ onReplayed }: EventReplayModalProps) => {
         </div>
 
         <div className="grid gap-2">
-          <Label htmlFor="batchSize">Batch Size (optional)</Label>
+          <Label htmlFor="batchSize">{t('batchSize')}</Label>
           <Input
             id="batchSize"
             type="number"
-            placeholder="Enter batch size (default: 500)"
+            placeholder={t('batchSizePlaceholder')}
             value={batchSize}
             onChange={(e) => setBatchSize(e.target.value)}
             min="1"
@@ -172,13 +176,13 @@ export const EventReplayModal = ({ onReplayed }: EventReplayModalProps) => {
 
         {replay.error && (
           <div className="text-sm text-destructive mt-2">
-            Error: {replay.error.message}
+            {tCommon('error')}: {replay.error.message}
           </div>
         )}
 
         {replay.success && replay.data && (
           <div className="text-sm text-green-600 mt-2">
-            {replay.data.message}
+            {tCommon('success')}: {replay.data.message}
           </div>
         )}
       </div>

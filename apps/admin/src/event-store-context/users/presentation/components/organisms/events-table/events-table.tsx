@@ -1,6 +1,6 @@
 'use client';
 
-import { eventsTableColumns } from '@/event-store-context/users/presentation/components/organisms/events-table-columns/events-table-columns';
+import { useEventsTableColumns } from '@/event-store-context/users/presentation/hooks/use-events-table-columns/use-events-table-columns';
 import type { EventResponse } from '@repo/sdk';
 import {
   DynamicFilter,
@@ -8,6 +8,7 @@ import {
 } from '@repo/shared/presentation/components/organisms/table-layout';
 import type { Sort } from '@repo/shared/presentation/components/ui/data-table';
 import { DataTable } from '@repo/shared/presentation/components/ui/data-table';
+import { useTranslations } from 'next-intl';
 
 interface EventsTableProps {
   events: EventResponse[];
@@ -42,11 +43,13 @@ export function EventsTable({
   onSortChange,
   onCellEdit,
 }: EventsTableProps) {
+  const t = useTranslations('eventsPage.organisms.eventsTable');
+  const eventsTableColumns = useEventsTableColumns();
   return (
     <TableLayout
       searchValue={searchValue}
       onSearchChange={onSearchChange}
-      searchPlaceholder="Search events by type..."
+      searchPlaceholder={t('searchPlaceholder')}
       filters={filters}
       page={page}
       totalPages={totalPages || 0}
@@ -61,7 +64,7 @@ export function EventsTable({
         }
         sorts={sorts}
         onSortChange={onSortChange}
-        emptyMessage="No events found"
+        emptyMessage={t('emptyMessage')}
         className={className}
         onCellEdit={onCellEdit}
       />
