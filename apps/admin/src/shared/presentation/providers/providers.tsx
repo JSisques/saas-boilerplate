@@ -10,9 +10,7 @@ interface ProvidersProps extends React.PropsWithChildren {
 const Providers = async ({ children, apiUrl, messages }: ProvidersProps) => {
   return (
     <NextIntlClientProvider messages={messages}>
-      <SDKAutoProvider
-        apiUrl={process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4100'}
-      >
+      <SDKAutoProvider apiUrl={apiUrl}>
         <QueryProvider>{children}</QueryProvider>
       </SDKAutoProvider>
     </NextIntlClientProvider>

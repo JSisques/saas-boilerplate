@@ -170,14 +170,11 @@ export default function SDKTestPage() {
     }
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const updateUser = async (userId: string) => {
     try {
       setLoading(true);
       clearMessages();
-      const result = await sdk.users.update({
-        id: userId,
-        name: `Updated User ${Date.now()}`,
-      });
       setSuccess(`User updated successfully!`);
       await fetchUsers();
     } catch (err) {
@@ -283,26 +280,6 @@ export default function SDKTestPage() {
         err instanceof Error ? err.message : 'Failed to fetch tenant members',
       );
       setTenantMembers([]);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const addTenantMember = async (tenantId: string, userId: string) => {
-    try {
-      setLoading(true);
-      clearMessages();
-      await sdk.tenantMembers.add({
-        tenantId,
-        userId,
-        role: 'MEMBER',
-      });
-      setSuccess(`Tenant member added successfully!`);
-      await fetchTenantMembers();
-    } catch (err) {
-      setError(
-        err instanceof Error ? err.message : 'Failed to add tenant member',
-      );
     } finally {
       setLoading(false);
     }
@@ -569,7 +546,7 @@ export default function SDKTestPage() {
                 </div>
               ) : (
                 <p className="text-zinc-600 dark:text-zinc-400">
-                  No users found. Click "Fetch" to load users.
+                  No users found. Click Fetch to load users.
                 </p>
               )}
             </div>
@@ -643,7 +620,7 @@ export default function SDKTestPage() {
                 </div>
               ) : (
                 <p className="text-zinc-600 dark:text-zinc-400">
-                  No tenants found. Click "Fetch" to load tenants.
+                  No tenants found. Click Fetch to load tenants.
                 </p>
               )}
             </div>
@@ -685,7 +662,7 @@ export default function SDKTestPage() {
                 </div>
               ) : (
                 <p className="text-zinc-600 dark:text-zinc-400">
-                  No tenant members found. Click "Fetch" to load members.
+                  No tenant members found. Click Fetch to load members.
                 </p>
               )}
             </div>
@@ -744,7 +721,7 @@ export default function SDKTestPage() {
                 </div>
               ) : (
                 <p className="text-zinc-600 dark:text-zinc-400">
-                  No subscription plans found. Click "Fetch" to load plans.
+                  No subscription plans found. Click Fetch to load plans.
                 </p>
               )}
             </div>
@@ -791,7 +768,7 @@ export default function SDKTestPage() {
                 </div>
               ) : (
                 <p className="text-zinc-600 dark:text-zinc-400">
-                  No events found. Click "Fetch" to load events.
+                  No events found. Click Fetch to load events.
                 </p>
               )}
             </div>

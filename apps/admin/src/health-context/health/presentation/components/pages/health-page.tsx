@@ -11,7 +11,6 @@ import { useTranslations } from 'next-intl';
 import { useEffect } from 'react';
 
 const HealthPage = () => {
-  const tCommon = useTranslations('common');
   const t = useTranslations('healthPage');
 
   const { defaultTenantName, defaultTenantSubtitle } = useDefaultTenantName();
