@@ -28,6 +28,9 @@ export class PrismaTenantFactory implements OnModuleDestroy {
         this.logger.warn(
           `Connection for tenant ${tenantId} is invalid, recreating...`,
         );
+        this.logger.error(
+          `Error connecting to tenant database ${tenantId}: ${error}`,
+        );
         // Disconnect and remove invalid client
         await existingClient.$disconnect().catch(() => {});
         this.tenantClients.delete(tenantId);

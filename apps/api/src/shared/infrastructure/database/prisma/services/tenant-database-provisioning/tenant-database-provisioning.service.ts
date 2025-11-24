@@ -57,14 +57,14 @@ export class TenantDatabaseProvisioningService {
   ): Promise<TenantDatabaseInfo> {
     const { tenantId, databaseName } = params;
 
-    // Validate tenant exists
-    const tenant = await this.queryBus.execute(
+    // 01: Validate tenant exists
+    await this.queryBus.execute(
       new FindTenantByIdQuery({
         id: tenantId,
       }),
     );
 
-    // Check if tenant database already exists
+    // 02: Check if tenant database already exists
     const existingDatabase = await this.queryBus.execute(
       new FindTenantDatabaseByTenantIdQuery({
         tenantId,
@@ -77,15 +77,15 @@ export class TenantDatabaseProvisioningService {
       );
     }
 
-    // Generate database name if not provided
+    // 03: Generate database name if not provided
     const finalDatabaseName =
       databaseName || this.generateDatabaseName(tenantId);
 
-    // Store only the database name (not the full URL with credentials)
+    // 04: Store only the database name (not the full URL with credentials)
     const databaseUrl = this.generateDatabaseUrl(finalDatabaseName);
 
     try {
-      // Create database record in master with PROVISIONING status using command
+      // 05: Create database record in master with PROVISIONING status using command
       const tenantDatabaseId = await this.commandBus.execute(
         new TenantDatabaseCreateCommand({
           tenantId,
@@ -98,10 +98,10 @@ export class TenantDatabaseProvisioningService {
         `Created tenant database record for tenant: ${tenantId}, database: ${finalDatabaseName}, id: ${tenantDatabaseId}`,
       );
 
-      // Create the actual database in PostgreSQL
+      // 06: Create the actual database in PostgreSQL
       await this.createPostgresDatabase(finalDatabaseName);
 
-      // Update status to ACTIVE using command
+      // 07: Update status to ACTIVE using command
       await this.commandBus.execute(
         new TenantDatabaseUpdateCommand({
           id: tenantDatabaseId,
@@ -109,7 +109,7 @@ export class TenantDatabaseProvisioningService {
         }),
       );
 
-      // Get the updated database info for return
+      // 08: Get the updated database info for return
       const updatedDatabase = await this.queryBus.execute(
         new FindTenantDatabaseByIdQuery({
           id: tenantDatabaseId,
@@ -120,7 +120,7 @@ export class TenantDatabaseProvisioningService {
         `Tenant database provisioned successfully for tenant: ${tenantId}`,
       );
 
-      // Build the actual database URL for return (but we store only the name)
+      // 09: Build the actual database URL for return (but we store only the name)
       const actualDatabaseUrl = this.urlBuilder.buildDatabaseUrl(
         updatedDatabase.databaseName.value,
       );
@@ -137,7 +137,7 @@ export class TenantDatabaseProvisioningService {
         `Failed to provision tenant database for tenant ${tenantId}: ${error}`,
       );
 
-      // Update status to FAILED if record exists using command
+      // 10: Update status to FAILED if record exists using command
       try {
         const failedDatabase = await this.queryBus.execute(
           new FindTenantDatabaseByTenantIdQuery({
@@ -183,13 +183,13 @@ export class TenantDatabaseProvisioningService {
     );
 
     try {
-      // Remove tenant client from cache
+      // 01: Remove tenant client from cache
       await this.prismaTenantFactory.removeTenantClient(tenantId);
 
-      // Drop the actual database
+      // 02: Drop the actual database
       await this.dropPostgresDatabase(tenantDatabase.databaseName.value);
 
-      // Soft delete the database record
+      // 03: Soft delete the database record
       await this.commandBus.execute(
         new TenantDatabaseDeleteCommand({
           id: tenantDatabase.id.value,
@@ -225,10 +225,10 @@ export class TenantDatabaseProvisioningService {
       }),
     );
 
-    // Remove old client from cache
+    // 01: Remove old client from cache
     await this.prismaTenantFactory.removeTenantClient(tenantId);
 
-    // Update database name using command (we only store the name, not the full URL)
+    // 02: Update database name using command (we only store the name, not the full URL)
     await this.commandBus.execute(
       new TenantDatabaseUpdateCommand({
         id: tenantDatabase.id.value,
@@ -245,7 +245,7 @@ export class TenantDatabaseProvisioningService {
    * @returns Generated database name
    */
   private generateDatabaseName(tenantId: string): string {
-    // Remove special characters and create a safe database name
+    // 01: Remove special characters and create a safe database name
     const safeId = tenantId.replace(/[^a-zA-Z0-9]/g, '_');
     return `tenant_${safeId}`.toLowerCase();
   }
@@ -258,7 +258,7 @@ export class TenantDatabaseProvisioningService {
    * @returns Database name (we don't store credentials)
    */
   private generateDatabaseUrl(databaseName: string): string {
-    // We only store the database name, not the full URL with credentials
+    // 01: We only store the database name, not the full URL with credentials
     // The URL will be constructed dynamically when needed using buildDatabaseUrl()
     return databaseName;
   }
@@ -268,7 +268,7 @@ export class TenantDatabaseProvisioningService {
    * @param databaseName - The database name to create
    */
   private async createPostgresDatabase(databaseName: string): Promise<void> {
-    // Connect to the default 'postgres' database to create the new database
+    // 01: Connect to the default 'postgres' database to create the new database
     const postgresUrl = this.getPostgresConnectionUrl();
 
     const { PrismaClient } = await import('@prisma/client');
@@ -281,7 +281,7 @@ export class TenantDatabaseProvisioningService {
     });
 
     try {
-      // Check if database already exists
+      // 02: Check if database already exists
       const result = await adminClient.$queryRaw<Array<{ exists: boolean }>>`
         SELECT EXISTS(
           SELECT FROM pg_database WHERE datname = ${databaseName}
@@ -293,7 +293,7 @@ export class TenantDatabaseProvisioningService {
         return;
       }
 
-      // Create the database
+      // 03: Create the database
       await adminClient.$executeRawUnsafe(`CREATE DATABASE "${databaseName}"`);
 
       this.logger.log(`Created PostgreSQL database: ${databaseName}`);
@@ -319,7 +319,7 @@ export class TenantDatabaseProvisioningService {
     });
 
     try {
-      // Terminate all connections to the database first
+      // 02: Terminate all connections to the database first
       await adminClient.$executeRawUnsafe(`
         SELECT pg_terminate_backend(pg_stat_activity.pid)
         FROM pg_stat_activity
@@ -327,7 +327,7 @@ export class TenantDatabaseProvisioningService {
         AND pid <> pg_backend_pid()
       `);
 
-      // Drop the database
+      // 03: Drop the database
       await adminClient.$executeRawUnsafe(
         `DROP DATABASE IF EXISTS "${databaseName}"`,
       );
