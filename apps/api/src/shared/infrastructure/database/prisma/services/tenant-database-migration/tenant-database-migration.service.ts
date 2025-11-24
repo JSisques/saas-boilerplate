@@ -1,5 +1,6 @@
 import { PrismaMasterService } from '@/shared/infrastructure/database/prisma/services/prisma-master/prisma-master.service';
 import { PrismaTenantService } from '@/shared/infrastructure/database/prisma/services/prisma-tenant/prisma-tenant.service';
+import { TenantDatabaseUrlBuilderService } from '@/shared/infrastructure/database/prisma/services/tenant-database-url-builder/tenant-database-url-builder.service';
 import { TenantDatabaseUpdateCommand } from '@/tenant-context/tenant-database/application/commands/tenant-database-update/tenant-database-update.command';
 import {
   Injectable,
@@ -30,6 +31,7 @@ export class TenantDatabaseMigrationService {
     private readonly prismaMasterService: PrismaMasterService,
     private readonly prismaTenantService: PrismaTenantService,
     private readonly commandBus: CommandBus,
+    private readonly urlBuilder: TenantDatabaseUrlBuilderService,
   ) {}
 
   /**
@@ -64,10 +66,13 @@ export class TenantDatabaseMigrationService {
         }),
       );
 
-      // Run Prisma migrations
-      const migrationVersion = await this.runPrismaMigrations(
+      // Build the database URL dynamically (databaseUrl field contains only the database name)
+      const databaseUrl = this.urlBuilder.buildDatabaseUrl(
         tenantDatabase.databaseUrl,
       );
+
+      // Run Prisma migrations
+      const migrationVersion = await this.runPrismaMigrations(databaseUrl);
 
       // Update status back to ACTIVE and record migration info using command
       await this.commandBus.execute(

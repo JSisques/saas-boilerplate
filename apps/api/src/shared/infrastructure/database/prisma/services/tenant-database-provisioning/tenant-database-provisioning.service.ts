@@ -1,5 +1,6 @@
 import { PrismaTenantFactory } from '@/shared/infrastructure/database/prisma/factories/prisma-tenant-factory/prisma-tenant-factory.service';
 import { PrismaMasterService } from '@/shared/infrastructure/database/prisma/services/prisma-master/prisma-master.service';
+import { TenantDatabaseUrlBuilderService } from '@/shared/infrastructure/database/prisma/services/tenant-database-url-builder/tenant-database-url-builder.service';
 import { TenantDatabaseCreateCommand } from '@/tenant-context/tenant-database/application/commands/tenant-database-create/tenant-database-create.command';
 import { TenantDatabaseDeleteCommand } from '@/tenant-context/tenant-database/application/commands/tenant-database-delete/tenant-database-delete.command';
 import { TenantDatabaseUpdateCommand } from '@/tenant-context/tenant-database/application/commands/tenant-database-update/tenant-database-update.command';
@@ -40,6 +41,7 @@ export class TenantDatabaseProvisioningService {
     private readonly configService: ConfigService,
     private readonly commandBus: CommandBus,
     private readonly queryBus: QueryBus,
+    private readonly urlBuilder: TenantDatabaseUrlBuilderService,
   ) {
     this.masterDatabaseUrl =
       this.configService.get<string>('DATABASE_URL') || '';
@@ -79,7 +81,7 @@ export class TenantDatabaseProvisioningService {
     const finalDatabaseName =
       databaseName || this.generateDatabaseName(tenantId);
 
-    // Generate database URL
+    // Store only the database name (not the full URL with credentials)
     const databaseUrl = this.generateDatabaseUrl(finalDatabaseName);
 
     try {
@@ -118,11 +120,16 @@ export class TenantDatabaseProvisioningService {
         `Tenant database provisioned successfully for tenant: ${tenantId}`,
       );
 
+      // Build the actual database URL for return (but we store only the name)
+      const actualDatabaseUrl = this.urlBuilder.buildDatabaseUrl(
+        updatedDatabase.databaseName.value,
+      );
+
       return {
         id: updatedDatabase.id.value,
         tenantId: updatedDatabase.tenantId.value,
         databaseName: updatedDatabase.databaseName.value,
-        databaseUrl: updatedDatabase.databaseUrl.value,
+        databaseUrl: actualDatabaseUrl,
         status: updatedDatabase.status.value,
       };
     } catch (error) {
@@ -203,13 +210,14 @@ export class TenantDatabaseProvisioningService {
   }
 
   /**
-   * Update tenant database URL (useful for database migrations or moving tenants)
+   * Update tenant database name (useful for database migrations or moving tenants)
+   * Note: We only store the database name, not the full URL with credentials
    * @param tenantId - The tenant ID
-   * @param newDatabaseUrl - The new database URL
+   * @param newDatabaseName - The new database name
    */
-  async updateTenantDatabaseUrl(
+  async updateTenantDatabaseName(
     tenantId: string,
-    newDatabaseUrl: string,
+    newDatabaseName: string,
   ): Promise<void> {
     const tenantDatabase = await this.queryBus.execute(
       new FindTenantDatabaseByTenantIdQuery({
@@ -220,15 +228,15 @@ export class TenantDatabaseProvisioningService {
     // Remove old client from cache
     await this.prismaTenantFactory.removeTenantClient(tenantId);
 
-    // Update database URL using command
+    // Update database name using command (we only store the name, not the full URL)
     await this.commandBus.execute(
       new TenantDatabaseUpdateCommand({
         id: tenantDatabase.id.value,
-        databaseUrl: newDatabaseUrl,
+        databaseName: newDatabaseName,
       }),
     );
 
-    this.logger.log(`Updated database URL for tenant: ${tenantId}`);
+    this.logger.log(`Updated database name for tenant: ${tenantId}`);
   }
 
   /**
@@ -244,19 +252,15 @@ export class TenantDatabaseProvisioningService {
 
   /**
    * Generate database URL from database name
+   * This method stores only the database name, not the full URL with credentials
+   * The actual connection URL will be built dynamically when needed
    * @param databaseName - The database name
-   * @returns Database connection URL
+   * @returns Database name (we don't store credentials)
    */
   private generateDatabaseUrl(databaseName: string): string {
-    // Parse the master database URL and replace the database name
-    try {
-      const url = new URL(this.masterDatabaseUrl);
-      url.pathname = `/${databaseName}`;
-      return url.toString();
-    } catch (error) {
-      // Fallback: simple string replacement
-      return this.masterDatabaseUrl.replace(/\/[^\/]+$/, `/${databaseName}`);
-    }
+    // We only store the database name, not the full URL with credentials
+    // The URL will be constructed dynamically when needed using buildDatabaseUrl()
+    return databaseName;
   }
 
   /**

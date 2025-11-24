@@ -1,6 +1,7 @@
 import { PrismaClientExtended } from '@/shared/infrastructure/database/prisma/clients/custom-prisma-client/custom-prisma-client';
 import { PrismaTenantFactory } from '@/shared/infrastructure/database/prisma/factories/prisma-tenant-factory/prisma-tenant-factory.service';
 import { PrismaMasterService } from '@/shared/infrastructure/database/prisma/services/prisma-master/prisma-master.service';
+import { TenantDatabaseUrlBuilderService } from '@/shared/infrastructure/database/prisma/services/tenant-database-url-builder/tenant-database-url-builder.service';
 import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 
 @Injectable()
@@ -10,6 +11,7 @@ export class PrismaTenantService {
   constructor(
     private readonly prismaMasterService: PrismaMasterService,
     private readonly prismaTenantFactory: PrismaTenantFactory,
+    private readonly urlBuilder: TenantDatabaseUrlBuilderService,
   ) {}
 
   /**
@@ -39,11 +41,13 @@ export class PrismaTenantService {
       );
     }
 
-    // Get or create Prisma client for this tenant
-    return this.prismaTenantFactory.getTenantClient(
-      tenantId,
+    // Build the database URL dynamically (databaseUrl field contains only the database name)
+    const databaseUrl = this.urlBuilder.buildDatabaseUrl(
       tenantDatabase.databaseUrl,
     );
+
+    // Get or create Prisma client for this tenant
+    return this.prismaTenantFactory.getTenantClient(tenantId, databaseUrl);
   }
 
   /**
