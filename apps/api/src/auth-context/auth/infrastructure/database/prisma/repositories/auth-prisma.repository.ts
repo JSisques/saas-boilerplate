@@ -2,7 +2,7 @@ import { AuthAggregate } from '@/auth-context/auth/domain/aggregate/auth.aggrega
 import { AuthWriteRepository } from '@/auth-context/auth/domain/repositories/auth-write.repository';
 import { AuthPrismaMapper } from '@/auth-context/auth/infrastructure/database/prisma/mappers/auth-prisma.mapper';
 import { BasePrismaMasterRepository } from '@/shared/infrastructure/database/prisma/base-prisma/base-prisma-master/base-prisma-master.repository';
-import { PrismaMasterService } from '@/shared/infrastructure/database/prisma/services/prisma-master.service';
+import { PrismaMasterService } from '@/shared/infrastructure/database/prisma/services/prisma-master/prisma-master.service';
 import { Injectable, Logger } from '@nestjs/common';
 
 @Injectable()

@@ -9,67 +9,79 @@ import {
   SubscriptionPlanIntervalEnum,
   SubscriptionPlanTypeEnum,
   SubscriptionStatusEnum,
+  TenantDatabaseStatusEnum,
   TenantMemberRoleEnum,
   TenantStatusEnum,
   UserRoleEnum,
 } from '@prisma/client';
+const registeredEnums = [
+  {
+    enum: FilterOperator,
+    name: 'FilterOperator',
+    description: 'The operator to filter by',
+  },
+  {
+    enum: SortDirection,
+    name: 'SortDirection',
+    description: 'The direction to sort by',
+  },
+  {
+    enum: UserRoleEnum,
+    name: 'UserRoleEnum',
+    description: 'The role of the user',
+  },
+  {
+    enum: StatusEnum,
+    name: 'StatusEnum',
+    description: 'The status of the user',
+  },
+  {
+    enum: TenantMemberRoleEnum,
+    name: 'TenantMemberRoleEnum',
+    description: 'The role of the tenant member',
+  },
+  {
+    enum: TenantStatusEnum,
+    name: 'TenantStatusEnum',
+    description: 'The status of the tenant',
+  },
+  {
+    enum: SubscriptionPlanTypeEnum,
+    name: 'SubscriptionPlanTypeEnum',
+    description: 'The type of the subscription plan',
+  },
+  {
+    enum: SubscriptionPlanIntervalEnum,
+    name: 'SubscriptionPlanIntervalEnum',
+    description: 'The interval of the subscription plan',
+  },
+  {
+    enum: CurrencyEnum,
+    name: 'CurrencyEnum',
+    description: 'The currency',
+  },
+  {
+    enum: SubscriptionStatusEnum,
+    name: 'SubscriptionStatusEnum',
+    description: 'The status of the subscription',
+  },
+  {
+    enum: RenewalMethodEnum,
+    name: 'RenewalMethodEnum',
+    description: 'The renewal method',
+  },
+  {
+    enum: PromptStatusEnum,
+    name: 'PromptStatusEnum',
+    description: 'The status of the prompt',
+  },
+  {
+    enum: TenantDatabaseStatusEnum,
+    name: 'TenantDatabaseStatusEnum',
+    description: 'The status of the tenant database',
+  },
+];
 
-registerEnumType(FilterOperator, {
-  name: 'FilterOperator',
-  description: 'The operator to filter by',
-});
-
-registerEnumType(SortDirection, {
-  name: 'SortDirection',
-  description: 'The direction to sort by',
-});
-
-registerEnumType(UserRoleEnum, {
-  name: 'UserRoleEnum',
-  description: 'The role of the user',
-});
-
-registerEnumType(StatusEnum, {
-  name: 'StatusEnum',
-  description: 'The status of the user',
-});
-
-registerEnumType(TenantMemberRoleEnum, {
-  name: 'TenantMemberRoleEnum',
-  description: 'The role of the tenant member',
-});
-
-registerEnumType(TenantStatusEnum, {
-  name: 'TenantStatusEnum',
-  description: 'The status of the tenant',
-});
-
-registerEnumType(SubscriptionPlanTypeEnum, {
-  name: 'SubscriptionPlanTypeEnum',
-  description: 'The type of the subscription plan',
-});
-
-registerEnumType(SubscriptionPlanIntervalEnum, {
-  name: 'SubscriptionPlanIntervalEnum',
-  description: 'The interval of the subscription plan',
-});
-
-registerEnumType(CurrencyEnum, {
-  name: 'CurrencyEnum',
-  description: 'The currency',
-});
-
-registerEnumType(SubscriptionStatusEnum, {
-  name: 'SubscriptionStatusEnum',
-  description: 'The status of the subscription',
-});
-
-registerEnumType(RenewalMethodEnum, {
-  name: 'RenewalMethodEnum',
-  description: 'The renewal method',
-});
-
-registerEnumType(PromptStatusEnum, {
-  name: 'PromptStatusEnum',
-  description: 'The status of the prompt',
-});
+for (const { enum: enumType, name, description } of registeredEnums) {
+  registerEnumType(enumType, { name, description });
+}

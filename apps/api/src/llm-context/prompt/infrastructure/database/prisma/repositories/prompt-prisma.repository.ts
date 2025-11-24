@@ -2,7 +2,7 @@ import { PromptAggregate } from '@/llm-context/prompt/domain/aggregates/prompt.a
 import { PromptWriteRepository } from '@/llm-context/prompt/domain/repositories/prompt-write/prompt-write.repository';
 import { PromptPrismaMapper } from '@/llm-context/prompt/infrastructure/database/prisma/mappers/prompt-prisma.mapper';
 import { BasePrismaMasterRepository } from '@/shared/infrastructure/database/prisma/base-prisma/base-prisma-master/base-prisma-master.repository';
-import { PrismaMasterService } from '@/shared/infrastructure/database/prisma/services/prisma-master.service';
+import { PrismaMasterService } from '@/shared/infrastructure/database/prisma/services/prisma-master/prisma-master.service';
 import { Injectable, Logger } from '@nestjs/common';
 
 @Injectable()

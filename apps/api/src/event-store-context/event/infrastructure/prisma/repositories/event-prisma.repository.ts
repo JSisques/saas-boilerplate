@@ -3,7 +3,7 @@ import { IEventFilterDto } from '@/event-store-context/event/domain/dtos/filters
 import { EventWriteRepository } from '@/event-store-context/event/domain/repositories/event-write.repository';
 import { EventPrismaMapper } from '@/event-store-context/event/infrastructure/prisma/mappers/event-prisma.mapper';
 import { BasePrismaMasterRepository } from '@/shared/infrastructure/database/prisma/base-prisma/base-prisma-master/base-prisma-master.repository';
-import { PrismaMasterService } from '@/shared/infrastructure/database/prisma/services/prisma-master.service';
+import { PrismaMasterService } from '@/shared/infrastructure/database/prisma/services/prisma-master/prisma-master.service';
 import { Injectable, Logger } from '@nestjs/common';
 
 @Injectable()

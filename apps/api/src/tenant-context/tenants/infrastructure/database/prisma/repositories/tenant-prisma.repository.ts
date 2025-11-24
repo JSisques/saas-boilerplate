@@ -1,5 +1,5 @@
 import { BasePrismaMasterRepository } from '@/shared/infrastructure/database/prisma/base-prisma/base-prisma-master/base-prisma-master.repository';
-import { PrismaMasterService } from '@/shared/infrastructure/database/prisma/services/prisma-master.service';
+import { PrismaMasterService } from '@/shared/infrastructure/database/prisma/services/prisma-master/prisma-master.service';
 import { TenantAggregate } from '@/tenant-context/tenants/domain/aggregates/tenant.aggregate';
 import { TenantWriteRepository } from '@/tenant-context/tenants/domain/repositories/tenant-write.repository';
 import { TenantPrismaMapper } from '@/tenant-context/tenants/infrastructure/database/prisma/mappers/tenant-prisma.mapper';

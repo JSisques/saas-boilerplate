@@ -1,5 +1,5 @@
 import { BaseDatabaseRepository } from '@/shared/infrastructure/database/base-database.repository';
-import { PrismaMasterService } from '@/shared/infrastructure/database/prisma/services/prisma-master.service';
+import { PrismaMasterService } from '@/shared/infrastructure/database/prisma/services/prisma-master/prisma-master.service';
 import { Logger } from '@nestjs/common';
 
 export class BasePrismaMasterRepository extends BaseDatabaseRepository {

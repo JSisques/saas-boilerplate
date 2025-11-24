@@ -1,5 +1,5 @@
 import { BasePrismaMasterRepository } from '@/shared/infrastructure/database/prisma/base-prisma/base-prisma-master/base-prisma-master.repository';
-import { PrismaMasterService } from '@/shared/infrastructure/database/prisma/services/prisma-master.service';
+import { PrismaMasterService } from '@/shared/infrastructure/database/prisma/services/prisma-master/prisma-master.service';
 import { UserAggregate } from '@/user-context/users/domain/aggregates/user.aggregate';
 import { UserWriteRepository } from '@/user-context/users/domain/repositories/user-write.repository';
 import { UserPrismaMapper } from '@/user-context/users/infrastructure/database/prisma/mappers/user-prisma.mapper';

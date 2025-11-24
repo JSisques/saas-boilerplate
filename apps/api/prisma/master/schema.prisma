@@ -109,6 +109,35 @@ model Tenant {
   // Relationships
   members TenantMember[]
   subscription Subscription? 
+  database TenantDatabase?
+}
+
+enum TenantDatabaseStatusEnum {
+  PROVISIONING
+  ACTIVE
+  MIGRATING
+  FAILED
+  SUSPENDED
+}
+
+model TenantDatabase {
+  id          String                    @id @default(uuid())
+  tenantId    String                    @unique // Tenant ID
+  databaseName String                   // Database name (e.g., tenant_abc123)
+  databaseUrl  String                   // Full database connection URL
+  status      TenantDatabaseStatusEnum  @default(PROVISIONING) // Status of the database
+  schemaVersion String?                 // Current schema version/migration version
+  lastMigrationAt DateTime?            // Last migration timestamp
+  errorMessage String?                  // Error message if status is FAILED
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  deletedAt DateTime?
+
+  tenant Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+
+  @@index([tenantId])
+  @@index([status])
 }
 
 model Event {
