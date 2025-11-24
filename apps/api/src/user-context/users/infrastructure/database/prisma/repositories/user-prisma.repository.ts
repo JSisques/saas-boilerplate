@@ -1,5 +1,5 @@
-import { BasePrismaRepository } from '@/shared/infrastructure/database/prisma/base-prisma/base-prisma.repository';
-import { PrismaService } from '@/shared/infrastructure/database/prisma/services/prisma.service';
+import { BasePrismaMasterRepository } from '@/shared/infrastructure/database/prisma/base-prisma/base-prisma-master/base-prisma-master.repository';
+import { PrismaMasterService } from '@/shared/infrastructure/database/prisma/services/prisma-master/prisma-master.service';
 import { UserAggregate } from '@/user-context/users/domain/aggregates/user.aggregate';
 import { UserWriteRepository } from '@/user-context/users/domain/repositories/user-write.repository';
 import { UserPrismaMapper } from '@/user-context/users/infrastructure/database/prisma/mappers/user-prisma.mapper';
@@ -7,14 +7,14 @@ import { Injectable, Logger } from '@nestjs/common';
 
 @Injectable()
 export class UserPrismaRepository
-  extends BasePrismaRepository
+  extends BasePrismaMasterRepository
   implements UserWriteRepository
 {
   constructor(
-    prisma: PrismaService,
+    prismaMasterService: PrismaMasterService,
     private readonly userPrismaMapper: UserPrismaMapper,
   ) {
-    super(prisma);
+    super(prismaMasterService);
     this.logger = new Logger(UserPrismaRepository.name);
   }
 
@@ -25,7 +25,7 @@ export class UserPrismaRepository
    * @returns The user if found, null otherwise
    */
   async findById(id: string): Promise<UserAggregate | null> {
-    const userData = await this.prismaService.user.findUnique({
+    const userData = await this.prismaMasterService.user.findUnique({
       where: { id },
     });
 
@@ -43,7 +43,7 @@ export class UserPrismaRepository
    * @returns The user if found, null otherwise
    */
   async findByUserName(userName: string): Promise<UserAggregate | null> {
-    const userData = await this.prismaService.user.findUnique({
+    const userData = await this.prismaMasterService.user.findUnique({
       where: { userName },
     });
 
@@ -63,7 +63,7 @@ export class UserPrismaRepository
   async save(user: UserAggregate): Promise<UserAggregate> {
     const userData = this.userPrismaMapper.toPrismaData(user);
 
-    const result = await this.prismaService.user.upsert({
+    const result = await this.prismaMasterService.user.upsert({
       where: { id: user.id.value },
       update: userData,
       create: userData,
@@ -81,7 +81,7 @@ export class UserPrismaRepository
   async delete(id: string): Promise<boolean> {
     this.logger.log(`Deleting user by id: ${id}`);
 
-    await this.prismaService.user.delete({
+    await this.prismaMasterService.user.delete({
       where: { id },
     });
 

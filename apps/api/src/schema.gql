@@ -314,6 +314,64 @@ type PaginatedPromptResultDto {
   items: [PromptResponseDto!]!
 }
 
+type TenantDatabaseResponseDto {
+  """The id of the tenant database"""
+  id: String!
+
+  """The tenant id of the tenant database"""
+  tenantId: String
+
+  """The database name of the tenant database"""
+  databaseName: String
+
+  """The database URL of the tenant database"""
+  databaseUrl: String
+
+  """The status of the tenant database"""
+  status: TenantDatabaseStatusEnum
+
+  """The schema version of the tenant database"""
+  schemaVersion: String
+
+  """The last migration at of the tenant database"""
+  lastMigrationAt: DateTime
+
+  """The error message of the tenant database"""
+  errorMessage: String
+
+  """The created at of the tenant database"""
+  createdAt: DateTime
+
+  """The updated at of the tenant database"""
+  updatedAt: DateTime
+}
+
+"""The status of the tenant database"""
+enum TenantDatabaseStatusEnum {
+  PROVISIONING
+  ACTIVE
+  MIGRATING
+  FAILED
+  SUSPENDED
+}
+
+type PaginatedTenantDatabaseResultDto {
+  """The total number of items"""
+  total: Int!
+
+  """The page number"""
+  page: Int!
+
+  """The number of items per page"""
+  perPage: Int!
+
+  """The total number of pages"""
+  totalPages: Int!
+
+  """The tenant databases in the current page"""
+  items: [TenantDatabaseResponseDto!]!
+}
+
 type TenantMemberResponseDto {
   """The id of the tenant member"""
   id: String!
@@ -504,6 +562,8 @@ type Query {
   findAuthsByCriteria(input: AuthFindByCriteriaRequestDto): PaginatedAuthResultDto!
   tenantFindByCriteria(input: TenantFindByCriteriaRequestDto): PaginatedTenantResultDto!
   tenantMemberFindByCriteria(input: TenantMemberFindByCriteriaRequestDto): PaginatedTenantMemberResultDto!
+  tenantDatabaseFindByCriteria(input: TenantDatabaseFindByCriteriaRequestDto): PaginatedTenantDatabaseResultDto!
+  tenantDatabaseFindById(input: TenantDatabaseFindByIdRequestDto!): TenantDatabaseResponseDto!
   usersFindByCriteria(input: UserFindByCriteriaRequestDto): PaginatedUserResultDto!
   userFindById(input: UserFindByIdRequestDto!): UserResponseDto!
   healthCheck: HealthResponseDto!
@@ -605,6 +665,22 @@ input TenantMemberFindByCriteriaRequestDto {
   pagination: BasePaginationInput = {page: 1, perPage: 10}
 }
 
+input TenantDatabaseFindByCriteriaRequestDto {
+  """The filters to find by"""
+  filters: [BaseFilterInput!] = []
+
+  """The sorts to find by"""
+  sorts: [BaseSortInput!] = []
+
+  """The pagination to find by"""
+  pagination: BasePaginationInput = {page: 1, perPage: 10}
+}
+
+input TenantDatabaseFindByIdRequestDto {
+  """The id of the tenant database"""
+  id: String!
+}
+
 input UserFindByCriteriaRequestDto {
   """The filters to find by"""
   filters: [BaseFilterInput!] = []
@@ -685,6 +761,9 @@ type Mutation {
   tenantMemberAdd(input: TenantMemberAddRequestDto!): MutationResponseDto!
   tenantMemberUpdate(input: TenantMemberUpdateRequestDto!): MutationResponseDto!
   tenantMemberRemove(input: TenantMemberRemoveRequestDto!): MutationResponseDto!
+  tenantDatabaseCreate(input: TenantDatabaseCreateRequestDto!): MutationResponseDto!
+  tenantDatabaseUpdate(input: TenantDatabaseUpdateRequestDto!): MutationResponseDto!
+  tenantDatabaseDelete(input: TenantDatabaseDeleteRequestDto!): MutationResponseDto!
   createUser(input: CreateUserRequestDto!): MutationResponseDto!
   updateUser(input: UpdateUserRequestDto!): MutationResponseDto!
   deleteUser(input: DeleteUserRequestDto!): MutationResponseDto!
@@ -951,6 +1030,45 @@ input TenantMemberUpdateRequestDto {
 
 input TenantMemberRemoveRequestDto {
   """The unique identifier of the tenant member"""
+  id: String!
+}
+
+input TenantDatabaseCreateRequestDto {
+  """The id of the tenant."""
+  tenantId: String!
+
+  """The name of the database."""
+  databaseName: String!
+
+  """The URL of the database."""
+  databaseUrl: String
+}
+
+input TenantDatabaseUpdateRequestDto {
+  """The unique identifier of the tenant database"""
+  id: String!
+
+  """The name of the database"""
+  databaseName: String
+
+  """The URL of the database"""
+  databaseUrl: String
+
+  """The status of the database"""
+  status: TenantDatabaseStatusEnum
+
+  """The schema version of the database"""
+  schemaVersion: String
+
+  """The last migration at of the database"""
+  lastMigrationAt: DateTime
+
+  """The error message of the database"""
+  errorMessage: String
+}
+
+input TenantDatabaseDeleteRequestDto {
+  """The unique identifier of the tenant database"""
   id: String!
 }
 
