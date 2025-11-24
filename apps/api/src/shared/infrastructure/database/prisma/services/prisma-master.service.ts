@@ -7,31 +7,31 @@ import {
 } from '@nestjs/common';
 
 @Injectable()
-export class PrismaService
+export class PrismaMasterService
   extends PrismaClientExtended
   implements OnModuleInit, OnModuleDestroy
 {
-  private readonly logger = new Logger(PrismaService.name);
+  private readonly logger = new Logger(PrismaMasterService.name);
 
   async onModuleInit() {
-    this.logger.log(`🚀 Initializing Prisma`);
+    this.logger.log(`🚀 Initializing Prisma Master`);
 
     try {
       await this.$connect();
-      this.logger.log(`🚀 Prisma connected successfully`);
+      this.logger.log(`🚀 Prisma Master connected successfully`);
     } catch (error) {
-      this.logger.error(`🚀 Error connecting to Prisma: ${error}`);
+      this.logger.error(`🚀 Error connecting to Prisma Master: ${error}`);
     }
   }
 
   async onModuleDestroy() {
-    this.logger.log(`🚀 Disconnecting Prisma`);
+    this.logger.log(`🚀 Disconnecting Prisma Master`);
 
     try {
       await this.$disconnect();
-      this.logger.log(`🚀 Prisma disconnected successfully`);
+      this.logger.log(`🚀 Prisma Master disconnected successfully`);
     } catch (error) {
-      this.logger.error(`🚀 Error disconnecting from Prisma: ${error}`);
+      this.logger.error(`🚀 Error disconnecting from Prisma Master: ${error}`);
     }
   }
 }

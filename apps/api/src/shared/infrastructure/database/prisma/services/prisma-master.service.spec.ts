@@ -1,17 +1,17 @@
+import { PrismaMasterService } from '@/shared/infrastructure/database/prisma/services/prisma-master.service';
 import { Test, TestingModule } from '@nestjs/testing';
-import { PrismaService } from './prisma.service';
 import { PrismaClient } from '@prisma/client';
 
-describe('PrismaService', () => {
-  let service: PrismaService;
+describe('PrismaMasterService', () => {
+  let service: PrismaMasterService;
   let module: TestingModule;
 
   beforeEach(async () => {
     module = await Test.createTestingModule({
-      providers: [PrismaService],
+      providers: [PrismaMasterService],
     }).compile();
 
-    service = module.get<PrismaService>(PrismaService);
+    service = module.get<PrismaMasterService>(PrismaMasterService);
   });
 
   afterEach(async () => {
