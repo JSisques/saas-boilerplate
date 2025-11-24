@@ -1,12 +1,12 @@
 import { HealthStatusEnum } from '@/health-context/health/domain/enum/health-status.enum';
-import { PrismaService } from '@/shared/infrastructure/database/prisma/services/prisma.service';
+import { PrismaMasterService } from '@/shared/infrastructure/database/prisma/services/prisma-master/prisma-master.service';
 import { Injectable, Logger } from '@nestjs/common';
 
 @Injectable()
 export class HealthWriteDatabaseCheckService {
   private readonly logger = new Logger(HealthWriteDatabaseCheckService.name);
 
-  constructor(private readonly prismaService: PrismaService) {}
+  constructor(private readonly prismaMasterService: PrismaMasterService) {}
 
   /**
    * Checks if the write database (Prisma/PostgreSQL) is connected and accessible.
@@ -22,7 +22,7 @@ export class HealthWriteDatabaseCheckService {
     try {
       // Execute a simple query to verify the database connection
       // Using $queryRaw with SELECT 1 is a lightweight way to check connectivity
-      await this.prismaService.$queryRaw`SELECT 1`;
+      await this.prismaMasterService.$queryRaw`SELECT 1`;
 
       this.logger.log('Write database connection is healthy');
       return HealthStatusEnum.OK;

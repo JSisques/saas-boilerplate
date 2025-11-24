@@ -1,20 +1,20 @@
 import { AuthAggregate } from '@/auth-context/auth/domain/aggregate/auth.aggregate';
 import { AuthWriteRepository } from '@/auth-context/auth/domain/repositories/auth-write.repository';
 import { AuthPrismaMapper } from '@/auth-context/auth/infrastructure/database/prisma/mappers/auth-prisma.mapper';
-import { BasePrismaRepository } from '@/shared/infrastructure/database/prisma/base-prisma/base-prisma.repository';
-import { PrismaService } from '@/shared/infrastructure/database/prisma/services/prisma.service';
+import { BasePrismaMasterRepository } from '@/shared/infrastructure/database/prisma/base-prisma/base-prisma-master/base-prisma-master.repository';
+import { PrismaMasterService } from '@/shared/infrastructure/database/prisma/services/prisma-master/prisma-master.service';
 import { Injectable, Logger } from '@nestjs/common';
 
 @Injectable()
 export class AuthPrismaRepository
-  extends BasePrismaRepository
+  extends BasePrismaMasterRepository
   implements AuthWriteRepository
 {
   constructor(
-    prisma: PrismaService,
+    prismaMasterService: PrismaMasterService,
     private readonly authPrismaMapper: AuthPrismaMapper,
   ) {
-    super(prisma);
+    super(prismaMasterService);
     this.logger = new Logger(AuthPrismaRepository.name);
   }
 
@@ -25,7 +25,7 @@ export class AuthPrismaRepository
    * @returns The auth if found, null otherwise
    */
   async findById(id: string): Promise<AuthAggregate | null> {
-    const authData = await this.prismaService.auth.findUnique({
+    const authData = await this.prismaMasterService.auth.findUnique({
       where: { id },
     });
 
@@ -43,7 +43,7 @@ export class AuthPrismaRepository
    * @returns The auth if found, null otherwise
    */
   async findByEmail(email: string): Promise<AuthAggregate | null> {
-    const authData = await this.prismaService.auth.findFirst({
+    const authData = await this.prismaMasterService.auth.findFirst({
       where: { email },
     });
 
@@ -61,7 +61,7 @@ export class AuthPrismaRepository
    * @returns The auth if found, null otherwise
    */
   async findByUserId(userId: string): Promise<AuthAggregate | null> {
-    const authData = await this.prismaService.auth.findFirst({
+    const authData = await this.prismaMasterService.auth.findFirst({
       where: { userId },
     });
 
@@ -81,7 +81,7 @@ export class AuthPrismaRepository
   async save(auth: AuthAggregate): Promise<AuthAggregate> {
     const authData = this.authPrismaMapper.toPrismaData(auth);
 
-    const result = await this.prismaService.auth.upsert({
+    const result = await this.prismaMasterService.auth.upsert({
       where: { id: auth.id.value },
       update: authData,
       create: authData,
@@ -99,7 +99,7 @@ export class AuthPrismaRepository
   async delete(id: string): Promise<boolean> {
     this.logger.log(`Deleting auth by id: ${id}`);
 
-    await this.prismaService.auth.delete({
+    await this.prismaMasterService.auth.delete({
       where: { id },
     });
 

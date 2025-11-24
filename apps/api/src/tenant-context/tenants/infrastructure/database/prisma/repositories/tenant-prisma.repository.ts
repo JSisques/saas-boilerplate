@@ -1,5 +1,5 @@
-import { BasePrismaRepository } from '@/shared/infrastructure/database/prisma/base-prisma/base-prisma.repository';
-import { PrismaService } from '@/shared/infrastructure/database/prisma/services/prisma.service';
+import { BasePrismaMasterRepository } from '@/shared/infrastructure/database/prisma/base-prisma/base-prisma-master/base-prisma-master.repository';
+import { PrismaMasterService } from '@/shared/infrastructure/database/prisma/services/prisma-master/prisma-master.service';
 import { TenantAggregate } from '@/tenant-context/tenants/domain/aggregates/tenant.aggregate';
 import { TenantWriteRepository } from '@/tenant-context/tenants/domain/repositories/tenant-write.repository';
 import { TenantPrismaMapper } from '@/tenant-context/tenants/infrastructure/database/prisma/mappers/tenant-prisma.mapper';
@@ -7,14 +7,14 @@ import { Injectable, Logger } from '@nestjs/common';
 
 @Injectable()
 export class TenantPrismaRepository
-  extends BasePrismaRepository
+  extends BasePrismaMasterRepository
   implements TenantWriteRepository
 {
   constructor(
-    prisma: PrismaService,
+    prismaMasterService: PrismaMasterService,
     private readonly tenantPrismaMapper: TenantPrismaMapper,
   ) {
-    super(prisma);
+    super(prismaMasterService);
     this.logger = new Logger(TenantPrismaRepository.name);
   }
 
@@ -25,7 +25,7 @@ export class TenantPrismaRepository
    * @returns The tenant if found, null otherwise
    */
   async findById(id: string): Promise<TenantAggregate | null> {
-    const tenantData = await this.prismaService.tenant.findUnique({
+    const tenantData = await this.prismaMasterService.tenant.findUnique({
       where: { id },
     });
 
@@ -43,7 +43,7 @@ export class TenantPrismaRepository
    * @returns The tenant if found, null otherwise
    */
   async findBySlug(slug: string): Promise<TenantAggregate | null> {
-    const tenantData = await this.prismaService.tenant.findUnique({
+    const tenantData = await this.prismaMasterService.tenant.findUnique({
       where: { slug },
     });
 
@@ -63,7 +63,7 @@ export class TenantPrismaRepository
   async save(tenant: TenantAggregate): Promise<TenantAggregate> {
     const tenantData = this.tenantPrismaMapper.toPrismaData(tenant);
 
-    const result = await this.prismaService.tenant.upsert({
+    const result = await this.prismaMasterService.tenant.upsert({
       where: { id: tenant.id.value },
       update: tenantData,
       create: tenantData,
@@ -81,7 +81,7 @@ export class TenantPrismaRepository
   async delete(id: string): Promise<boolean> {
     this.logger.log(`Deleting tenant by id: ${id}`);
 
-    await this.prismaService.tenant.delete({
+    await this.prismaMasterService.tenant.delete({
       where: { id },
     });
 

@@ -1,0 +1,362 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "linux-arm64-openssl-3.0.x", "linux-musl-openssl-3.0.x"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url = env("DATABASE_URL")
+}
+
+enum UserRoleEnum {
+  ADMIN
+  USER
+}
+
+enum StatusEnum {
+  ACTIVE
+  INACTIVE
+  BLOCKED
+}
+
+model User {
+  id        String       @id @default(uuid())
+  userName  String?      @unique
+  name      String? // Name of the user
+  lastName  String? // Last name of the user
+  bio       String? // Bio of the user
+  avatarUrl String? // Avatar URL of the user
+  role      UserRoleEnum // Role of the user
+  status    StatusEnum
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  deletedAt DateTime?
+
+  auth    Auth[]
+  tenants TenantMember[]
+
+  @@index([userName])
+}
+
+enum TenantMemberRoleEnum {
+  OWNER
+  ADMIN
+  MEMBER
+  GUEST
+}
+
+model TenantMember {
+  id       String               @id @default(uuid())
+  tenantId String // Tenant ID
+  userId   String // User ID
+  role     TenantMemberRoleEnum // Role of the tenant member
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  deletedAt DateTime?
+
+  user   User   @relation(fields: [userId], references: [id])
+  tenant Tenant @relation(fields: [tenantId], references: [id])
+
+  @@index([tenantId, userId])
+}
+
+enum TenantStatusEnum {
+  ACTIVE
+  INACTIVE
+  BLOCKED
+}
+
+model Tenant {
+  id             String           @id @default(uuid())
+  name           String // Name of the tenant
+  slug           String           @unique // Slug of the tenant
+  description    String? // Description of the tenant
+  websiteUrl     String? // Website URL of the tenant
+  logoUrl        String? // Logo URL of the tenant
+  faviconUrl     String? // Favicon URL of the tenant
+  primaryColor   String? // Primary color of the tenant
+  secondaryColor String? // Secondary color of the tenant
+  status         TenantStatusEnum @default(ACTIVE) // Status of the tenant
+  // Contact information
+  email          String? // Email of the tenant
+  phoneNumber    String? // Phone number of the tenant
+  phoneCode      String? // Phone code of the tenant
+  address        String? // Address of the tenant
+  city           String? // City of the tenant
+  state          String? // State of the tenant
+  country        String? // Country of the tenant
+  postalCode     String? // Postal code of the tenant
+  timezone       String           @default("UTC") // Timezone
+  locale         String           @default("en") // Language/region
+
+  // Limits and quotas
+  maxUsers    Int? // Max users
+  maxStorage  Int? // Max storage (bytes)
+  maxApiCalls Int? // Max API calls per month
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  deletedAt DateTime?
+
+  // Relationships
+  members TenantMember[]
+  subscription Subscription? 
+  database TenantDatabase?
+}
+
+enum TenantDatabaseStatusEnum {
+  PROVISIONING
+  ACTIVE
+  MIGRATING
+  FAILED
+  SUSPENDED
+}
+
+model TenantDatabase {
+  id          String                    @id @default(uuid())
+  tenantId    String                    @unique // Tenant ID
+  databaseName String                   // Database name (e.g., tenant_abc123)
+  databaseUrl  String                   // Full database connection URL
+  status      TenantDatabaseStatusEnum  @default(PROVISIONING) // Status of the database
+  schemaVersion String?                 // Current schema version/migration version
+  lastMigrationAt DateTime?            // Last migration timestamp
+  errorMessage String?                  // Error message if status is FAILED
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  deletedAt DateTime?
+
+  tenant Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+
+  @@index([tenantId])
+  @@index([status])
+}
+
+model Event {
+  id            String   @id @default(uuid())
+  eventType     String // Event type
+  aggregateType String // Aggregate type
+  aggregateId   String // Aggregate ID
+  payload       Json? // Payload
+  timestamp     DateTime @default(now()) // Timestamp
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  deletedAt DateTime?
+}
+
+enum AuthProviderEnum {
+  LOCAL
+  GOOGLE
+  APPLE
+}
+
+model Auth {
+  id               String           @id @default(uuid())
+  provider         AuthProviderEnum // Provider of the auth
+  providerId       String? // Provider ID
+  email            String?          @unique // Email of the auth
+  phoneNumber      String? // Phone number of the auth
+  password         String? // Password of the auth
+  emailVerified    Boolean          @default(false) // Email verified
+  twoFactorEnabled Boolean          @default(false) // Two factor enabled
+  lastLoginAt      DateTime? // Last login at
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  deletedAt DateTime?
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
+}
+
+
+enum SubscriptionPlanIntervalEnum {
+  MONTHLY
+  YEARLY
+}
+
+enum CurrencyEnum {
+  USD
+  EUR
+}
+
+enum SubscriptionPlanTypeEnum {
+  FREE
+  BASIC
+  PRO
+  ENTERPRISE
+}
+model SubscriptionPlan{
+  id String @id @default(uuid())
+  name String // Name of the plan
+  slug String // Slug of the plan
+  type SubscriptionPlanTypeEnum // Type of the plan
+  description String? // Description of the plan
+  priceMonthly Decimal // Price of the plan
+  priceYearly Decimal // Price of the plan
+  currency CurrencyEnum // Currency of the plan (USD, EUR, GBP, etc.)
+  interval SubscriptionPlanIntervalEnum // Interval of the plan
+  intervalCount Int // Interval count of the plan
+  trialPeriodDays Int? // Trial period days of the plan
+  isActive Boolean @default(true) // Is active plan
+  features Json? // Features of the plan
+  limits Json? // Limits of the plan
+  stripePriceId String? // Stripe price ID of the plan
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  deletedAt DateTime?
+}
+
+enum RenewalMethodEnum {
+  MANUAL
+  AUTOMATIC
+}
+enum SubscriptionStatusEnum {
+  ACTIVE
+  INACTIVE
+  CANCELLED
+  REFUNDED
+}
+
+
+model Subscription{
+  id String @id @default(uuid())
+  tenantId String @unique // Tenant ID
+  planId String // Plan ID
+  startDate DateTime // Start date of the subscription
+  endDate DateTime // End date of the subscription
+  trialEndDate DateTime? // Trial end date of the subscription
+  status SubscriptionStatusEnum // Status of the subscription
+  stripeSubscriptionId String? // Stripe subscription ID of the subscription
+  stripeCustomerId String? // Stripe customer ID of the subscription
+  renewalMethod RenewalMethodEnum @default(AUTOMATIC) // Renewal method of the subscription
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  deletedAt DateTime?
+  
+  tenant Tenant @relation(fields: [tenantId], references: [id])
+}
+
+
+enum SubscriptionPaymentStatusEnum {
+  PENDING
+  PAID
+  FAILED
+  REFUNDED
+}
+
+enum PaymentMethodEnum {
+  CREDIT_CARD
+  DEBIT_CARD
+  PAYPAL
+  STRIPE
+}
+model SubscriptionPayment{
+  id String @id @default(uuid())
+  subscriptionId String // Subscription ID
+  amount Decimal // Amount of the payment
+  currency CurrencyEnum // Currency of the payment
+  status SubscriptionPaymentStatusEnum // Status of the payment
+  paymentMethod PaymentMethodEnum // Payment method of the payment
+  invoiceNumber String? // Invoice number of the payment
+  stripeInvoiceId String? // Stripe invoice ID of the payment
+  paidAt DateTime? // Paid at of the payment
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  deletedAt DateTime?
+}
+
+// ============================================
+// Prompt System Models
+// ============================================
+
+enum PromptStatusEnum {
+  DRAFT
+  ACTIVE
+  ARCHIVED
+  DEPRECATED
+}
+
+model Prompt {
+  id          String            @id @default(uuid())
+  slug        String // Slug identifier for the prompt (e.g., "categorize-content")
+  version     Int // Version number of the prompt
+  title       String // Title of the prompt
+  description String? // Description of what the prompt does
+  content     String // The actual prompt content with variables like {{variableName}}
+  status      PromptStatusEnum  @default(DRAFT) // Status of the prompt version
+  isActive    Boolean           @default(false) // Whether this version is the active one
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  deletedAt DateTime?
+
+  // Relationships
+  tags      PromptTagRelation[]
+  variables PromptVariable[]
+
+  @@unique([slug, version])
+  @@index([slug])
+  @@index([slug, isActive])
+  @@index([status])
+}
+
+model PromptTag {
+  id          String @id @default(uuid())
+  name        String @unique // Tag name (e.g., "nlp", "content", "moderation")
+  description String? // Description of the tag
+  color       String? // Optional color for UI purposes
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  deletedAt DateTime?
+
+  prompts PromptTagRelation[]
+
+  @@index([name])
+}
+
+model PromptTagRelation {
+  id       String @id @default(uuid())
+  promptId String
+  tagId    String
+
+  createdAt DateTime @default(now())
+
+  prompt Prompt     @relation(fields: [promptId], references: [id], onDelete: Cascade)
+  tag    PromptTag  @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  @@unique([promptId, tagId])
+  @@index([promptId])
+  @@index([tagId])
+}
+
+model PromptVariable {
+  id          String  @id @default(uuid())
+  promptId    String
+  name        String // Variable name (e.g., "content", "language", "maxLength")
+  description String? // Description of what this variable represents
+  isRequired  Boolean @default(true) // Whether this variable is required
+  defaultValue String? // Default value if optional
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  deletedAt DateTime?
+
+  prompt Prompt @relation(fields: [promptId], references: [id], onDelete: Cascade)
+
+  @@unique([promptId, name])
+  @@index([promptId])
+}
