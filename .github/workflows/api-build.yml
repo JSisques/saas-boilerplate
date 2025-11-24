@@ -27,10 +27,15 @@ jobs:
       - name: Install dependencies
         run: pnpm install --filter=./apps/api...
 
-      - name: Generate Prisma client
+      - name: Generate Prisma master client
         env:
           DATABASE_URL: postgresql://user:password@localhost:5432/dummy
-        run: pnpm --filter=./apps/api... run prisma:generate
+        run: pnpm --filter=./apps/api... run prisma:generate:master
+
+      - name: Generate Prisma tenant client
+        env:
+          DATABASE_TENANT_URL: postgresql://user:password@localhost:5432/dummy
+        run: pnpm --filter=./apps/api... run prisma:generate:tenant
 
       - name: Lint code
         run: pnpm lint --filter=./apps/api...
