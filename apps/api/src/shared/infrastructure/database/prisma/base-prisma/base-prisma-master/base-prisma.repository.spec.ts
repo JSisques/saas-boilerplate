@@ -1,28 +1,30 @@
+import { PrismaMasterService } from '@/shared/infrastructure/database/prisma/services/prisma-master.service';
 import { Test, TestingModule } from '@nestjs/testing';
-import { PrismaService } from '../services/prisma.service';
-import { BasePrismaRepository } from './base-prisma-master.repository';
+import { BasePrismaMasterRepository } from './base-prisma-master.repository';
 
 describe('BasePrismaRepository', () => {
-  let repository: BasePrismaRepository;
-  let prismaService: PrismaService;
+  let repository: BasePrismaMasterRepository;
+  let prismaMasterService: PrismaMasterService;
   let module: TestingModule;
 
   beforeEach(async () => {
     module = await Test.createTestingModule({
       providers: [
-        PrismaService,
+        PrismaMasterService,
         {
-          provide: BasePrismaRepository,
-          useFactory: (prisma: PrismaService) => {
-            return new BasePrismaRepository(prisma);
+          provide: BasePrismaMasterRepository,
+          useFactory: (prismaMasterService: PrismaMasterService) => {
+            return new BasePrismaMasterRepository(prismaMasterService);
           },
-          inject: [PrismaService],
+          inject: [PrismaMasterService],
         },
       ],
     }).compile();
 
-    prismaService = module.get<PrismaService>(PrismaService);
-    repository = module.get<BasePrismaRepository>(BasePrismaRepository);
+    prismaMasterService = module.get<PrismaMasterService>(PrismaMasterService);
+    repository = module.get<BasePrismaMasterRepository>(
+      BasePrismaMasterRepository,
+    );
   });
 
   afterEach(async () => {
@@ -34,7 +36,7 @@ describe('BasePrismaRepository', () => {
   });
 
   it('should have prismaService injected', () => {
-    expect(repository['prismaService']).toBe(prismaService);
+    expect(repository['prismaMasterService']).toBe(prismaMasterService);
   });
 
   it('should have logger initialized', () => {
@@ -42,7 +44,7 @@ describe('BasePrismaRepository', () => {
   });
 
   it('should inherit from BaseDatabaseRepository', () => {
-    expect(repository).toBeInstanceOf(BasePrismaRepository);
+    expect(repository).toBeInstanceOf(BasePrismaMasterRepository);
   });
 
   it('should have access to calculatePagination method', async () => {
