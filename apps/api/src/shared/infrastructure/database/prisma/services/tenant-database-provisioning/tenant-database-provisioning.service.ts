@@ -329,16 +329,12 @@ export class TenantDatabaseProvisioningService {
 
   /**
    * Get PostgreSQL connection URL for admin operations
-   * @returns Connection URL to the postgres database
+   * Uses the master database connection since we need to connect to an existing database
+   * to create new ones. The master database is guaranteed to exist.
+   * @returns Connection URL to the master database
    */
   private getPostgresConnectionUrl(): string {
-    try {
-      const url = new URL(this.masterDatabaseUrl);
-      url.pathname = '/postgres';
-      return url.toString();
-    } catch (error) {
-      // Fallback: simple string replacement
-      return this.masterDatabaseUrl.replace(/\/[^\/]+$/, '/postgres');
-    }
+    // Use the master database URL directly - it exists and we can use it to create new databases
+    return this.masterDatabaseUrl;
   }
 }

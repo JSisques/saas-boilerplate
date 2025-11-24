@@ -6,6 +6,7 @@ import { TenantCreatedEventHandler } from '@/tenant-context/tenants/application/
 import { TenantDeletedEventHandler } from '@/tenant-context/tenants/application/event-handlers/tenant-deleted/tenant-deleted.event-handler';
 import { TenantMemberAddedEventHandler } from '@/tenant-context/tenants/application/event-handlers/tenant-member-added/tenant-member-added.event-handler';
 import { TenantUpdatedEventHandler } from '@/tenant-context/tenants/application/event-handlers/tenant-updated/tenant-updated.event-handler';
+import { TenantCreatedProvisionDatabaseSaga } from '@/tenant-context/tenants/application/sagas/tenant-created-provision-database/tenant-created-provision-database.saga';
 import { FindTenantByIdQueryHandler } from '@/tenant-context/tenants/application/queries/find-tenant-by-id/find-tenant-by-id.query-handler';
 import { FindTenantsByCriteriaQueryHandler } from '@/tenant-context/tenants/application/queries/find-tenants-by-criteria/find-tenants-by-criteria.query-handler';
 import { AssertTenantExsistsService } from '@/tenant-context/tenants/application/services/assert-tenant-exsits/assert-tenant-exsits.service';
@@ -47,9 +48,10 @@ const EVENT_HANDLERS = [
   TenantCreatedEventHandler,
   TenantUpdatedEventHandler,
   TenantDeletedEventHandler,
-
   TenantMemberAddedEventHandler,
 ];
+
+const SAGAS = [TenantCreatedProvisionDatabaseSaga];
 
 const FACTORIES = [TenantAggregateFactory, TenantViewModelFactory];
 
@@ -75,6 +77,7 @@ const REPOSITORIES = [
     ...QUERY_HANDLERS,
     ...COMMAND_HANDLERS,
     ...EVENT_HANDLERS,
+    ...SAGAS,
     ...REPOSITORIES,
     ...FACTORIES,
     ...MAPPERS,
