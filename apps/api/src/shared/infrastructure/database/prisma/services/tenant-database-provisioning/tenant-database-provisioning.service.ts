@@ -1,5 +1,11 @@
 import { PrismaTenantFactory } from '@/shared/infrastructure/database/prisma/factories/prisma-tenant-factory/prisma-tenant-factory.service';
 import { PrismaMasterService } from '@/shared/infrastructure/database/prisma/services/prisma-master/prisma-master.service';
+import { TenantDatabaseCreateCommand } from '@/tenant-context/tenant-database/application/commands/tenant-database-create/tenant-database-create.command';
+import { TenantDatabaseDeleteCommand } from '@/tenant-context/tenant-database/application/commands/tenant-database-delete/tenant-database-delete.command';
+import { TenantDatabaseUpdateCommand } from '@/tenant-context/tenant-database/application/commands/tenant-database-update/tenant-database-update.command';
+import { FindTenantDatabaseByIdQuery } from '@/tenant-context/tenant-database/application/queries/tenant-database-find-by-id/tenant-database-find-by-id.query';
+import { FindTenantDatabaseByTenantIdQuery } from '@/tenant-context/tenant-database/application/queries/tenant-member-find-by-tenant-id/tenant-database-find-by-tenant-id.query';
+import { FindTenantByIdQuery } from '@/tenant-context/tenants/application/queries/find-tenant-by-id/find-tenant-by-id.query';
 import {
   BadRequestException,
   Injectable,
@@ -7,6 +13,8 @@ import {
   Logger,
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import { CommandBus, QueryBus } from '@nestjs/cqrs';
+import { TenantDatabaseStatusEnum } from '@prisma/client';
 
 export interface CreateTenantDatabaseParams {
   tenantId: string;
@@ -30,6 +38,8 @@ export class TenantDatabaseProvisioningService {
     private readonly prismaMasterService: PrismaMasterService,
     private readonly prismaTenantFactory: PrismaTenantFactory,
     private readonly configService: ConfigService,
+    private readonly commandBus: CommandBus,
+    private readonly queryBus: QueryBus,
   ) {
     this.masterDatabaseUrl =
       this.configService.get<string>('DATABASE_URL') || '';
@@ -46,19 +56,18 @@ export class TenantDatabaseProvisioningService {
     const { tenantId, databaseName } = params;
 
     // Validate tenant exists
-    const tenant = await this.prismaMasterService.tenant.findUnique({
-      where: { id: tenantId, deletedAt: null },
-    });
-
-    if (!tenant) {
-      throw new BadRequestException(`Tenant not found: ${tenantId}`);
-    }
+    const tenant = await this.queryBus.execute(
+      new FindTenantByIdQuery({
+        id: tenantId,
+      }),
+    );
 
     // Check if tenant database already exists
-    const existingDatabase =
-      await this.prismaMasterService.tenantDatabase.findUnique({
-        where: { tenantId },
-      });
+    const existingDatabase = await this.queryBus.execute(
+      new FindTenantDatabaseByTenantIdQuery({
+        tenantId,
+      }),
+    );
 
     if (existingDatabase && existingDatabase.deletedAt === null) {
       throw new BadRequestException(
@@ -74,66 +83,75 @@ export class TenantDatabaseProvisioningService {
     const databaseUrl = this.generateDatabaseUrl(finalDatabaseName);
 
     try {
-      // Create database record in master with PROVISIONING status
-      const tenantDatabase =
-        await this.prismaMasterService.tenantDatabase.create({
-          data: {
-            tenantId,
-            databaseName: finalDatabaseName,
-            databaseUrl,
-            status: 'PROVISIONING',
-          },
-        });
+      // Create database record in master with PROVISIONING status using command
+      const tenantDatabaseId = await this.commandBus.execute(
+        new TenantDatabaseCreateCommand({
+          tenantId,
+          databaseName: finalDatabaseName,
+          databaseUrl,
+        }),
+      );
 
       this.logger.log(
-        `Created tenant database record for tenant: ${tenantId}, database: ${finalDatabaseName}`,
+        `Created tenant database record for tenant: ${tenantId}, database: ${finalDatabaseName}, id: ${tenantDatabaseId}`,
       );
 
       // Create the actual database in PostgreSQL
       await this.createPostgresDatabase(finalDatabaseName);
 
-      // Update status to ACTIVE
-      const updatedDatabase =
-        await this.prismaMasterService.tenantDatabase.update({
-          where: { id: tenantDatabase.id },
-          data: {
-            status: 'ACTIVE',
-          },
-        });
+      // Update status to ACTIVE using command
+      await this.commandBus.execute(
+        new TenantDatabaseUpdateCommand({
+          id: tenantDatabaseId,
+          status: TenantDatabaseStatusEnum.ACTIVE,
+        }),
+      );
+
+      // Get the updated database info for return
+      const updatedDatabase = await this.queryBus.execute(
+        new FindTenantDatabaseByIdQuery({
+          id: tenantDatabaseId,
+        }),
+      );
 
       this.logger.log(
         `Tenant database provisioned successfully for tenant: ${tenantId}`,
       );
 
       return {
-        id: updatedDatabase.id,
-        tenantId: updatedDatabase.tenantId,
-        databaseName: updatedDatabase.databaseName,
-        databaseUrl: updatedDatabase.databaseUrl,
-        status: updatedDatabase.status,
+        id: updatedDatabase.id.value,
+        tenantId: updatedDatabase.tenantId.value,
+        databaseName: updatedDatabase.databaseName.value,
+        databaseUrl: updatedDatabase.databaseUrl.value,
+        status: updatedDatabase.status.value,
       };
     } catch (error) {
       this.logger.error(
         `Failed to provision tenant database for tenant ${tenantId}: ${error}`,
       );
 
-      // Update status to FAILED if record exists
+      // Update status to FAILED if record exists using command
       try {
-        const failedDatabase =
-          await this.prismaMasterService.tenantDatabase.findUnique({
-            where: { tenantId },
-          });
+        const failedDatabase = await this.queryBus.execute(
+          new FindTenantDatabaseByTenantIdQuery({
+            tenantId,
+          }),
+        );
 
-        if (failedDatabase) {
-          await this.prismaMasterService.tenantDatabase.update({
-            where: { id: failedDatabase.id },
-            data: {
-              status: 'FAILED',
-              errorMessage:
-                error instanceof Error ? error.message : String(error),
-            },
-          });
+        if (!failedDatabase) {
+          throw new InternalServerErrorException(
+            `Failed to find tenant database for tenant ${tenantId}`,
+          );
         }
+
+        await this.commandBus.execute(
+          new TenantDatabaseUpdateCommand({
+            id: failedDatabase.id.value,
+            status: TenantDatabaseStatusEnum.FAILED,
+            errorMessage:
+              error instanceof Error ? error.message : String(error),
+          }),
+        );
       } catch (updateError) {
         this.logger.error(
           `Failed to update tenant database status to FAILED: ${updateError}`,
@@ -151,31 +169,25 @@ export class TenantDatabaseProvisioningService {
    * @param tenantId - The tenant ID
    */
   async deleteTenantDatabase(tenantId: string): Promise<void> {
-    const tenantDatabase =
-      await this.prismaMasterService.tenantDatabase.findUnique({
-        where: { tenantId },
-      });
-
-    if (!tenantDatabase) {
-      throw new BadRequestException(
-        `Tenant database not found for tenant: ${tenantId}`,
-      );
-    }
+    const tenantDatabase = await this.queryBus.execute(
+      new FindTenantDatabaseByTenantIdQuery({
+        tenantId,
+      }),
+    );
 
     try {
       // Remove tenant client from cache
       await this.prismaTenantFactory.removeTenantClient(tenantId);
 
       // Drop the actual database
-      await this.dropPostgresDatabase(tenantDatabase.databaseName);
+      await this.dropPostgresDatabase(tenantDatabase.databaseName.value);
 
       // Soft delete the database record
-      await this.prismaMasterService.tenantDatabase.update({
-        where: { id: tenantDatabase.id },
-        data: {
-          deletedAt: new Date(),
-        },
-      });
+      await this.commandBus.execute(
+        new TenantDatabaseDeleteCommand({
+          id: tenantDatabase.id.value,
+        }),
+      );
 
       this.logger.log(
         `Tenant database deleted successfully for tenant: ${tenantId}`,
@@ -199,27 +211,22 @@ export class TenantDatabaseProvisioningService {
     tenantId: string,
     newDatabaseUrl: string,
   ): Promise<void> {
-    const tenantDatabase =
-      await this.prismaMasterService.tenantDatabase.findUnique({
-        where: { tenantId },
-      });
-
-    if (!tenantDatabase) {
-      throw new BadRequestException(
-        `Tenant database not found for tenant: ${tenantId}`,
-      );
-    }
+    const tenantDatabase = await this.queryBus.execute(
+      new FindTenantDatabaseByTenantIdQuery({
+        tenantId,
+      }),
+    );
 
     // Remove old client from cache
     await this.prismaTenantFactory.removeTenantClient(tenantId);
 
-    // Update database URL
-    await this.prismaMasterService.tenantDatabase.update({
-      where: { id: tenantDatabase.id },
-      data: {
+    // Update database URL using command
+    await this.commandBus.execute(
+      new TenantDatabaseUpdateCommand({
+        id: tenantDatabase.id.value,
         databaseUrl: newDatabaseUrl,
-      },
-    });
+      }),
+    );
 
     this.logger.log(`Updated database URL for tenant: ${tenantId}`);
   }
@@ -334,7 +341,6 @@ export class TenantDatabaseProvisioningService {
    * @returns Connection URL to the master database
    */
   private getPostgresConnectionUrl(): string {
-    // Use the master database URL directly - it exists and we can use it to create new databases
     return this.masterDatabaseUrl;
   }
 }

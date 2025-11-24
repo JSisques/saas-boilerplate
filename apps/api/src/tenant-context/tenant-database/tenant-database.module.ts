@@ -7,6 +7,7 @@ import { TenantDatabaseDeletedEventHandler } from '@/tenant-context/tenant-datab
 import { TenantDatabaseUpdatedEventHandler } from '@/tenant-context/tenant-database/application/event-handlers/tenant-database-updated/tenant-database-updated.event-handler';
 import { FindTenantDatabasesByCriteriaQueryHandler } from '@/tenant-context/tenant-database/application/queries/tenant-database-find-by-criteria/tenant-database-find-by-criteria.query-handler';
 import { FindTenantDatabaseByIdQueryHandler } from '@/tenant-context/tenant-database/application/queries/tenant-database-find-by-id/tenant-database-find-by-id.query-handler';
+import { FindTenantDatabaseByTenantIdQueryHandler } from '@/tenant-context/tenant-database/application/queries/tenant-member-find-by-tenant-id/tenant-database-find-by-tenant-id.query-handler';
 import { AssertTenantDatabaseViewModelExsistsService } from '@/tenant-context/tenant-database/application/services/assert-database-view-model-exsits/assert-tenant-member-view-model-exsits.service';
 import { AssertTenantDatabaseExsistsService } from '@/tenant-context/tenant-database/application/services/assert-tenant-database-exsits/assert-tenant-database-exsits.service';
 import { AssertTenantDatabaseNotExsistsService } from '@/tenant-context/tenant-database/application/services/assert-tenant-database-not-exsits/assert-tenant-database-not-exsits.service';
@@ -32,6 +33,7 @@ const RESOLVERS = [
 const QUERY_HANDLERS = [
   FindTenantDatabasesByCriteriaQueryHandler,
   FindTenantDatabaseByIdQueryHandler,
+  FindTenantDatabaseByTenantIdQueryHandler,
 ];
 
 const COMMAND_HANDLERS = [

@@ -1,19 +1,16 @@
-import { ITenantDatabaseCreateCommandDto } from '@/tenant-context/tenant-database/application/dtos/commands/tenant-database-create/tenant-database-create-command.dto';
-
 /**
  * Data Transfer Object for updating a tenant database via command layer.
  *
  * @interface ITenantDatabaseUpdateCommandDto
  * @property {string} id - The id of the tenant database to update.
- * @extends Partial<ITenantDatabaseCreateCommandDto>
+ * All other fields are optional for partial updates.
  */
-export interface ITenantDatabaseUpdateCommandDto
-  extends Partial<Omit<ITenantDatabaseCreateCommandDto, 'tenantId'>> {
+export interface ITenantDatabaseUpdateCommandDto {
   id: string;
-  databaseName: string;
-  databaseUrl: string;
-  status: string;
-  schemaVersion: string;
-  lastMigrationAt: Date;
-  errorMessage: string;
+  databaseName?: string;
+  databaseUrl?: string;
+  status?: string;
+  schemaVersion?: string;
+  lastMigrationAt?: Date;
+  errorMessage?: string;
 }

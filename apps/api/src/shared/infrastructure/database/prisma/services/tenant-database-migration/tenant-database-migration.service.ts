@@ -1,11 +1,14 @@
 import { PrismaMasterService } from '@/shared/infrastructure/database/prisma/services/prisma-master/prisma-master.service';
 import { PrismaTenantService } from '@/shared/infrastructure/database/prisma/services/prisma-tenant/prisma-tenant.service';
+import { TenantDatabaseUpdateCommand } from '@/tenant-context/tenant-database/application/commands/tenant-database-update/tenant-database-update.command';
 import {
   Injectable,
   InternalServerErrorException,
   Logger,
   NotFoundException,
 } from '@nestjs/common';
+import { CommandBus } from '@nestjs/cqrs';
+import { TenantDatabaseStatusEnum } from '@prisma/client';
 import { exec } from 'child_process';
 import { join } from 'path';
 import { promisify } from 'util';
@@ -26,6 +29,7 @@ export class TenantDatabaseMigrationService {
   constructor(
     private readonly prismaMasterService: PrismaMasterService,
     private readonly prismaTenantService: PrismaTenantService,
+    private readonly commandBus: CommandBus,
   ) {}
 
   /**
@@ -52,26 +56,28 @@ export class TenantDatabaseMigrationService {
     }
 
     try {
-      // Update status to MIGRATING
-      await this.prismaMasterService.tenantDatabase.update({
-        where: { id: tenantDatabase.id },
-        data: { status: 'MIGRATING' },
-      });
+      // Update status to MIGRATING using command
+      await this.commandBus.execute(
+        new TenantDatabaseUpdateCommand({
+          id: tenantDatabase.id,
+          status: TenantDatabaseStatusEnum.MIGRATING,
+        }),
+      );
 
       // Run Prisma migrations
       const migrationVersion = await this.runPrismaMigrations(
         tenantDatabase.databaseUrl,
       );
 
-      // Update status back to ACTIVE and record migration info
-      await this.prismaMasterService.tenantDatabase.update({
-        where: { id: tenantDatabase.id },
-        data: {
-          status: 'ACTIVE',
+      // Update status back to ACTIVE and record migration info using command
+      await this.commandBus.execute(
+        new TenantDatabaseUpdateCommand({
+          id: tenantDatabase.id,
+          status: TenantDatabaseStatusEnum.ACTIVE,
           schemaVersion: migrationVersion,
           lastMigrationAt: new Date(),
-        },
-      });
+        }),
+      );
 
       // Invalidate tenant client to force reconnection with new schema
       await this.prismaTenantService.invalidateTenantClient(tenantId);
@@ -88,14 +94,22 @@ export class TenantDatabaseMigrationService {
     } catch (error) {
       this.logger.error(`Migration failed for tenant ${tenantId}: ${error}`);
 
-      // Update status to FAILED
-      await this.prismaMasterService.tenantDatabase.update({
-        where: { id: tenantDatabase.id },
-        data: {
-          status: 'FAILED',
-          errorMessage: error instanceof Error ? error.message : String(error),
-        },
-      });
+      // Update status to FAILED using command
+      await this.commandBus
+        .execute(
+          new TenantDatabaseUpdateCommand({
+            id: tenantDatabase.id,
+            status: TenantDatabaseStatusEnum.FAILED,
+            errorMessage:
+              error instanceof Error ? error.message : String(error),
+          }),
+        )
+        .catch((updateError) => {
+          // Log error but don't throw - we're already in error handling
+          this.logger.error(
+            `Failed to update tenant database status to FAILED: ${updateError}`,
+          );
+        });
 
       return {
         tenantId,
@@ -113,7 +127,7 @@ export class TenantDatabaseMigrationService {
     const tenantDatabases =
       await this.prismaMasterService.tenantDatabase.findMany({
         where: {
-          status: 'ACTIVE',
+          status: TenantDatabaseStatusEnum.ACTIVE,
           deletedAt: null,
         },
       });
