@@ -1,65 +1,113 @@
 version: 2
 updates:
-  - package-ecosystem: 'npm'
-    directory: '/'
+  # Root package.json
+  - package-ecosystem: "npm"
+    directory: "/"
     schedule:
-      interval: 'weekly'
+      interval: "weekly"
     open-pull-requests-limit: 5
     commit-message:
-      prefix: 'chore(deps)'
+      prefix: "chore(deps)"
     labels:
-      - 'dependencies'
-  - package-ecosystem: 'npm'
-    directory: '/'
+      - "dependencies"
+
+  # Apps
+  - package-ecosystem: "npm"
+    directory: "/apps/api/"
     schedule:
-      interval: 'weekly'
+      interval: "weekly"
     open-pull-requests-limit: 5
     commit-message:
-      prefix: 'chore(deps)'
+      prefix: "chore(deps): api"
     labels:
-      - 'dependencies'
-  - package-ecosystem: 'npm'
-    directory: '/apps/mobile/'
+      - "dependencies"
+      - "api"
+
+  - package-ecosystem: "npm"
+    directory: "/apps/web/"
     schedule:
-      interval: 'weekly'
+      interval: "weekly"
     open-pull-requests-limit: 5
     commit-message:
-      prefix: 'chore(deps)'
+      prefix: "chore(deps): web"
     labels:
-      - 'dependencies'
-  - package-ecosystem: 'npm'
-    directory: '/apps/web/'
+      - "dependencies"
+      - "web"
+
+  - package-ecosystem: "npm"
+    directory: "/apps/admin/"
     schedule:
-      interval: 'weekly'
+      interval: "weekly"
     open-pull-requests-limit: 5
     commit-message:
-      prefix: 'chore(deps)'
+      prefix: "chore(deps): admin"
     labels:
-      - 'dependencies'
-  - package-ecosystem: 'npm'
-    directory: '/packages/eslint-config/'
+      - "dependencies"
+      - "admin"
+
+  - package-ecosystem: "npm"
+    directory: "/apps/mobile/"
     schedule:
-      interval: 'weekly'
+      interval: "weekly"
     open-pull-requests-limit: 5
     commit-message:
-      prefix: 'chore(deps)'
+      prefix: "chore(deps): mobile"
     labels:
-      - 'dependencies'
-  - package-ecosystem: 'npm'
-    directory: '/packages/typescript-config/'
+      - "dependencies"
+      - "mobile"
+
+  - package-ecosystem: "npm"
+    directory: "/apps/docs/"
     schedule:
-      interval: 'weekly'
+      interval: "weekly"
     open-pull-requests-limit: 5
     commit-message:
-      prefix: 'chore(deps)'
+      prefix: "chore(deps): docs"
     labels:
-      - 'dependencies'
-  - package-ecosystem: 'npm'
-    directory: '/packages/ui/'
+      - "dependencies"
+      - "docs"
+
+  # Packages
+  - package-ecosystem: "npm"
+    directory: "/packages/sdk/"
     schedule:
-      interval: 'weekly'
+      interval: "weekly"
     open-pull-requests-limit: 5
     commit-message:
-      prefix: 'chore(deps)'
+      prefix: "chore(deps): sdk"
     labels:
-      - 'dependencies'
+      - "dependencies"
+      - "sdk"
+
+  - package-ecosystem: "npm"
+    directory: "/packages/shared/"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: "chore(deps): shared"
+    labels:
+      - "dependencies"
+      - "shared"
+
+  - package-ecosystem: "npm"
+    directory: "/packages/eslint-config/"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: "chore(deps): eslint-config"
+    labels:
+      - "dependencies"
+      - "eslint-config"
+
+  - package-ecosystem: "npm"
+    directory: "/packages/typescript-config/"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: "chore(deps): typescript-config"
+    labels:
+      - "dependencies"
+      - "typescript-config"
