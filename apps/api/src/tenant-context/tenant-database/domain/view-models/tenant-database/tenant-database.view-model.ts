@@ -8,7 +8,7 @@ export class TenantDatabaseViewModel {
   private readonly _id: string;
   private _tenantId: string;
   private _databaseName: string;
-  private _databaseUrl: string;
+  private _readDatabaseName: string;
   private _status: string;
   private _schemaVersion: string | null;
   private _lastMigrationAt: Date | null;
@@ -20,7 +20,7 @@ export class TenantDatabaseViewModel {
     this._id = props.id;
     this._tenantId = props.tenantId;
     this._databaseName = props.databaseName;
-    this._databaseUrl = props.databaseUrl;
+    this._readDatabaseName = props.readDatabaseName;
     this._status = props.status;
     this._schemaVersion = props.schemaVersion ?? null;
     this._lastMigrationAt = props.lastMigrationAt ?? null;
@@ -40,10 +40,10 @@ export class TenantDatabaseViewModel {
       updateData.databaseName !== undefined
         ? updateData.databaseName
         : this._databaseName;
-    this._databaseUrl =
-      updateData.databaseUrl !== undefined
-        ? updateData.databaseUrl
-        : this._databaseUrl;
+    this._readDatabaseName =
+      updateData.readDatabaseName !== undefined
+        ? updateData.readDatabaseName
+        : this._readDatabaseName;
     this._status =
       updateData.status !== undefined ? updateData.status : this._status;
     this._schemaVersion =
@@ -85,11 +85,11 @@ export class TenantDatabaseViewModel {
     return this._databaseName;
   }
   /**
-   * Gets the database URL of the tenant database.
+   * Gets the read database name of the tenant database.
    * @returns {string}
    */
-  get databaseUrl(): string {
-    return this._databaseUrl;
+  get readDatabaseName(): string {
+    return this._readDatabaseName;
   }
 
   /**

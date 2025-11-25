@@ -38,7 +38,6 @@ export class TenantDatabaseMutationsResolver {
       new TenantDatabaseCreateCommand({
         tenantId: input.tenantId,
         databaseName: input.databaseName,
-        databaseUrl: input.databaseUrl,
       }),
     );
 

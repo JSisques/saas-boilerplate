@@ -68,7 +68,7 @@ export class TenantDatabaseMigrationService {
 
       // Build the database URL dynamically (databaseUrl field contains only the database name)
       const databaseUrl = this.urlBuilder.buildDatabaseUrl(
-        tenantDatabase.databaseUrl,
+        tenantDatabase.databaseName,
       );
 
       // Run Prisma migrations

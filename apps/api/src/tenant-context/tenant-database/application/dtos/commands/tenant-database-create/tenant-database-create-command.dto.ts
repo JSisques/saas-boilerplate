@@ -7,5 +7,4 @@
 export interface ITenantDatabaseCreateCommandDto {
   tenantId: string;
   databaseName: string;
-  databaseUrl: string;
 }

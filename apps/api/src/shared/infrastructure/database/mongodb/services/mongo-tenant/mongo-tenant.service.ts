@@ -15,7 +15,7 @@ export class MongoTenantService {
   ) {}
 
   /**
-   * Get MongoDB database instance for a specific tenant
+   * Get MongoDB database instance for a specific tenant (write operations)
    * @param tenantId - The tenant ID
    * @returns Db instance for the tenant
    * @throws NotFoundException if tenant database is not found or not active
@@ -53,6 +53,45 @@ export class MongoTenantService {
   }
 
   /**
+   * Get MongoDB database instance for read operations (uses read replica if available)
+   * @param tenantId - The tenant ID
+   * @returns Db instance for the tenant read database
+   * @throws NotFoundException if tenant database is not found or not active
+   */
+  async getTenantReadDatabase(tenantId: string): Promise<Db> {
+    // Fetch tenant database configuration from master database
+    const tenantDatabaseCollection =
+      this.mongoMasterService.getCollection('tenant-databases');
+    const tenantDatabase = await tenantDatabaseCollection.findOne({
+      tenantId,
+    });
+
+    if (!tenantDatabase) {
+      throw new NotFoundException(
+        `Tenant database not found for tenant: ${tenantId}`,
+      );
+    }
+
+    if (tenantDatabase.status !== 'ACTIVE') {
+      throw new NotFoundException(
+        `Tenant database is not active for tenant: ${tenantId}. Status: ${tenantDatabase.status}`,
+      );
+    }
+
+    // Build the database URL dynamically (readDatabaseName field contains the read database name)
+    const readDatabaseName = tenantDatabase.readDatabaseName;
+    const databaseUrl = this.urlBuilder.buildDatabaseUrl(readDatabaseName);
+
+    // Get or create MongoDB client for this tenant read database
+    // Use a different key to cache read databases separately
+    return this.mongoTenantFactory.getTenantDatabase(
+      `${tenantId}_read`,
+      databaseUrl,
+      readDatabaseName,
+    );
+  }
+
+  /**
    * Check if a tenant database exists and is active
    * @param tenantId - The tenant ID
    * @returns true if tenant database exists and is active
@@ -79,6 +118,10 @@ export class MongoTenantService {
    * @param tenantId - The tenant ID
    */
   async invalidateTenantClient(tenantId: string): Promise<void> {
-    await this.mongoTenantFactory.removeTenantClient(tenantId);
+    // Remove both write and read database clients
+    await Promise.all([
+      this.mongoTenantFactory.removeTenantClient(tenantId),
+      this.mongoTenantFactory.removeTenantClient(`${tenantId}_read`),
+    ]);
   }
 }
