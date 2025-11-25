@@ -1,11 +1,11 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { Db, MongoClient } from 'mongodb';
-import { MongoService } from './mongo.service';
+import { MongoMasterService } from './mongo-master.service';
 
 jest.mock('mongodb');
 
-describe('MongoService', () => {
-  let service: MongoService;
+describe('MongoMasterService', () => {
+  let service: MongoMasterService;
   let module: TestingModule;
   let mockClient: jest.Mocked<MongoClient>;
   let mockDb: jest.Mocked<Db>;
@@ -52,10 +52,10 @@ describe('MongoService', () => {
 
   beforeEach(async () => {
     module = await Test.createTestingModule({
-      providers: [MongoService],
+      providers: [MongoMasterService],
     }).compile();
 
-    service = module.get<MongoService>(MongoService);
+    service = module.get<MongoMasterService>(MongoMasterService);
   });
 
   it('should be defined', () => {
@@ -81,7 +81,7 @@ describe('MongoService', () => {
       await expect(service.onModuleInit()).rejects.toThrow(error);
 
       expect(errorSpy).toHaveBeenCalledWith(
-        expect.stringContaining('Error connecting to MongoDB'),
+        expect.stringContaining('Error connecting to MongoDB Master:'),
       );
       errorSpy.mockRestore();
     });

@@ -1,12 +1,12 @@
 import { HealthStatusEnum } from '@/health-context/health/domain/enum/health-status.enum';
-import { MongoService } from '@/shared/infrastructure/database/mongodb/services/mongo.service';
+import { MongoMasterService } from '@/shared/infrastructure/database/mongodb/services/mongo-master/mongo-master.service';
 import { Injectable, Logger } from '@nestjs/common';
 
 @Injectable()
 export class HealthReadDatabaseCheckService {
   private readonly logger = new Logger(HealthReadDatabaseCheckService.name);
 
-  constructor(private readonly mongoService: MongoService) {}
+  constructor(private readonly mongoMasterService: MongoMasterService) {}
 
   /**
    * Checks if the read database (MongoDB) is connected and accessible.
@@ -22,7 +22,7 @@ export class HealthReadDatabaseCheckService {
     try {
       // Execute a simple ping command to verify the database connection
       // Using admin().ping() is a lightweight way to check MongoDB connectivity
-      const db = this.mongoService.getDatabase();
+      const db = this.mongoMasterService.getDatabase();
       await db.admin().ping();
 
       this.logger.log('Read database connection is healthy');

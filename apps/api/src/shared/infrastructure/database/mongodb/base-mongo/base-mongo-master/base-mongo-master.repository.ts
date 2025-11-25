@@ -2,14 +2,14 @@ import { Criteria } from '@/shared/domain/entities/criteria';
 import { FilterOperator } from '@/shared/domain/enums/filter-operator.enum';
 import { SortDirection } from '@/shared/domain/enums/sort-direction.enum';
 import { BaseDatabaseRepository } from '@/shared/infrastructure/database/base-database.repository';
-import { MongoService } from '@/shared/infrastructure/database/mongodb/services/mongo.service';
+import { MongoMasterService } from '@/shared/infrastructure/database/mongodb/services/mongo-master/mongo-master.service';
 import { Logger } from '@nestjs/common';
 import { Collection } from 'mongodb';
 
-export class BaseMongoRepository extends BaseDatabaseRepository {
-  constructor(protected readonly mongoService: MongoService) {
+export class BaseMongoMasterRepository extends BaseDatabaseRepository {
+  constructor(protected readonly mongoMasterService: MongoMasterService) {
     super();
-    this.logger = new Logger(BaseMongoRepository.name);
+    this.logger = new Logger(BaseMongoMasterRepository.name);
   }
 
   /**

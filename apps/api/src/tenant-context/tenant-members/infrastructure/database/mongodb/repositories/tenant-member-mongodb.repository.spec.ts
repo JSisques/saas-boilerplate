@@ -1,16 +1,16 @@
 import { Criteria } from '@/shared/domain/entities/criteria';
 import { PaginatedResult } from '@/shared/domain/entities/paginated-result.entity';
-import { MongoService } from '@/shared/infrastructure/database/mongodb/services/mongo.service';
+import { MongoMasterService } from '@/shared/infrastructure/database/mongodb/services/mongo-master/mongo-master.service';
 import { TenantMemberRoleEnum } from '@/tenant-context/tenant-members/domain/enums/tenant-member-role/tenant-member-role.enum';
+import { TenantMemberViewModel } from '@/tenant-context/tenant-members/domain/view-models/tenant-member/tenant-member.view-model';
 import { TenantMemberMongoDbDto } from '@/tenant-context/tenant-members/infrastructure/database/mongodb/dtos/tenant-member-mongodb.dto';
 import { TenantMemberMongoDBMapper } from '@/tenant-context/tenant-members/infrastructure/database/mongodb/mappers/tenant-member-mongodb.mapper';
-import { TenantMemberViewModel } from '@/tenant-context/tenant-members/domain/view-models/tenant-member/tenant-member.view-model';
 import { Collection } from 'mongodb';
 import { TenantMemberMongoRepository } from './tenant-member-mongodb.repository';
 
 describe('TenantMemberMongoRepository', () => {
   let repository: TenantMemberMongoRepository;
-  let mockMongoService: jest.Mocked<MongoService>;
+  let mockMongoMasterService: jest.Mocked<MongoMasterService>;
   let mockTenantMemberMongoDBMapper: jest.Mocked<TenantMemberMongoDBMapper>;
   let mockCollection: jest.Mocked<Collection>;
 
@@ -23,9 +23,9 @@ describe('TenantMemberMongoRepository', () => {
       countDocuments: jest.fn(),
     } as unknown as jest.Mocked<Collection>;
 
-    mockMongoService = {
+    mockMongoMasterService = {
       getCollection: jest.fn().mockReturnValue(mockCollection),
-    } as unknown as jest.Mocked<MongoService>;
+    } as unknown as jest.Mocked<MongoMasterService>;
 
     mockTenantMemberMongoDBMapper = {
       toViewModel: jest.fn(),
@@ -33,7 +33,7 @@ describe('TenantMemberMongoRepository', () => {
     } as unknown as jest.Mocked<TenantMemberMongoDBMapper>;
 
     repository = new TenantMemberMongoRepository(
-      mockMongoService,
+      mockMongoMasterService,
       mockTenantMemberMongoDBMapper,
     );
   });

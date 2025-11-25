@@ -3,22 +3,22 @@ import { AuthViewModel } from '@/auth-context/auth/domain/view-models/auth.view-
 import { AuthMongoDBMapper } from '@/auth-context/auth/infrastructure/database/mongodb/mappers/auth-mongodb.mapper';
 import { Criteria } from '@/shared/domain/entities/criteria';
 import { PaginatedResult } from '@/shared/domain/entities/paginated-result.entity';
-import { BaseMongoRepository } from '@/shared/infrastructure/database/mongodb/base-mongo/base-mongo.repository';
-import { MongoService } from '@/shared/infrastructure/database/mongodb/services/mongo.service';
+import { BaseMongoMasterRepository } from '@/shared/infrastructure/database/mongodb/base-mongo/base-mongo-master/base-mongo-master.repository';
+import { MongoMasterService } from '@/shared/infrastructure/database/mongodb/services/mongo-master/mongo-master.service';
 import { Injectable, Logger } from '@nestjs/common';
 
 @Injectable()
 export class AuthMongoRepository
-  extends BaseMongoRepository
+  extends BaseMongoMasterRepository
   implements AuthReadRepository
 {
   private readonly collectionName = 'auths';
 
   constructor(
-    mongoService: MongoService,
+    mongoMasterService: MongoMasterService,
     private readonly authMongoDBMapper: AuthMongoDBMapper,
   ) {
-    super(mongoService);
+    super(mongoMasterService);
     this.logger = new Logger(AuthMongoRepository.name);
   }
 
@@ -31,7 +31,9 @@ export class AuthMongoRepository
   async findById(id: string): Promise<AuthViewModel | null> {
     this.logger.log(`Finding auth by id: ${id}`);
 
-    const collection = this.mongoService.getCollection(this.collectionName);
+    const collection = this.mongoMasterService.getCollection(
+      this.collectionName,
+    );
     const authViewModel = await collection.findOne({ id });
 
     return authViewModel
@@ -64,7 +66,9 @@ export class AuthMongoRepository
   ): Promise<PaginatedResult<AuthViewModel>> {
     this.logger.log(`Finding auths by criteria: ${JSON.stringify(criteria)}`);
 
-    const collection = this.mongoService.getCollection(this.collectionName);
+    const collection = this.mongoMasterService.getCollection(
+      this.collectionName,
+    );
 
     // 01: Build MongoDB query from criteria
     const mongoQuery = this.buildMongoQuery(criteria);
@@ -115,7 +119,9 @@ export class AuthMongoRepository
   async save(authViewModel: AuthViewModel): Promise<void> {
     this.logger.log(`Saving auth view model with id: ${authViewModel.id}`);
 
-    const collection = this.mongoService.getCollection(this.collectionName);
+    const collection = this.mongoMasterService.getCollection(
+      this.collectionName,
+    );
     const mongoData = this.authMongoDBMapper.toMongoData(authViewModel);
 
     // 01: Use upsert to either insert or update the auth view model
@@ -133,7 +139,9 @@ export class AuthMongoRepository
   async delete(id: string): Promise<boolean> {
     this.logger.log(`Deleting auth view model by id: ${id}`);
 
-    const collection = this.mongoService.getCollection(this.collectionName);
+    const collection = this.mongoMasterService.getCollection(
+      this.collectionName,
+    );
 
     // 01: Delete the auth view model from the collection
     await collection.deleteOne({ id });

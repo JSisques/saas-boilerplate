@@ -1,9 +1,9 @@
-import { MongoService } from '@/shared/infrastructure/database/mongodb/services/mongo.service';
+import { MongoMasterService } from '@/shared/infrastructure/database/mongodb/services/mongo-master/mongo-master.service';
 import { Global, Module } from '@nestjs/common';
 
 @Global()
 @Module({
-  providers: [MongoService],
-  exports: [MongoService],
+  providers: [MongoMasterService],
+  exports: [MongoMasterService],
 })
 export class MongoModule {}
