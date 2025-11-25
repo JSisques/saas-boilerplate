@@ -1,4 +1,5 @@
 import { Injectable, Logger, OnModuleDestroy } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { Db, MongoClient } from 'mongodb';
 
 @Injectable()
@@ -6,6 +7,8 @@ export class MongoTenantFactory implements OnModuleDestroy {
   private readonly logger = new Logger(MongoTenantFactory.name);
   private readonly tenantClients = new Map<string, MongoClient>();
   private readonly tenantDatabases = new Map<string, Db>();
+
+  constructor(private readonly configService: ConfigService) {}
 
   /**
    * Get or create a MongoDB client instance for a specific tenant
@@ -42,10 +45,41 @@ export class MongoTenantFactory implements OnModuleDestroy {
       }
     }
 
-    // Create new client instance
+    // Create new client instance with connection pool configuration
     this.logger.log(`Creating MongoDB client for tenant: ${tenantId}`);
+
+    // Connection pool configuration for tenant databases
+    const maxPoolSize = parseInt(
+      this.configService.get<string>('MONGODB_TENANT_MAX_POOL_SIZE') ||
+        this.configService.get<string>('MONGODB_MAX_POOL_SIZE') ||
+        '10',
+      10,
+    );
+    const minPoolSize = parseInt(
+      this.configService.get<string>('MONGODB_TENANT_MIN_POOL_SIZE') ||
+        this.configService.get<string>('MONGODB_MIN_POOL_SIZE') ||
+        '2',
+      10,
+    );
+    const maxIdleTimeMS = parseInt(
+      this.configService.get<string>('MONGODB_TENANT_MAX_IDLE_TIME_MS') ||
+        this.configService.get<string>('MONGODB_MAX_IDLE_TIME_MS') ||
+        '30000',
+      10,
+    );
+    const waitQueueTimeoutMS = parseInt(
+      this.configService.get<string>('MONGODB_TENANT_WAIT_QUEUE_TIMEOUT_MS') ||
+        this.configService.get<string>('MONGODB_WAIT_QUEUE_TIMEOUT_MS') ||
+        '0',
+      10,
+    );
+
     const client = new MongoClient(databaseUrl, {
       authSource: 'admin',
+      maxPoolSize, // Maximum number of connections in the pool per tenant
+      minPoolSize, // Minimum number of connections in the pool per tenant
+      maxIdleTimeMS, // Maximum time a connection can remain idle
+      waitQueueTimeoutMS, // Maximum time to wait for a connection (0 = no limit)
     });
 
     // Connect to the database
@@ -55,7 +89,7 @@ export class MongoTenantFactory implements OnModuleDestroy {
       this.tenantClients.set(tenantId, client);
       this.tenantDatabases.set(tenantId, db);
       this.logger.log(
-        `MongoDB client created and connected for tenant: ${tenantId}`,
+        `MongoDB client created and connected for tenant: ${tenantId} (pool: min=${minPoolSize}, max=${maxPoolSize})`,
       );
       return db;
     } catch (error) {

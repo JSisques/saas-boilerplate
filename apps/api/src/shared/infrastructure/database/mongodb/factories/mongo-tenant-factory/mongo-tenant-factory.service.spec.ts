@@ -1,3 +1,4 @@
+import { ConfigService } from '@nestjs/config';
 import { Test, TestingModule } from '@nestjs/testing';
 import { Db, MongoClient } from 'mongodb';
 import { MongoTenantFactory } from './mongo-tenant-factory.service';
@@ -10,9 +11,26 @@ describe('MongoTenantFactory', () => {
   let mockClient: jest.Mocked<MongoClient>;
   let mockDb: jest.Mocked<Db>;
   let mockAdmin: any;
+  let mockConfigService: jest.Mocked<ConfigService>;
 
   beforeEach(() => {
     jest.clearAllMocks();
+
+    mockConfigService = {
+      get: jest.fn((key: string) => {
+        const config: Record<string, string> = {
+          MONGODB_TENANT_MAX_POOL_SIZE: '10',
+          MONGODB_TENANT_MIN_POOL_SIZE: '2',
+          MONGODB_TENANT_MAX_IDLE_TIME_MS: '30000',
+          MONGODB_TENANT_WAIT_QUEUE_TIMEOUT_MS: '0',
+          MONGODB_MAX_POOL_SIZE: '10',
+          MONGODB_MIN_POOL_SIZE: '2',
+          MONGODB_MAX_IDLE_TIME_MS: '30000',
+          MONGODB_WAIT_QUEUE_TIMEOUT_MS: '0',
+        };
+        return config[key];
+      }),
+    } as any;
 
     mockAdmin = {
       ping: jest.fn().mockResolvedValue({ ok: 1 }),
@@ -49,7 +67,13 @@ describe('MongoTenantFactory', () => {
 
   beforeEach(async () => {
     module = await Test.createTestingModule({
-      providers: [MongoTenantFactory],
+      providers: [
+        MongoTenantFactory,
+        {
+          provide: ConfigService,
+          useValue: mockConfigService,
+        },
+      ],
     }).compile();
 
     factory = module.get<MongoTenantFactory>(MongoTenantFactory);
@@ -73,6 +97,10 @@ describe('MongoTenantFactory', () => {
 
       expect(MongoClient).toHaveBeenCalledWith(databaseUrl, {
         authSource: 'admin',
+        maxPoolSize: 10,
+        minPoolSize: 2,
+        maxIdleTimeMS: 30000,
+        waitQueueTimeoutMS: 0,
       });
       expect(mockClient.connect).toHaveBeenCalledTimes(1);
       expect(mockClient.db).toHaveBeenCalledWith(databaseName);

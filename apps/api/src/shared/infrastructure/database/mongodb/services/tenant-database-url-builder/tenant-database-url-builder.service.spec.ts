@@ -1,5 +1,5 @@
-import { Test, TestingModule } from '@nestjs/testing';
 import { ConfigService } from '@nestjs/config';
+import { Test, TestingModule } from '@nestjs/testing';
 import { TenantDatabaseUrlBuilderService } from './tenant-database-url-builder.service';
 
 describe('TenantDatabaseUrlBuilderService', () => {
