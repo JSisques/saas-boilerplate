@@ -1,3 +1,4 @@
+import { DateValueObject } from '@/shared/domain/value-objects/date/date.vo';
 import { StorageUuidValueObject } from '@/shared/domain/value-objects/identifiers/storage-uuid/storage-uuid.vo';
 import { StorageAggregateFactory } from '@/storage-context/storage/domain/factories/storage-aggregate.factory';
 import {
@@ -34,7 +35,7 @@ export class StorageUploadFileCommandHandler
    */
   async execute(command: StorageUploadFileCommand): Promise<string> {
     this.logger.log(
-      `Executing storage upload file command: ${command.fileName.value}`,
+      `Executing storage upload file command: ${command.fileName}`,
     );
 
     // 01: Get the storage provider
@@ -60,6 +61,8 @@ export class StorageUploadFileCommandHandler
       provider: new StorageProviderValueObject(providerType),
       url: new StorageUrlValueObject(url),
       path: new StoragePathValueObject(relativePath),
+      createdAt: new DateValueObject(),
+      updatedAt: new DateValueObject(),
     });
 
     // 04: Save the storage entity

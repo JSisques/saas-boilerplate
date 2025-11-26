@@ -1,4 +1,4 @@
-import { NumberValueObject } from '@/shared/domain/value-objects/number.vo';
+import { NumberValueObject } from '@/shared/domain/value-objects/number/number.vo';
 
 /**
  * StorageFileSizeValueObject represents the file size in bytes.

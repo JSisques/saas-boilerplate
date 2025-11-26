@@ -1,4 +1,4 @@
-import { StringValueObject } from '@/shared/domain/value-objects/string.vo';
+import { StringValueObject } from '@/shared/domain/value-objects/string/string.vo';
 
 /**
  * StorageMimeTypeValueObject represents the MIME type of the storage file.

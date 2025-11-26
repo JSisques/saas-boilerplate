@@ -1,3 +1,4 @@
+import { BaseAggregate } from '@/shared/domain/aggregates/base-aggregate/base.aggregate';
 import { StorageCreatedEvent } from '@/shared/domain/events/storage-context/storage/storage-created/storage-created.event';
 import { StorageFileDeletedEvent } from '@/shared/domain/events/storage-context/storage/storage-deleted/storage-deleted.event';
 import { StorageFileDownloadedEvent } from '@/shared/domain/events/storage-context/storage/storage-file-downloaded/storage-file-downloaded.event';
@@ -13,9 +14,8 @@ import { StorageMimeTypeValueObject } from '@/storage-context/storage/domain/val
 import { StoragePathValueObject } from '@/storage-context/storage/domain/value-objects/storage-path/storage-path.vo';
 import { StorageProviderValueObject } from '@/storage-context/storage/domain/value-objects/storage-provider/storage-provider.vo';
 import { StorageUrlValueObject } from '@/storage-context/storage/domain/value-objects/storage-url/storage-url.vo';
-import { AggregateRoot } from '@nestjs/cqrs';
 
-export class StorageAggregate extends AggregateRoot {
+export class StorageAggregate extends BaseAggregate {
   private readonly _id: StorageUuidValueObject;
   private _fileName: StorageFileNameValueObject;
   private _fileSize: StorageFileSizeValueObject;
@@ -25,7 +25,7 @@ export class StorageAggregate extends AggregateRoot {
   private _path: StoragePathValueObject;
 
   constructor(props: IStorageCreateDto, generateEvent: boolean = true) {
-    super();
+    super(props.createdAt, props.updatedAt);
 
     // 01: Set the properties
     this._id = props.id;
@@ -185,6 +185,8 @@ export class StorageAggregate extends AggregateRoot {
       provider: this._provider.value,
       url: this._url.value,
       path: this._path.value,
+      createdAt: this._createdAt.value,
+      updatedAt: this._updatedAt.value,
     };
   }
 }

@@ -1,14 +1,16 @@
-import { BaseDatabaseRepository } from '@/shared/infrastructure/database/base-database.repository';
+import { BaseMongoDatabaseRepository } from '@/shared/infrastructure/database/mongodb/base-mongo/base-mongo-database.repository';
 import { MongoTenantService } from '@/shared/infrastructure/database/mongodb/services/mongo-tenant/mongo-tenant.service';
-import { Logger } from '@nestjs/common';
 import { Db } from 'mongodb';
 
-export abstract class BaseMongoTenantRepository extends BaseDatabaseRepository {
+/**
+ * Base class for MongoDB tenant database repositories.
+ * Extends BaseMongoDatabaseRepository to provide common MongoDB operations for tenant databases.
+ */
+export abstract class BaseMongoTenantRepository extends BaseMongoDatabaseRepository {
   protected abstract readonly tenantId: string;
 
   constructor(protected readonly mongoTenantService: MongoTenantService) {
     super();
-    this.logger = new Logger(this.constructor.name);
   }
 
   /**

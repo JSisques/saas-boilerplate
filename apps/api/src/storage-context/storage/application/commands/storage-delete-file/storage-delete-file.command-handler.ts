@@ -1,5 +1,6 @@
 import { AssertStorageExsistsService } from '@/storage-context/storage/application/services/assert-storage-exsits/assert-storage-exsits.service';
 import { AssertStorageViewModelExsistsService } from '@/storage-context/storage/application/services/assert-storage-view-model-exsits/assert-storage-view-model-exsits.service';
+import { StorageProviderEnum } from '@/storage-context/storage/domain/enums/storage-provider.enum';
 import {
   STORAGE_WRITE_REPOSITORY_TOKEN,
   StorageWriteRepository,
@@ -42,7 +43,7 @@ export class StorageDeleteFileCommandHandler
 
     // 02: Get the storage provider
     const provider = this.storageProviderFactory.getProvider(
-      existingStorage.provider.value as any,
+      existingStorage.provider.value as StorageProviderEnum,
     );
 
     // 03: Delete file from storage provider

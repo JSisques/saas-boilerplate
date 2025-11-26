@@ -1,20 +1,22 @@
-import { BasePrismaRepository } from '@/shared/infrastructure/database/prisma/base-prisma.repository';
-import { PrismaService } from '@/shared/infrastructure/database/prisma/prisma.service';
+import { BasePrismaTenantRepository } from '@/shared/infrastructure/database/prisma/base-prisma/base-prisma-tenant/base-prisma-tenant.repository';
+import { PrismaTenantService } from '@/shared/infrastructure/database/prisma/services/prisma-tenant/prisma-tenant.service';
 import { StorageAggregate } from '@/storage-context/storage/domain/aggregate/storage.aggregate';
 import { StorageWriteRepository } from '@/storage-context/storage/domain/repositories/storage-write.repository';
 import { StoragePrismaMapper } from '@/storage-context/storage/infrastructure/database/prisma/mappers/storage-prisma.mapper';
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable, Logger, Scope } from '@nestjs/common';
 
-@Injectable()
+@Injectable({ scope: Scope.REQUEST })
 export class StoragePrismaRepository
-  extends BasePrismaRepository
+  extends BasePrismaTenantRepository
   implements StorageWriteRepository
 {
+  protected readonly tenantId: string;
+
   constructor(
-    prisma: PrismaService,
+    prismaTenantService: PrismaTenantService,
     private readonly storagePrismaMapper: StoragePrismaMapper,
   ) {
-    super(prisma);
+    super(prismaTenantService);
     this.logger = new Logger(StoragePrismaRepository.name);
   }
 
@@ -27,7 +29,7 @@ export class StoragePrismaRepository
   async findById(id: string): Promise<StorageAggregate | null> {
     this.logger.log(`Finding storage by id: ${id}`);
 
-    const storageData = await this.prismaService.storage.findUnique({
+    const storageData = await this.getTenantClient().storage.findUnique({
       where: { id },
     });
 
@@ -47,7 +49,7 @@ export class StoragePrismaRepository
   async findByPath(path: string): Promise<StorageAggregate | null> {
     this.logger.log(`Finding storage by path: ${path}`);
 
-    const storageData = await this.prismaService.storage.findFirst({
+    const storageData = await this.getTenantClient().storage.findFirst({
       where: { path },
     });
 
@@ -69,7 +71,7 @@ export class StoragePrismaRepository
 
     const storageData = this.storagePrismaMapper.toPrismaData(storage);
 
-    const result = await this.prismaService.storage.upsert({
+    const result = await this.getTenantClient().storage.upsert({
       where: { id: storage.id.value },
       update: storageData,
       create: storageData,
@@ -87,7 +89,7 @@ export class StoragePrismaRepository
   async delete(id: string): Promise<boolean> {
     this.logger.log(`Deleting storage by id: ${id}`);
 
-    await this.prismaService.storage.delete({
+    await this.getTenantClient().storage.delete({
       where: { id },
     });
 

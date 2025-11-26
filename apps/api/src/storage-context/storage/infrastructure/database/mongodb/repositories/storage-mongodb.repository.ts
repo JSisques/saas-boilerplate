@@ -1,25 +1,42 @@
 import { Criteria } from '@/shared/domain/entities/criteria';
 import { PaginatedResult } from '@/shared/domain/entities/paginated-result.entity';
-import { BaseMongoRepository } from '@/shared/infrastructure/database/mongodb/base-mongo.repository';
-import { MongoService } from '@/shared/infrastructure/database/mongodb/mongo.service';
+import { BaseMongoTenantRepository } from '@/shared/infrastructure/database/mongodb/base-mongo/base-mongo-tenant/base-mongo-tenant.repository';
+import { MongoTenantService } from '@/shared/infrastructure/database/mongodb/services/mongo-tenant/mongo-tenant.service';
 import { StorageReadRepository } from '@/storage-context/storage/domain/repositories/storage-read.repository';
 import { StorageViewModel } from '@/storage-context/storage/domain/view-models/storage.view-model';
 import { StorageMongoDBMapper } from '@/storage-context/storage/infrastructure/database/mongodb/mappers/storage-mongodb.mapper';
-import { Injectable, Logger } from '@nestjs/common';
+import { Inject, Injectable, Logger, Scope } from '@nestjs/common';
+import { REQUEST } from '@nestjs/core';
+import { Request } from 'express';
 
-@Injectable()
+@Injectable({ scope: Scope.REQUEST })
 export class StorageMongoRepository
-  extends BaseMongoRepository
+  extends BaseMongoTenantRepository
   implements StorageReadRepository
 {
+  protected readonly tenantId: string;
+
   private readonly collectionName = 'storages';
 
   constructor(
-    mongoService: MongoService,
+    mongoTenantService: MongoTenantService,
     private readonly storageMongoDBMapper: StorageMongoDBMapper,
+    @Inject(REQUEST) private readonly request: Request,
   ) {
-    super(mongoService);
+    super(mongoTenantService);
     this.logger = new Logger(StorageMongoRepository.name);
+
+    // Get tenantId from request headers or user context
+    // You can customize this based on how you pass tenantId in your requests
+    this.tenantId =
+      (this.request.headers['x-tenant-id'] as string) ||
+      (this.request.user as any)?.tenantId ||
+      (this.request.body?.tenantId as string) ||
+      (this.request.query?.tenantId as string);
+
+    if (!this.tenantId) {
+      throw new Error('Tenant ID is required but not found in request');
+    }
   }
 
   /**
@@ -31,8 +48,10 @@ export class StorageMongoRepository
   async findById(id: string): Promise<StorageViewModel | null> {
     this.logger.log(`Finding storage by id: ${id}`);
 
-    const collection = this.mongoService.getCollection(this.collectionName);
-    const storageViewModel = await collection.findOne({ id });
+    const database = await this.getTenantDatabase();
+    const storageViewModel = await database
+      .collection(this.collectionName)
+      .findOne({ id });
 
     return storageViewModel
       ? this.storageMongoDBMapper.toViewModel({
@@ -62,7 +81,8 @@ export class StorageMongoRepository
       `Finding storages by criteria: ${JSON.stringify(criteria)}`,
     );
 
-    const collection = this.mongoService.getCollection(this.collectionName);
+    const database = await this.getTenantDatabase();
+    const collection = database.collection(this.collectionName);
 
     // 01: Build MongoDB query from criteria
     const mongoQuery = this.buildMongoQuery(criteria);
@@ -112,7 +132,8 @@ export class StorageMongoRepository
       `Saving storage view model with id: ${storageViewModel.id}`,
     );
 
-    const collection = this.mongoService.getCollection(this.collectionName);
+    const database = await this.getTenantDatabase();
+    const collection = database.collection(this.collectionName);
     const mongoData = this.storageMongoDBMapper.toMongoData(storageViewModel);
 
     // 01: Use upsert to either insert or update the storage view model
@@ -130,7 +151,8 @@ export class StorageMongoRepository
   async delete(id: string): Promise<boolean> {
     this.logger.log(`Deleting storage view model by id: ${id}`);
 
-    const collection = this.mongoService.getCollection(this.collectionName);
+    const database = await this.getTenantDatabase();
+    const collection = database.collection(this.collectionName);
 
     // 01: Delete the storage view model from the collection
     await collection.deleteOne({ id });

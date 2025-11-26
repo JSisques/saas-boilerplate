@@ -314,7 +314,6 @@ type PaginatedPromptResultDto {
   items: [PromptResponseDto!]!
 }
 
-<<<<<<< HEAD
 type MutationResponseArrayDto {
   success: Boolean!
   message: String
@@ -365,7 +364,22 @@ type StorageResponseDto {
 }
 
 type PaginatedStorageResultDto {
-=======
+  """The total number of items"""
+  total: Int!
+
+  """The page number"""
+  page: Int!
+
+  """The number of items per page"""
+  perPage: Int!
+
+  """The total number of pages"""
+  totalPages: Int!
+
+  """The storage items"""
+  items: [StorageResponseDto!]!
+}
+
 type TenantDatabaseResponseDto {
   """The id of the tenant database"""
   id: String!
@@ -408,7 +422,6 @@ enum TenantDatabaseStatusEnum {
 }
 
 type PaginatedTenantDatabaseResultDto {
->>>>>>> main
   """The total number of items"""
   total: Int!
 
@@ -421,13 +434,8 @@ type PaginatedTenantDatabaseResultDto {
   """The total number of pages"""
   totalPages: Int!
 
-<<<<<<< HEAD
-  """The storage items"""
-  items: [StorageResponseDto!]!
-=======
   """The tenant databases in the current page"""
   items: [TenantDatabaseResponseDto!]!
->>>>>>> main
 }
 
 type TenantMemberResponseDto {

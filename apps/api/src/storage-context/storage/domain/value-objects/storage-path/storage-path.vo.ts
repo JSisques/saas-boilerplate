@@ -1,4 +1,4 @@
-import { StringValueObject } from '@/shared/domain/value-objects/string.vo';
+import { StringValueObject } from '@/shared/domain/value-objects/string/string.vo';
 
 /**
  * StoragePathValueObject represents the path of the stored file.

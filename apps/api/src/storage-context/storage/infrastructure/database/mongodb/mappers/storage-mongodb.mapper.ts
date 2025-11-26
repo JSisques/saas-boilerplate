@@ -30,8 +30,8 @@ export class StorageMongoDBMapper {
       provider: doc.provider,
       url: doc.url,
       path: doc.path,
-      createdAt: doc.createdAt,
-      updatedAt: doc.updatedAt,
+      createdAt: new Date(doc.createdAt),
+      updatedAt: new Date(doc.updatedAt),
     });
   }
 

@@ -1,4 +1,4 @@
-import { IBaseService } from '@/shared/application/services/base-service.interface';
+import { IBaseService } from '@/shared/application/services/base-service/base-service.interface';
 import { StorageNotFoundException } from '@/storage-context/storage/application/exceptions/storage-not-found/storage-not-found.exception';
 import { StorageAggregate } from '@/storage-context/storage/domain/aggregate/storage.aggregate';
 import {

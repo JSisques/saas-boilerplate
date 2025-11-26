@@ -1,4 +1,6 @@
-export interface IStorageEventData {
+import { IBaseEventData } from '@/shared/domain/interfaces/base-event-data.interface';
+
+export interface IStorageEventData extends IBaseEventData {
   id: string;
   path: string;
   provider: string;

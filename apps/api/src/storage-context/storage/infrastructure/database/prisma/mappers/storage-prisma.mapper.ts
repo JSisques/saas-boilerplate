@@ -1,8 +1,8 @@
 import { StorageAggregate } from '@/storage-context/storage/domain/aggregate/storage.aggregate';
 import { StorageAggregateFactory } from '@/storage-context/storage/domain/factories/storage-aggregate.factory';
+import { StoragePrismaDto } from '@/storage-context/storage/infrastructure/database/prisma/dtos/storage-prisma.dto';
 import { Injectable, Logger } from '@nestjs/common';
 import { StorageProviderEnum } from '@prisma/client';
-import { StoragePrismaDto } from '../dtos/storage-prisma.dto';
 
 @Injectable()
 export class StoragePrismaMapper {
@@ -31,6 +31,8 @@ export class StoragePrismaMapper {
       provider: storageData.provider,
       url: storageData.url,
       path: storageData.path,
+      createdAt: storageData.createdAt,
+      updatedAt: storageData.updatedAt,
     });
   }
 
@@ -56,6 +58,8 @@ export class StoragePrismaMapper {
       provider: primitives.provider as StorageProviderEnum,
       url: primitives.url,
       path: primitives.path,
+      createdAt: primitives.createdAt,
+      updatedAt: primitives.updatedAt,
     };
   }
 }

@@ -1,6 +1,6 @@
+import { MutationResponseDto } from '@/shared/transport/graphql/dtos/responses/success-response/success-response.dto';
 import { MutationResponseArrayDto } from '@/shared/transport/graphql/dtos/success-response-array.dto';
-import { MutationResponseDto } from '@/shared/transport/graphql/dtos/success-response.dto';
-import { MutationResponseGraphQLMapper } from '@/shared/transport/graphql/mappers/mutation-response.mapper';
+import { MutationResponseGraphQLMapper } from '@/shared/transport/graphql/mappers/mutation-response/mutation-response.mapper';
 import { StorageDeleteFileCommand } from '@/storage-context/storage/application/commands/storage-delete-file/storage-delete-file.command';
 import { StorageDownloadFileCommand } from '@/storage-context/storage/application/commands/storage-download-file/storage-download-file.command';
 import { StorageUploadFileCommand } from '@/storage-context/storage/application/commands/storage-upload-file/storage-upload-file.command';

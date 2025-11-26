@@ -1,4 +1,4 @@
-import { EnumValueObject } from '@/shared/domain/value-objects/enum.vo';
+import { EnumValueObject } from '@/shared/domain/value-objects/enum/enum.vo';
 import { StorageProviderEnum } from '@/storage-context/storage/domain/enums/storage-provider.enum';
 
 /**

@@ -1,4 +1,5 @@
 import { IWriteFactory } from '@/shared/domain/interfaces/write-factory.interface';
+import { DateValueObject } from '@/shared/domain/value-objects/date/date.vo';
 import { StorageUuidValueObject } from '@/shared/domain/value-objects/identifiers/storage-uuid/storage-uuid.vo';
 import { StorageAggregate } from '@/storage-context/storage/domain/aggregate/storage.aggregate';
 import { IStorageCreateDto } from '@/storage-context/storage/domain/dtos/entities/storage-create/storage-create.dto';
@@ -63,6 +64,8 @@ export class StorageAggregateFactory
         provider: new StorageProviderValueObject(primitives.provider),
         url: new StorageUrlValueObject(primitives.url),
         path: new StoragePathValueObject(primitives.path),
+        createdAt: new DateValueObject(primitives.createdAt),
+        updatedAt: new DateValueObject(primitives.updatedAt),
       },
       generateEvent,
     );

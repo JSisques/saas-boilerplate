@@ -15,9 +15,29 @@ datasource db {
   url = env("DATABASE_TENANT_URL")
 }
 
-model Test {
-  id String @id @default(uuid())
-  name String
+
+// ============================================
+// Storage Models
+// ============================================
+
+enum StorageProviderEnum {
+  S3
+  SUPABASE
+  SERVER_ROUTE
+}
+
+model Storage {
+  id        String              @id @default(uuid())
+  fileName  String // Name of the file
+  fileSize  Int // Size of the file in bytes
+  mimeType  String // MIME type of the file
+  provider  StorageProviderEnum // Storage provider (S3, Supabase, ServerRoute)
+  url       String // URL of the stored file
+  path      String // Path of the stored file
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  @@index([path])
+  @@index([provider])
 }

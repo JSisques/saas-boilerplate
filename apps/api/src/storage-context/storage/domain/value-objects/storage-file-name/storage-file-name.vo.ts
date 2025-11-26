@@ -1,4 +1,4 @@
-import { StringValueObject } from '@/shared/domain/value-objects/string.vo';
+import { StringValueObject } from '@/shared/domain/value-objects/string/string.vo';
 
 /**
  * StorageFileNameValueObject represents the file name of the storage.

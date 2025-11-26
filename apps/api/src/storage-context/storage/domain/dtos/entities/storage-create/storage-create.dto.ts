@@ -1,3 +1,4 @@
+import { DateValueObject } from '@/shared/domain/value-objects/date/date.vo';
 import { StorageUuidValueObject } from '@/shared/domain/value-objects/identifiers/storage-uuid/storage-uuid.vo';
 import { StorageFileNameValueObject } from '@/storage-context/storage/domain/value-objects/storage-file-name/storage-file-name.vo';
 import { StorageFileSizeValueObject } from '@/storage-context/storage/domain/value-objects/storage-file-size/storage-file-size.vo';
@@ -14,4 +15,6 @@ export interface IStorageCreateDto {
   provider: StorageProviderValueObject;
   url: StorageUrlValueObject;
   path: StoragePathValueObject;
+  createdAt: DateValueObject;
+  updatedAt: DateValueObject;
 }

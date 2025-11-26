@@ -1,4 +1,6 @@
-export type StoragePrimitives = {
+import { BasePrimitives } from '@/shared/domain/primitives/base-primitives/base.primitives';
+
+export type StoragePrimitives = BasePrimitives & {
   id: string;
   fileName: string;
   fileSize: number;

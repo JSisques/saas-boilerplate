@@ -1,4 +1,4 @@
-import { UrlValueObject } from '@/shared/domain/value-objects/url.vo';
+import { UrlValueObject } from '@/shared/domain/value-objects/url/url.vo';
 
 /**
  * StorageUrlValueObject represents the URL of the stored file.
