@@ -13,13 +13,12 @@ import { TenantDatabaseLastMigrationAtValueObject } from '@/tenant-context/tenan
 import { TenantDatabaseNameValueObject } from '@/tenant-context/tenant-database/domain/value-objects/tenant-database-name/tenant-database-name.vo';
 import { TenantDatabaseSchemaVersionValueObject } from '@/tenant-context/tenant-database/domain/value-objects/tenant-database-schema-version/tenant-database-schema-version.vo';
 import { TenantDatabaseStatusValueObject } from '@/tenant-context/tenant-database/domain/value-objects/tenant-database-status/tenant-database-status.vo';
-import { TenantDatabaseUrlValueObject } from '@/tenant-context/tenant-database/domain/value-objects/tenant-database-url/tenant-database-url.vo';
 
 export class TenantDatabaseAggregate extends BaseAggregate {
   private readonly _id: TenantDatabaseUuidValueObject;
   private _tenantId: TenantUuidValueObject;
   private _databaseName: TenantDatabaseNameValueObject;
-  private _databaseUrl: TenantDatabaseUrlValueObject;
+  private _readDatabaseName: TenantDatabaseNameValueObject;
   private _status: TenantDatabaseStatusValueObject;
   private _schemaVersion: TenantDatabaseSchemaVersionValueObject | null;
   private _lastMigrationAt: TenantDatabaseLastMigrationAtValueObject | null;
@@ -32,7 +31,7 @@ export class TenantDatabaseAggregate extends BaseAggregate {
     this._id = props.id;
     this._tenantId = props.tenantId;
     this._databaseName = props.databaseName;
-    this._databaseUrl = props.databaseUrl;
+    this._readDatabaseName = props.readDatabaseName;
     this._status = props.status;
     this._schemaVersion = props.schemaVersion;
     this._lastMigrationAt = props.lastMigrationAt;
@@ -73,8 +72,10 @@ export class TenantDatabaseAggregate extends BaseAggregate {
       props.databaseName !== undefined
         ? props.databaseName
         : this._databaseName;
-    this._databaseUrl =
-      props.databaseUrl !== undefined ? props.databaseUrl : this._databaseUrl;
+    this._readDatabaseName =
+      props.readDatabaseName !== undefined
+        ? props.readDatabaseName
+        : this._readDatabaseName;
     this._status = props.status !== undefined ? props.status : this._status;
     this._schemaVersion =
       props.schemaVersion !== undefined
@@ -157,8 +158,8 @@ export class TenantDatabaseAggregate extends BaseAggregate {
    *
    * @returns The database URL of the tenant database.
    */
-  public get databaseUrl(): TenantDatabaseUrlValueObject {
-    return this._databaseUrl;
+  public get readDatabaseName(): TenantDatabaseNameValueObject {
+    return this._readDatabaseName;
   }
 
   /**
@@ -207,7 +208,7 @@ export class TenantDatabaseAggregate extends BaseAggregate {
       id: this._id.value,
       tenantId: this._tenantId.value,
       databaseName: this._databaseName.value,
-      databaseUrl: this._databaseUrl.value,
+      readDatabaseName: this._readDatabaseName.value,
       status: this._status.value,
       schemaVersion: this._schemaVersion?.value ?? null,
       lastMigrationAt: this._lastMigrationAt?.value ?? null,

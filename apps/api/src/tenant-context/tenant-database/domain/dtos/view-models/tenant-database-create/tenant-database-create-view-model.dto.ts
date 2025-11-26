@@ -6,8 +6,8 @@
  * @interface ITenantDatabaseCreateViewModelDto
  * @property {string} id - The unique, immutable identifier of the tenant.
  * @property {string} tenantId - The unique identifier of the tenant.
- * @property {string} databaseName - The name of the tenant database.
- * @property {string} databaseUrl - The URL of the tenant database.
+ * @property {string} databaseName - The name of the tenant database for write operations.
+ * @property {string} readDatabaseName - The name of the tenant database for read operations.
  * @property {string} status - The status of the tenant database.
  * @property {string | null} schemaVersion - The schema version of the tenant database.
  * @property {Date | null} lastMigrationAt - The last migration at of the tenant database.
@@ -19,7 +19,7 @@ export interface ITenantDatabaseCreateViewModelDto {
   id: string;
   tenantId: string;
   databaseName: string;
-  databaseUrl: string;
+  readDatabaseName: string;
   status: string;
   schemaVersion: string | null;
   lastMigrationAt: Date | null;

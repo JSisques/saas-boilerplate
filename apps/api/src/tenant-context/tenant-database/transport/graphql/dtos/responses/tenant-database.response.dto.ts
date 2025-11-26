@@ -23,7 +23,7 @@ export class TenantDatabaseResponseDto {
     nullable: true,
     description: 'The database URL of the tenant database',
   })
-  databaseUrl?: string;
+  readDatabaseName?: string;
 
   @Field(() => TenantDatabaseStatusEnum, {
     nullable: true,

@@ -6,7 +6,6 @@ import { TenantDatabaseLastMigrationAtValueObject } from '@/tenant-context/tenan
 import { TenantDatabaseNameValueObject } from '@/tenant-context/tenant-database/domain/value-objects/tenant-database-name/tenant-database-name.vo';
 import { TenantDatabaseSchemaVersionValueObject } from '@/tenant-context/tenant-database/domain/value-objects/tenant-database-schema-version/tenant-database-schema-version.vo';
 import { TenantDatabaseStatusValueObject } from '@/tenant-context/tenant-database/domain/value-objects/tenant-database-status/tenant-database-status.vo';
-import { TenantDatabaseUrlValueObject } from '@/tenant-context/tenant-database/domain/value-objects/tenant-database-url/tenant-database-url.vo';
 
 /**
  * Interface representing the structure required to create a new tenant database entity.
@@ -15,7 +14,7 @@ import { TenantDatabaseUrlValueObject } from '@/tenant-context/tenant-database/d
  * @property {TenantDatabaseUuidValueObject} id - The unique identifier for the tenant database.
  * @property {TenantUuidValueObject} tenantId - The unique identifier for the tenant.
  * @property {TenantDatabaseNameValueObject} databaseName - The name of the tenant database.
- * @property {TenantDatabaseUrlValueObject} databaseUrl - The URL of the tenant database.
+ * @property {TenantDatabaseNameValueObject} readDatabaseName - The name of the tenant database for read operations.
  * @property {TenantDatabaseStatusValueObject} status - The status of the tenant database.
  * @property {TenantDatabaseSchemaVersionValueObject | null} schemaVersion - The schema version of the tenant database.
  * @property {TenantDatabaseLastMigrationAtValueObject | null} lastMigrationAt - The last migration at of the tenant database.
@@ -27,7 +26,7 @@ export interface ITenantDatabaseCreateDto extends IBaseAggregateDto {
   id: TenantDatabaseUuidValueObject;
   tenantId: TenantUuidValueObject;
   databaseName: TenantDatabaseNameValueObject;
-  databaseUrl: TenantDatabaseUrlValueObject;
+  readDatabaseName: TenantDatabaseNameValueObject;
   status: TenantDatabaseStatusValueObject;
   schemaVersion: TenantDatabaseSchemaVersionValueObject | null;
   lastMigrationAt: TenantDatabaseLastMigrationAtValueObject | null;

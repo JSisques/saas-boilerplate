@@ -10,7 +10,6 @@ import { TenantDatabaseLastMigrationAtValueObject } from '@/tenant-context/tenan
 import { TenantDatabaseNameValueObject } from '@/tenant-context/tenant-database/domain/value-objects/tenant-database-name/tenant-database-name.vo';
 import { TenantDatabaseSchemaVersionValueObject } from '@/tenant-context/tenant-database/domain/value-objects/tenant-database-schema-version/tenant-database-schema-version.vo';
 import { TenantDatabaseStatusValueObject } from '@/tenant-context/tenant-database/domain/value-objects/tenant-database-status/tenant-database-status.vo';
-import { TenantDatabaseUrlValueObject } from '@/tenant-context/tenant-database/domain/value-objects/tenant-database-url/tenant-database-url.vo';
 import { Injectable } from '@nestjs/common';
 
 /**
@@ -70,7 +69,9 @@ export class TenantDatabaseAggregateFactory
       id: new TenantMemberUuidValueObject(data.id),
       tenantId: new TenantUuidValueObject(data.tenantId),
       databaseName: new TenantDatabaseNameValueObject(data.databaseName),
-      databaseUrl: new TenantDatabaseUrlValueObject(data.databaseUrl),
+      readDatabaseName: new TenantDatabaseNameValueObject(
+        data.readDatabaseName,
+      ),
       status: new TenantDatabaseStatusValueObject(data.status),
       schemaVersion: data.schemaVersion
         ? new TenantDatabaseSchemaVersionValueObject(data.schemaVersion)

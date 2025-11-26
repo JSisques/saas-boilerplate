@@ -1,21 +1,21 @@
-import { Criteria } from '@/shared/domain/entities/criteria';
-import { PaginatedResult } from '@/shared/domain/entities/paginated-result.entity';
-import { FilterOperator } from '@/shared/domain/enums/filter-operator.enum';
-import { SortDirection } from '@/shared/domain/enums/sort-direction.enum';
-import { MongoService } from '@/shared/infrastructure/database/mongodb/services/mongo.service';
+import { ISubscriptionPlanCreateViewModelDto } from '@/billing-context/subscription-plan/domain/dtos/view-models/subscription-plan-create-view-model/subscription-plan-create-view-model.dto';
+import { SubscriptionPlanCurrencyEnum } from '@/billing-context/subscription-plan/domain/enum/subscription-plan-currency.enum';
+import { SubscriptionPlanIntervalEnum } from '@/billing-context/subscription-plan/domain/enum/subscription-plan-interval.enum';
+import { SubscriptionPlanTypeEnum } from '@/billing-context/subscription-plan/domain/enum/subscription-plan-type.enum';
 import { SubscriptionPlanViewModel } from '@/billing-context/subscription-plan/domain/view-models/subscription-plan.view-model';
 import { SubscriptionPlanMongoDbDto } from '@/billing-context/subscription-plan/infrastructure/database/mongodb/dtos/subscription-plan-mongodb.dto';
 import { SubscriptionPlanMongoDBMapper } from '@/billing-context/subscription-plan/infrastructure/database/mongodb/mappers/subscription-plan-mongodb.mapper';
 import { SubscriptionPlanMongoRepository } from '@/billing-context/subscription-plan/infrastructure/database/mongodb/repositories/subscription-plan-mongodb.repository';
-import { SubscriptionPlanTypeEnum } from '@/billing-context/subscription-plan/domain/enum/subscription-plan-type.enum';
-import { SubscriptionPlanCurrencyEnum } from '@/billing-context/subscription-plan/domain/enum/subscription-plan-currency.enum';
-import { SubscriptionPlanIntervalEnum } from '@/billing-context/subscription-plan/domain/enum/subscription-plan-interval.enum';
-import { ISubscriptionPlanCreateViewModelDto } from '@/billing-context/subscription-plan/domain/dtos/view-models/subscription-plan-create-view-model/subscription-plan-create-view-model.dto';
+import { Criteria } from '@/shared/domain/entities/criteria';
+import { PaginatedResult } from '@/shared/domain/entities/paginated-result.entity';
+import { FilterOperator } from '@/shared/domain/enums/filter-operator.enum';
+import { SortDirection } from '@/shared/domain/enums/sort-direction.enum';
+import { MongoMasterService } from '@/shared/infrastructure/database/mongodb/services/mongo-master/mongo-master.service';
 import { Collection } from 'mongodb';
 
 describe('SubscriptionPlanMongoRepository', () => {
   let repository: SubscriptionPlanMongoRepository;
-  let mockMongoService: jest.Mocked<MongoService>;
+  let mockMongoMasterService: jest.Mocked<MongoMasterService>;
   let mockSubscriptionPlanMongoDBMapper: jest.Mocked<SubscriptionPlanMongoDBMapper>;
   let mockCollection: jest.Mocked<Collection>;
 
@@ -29,9 +29,9 @@ describe('SubscriptionPlanMongoRepository', () => {
       toArray: jest.fn(),
     } as unknown as jest.Mocked<Collection>;
 
-    mockMongoService = {
+    mockMongoMasterService = {
       getCollection: jest.fn().mockReturnValue(mockCollection),
-    } as unknown as jest.Mocked<MongoService>;
+    } as unknown as jest.Mocked<MongoMasterService>;
 
     mockSubscriptionPlanMongoDBMapper = {
       toViewModel: jest.fn(),
@@ -39,7 +39,7 @@ describe('SubscriptionPlanMongoRepository', () => {
     } as unknown as jest.Mocked<SubscriptionPlanMongoDBMapper>;
 
     repository = new SubscriptionPlanMongoRepository(
-      mockMongoService,
+      mockMongoMasterService,
       mockSubscriptionPlanMongoDBMapper,
     );
   });
@@ -100,7 +100,7 @@ describe('SubscriptionPlanMongoRepository', () => {
       const result = await repository.findById(subscriptionPlanId);
 
       expect(result).toBe(viewModel);
-      expect(mockMongoService.getCollection).toHaveBeenCalledWith(
+      expect(mockMongoMasterService.getCollection).toHaveBeenCalledWith(
         'subscription-plans',
       );
       expect(mockCollection.findOne).toHaveBeenCalledWith({

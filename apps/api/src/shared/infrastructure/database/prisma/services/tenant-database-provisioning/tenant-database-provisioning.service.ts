@@ -81,16 +81,12 @@ export class TenantDatabaseProvisioningService {
     const finalDatabaseName =
       databaseName || this.generateDatabaseName(tenantId);
 
-    // 04: Store only the database name (not the full URL with credentials)
-    const databaseUrl = this.generateDatabaseUrl(finalDatabaseName);
-
     try {
       // 05: Create database record in master with PROVISIONING status using command
       const tenantDatabaseId = await this.commandBus.execute(
         new TenantDatabaseCreateCommand({
           tenantId,
           databaseName: finalDatabaseName,
-          databaseUrl,
         }),
       );
 
@@ -248,19 +244,6 @@ export class TenantDatabaseProvisioningService {
     // 01: Remove special characters and create a safe database name
     const safeId = tenantId.replace(/[^a-zA-Z0-9]/g, '_');
     return `tenant_${safeId}`.toLowerCase();
-  }
-
-  /**
-   * Generate database URL from database name
-   * This method stores only the database name, not the full URL with credentials
-   * The actual connection URL will be built dynamically when needed
-   * @param databaseName - The database name
-   * @returns Database name (we don't store credentials)
-   */
-  private generateDatabaseUrl(databaseName: string): string {
-    // 01: We only store the database name, not the full URL with credentials
-    // The URL will be constructed dynamically when needed using buildDatabaseUrl()
-    return databaseName;
   }
 
   /**

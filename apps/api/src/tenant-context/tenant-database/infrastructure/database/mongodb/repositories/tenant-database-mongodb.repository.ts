@@ -1,7 +1,7 @@
 import { Criteria } from '@/shared/domain/entities/criteria';
 import { PaginatedResult } from '@/shared/domain/entities/paginated-result.entity';
-import { BaseMongoRepository } from '@/shared/infrastructure/database/mongodb/base-mongo/base-mongo.repository';
-import { MongoService } from '@/shared/infrastructure/database/mongodb/services/mongo.service';
+import { BaseMongoMasterRepository } from '@/shared/infrastructure/database/mongodb/base-mongo/base-mongo-master/base-mongo-master.repository';
+import { MongoMasterService } from '@/shared/infrastructure/database/mongodb/services/mongo-master/mongo-master.service';
 import { TenantDatabaseReadRepository } from '@/tenant-context/tenant-database/domain/repositories/tenant-database-read.repository';
 import { TenantDatabaseViewModel } from '@/tenant-context/tenant-database/domain/view-models/tenant-database/tenant-database.view-model';
 import { TenantDatabaseMongoDBMapper } from '@/tenant-context/tenant-database/infrastructure/database/mongodb/mappers/tenant-database-mongodb.mapper';
@@ -9,16 +9,16 @@ import { Injectable, Logger } from '@nestjs/common';
 
 @Injectable()
 export class TenantDatabaseMongoRepository
-  extends BaseMongoRepository
+  extends BaseMongoMasterRepository
   implements TenantDatabaseReadRepository
 {
   private readonly collectionName = 'tenant-databases';
 
   constructor(
-    mongoService: MongoService,
+    mongoMasterService: MongoMasterService,
     private readonly tenantDatabaseMongoDBMapper: TenantDatabaseMongoDBMapper,
   ) {
-    super(mongoService);
+    super(mongoMasterService);
     this.logger = new Logger(TenantDatabaseMongoRepository.name);
   }
 
@@ -31,7 +31,9 @@ export class TenantDatabaseMongoRepository
   async findById(id: string): Promise<TenantDatabaseViewModel | null> {
     this.logger.log(`Finding tenant database by id: ${id}`);
 
-    const collection = this.mongoService.getCollection(this.collectionName);
+    const collection = this.mongoMasterService.getCollection(
+      this.collectionName,
+    );
     const tenantDatabaseViewModel = await collection.findOne({ id });
 
     return tenantDatabaseViewModel
@@ -39,7 +41,7 @@ export class TenantDatabaseMongoRepository
           id: tenantDatabaseViewModel.id,
           tenantId: tenantDatabaseViewModel.tenantId,
           databaseName: tenantDatabaseViewModel.databaseName,
-          databaseUrl: tenantDatabaseViewModel.databaseUrl,
+          readDatabaseName: tenantDatabaseViewModel.readDatabaseName,
           status: tenantDatabaseViewModel.status,
           schemaVersion: tenantDatabaseViewModel.schemaVersion,
           lastMigrationAt: tenantDatabaseViewModel.lastMigrationAt,
@@ -61,7 +63,9 @@ export class TenantDatabaseMongoRepository
   ): Promise<TenantDatabaseViewModel[] | null> {
     this.logger.log(`Finding tenant databases by tenant id: ${tenantId}`);
 
-    const collection = this.mongoService.getCollection(this.collectionName);
+    const collection = this.mongoMasterService.getCollection(
+      this.collectionName,
+    );
     const tenantDatabases = await collection.find({ tenantId }).toArray();
 
     return tenantDatabases.map((doc) =>
@@ -69,7 +73,7 @@ export class TenantDatabaseMongoRepository
         id: doc.id,
         tenantId: doc.tenantId,
         databaseName: doc.databaseName,
-        databaseUrl: doc.databaseUrl,
+        readDatabaseName: doc.readDatabaseName,
         status: doc.status,
         schemaVersion: doc.schemaVersion,
         lastMigrationAt: doc.lastMigrationAt,
@@ -90,7 +94,9 @@ export class TenantDatabaseMongoRepository
   ): Promise<TenantDatabaseViewModel[] | null> {
     this.logger.log(`Finding tenant databases by user id: ${userId}`);
 
-    const collection = this.mongoService.getCollection(this.collectionName);
+    const collection = this.mongoMasterService.getCollection(
+      this.collectionName,
+    );
     const tenantDatabases = await collection.find({ userId }).toArray();
 
     return tenantDatabases.map((doc) =>
@@ -98,7 +104,7 @@ export class TenantDatabaseMongoRepository
         id: doc.id,
         tenantId: doc.tenantId,
         databaseName: doc.databaseName,
-        databaseUrl: doc.databaseUrl,
+        readDatabaseName: doc.readDatabaseName,
         status: doc.status,
         schemaVersion: doc.schemaVersion,
         lastMigrationAt: doc.lastMigrationAt,
@@ -123,7 +129,9 @@ export class TenantDatabaseMongoRepository
       `Finding tenant databases by criteria: ${JSON.stringify(criteria)}`,
     );
 
-    const collection = this.mongoService.getCollection(this.collectionName);
+    const collection = this.mongoMasterService.getCollection(
+      this.collectionName,
+    );
 
     // 01: Build MongoDB query from criteria
     const mongoQuery = this.buildMongoQuery(criteria);
@@ -151,7 +159,7 @@ export class TenantDatabaseMongoRepository
         id: doc.id,
         tenantId: doc.tenantId,
         databaseName: doc.databaseName,
-        databaseUrl: doc.databaseUrl,
+        readDatabaseName: doc.readDatabaseName,
         status: doc.status,
         schemaVersion: doc.schemaVersion,
         lastMigrationAt: doc.lastMigrationAt,
@@ -179,7 +187,9 @@ export class TenantDatabaseMongoRepository
       `Saving tenant database view model with id: ${tenantDatabaseViewModel.id}`,
     );
 
-    const collection = this.mongoService.getCollection(this.collectionName);
+    const collection = this.mongoMasterService.getCollection(
+      this.collectionName,
+    );
     const mongoData = this.tenantDatabaseMongoDBMapper.toMongoData(
       tenantDatabaseViewModel,
     );
@@ -199,7 +209,9 @@ export class TenantDatabaseMongoRepository
   async delete(id: string): Promise<boolean> {
     this.logger.log(`Deleting tenant database view model by id: ${id}`);
 
-    const collection = this.mongoService.getCollection(this.collectionName);
+    const collection = this.mongoMasterService.getCollection(
+      this.collectionName,
+    );
 
     // 01: Delete the tenant database view model from the collection
     await collection.deleteOne({ id });

@@ -5,7 +5,7 @@ export type TenantDatabasePrismaDto = BasePrismaDto & {
   id: string;
   tenantId: string;
   databaseName: string;
-  databaseUrl: string;
+  readDatabaseName: string;
   status: TenantDatabaseStatusEnum;
   schemaVersion: string | null;
   lastMigrationAt: Date | null;
