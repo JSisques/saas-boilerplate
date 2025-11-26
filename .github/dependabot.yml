@@ -3,66 +3,72 @@ updates:
   # Root package.json
   - package-ecosystem: "npm"
     directory: "/"
+    target-branch: "dev"
     schedule:
       interval: "weekly"
     open-pull-requests-limit: 5
     commit-message:
-      prefix: "chore(deps)"
+      prefix: "[PULL REQUEST] - Dependabot"
     labels:
       - "dependencies"
 
   # Apps
   - package-ecosystem: "npm"
     directory: "/apps/api/"
+    target-branch: "dev"
     schedule:
       interval: "weekly"
     open-pull-requests-limit: 5
     commit-message:
-      prefix: "chore(deps): api"
+      prefix: "[PULL REQUEST] - Dependabot api"
     labels:
       - "dependencies"
       - "api"
 
   - package-ecosystem: "npm"
     directory: "/apps/web/"
+    target-branch: "dev"
     schedule:
       interval: "weekly"
     open-pull-requests-limit: 5
     commit-message:
-      prefix: "chore(deps): web"
+      prefix: "[PULL REQUEST] - Dependabot web"
     labels:
       - "dependencies"
       - "web"
 
   - package-ecosystem: "npm"
     directory: "/apps/admin/"
+    target-branch: "dev"
     schedule:
       interval: "weekly"
     open-pull-requests-limit: 5
     commit-message:
-      prefix: "chore(deps): admin"
+      prefix: "[PULL REQUEST] - Dependabot admin"
     labels:
       - "dependencies"
       - "admin"
 
   - package-ecosystem: "npm"
     directory: "/apps/mobile/"
+    target-branch: "dev"
     schedule:
       interval: "weekly"
     open-pull-requests-limit: 5
     commit-message:
-      prefix: "chore(deps): mobile"
+      prefix: "[PULL REQUEST] - Dependabot mobile"
     labels:
       - "dependencies"
       - "mobile"
 
   - package-ecosystem: "npm"
     directory: "/apps/docs/"
+    target-branch: "dev"
     schedule:
       interval: "weekly"
     open-pull-requests-limit: 5
     commit-message:
-      prefix: "chore(deps): docs"
+      prefix: "[PULL REQUEST] - Dependabot docs"
     labels:
       - "dependencies"
       - "docs"
@@ -70,44 +76,48 @@ updates:
   # Packages
   - package-ecosystem: "npm"
     directory: "/packages/sdk/"
+    target-branch: "dev"
     schedule:
       interval: "weekly"
     open-pull-requests-limit: 5
     commit-message:
-      prefix: "chore(deps): sdk"
+      prefix: "[PULL REQUEST] - Dependabot sdk"
     labels:
       - "dependencies"
       - "sdk"
 
   - package-ecosystem: "npm"
     directory: "/packages/shared/"
+    target-branch: "dev"
     schedule:
       interval: "weekly"
     open-pull-requests-limit: 5
     commit-message:
-      prefix: "chore(deps): shared"
+      prefix: "[PULL REQUEST] - Dependabot shared"
     labels:
       - "dependencies"
       - "shared"
 
   - package-ecosystem: "npm"
     directory: "/packages/eslint-config/"
+    target-branch: "dev"
     schedule:
       interval: "weekly"
     open-pull-requests-limit: 5
     commit-message:
-      prefix: "chore(deps): eslint-config"
+      prefix: "[PULL REQUEST] - Dependabot eslint-config"
     labels:
       - "dependencies"
       - "eslint-config"
 
   - package-ecosystem: "npm"
     directory: "/packages/typescript-config/"
+    target-branch: "dev"
     schedule:
       interval: "weekly"
     open-pull-requests-limit: 5
     commit-message:
-      prefix: "chore(deps): typescript-config"
+      prefix: "[PULL REQUEST] - Dependabot typescript-config"
     labels:
       - "dependencies"
       - "typescript-config"
