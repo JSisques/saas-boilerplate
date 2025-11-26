@@ -1,5 +1,6 @@
+import { DateValueObject } from '@/shared/domain/value-objects/date/date.vo';
 import { AssertTenantSlugIsUniqueService } from '@/tenant-context/tenants/application/services/assert-tenant-slug-is-unique/assert-tenant-slug-is-unique.service';
-import { TenantAggregateFactory } from '@/tenant-context/tenants/domain/factories/tenant-aggregate.factory';
+import { TenantAggregateFactory } from '@/tenant-context/tenants/domain/factories/tenant-aggregate/tenant-aggregate.factory';
 import {
   TENANT_WRITE_REPOSITORY_TOKEN,
   TenantWriteRepository,
@@ -33,6 +34,8 @@ export class TenantCreateCommandHandler
     // 02: Create the tenant entity
     const tenant = this.tenantAggregateFactory.create({
       ...command,
+      createdAt: new DateValueObject(new Date()),
+      updatedAt: new DateValueObject(new Date()),
     });
 
     // 03: Save the tenant entity

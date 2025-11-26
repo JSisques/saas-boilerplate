@@ -4,7 +4,7 @@ import {
   SUBSCRIPTION_WRITE_REPOSITORY_TOKEN,
   SubscriptionWriteRepository,
 } from '@/billing-context/subscription/domain/repositories/subscription-write/subscription-write.repository';
-import { IBaseService } from '@/shared/application/services/base-service.interface';
+import { IBaseService } from '@/shared/application/services/base-service/base-service.interface';
 import { Inject, Injectable, Logger } from '@nestjs/common';
 
 @Injectable()

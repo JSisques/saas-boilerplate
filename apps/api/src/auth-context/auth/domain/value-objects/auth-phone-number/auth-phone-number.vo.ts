@@ -1,4 +1,4 @@
-import { PhoneValueObject } from '@/shared/domain/value-objects/phone.vo';
+import { PhoneValueObject } from '@/shared/domain/value-objects/phone/phone.vo';
 
 /**
  * AuthPhoneNumberValueObject represents the phone number of the authentication.

@@ -1,3 +1,4 @@
+import { DateValueObject } from '@/shared/domain/value-objects/date/date.vo';
 import { UserUuidValueObject } from '@/shared/domain/value-objects/identifiers/user-uuid/user-uuid.vo';
 import { UserUsernameIsNotUniqueException } from '@/user-context/users/application/exceptions/user-username-is-not-unique/user-username-is-not-unique.exception';
 import { AssertUserUsernameIsUniqueService } from '@/user-context/users/application/services/assert-user-username-is-unique/assert-user-username-is-unique.service';
@@ -50,6 +51,8 @@ describe('AssertUserUsernameIsUniqueService', () => {
           userName: new UserUserNameValueObject(username),
           role: new UserRoleValueObject(UserRoleEnum.USER),
           status: new UserStatusValueObject(UserStatusEnum.ACTIVE),
+          createdAt: new DateValueObject(new Date()),
+          updatedAt: new DateValueObject(new Date()),
         },
         false,
       );
@@ -110,6 +113,8 @@ describe('AssertUserUsernameIsUniqueService', () => {
           userName: new UserUserNameValueObject(username),
           role: new UserRoleValueObject(UserRoleEnum.USER),
           status: new UserStatusValueObject(UserStatusEnum.ACTIVE),
+          createdAt: new DateValueObject(new Date()),
+          updatedAt: new DateValueObject(new Date()),
         },
         false,
       );
@@ -172,6 +177,8 @@ describe('AssertUserUsernameIsUniqueService', () => {
             userName: new UserUserNameValueObject(username),
             role: new UserRoleValueObject(testCase.role),
             status: new UserStatusValueObject(testCase.status),
+            createdAt: new DateValueObject(new Date()),
+            updatedAt: new DateValueObject(new Date()),
           },
           false,
         );

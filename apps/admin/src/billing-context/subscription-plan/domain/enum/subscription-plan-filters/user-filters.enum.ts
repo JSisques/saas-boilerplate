@@ -1,0 +1,17 @@
+export enum SubscriptionPlanFiltersEnum {
+  ID = "id",
+  NAME = "name",
+  SLUG = "slug",
+  TYPE = "type",
+  DESCRIPTION = "description",
+  PRICE_MONTHLY = "priceMonthly",
+  PRICE_YEARLY = "priceYearly",
+  CURRENCY = "currency",
+  INTERVAL = "interval",
+  INTERVAL_COUNT = "intervalCount",
+  TRIAL_PERIOD_DAYS = "trialPeriodDays",
+  IS_ACTIVE = "isActive",
+  FEATURES = "features",
+  LIMITS = "limits",
+  STRIPE_PRICE_ID = "stripePriceId",
+}

@@ -1,7 +1,7 @@
 import { Criteria } from '@/shared/domain/entities/criteria';
 import { PaginatedResult } from '@/shared/domain/entities/paginated-result.entity';
-import { BaseMongoRepository } from '@/shared/infrastructure/database/mongodb/base-mongo.repository';
-import { MongoService } from '@/shared/infrastructure/database/mongodb/mongo.service';
+import { BaseMongoMasterRepository } from '@/shared/infrastructure/database/mongodb/base-mongo/base-mongo-master/base-mongo-master.repository';
+import { MongoMasterService } from '@/shared/infrastructure/database/mongodb/services/mongo-master/mongo-master.service';
 import { TenantReadRepository } from '@/tenant-context/tenants/domain/repositories/tenant-read.repository';
 import { TenantViewModel } from '@/tenant-context/tenants/domain/view-models/tenant/tenant.view-model';
 import { TenantMongoDBMapper } from '@/tenant-context/tenants/infrastructure/database/mongodb/mappers/tenant-mongodb.mapper';
@@ -9,16 +9,16 @@ import { Injectable, Logger } from '@nestjs/common';
 
 @Injectable()
 export class TenantMongoRepository
-  extends BaseMongoRepository
+  extends BaseMongoMasterRepository
   implements TenantReadRepository
 {
   private readonly collectionName = 'tenants';
 
   constructor(
-    mongoService: MongoService,
+    mongoMasterService: MongoMasterService,
     private readonly tenantMongoDBMapper: TenantMongoDBMapper,
   ) {
-    super(mongoService);
+    super(mongoMasterService);
     this.logger = new Logger(TenantMongoRepository.name);
   }
 
@@ -31,7 +31,9 @@ export class TenantMongoRepository
   async findById(id: string): Promise<TenantViewModel | null> {
     this.logger.log(`Finding tenant by id: ${id}`);
 
-    const collection = this.mongoService.getCollection(this.collectionName);
+    const collection = this.mongoMasterService.getCollection(
+      this.collectionName,
+    );
     const tenantViewModel = await collection.findOne({ id });
 
     return tenantViewModel
@@ -78,7 +80,9 @@ export class TenantMongoRepository
   ): Promise<PaginatedResult<TenantViewModel>> {
     this.logger.log(`Finding tenants by criteria: ${JSON.stringify(criteria)}`);
 
-    const collection = this.mongoService.getCollection(this.collectionName);
+    const collection = this.mongoMasterService.getCollection(
+      this.collectionName,
+    );
 
     // 01: Build MongoDB query from criteria
     const mongoQuery = this.buildMongoQuery(criteria);
@@ -143,7 +147,9 @@ export class TenantMongoRepository
   async save(tenantViewModel: TenantViewModel): Promise<void> {
     this.logger.log(`Saving tenant view model with id: ${tenantViewModel.id}`);
 
-    const collection = this.mongoService.getCollection(this.collectionName);
+    const collection = this.mongoMasterService.getCollection(
+      this.collectionName,
+    );
     const mongoData =
       await this.tenantMongoDBMapper.toMongoData(tenantViewModel);
 
@@ -162,7 +168,9 @@ export class TenantMongoRepository
   async delete(id: string): Promise<boolean> {
     this.logger.log(`Deleting tenant view model by id: ${id}`);
 
-    const collection = this.mongoService.getCollection(this.collectionName);
+    const collection = this.mongoMasterService.getCollection(
+      this.collectionName,
+    );
 
     // 01: Delete the tenant view model from the collection
     await collection.deleteOne({ id });

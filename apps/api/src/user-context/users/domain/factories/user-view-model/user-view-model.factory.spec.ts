@@ -1,3 +1,4 @@
+import { DateValueObject } from '@/shared/domain/value-objects/date/date.vo';
 import { UserUuidValueObject } from '@/shared/domain/value-objects/identifiers/user-uuid/user-uuid.vo';
 import { UserAggregate } from '@/user-context/users/domain/aggregates/user.aggregate';
 import { IUserCreateViewModelDto } from '@/user-context/users/domain/dtos/view-models/user-create/user-create-view-model.dto';
@@ -23,6 +24,8 @@ describe('UserViewModelFactory', () => {
 
   describe('create', () => {
     it('should create a UserViewModel from a DTO with all fields', () => {
+      const now = new Date();
+
       const dto: IUserCreateViewModelDto = {
         id: '123e4567-e89b-12d3-a456-426614174000',
         userName: 'johndoe',
@@ -32,8 +35,8 @@ describe('UserViewModelFactory', () => {
         status: UserStatusEnum.ACTIVE,
         bio: 'Software developer',
         avatarUrl: 'https://example.com/avatar.jpg',
-        createdAt: new Date('2024-01-01'),
-        updatedAt: new Date('2024-01-02'),
+        createdAt: now,
+        updatedAt: now,
       };
 
       const viewModel = factory.create(dto);
@@ -52,6 +55,8 @@ describe('UserViewModelFactory', () => {
     });
 
     it('should create a UserViewModel from a DTO with null fields', () => {
+      const now = new Date();
+
       const dto: IUserCreateViewModelDto = {
         id: '123e4567-e89b-12d3-a456-426614174000',
         userName: 'johndoe',
@@ -61,8 +66,8 @@ describe('UserViewModelFactory', () => {
         status: UserStatusEnum.INACTIVE,
         bio: null,
         avatarUrl: null,
-        createdAt: new Date('2024-01-01'),
-        updatedAt: new Date('2024-01-02'),
+        createdAt: now,
+        updatedAt: now,
       };
 
       const viewModel = factory.create(dto);
@@ -74,11 +79,15 @@ describe('UserViewModelFactory', () => {
       expect(viewModel.lastName).toBeNull();
       expect(viewModel.bio).toBeNull();
       expect(viewModel.avatarUrl).toBeNull();
+      expect(viewModel.createdAt).toBe(dto.createdAt);
+      expect(viewModel.updatedAt).toBe(dto.updatedAt);
     });
   });
 
   describe('fromPrimitives', () => {
     it('should create a UserViewModel from primitives with all fields', () => {
+      const now = new Date();
+
       const primitives: UserPrimitives = {
         id: '123e4567-e89b-12d3-a456-426614174000',
         userName: 'johndoe',
@@ -88,11 +97,11 @@ describe('UserViewModelFactory', () => {
         status: UserStatusEnum.ACTIVE,
         bio: 'Software developer',
         avatarUrl: 'https://example.com/avatar.jpg',
+        createdAt: now,
+        updatedAt: now,
       };
 
-      const beforeDate = new Date();
       const viewModel = factory.fromPrimitives(primitives);
-      const afterDate = new Date();
 
       expect(viewModel).toBeInstanceOf(UserViewModel);
       expect(viewModel.id).toBe(primitives.id);
@@ -103,21 +112,13 @@ describe('UserViewModelFactory', () => {
       expect(viewModel.status).toBe(primitives.status);
       expect(viewModel.bio).toBe(primitives.bio);
       expect(viewModel.avatarUrl).toBe(primitives.avatarUrl);
-      expect(viewModel.createdAt.getTime()).toBeGreaterThanOrEqual(
-        beforeDate.getTime(),
-      );
-      expect(viewModel.createdAt.getTime()).toBeLessThanOrEqual(
-        afterDate.getTime(),
-      );
-      expect(viewModel.updatedAt.getTime()).toBeGreaterThanOrEqual(
-        beforeDate.getTime(),
-      );
-      expect(viewModel.updatedAt.getTime()).toBeLessThanOrEqual(
-        afterDate.getTime(),
-      );
+      expect(viewModel.createdAt).toBe(primitives.createdAt);
+      expect(viewModel.updatedAt).toBe(primitives.updatedAt);
     });
 
     it('should create a UserViewModel from primitives with null fields', () => {
+      const now = new Date();
+
       const primitives: UserPrimitives = {
         id: '123e4567-e89b-12d3-a456-426614174000',
         userName: 'johndoe',
@@ -127,6 +128,8 @@ describe('UserViewModelFactory', () => {
         status: UserStatusEnum.BLOCKED,
         bio: null,
         avatarUrl: null,
+        createdAt: now,
+        updatedAt: now,
       };
 
       const viewModel = factory.fromPrimitives(primitives);
@@ -140,9 +143,13 @@ describe('UserViewModelFactory', () => {
       expect(viewModel.avatarUrl).toBeNull();
       expect(viewModel.role).toBe(primitives.role);
       expect(viewModel.status).toBe(primitives.status);
+      expect(viewModel.createdAt).toBe(now);
+      expect(viewModel.updatedAt).toBe(now);
     });
 
     it('should set createdAt and updatedAt to current date', () => {
+      const now = new Date();
+
       const primitives: UserPrimitives = {
         id: '123e4567-e89b-12d3-a456-426614174000',
         userName: 'johndoe',
@@ -152,6 +159,8 @@ describe('UserViewModelFactory', () => {
         status: UserStatusEnum.ACTIVE,
         bio: null,
         avatarUrl: null,
+        createdAt: now,
+        updatedAt: now,
       };
 
       const viewModel = factory.fromPrimitives(primitives);
@@ -164,6 +173,8 @@ describe('UserViewModelFactory', () => {
 
   describe('fromAggregate', () => {
     it('should create a UserViewModel from aggregate with all fields', () => {
+      const now = new Date();
+
       const aggregate = new UserAggregate(
         {
           id: new UserUuidValueObject('123e4567-e89b-12d3-a456-426614174000'),
@@ -176,13 +187,13 @@ describe('UserViewModelFactory', () => {
           avatarUrl: new UserAvatarUrlValueObject(
             'https://example.com/avatar.jpg',
           ),
+          createdAt: new DateValueObject(now),
+          updatedAt: new DateValueObject(now),
         },
         false,
       );
 
-      const beforeDate = new Date();
       const viewModel = factory.fromAggregate(aggregate);
-      const afterDate = new Date();
 
       expect(viewModel).toBeInstanceOf(UserViewModel);
       expect(viewModel.id).toBe(aggregate.id.value);
@@ -193,21 +204,13 @@ describe('UserViewModelFactory', () => {
       expect(viewModel.status).toBe(aggregate.status.value);
       expect(viewModel.bio).toBe(aggregate.bio?.value);
       expect(viewModel.avatarUrl).toBe(aggregate.avatarUrl?.value);
-      expect(viewModel.createdAt.getTime()).toBeGreaterThanOrEqual(
-        beforeDate.getTime(),
-      );
-      expect(viewModel.createdAt.getTime()).toBeLessThanOrEqual(
-        afterDate.getTime(),
-      );
-      expect(viewModel.updatedAt.getTime()).toBeGreaterThanOrEqual(
-        beforeDate.getTime(),
-      );
-      expect(viewModel.updatedAt.getTime()).toBeLessThanOrEqual(
-        afterDate.getTime(),
-      );
+      expect(viewModel.createdAt).toBe(aggregate.createdAt.value);
+      expect(viewModel.updatedAt).toBe(aggregate.updatedAt.value);
     });
 
     it('should create a UserViewModel from aggregate with null fields', () => {
+      const now = new Date();
+
       const aggregate = new UserAggregate(
         {
           id: new UserUuidValueObject('123e4567-e89b-12d3-a456-426614174000'),
@@ -218,6 +221,8 @@ describe('UserViewModelFactory', () => {
           status: new UserStatusValueObject(UserStatusEnum.INACTIVE),
           bio: null,
           avatarUrl: null,
+          createdAt: new DateValueObject(now),
+          updatedAt: new DateValueObject(now),
         },
         false,
       );
@@ -236,6 +241,8 @@ describe('UserViewModelFactory', () => {
     });
 
     it('should set createdAt and updatedAt to current date', () => {
+      const now = new Date();
+
       const aggregate = new UserAggregate(
         {
           id: new UserUuidValueObject('123e4567-e89b-12d3-a456-426614174000'),
@@ -244,6 +251,8 @@ describe('UserViewModelFactory', () => {
           lastName: new UserLastNameValueObject('Doe'),
           role: new UserRoleValueObject(UserRoleEnum.USER),
           status: new UserStatusValueObject(UserStatusEnum.ACTIVE),
+          createdAt: new DateValueObject(now),
+          updatedAt: new DateValueObject(now),
         },
         false,
       );
@@ -256,12 +265,16 @@ describe('UserViewModelFactory', () => {
     });
 
     it('should handle optional fields that are null correctly', () => {
+      const now = new Date();
+
       const aggregate = new UserAggregate(
         {
           id: new UserUuidValueObject('123e4567-e89b-12d3-a456-426614174000'),
           userName: new UserUserNameValueObject('johndoe'),
           role: new UserRoleValueObject(UserRoleEnum.USER),
           status: new UserStatusValueObject(UserStatusEnum.ACTIVE),
+          createdAt: new DateValueObject(now),
+          updatedAt: new DateValueObject(now),
         },
         false,
       );
@@ -272,6 +285,8 @@ describe('UserViewModelFactory', () => {
       expect(viewModel.lastName).toBeNull();
       expect(viewModel.bio).toBeNull();
       expect(viewModel.avatarUrl).toBeNull();
+      expect(viewModel.createdAt).toBe(aggregate.createdAt.value);
+      expect(viewModel.updatedAt).toBe(aggregate.updatedAt.value);
     });
   });
 });

@@ -1,4 +1,4 @@
-import { DateValueObject } from '@/shared/domain/value-objects/date.vo';
+import { DateValueObject } from '@/shared/domain/value-objects/date/date.vo';
 
 /**
  * AuthLastLoginAtValueObject represents the last login timestamp.

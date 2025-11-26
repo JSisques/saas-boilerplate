@@ -1,13 +1,13 @@
-import { AuthClient } from './auth-context/auth-client.js';
-import type { AuthLogoutInput } from './auth-context/types/index.js';
-import { SubscriptionPlanClient } from './billing-context/subscription-plan-client.js';
-import { EventClient } from './event-store-context/event-client.js';
-import { HealthClient } from './health-context/health-client.js';
+import { AuthClient } from './auth/client/auth-client.js';
+import type { AuthLogoutInput } from './auth/index.js';
+import { EventClient } from './event/client/event-client.js';
+import { HealthClient } from './health/client/health-client.js';
 import { GraphQLClient } from './shared/client/graphql-client.js';
 import type { GraphQLClientConfig } from './shared/types/index.js';
-import { TenantClient } from './tenant-context/tenant-client.js';
-import { TenantMemberClient } from './tenant-context/tenant-member-client.js';
-import { UserClient } from './user-context/user-client.js';
+import { SubscriptionPlanClient } from './subscription-plan/client/subscription-plan-client.js';
+import { TenantMemberClient } from './tenant-member/client/tenant-member-client.js';
+import { TenantClient } from './tenant/client/tenant-client.js';
+import { UserClient } from './users/client/user-client.js';
 
 // Re-export types from shared
 export type {
@@ -26,67 +26,13 @@ export { MemoryStorage } from './shared/storage/memory-storage.js';
 export type { Storage } from './shared/storage/storage.interface.js';
 export { WebStorage } from './shared/storage/web-storage.js';
 
-// Re-export types from auth-context
-export type {
-  AuthLoginByEmailInput,
-  AuthLogoutInput,
-  AuthRegisterByEmailInput,
-  AuthResponse,
-  LoginResponse,
-} from './auth-context/types/index.js';
-
-// Re-export types from user-context
-export type {
-  CreateUserInput,
-  DeleteUserInput,
-  PaginatedUserResult,
-  UpdateUserInput,
-  UserFindByCriteriaInput,
-  UserFindByIdInput,
-  UserResponse,
-  UserRole,
-  UserStatus,
-} from './user-context/types/index.js';
-
-// Re-export types from tenant-context
-export type {
-  PaginatedTenantMemberResult,
-  PaginatedTenantResult,
-  TenantCreateInput,
-  TenantDeleteInput,
-  TenantFindByCriteriaInput,
-  TenantMemberAddInput,
-  TenantMemberFindByCriteriaInput,
-  TenantMemberRemoveInput,
-  TenantMemberResponse,
-  TenantMemberRole,
-  TenantMemberUpdateInput,
-  TenantResponse,
-  TenantUpdateInput,
-} from './tenant-context/types/index.js';
-
-// Re-export types from billing-context
-export type {
-  Currency,
-  PaginatedSubscriptionPlanResult,
-  SubscriptionPlanCreateInput,
-  SubscriptionPlanDeleteInput,
-  SubscriptionPlanFindByCriteriaInput,
-  SubscriptionPlanInterval,
-  SubscriptionPlanResponse,
-  SubscriptionPlanType,
-  SubscriptionPlanUpdateInput,
-} from './billing-context/types/index.js';
-
-// Re-export types from health-context
-export type { HealthResponse } from './health-context/types/index.js';
-
-// Re-export types from event-store-context
-export type {
-  EventFindByCriteriaInput,
-  EventResponse,
-  PaginatedEventResult,
-} from './event-store-context/types/index.js';
+export * from './auth/index.js';
+export * from './event/index.js';
+export * from './health/index.js';
+export * from './subscription-plan/index.js';
+export * from './tenant-member/index.js';
+export * from './tenant/index.js';
+export * from './users/index.js';
 
 export class SDK {
   private client: GraphQLClient;
@@ -209,6 +155,10 @@ export class SDK {
        */
       findByCriteria: this.tenantClient.findByCriteria.bind(this.tenantClient),
       /**
+       * Find a tenant by ID
+       */
+      findById: this.tenantClient.findById.bind(this.tenantClient),
+      /**
        * Create a new tenant
        */
       create: this.tenantClient.create.bind(this.tenantClient),
@@ -235,6 +185,10 @@ export class SDK {
         this.tenantMemberClient,
       ),
       /**
+       * Find a tenant member by ID
+       */
+      findById: this.tenantMemberClient.findById.bind(this.tenantMemberClient),
+      /**
        * Add a member to a tenant
        */
       add: this.tenantMemberClient.add.bind(this.tenantMemberClient),
@@ -258,6 +212,12 @@ export class SDK {
        * Find subscription plans by criteria with pagination, filters, and sorting
        */
       findByCriteria: this.subscriptionPlanClient.findByCriteria.bind(
+        this.subscriptionPlanClient,
+      ),
+      /**
+       * Find a subscription plan by ID
+       */
+      findById: this.subscriptionPlanClient.findById.bind(
         this.subscriptionPlanClient,
       ),
       /**
@@ -290,6 +250,10 @@ export class SDK {
        * Find events by criteria with pagination, filters, and sorting
        */
       findByCriteria: this.eventClient.findByCriteria.bind(this.eventClient),
+      /**
+       * Replay events
+       */
+      replay: this.eventClient.replay.bind(this.eventClient),
     };
   }
 

@@ -12,6 +12,7 @@ import { SubscriptionPlanSlugValueObject } from '@/billing-context/subscription-
 import { SubscriptionPlanStripePriceIdValueObject } from '@/billing-context/subscription-plan/domain/value-objects/subscription-plan-stripe-price-id/subscription-plan-stripe-price-id.vo';
 import { SubscriptionPlanTrialPeriodDaysValueObject } from '@/billing-context/subscription-plan/domain/value-objects/subscription-plan-trial-period-days/subscription-plan-trial-period-days.vo';
 import { SubscriptionPlanTypeValueObject } from '@/billing-context/subscription-plan/domain/value-objects/subscription-plan-type/subscription-plan-type.vo';
+import { IBaseAggregateDto } from '@/shared/domain/interfaces/base-aggregate-dto.interface';
 import { SubscriptionPlanUuidValueObject } from '@/shared/domain/value-objects/identifiers/subscription-plan/subscription-plan-uuid.vo';
 
 /**
@@ -32,8 +33,10 @@ import { SubscriptionPlanUuidValueObject } from '@/shared/domain/value-objects/i
  * @property {SubscriptionPlanFeaturesValueObject | null} features - The features of the subscription plan.
  * @property {SubscriptionPlanLimitsValueObject | null} limits - The limits of the subscription plan.
  * @property {SubscriptionPlanStripePriceIdValueObject | null} stripePriceId - The stripe price id of the subscription plan.
+ * @property {DateValueObject} createdAt - The date and time the subscription plan was created.
+ * @property {DateValueObject} updatedAt - The date and time the subscription plan was last updated.
  */
-export interface ISubscriptionPlanCreateDto {
+export interface ISubscriptionPlanCreateDto extends IBaseAggregateDto {
   id: SubscriptionPlanUuidValueObject;
   name: SubscriptionPlanNameValueObject;
   slug: SubscriptionPlanSlugValueObject;

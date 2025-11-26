@@ -1,4 +1,4 @@
-import { IBaseService } from '@/shared/application/services/base-service.interface';
+import { IBaseService } from '@/shared/application/services/base-service/base-service.interface';
 import { TenantSlugIsNotUniqueException } from '@/tenant-context/tenants/application/exceptions/tenant-slug-is-not-unique/tenant-slug-is-not-unique.exception';
 import {
   TENANT_WRITE_REPOSITORY_TOKEN,

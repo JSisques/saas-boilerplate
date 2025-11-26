@@ -1,11 +1,11 @@
-import { EventAggregateFactory } from '@/event-store-context/event/domain/factories/event-aggregate.factory';
+import { EventAggregateFactory } from '@/event-store-context/event/domain/factories/event-aggregate/event-aggregate.factory';
 import {
   EVENT_WRITE_REPOSITORY_TOKEN,
   EventWriteRepository,
 } from '@/event-store-context/event/domain/repositories/event-write.repository';
-import { IBaseService } from '@/shared/application/services/base-service.interface';
+import { IBaseService } from '@/shared/application/services/base-service/base-service.interface';
 import { BaseEvent } from '@/shared/domain/events/base-event.interface';
-import { UuidValueObject } from '@/shared/domain/value-objects/uuid.vo';
+import { UuidValueObject } from '@/shared/domain/value-objects/uuid/uuid.vo';
 import { Inject, Injectable, Logger } from '@nestjs/common';
 import { EventBus } from '@nestjs/cqrs';
 
@@ -36,6 +36,8 @@ export class EventTrackingService
    * 4. Mark the event events as committed.
    */
   async execute(event: BaseEvent<any>): Promise<void> {
+    this.logger.log(`Tracking event: ${event.eventType}`);
+
     if (event.isReplay) {
       this.logger.debug(
         `Skipping tracking for replayed event: ${event.eventType} (${event.aggregateId})`,

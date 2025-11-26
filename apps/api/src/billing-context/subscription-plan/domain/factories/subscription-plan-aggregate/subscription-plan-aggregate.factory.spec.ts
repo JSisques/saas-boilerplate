@@ -20,6 +20,7 @@ import { SubscriptionPlanStripePriceIdValueObject } from '@/billing-context/subs
 import { SubscriptionPlanTrialPeriodDaysValueObject } from '@/billing-context/subscription-plan/domain/value-objects/subscription-plan-trial-period-days/subscription-plan-trial-period-days.vo';
 import { SubscriptionPlanTypeValueObject } from '@/billing-context/subscription-plan/domain/value-objects/subscription-plan-type/subscription-plan-type.vo';
 import { SubscriptionPlanCreatedEvent } from '@/shared/domain/events/billing-context/subscription-plan/subscription-plan-created/subscription-plan-created.event';
+import { DateValueObject } from '@/shared/domain/value-objects/date/date.vo';
 import { SubscriptionPlanUuidValueObject } from '@/shared/domain/value-objects/identifiers/subscription-plan/subscription-plan-uuid.vo';
 import { UserNameValueObject } from '@/user-context/users/domain/value-objects/user-name/user-name.vo';
 
@@ -64,6 +65,8 @@ describe('SubscriptionPlanAggregateFactory', () => {
         stripePriceId: new SubscriptionPlanStripePriceIdValueObject(
           'price_1234567890',
         ),
+        createdAt: new DateValueObject(new Date()),
+        updatedAt: new DateValueObject(new Date()),
       };
 
       const aggregate = factory.create(dto);
@@ -116,6 +119,8 @@ describe('SubscriptionPlanAggregateFactory', () => {
         features: null,
         limits: null,
         stripePriceId: null,
+        createdAt: new DateValueObject(new Date()),
+        updatedAt: new DateValueObject(new Date()),
       };
 
       const aggregate = factory.create(dto, false);
@@ -155,6 +160,8 @@ describe('SubscriptionPlanAggregateFactory', () => {
         features: null,
         limits: null,
         stripePriceId: null,
+        createdAt: new DateValueObject(new Date()),
+        updatedAt: new DateValueObject(new Date()),
       };
 
       const aggregate = factory.create(dto, false);
@@ -188,6 +195,8 @@ describe('SubscriptionPlanAggregateFactory', () => {
         features: { apiAccess: true, support: 'priority' },
         limits: { maxUsers: 100, storage: '500GB' },
         stripePriceId: 'price_1234567890',
+        createdAt: new Date(),
+        updatedAt: new Date(),
       };
 
       const aggregate = factory.fromPrimitives(primitives);
@@ -227,6 +236,8 @@ describe('SubscriptionPlanAggregateFactory', () => {
         features: null,
         limits: null,
         stripePriceId: null,
+        createdAt: new Date(),
+        updatedAt: new Date(),
       };
 
       const aggregate = factory.fromPrimitives(primitives);
@@ -258,6 +269,8 @@ describe('SubscriptionPlanAggregateFactory', () => {
         features: { apiAccess: true, support: '24/7' },
         limits: { maxUsers: 1000, storage: 'unlimited' },
         stripePriceId: 'price_9876543210',
+        createdAt: new Date(),
+        updatedAt: new Date(),
       };
 
       const aggregate = factory.fromPrimitives(primitives);
@@ -318,6 +331,8 @@ describe('SubscriptionPlanAggregateFactory', () => {
         features: null,
         limits: null,
         stripePriceId: null,
+        createdAt: new Date(),
+        updatedAt: new Date(),
       };
 
       const aggregate = factory.fromPrimitives(primitives);

@@ -1,4 +1,4 @@
-import { EmailValueObject } from '@/shared/domain/value-objects/email.vo';
+import { EmailValueObject } from '@/shared/domain/value-objects/email/email.vo';
 
 /**
  * TenantEmailValueObject represents a tenant's email in the domain.

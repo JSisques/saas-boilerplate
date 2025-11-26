@@ -1,13 +1,9 @@
 name: Docs Build
 
 on:
-  push:
-    paths:
-      - "packages/docs/**"
-    branches: [main, dev]
   pull_request:
     paths:
-      - "packages/docs/**"
+      - "apps/docs/**"
     branches: [main, dev]
 
 jobs:
@@ -29,7 +25,7 @@ jobs:
           version: latest
 
       - name: Install dependencies
-        run: pnpm install --filter=./packages/docs...
+        run: pnpm install --filter=./apps/docs...
 
       - name: Build the docs
-        run: pnpm build --filter=./packages/docs...
+        run: pnpm build --filter=./apps/docs...

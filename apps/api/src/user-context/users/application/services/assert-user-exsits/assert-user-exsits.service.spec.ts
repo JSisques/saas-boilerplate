@@ -1,3 +1,4 @@
+import { DateValueObject } from '@/shared/domain/value-objects/date/date.vo';
 import { UserUuidValueObject } from '@/shared/domain/value-objects/identifiers/user-uuid/user-uuid.vo';
 import { UserNotFoundException } from '@/user-context/users/application/exceptions/user-not-found/user-not-found.exception';
 import { AssertUserExsistsService } from '@/user-context/users/application/services/assert-user-exsits/assert-user-exsits.service';
@@ -41,6 +42,8 @@ describe('AssertUserExsistsService', () => {
           userName: new UserUserNameValueObject('johndoe'),
           role: new UserRoleValueObject(UserRoleEnum.USER),
           status: new UserStatusValueObject(UserStatusEnum.ACTIVE),
+          createdAt: new DateValueObject(new Date()),
+          updatedAt: new DateValueObject(new Date()),
         },
         false,
       );
@@ -78,6 +81,8 @@ describe('AssertUserExsistsService', () => {
           userName: new UserUserNameValueObject('johndoe'),
           role: new UserRoleValueObject(UserRoleEnum.USER),
           status: new UserStatusValueObject(UserStatusEnum.ACTIVE),
+          createdAt: new DateValueObject(new Date()),
+          updatedAt: new DateValueObject(new Date()),
         },
         false,
       );
@@ -104,6 +109,8 @@ describe('AssertUserExsistsService', () => {
           ),
           role: new UserRoleValueObject(UserRoleEnum.ADMIN),
           status: new UserStatusValueObject(UserStatusEnum.INACTIVE),
+          createdAt: new DateValueObject(new Date()),
+          updatedAt: new DateValueObject(new Date()),
         },
         false,
       );
@@ -131,6 +138,8 @@ describe('AssertUserExsistsService', () => {
           userName: new UserUserNameValueObject('johndoe'),
           role: new UserRoleValueObject(UserRoleEnum.USER),
           status: new UserStatusValueObject(UserStatusEnum.ACTIVE),
+          createdAt: new DateValueObject(new Date()),
+          updatedAt: new DateValueObject(new Date()),
         },
         false,
       );
@@ -178,6 +187,8 @@ describe('AssertUserExsistsService', () => {
             userName: new UserUserNameValueObject('johndoe'),
             role: new UserRoleValueObject(testCase.role),
             status: new UserStatusValueObject(testCase.status),
+            createdAt: new DateValueObject(new Date()),
+            updatedAt: new DateValueObject(new Date()),
           },
           false,
         );

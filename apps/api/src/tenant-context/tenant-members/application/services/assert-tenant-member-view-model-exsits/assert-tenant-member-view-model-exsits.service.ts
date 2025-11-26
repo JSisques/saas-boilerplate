@@ -1,10 +1,10 @@
-import { IBaseService } from '@/shared/application/services/base-service.interface';
+import { IBaseService } from '@/shared/application/services/base-service/base-service.interface';
 import { TenantMemberNotFoundException } from '@/tenant-context/tenant-members/application/exceptions/tenant-member-not-found/tenant-member-not-found.exception';
 import {
   TENANT_MEMBER_READ_REPOSITORY_TOKEN,
   TenantMemberReadRepository,
 } from '@/tenant-context/tenant-members/domain/repositories/tenant-member-read.repository';
-import { TenantMemberViewModel } from '@/tenant-context/tenant-members/domain/view-models/tenant-member.view-model';
+import { TenantMemberViewModel } from '@/tenant-context/tenant-members/domain/view-models/tenant-member/tenant-member.view-model';
 import { Inject, Injectable, Logger } from '@nestjs/common';
 
 @Injectable()

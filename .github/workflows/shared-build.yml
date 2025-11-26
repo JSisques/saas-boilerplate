@@ -1,0 +1,37 @@
+name: Shared Build
+
+on:
+  pull_request:
+    paths:
+      - "packages/shared/**"
+    branches: [main, dev]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: latest
+
+      - name: Install dependencies
+        run: pnpm install --filter=./packages/shared...
+
+      - name: Lint code
+        run: pnpm lint --filter=./packages/shared...
+
+      - name: Check types
+        run: pnpm check-types --filter=./packages/shared...
+
+      - name: Build the shared package
+        run: pnpm build --filter=./packages/shared...

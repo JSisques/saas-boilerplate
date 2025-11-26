@@ -16,6 +16,8 @@ export class EventGraphQLMapper {
       aggregateId: event.aggregateId,
       payload: event.payload ? JSON.stringify(event.payload) : null,
       timestamp: event.timestamp,
+      createdAt: event.createdAt,
+      updatedAt: event.updatedAt,
     };
   }
 

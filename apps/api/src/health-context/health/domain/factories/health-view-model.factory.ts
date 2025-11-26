@@ -27,6 +27,8 @@ export class HealthViewModelFactory
     this.logger.log(`Creating health view model from aggregate: ${source}`);
     return new HealthViewModel({
       status: source.status.value,
+      writeDatabaseStatus: source.writeDatabaseStatus.value,
+      readDatabaseStatus: source.readDatabaseStatus.value,
     });
   }
   public fromPrimitives(primitives: HealthPrimitives): HealthViewModel {
@@ -35,6 +37,8 @@ export class HealthViewModelFactory
     );
     return new HealthViewModel({
       status: primitives.status,
+      writeDatabaseStatus: primitives.writeDatabaseStatus,
+      readDatabaseStatus: primitives.readDatabaseStatus,
     });
   }
 }

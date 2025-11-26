@@ -1,7 +1,7 @@
 import { Criteria } from '@/shared/domain/entities/criteria';
 import { PaginatedResult } from '@/shared/domain/entities/paginated-result.entity';
-import { BaseMongoRepository } from '@/shared/infrastructure/database/mongodb/base-mongo.repository';
-import { MongoService } from '@/shared/infrastructure/database/mongodb/mongo.service';
+import { BaseMongoMasterRepository } from '@/shared/infrastructure/database/mongodb/base-mongo/base-mongo-master/base-mongo-master.repository';
+import { MongoMasterService } from '@/shared/infrastructure/database/mongodb/services/mongo-master/mongo-master.service';
 import { UserReadRepository } from '@/user-context/users/domain/repositories/user-read.repository';
 import { UserViewModel } from '@/user-context/users/domain/view-models/user.view-model';
 import { UserMongoDBMapper } from '@/user-context/users/infrastructure/database/mongodb/mappers/user-mongodb.mapper';
@@ -9,16 +9,16 @@ import { Injectable, Logger } from '@nestjs/common';
 
 @Injectable()
 export class UserMongoRepository
-  extends BaseMongoRepository
+  extends BaseMongoMasterRepository
   implements UserReadRepository
 {
   private readonly collectionName = 'users';
 
   constructor(
-    mongoService: MongoService,
+    mongoMasterService: MongoMasterService,
     private readonly userMongoDBMapper: UserMongoDBMapper,
   ) {
-    super(mongoService);
+    super(mongoMasterService);
     this.logger = new Logger(UserMongoRepository.name);
   }
 
@@ -31,7 +31,9 @@ export class UserMongoRepository
   async findById(id: string): Promise<UserViewModel | null> {
     this.logger.log(`Finding user by id: ${id}`);
 
-    const collection = this.mongoService.getCollection(this.collectionName);
+    const collection = this.mongoMasterService.getCollection(
+      this.collectionName,
+    );
     const userViewModel = await collection.findOne({ id });
 
     return userViewModel
@@ -62,7 +64,9 @@ export class UserMongoRepository
   ): Promise<PaginatedResult<UserViewModel>> {
     this.logger.log(`Finding users by criteria: ${JSON.stringify(criteria)}`);
 
-    const collection = this.mongoService.getCollection(this.collectionName);
+    const collection = this.mongoMasterService.getCollection(
+      this.collectionName,
+    );
 
     // 01: Build MongoDB query from criteria
     const mongoQuery = this.buildMongoQuery(criteria);
@@ -111,7 +115,9 @@ export class UserMongoRepository
   async save(userViewModel: UserViewModel): Promise<void> {
     this.logger.log(`Saving user view model with id: ${userViewModel.id}`);
 
-    const collection = this.mongoService.getCollection(this.collectionName);
+    const collection = this.mongoMasterService.getCollection(
+      this.collectionName,
+    );
     const mongoData = this.userMongoDBMapper.toMongoData(userViewModel);
 
     // 01: Use upsert to either insert or update the user view model
@@ -129,7 +135,9 @@ export class UserMongoRepository
   async delete(id: string): Promise<boolean> {
     this.logger.log(`Deleting user view model by id: ${id}`);
 
-    const collection = this.mongoService.getCollection(this.collectionName);
+    const collection = this.mongoMasterService.getCollection(
+      this.collectionName,
+    );
 
     // 01: Delete the user view model from the collection
     await collection.deleteOne({ id });

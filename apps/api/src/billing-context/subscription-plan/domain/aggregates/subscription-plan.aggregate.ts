@@ -15,13 +15,14 @@ import { SubscriptionPlanSlugValueObject } from '@/billing-context/subscription-
 import { SubscriptionPlanStripePriceIdValueObject } from '@/billing-context/subscription-plan/domain/value-objects/subscription-plan-stripe-price-id/subscription-plan-stripe-price-id.vo';
 import { SubscriptionPlanTrialPeriodDaysValueObject } from '@/billing-context/subscription-plan/domain/value-objects/subscription-plan-trial-period-days/subscription-plan-trial-period-days.vo';
 import { SubscriptionPlanTypeValueObject } from '@/billing-context/subscription-plan/domain/value-objects/subscription-plan-type/subscription-plan-type.vo';
+import { BaseAggregate } from '@/shared/domain/aggregates/base-aggregate/base.aggregate';
 import { SubscriptionPlanCreatedEvent } from '@/shared/domain/events/billing-context/subscription-plan/subscription-plan-created/subscription-plan-created.event';
 import { SubscriptionPlanDeletedEvent } from '@/shared/domain/events/billing-context/subscription-plan/subscription-plan-deleted/subscription-plan-deleted.event';
 import { SubscriptionPlanUpdatedEvent } from '@/shared/domain/events/billing-context/subscription-plan/subscription-plan-updated/subscription-plan-updated.event';
+import { DateValueObject } from '@/shared/domain/value-objects/date/date.vo';
 import { SubscriptionPlanUuidValueObject } from '@/shared/domain/value-objects/identifiers/subscription-plan/subscription-plan-uuid.vo';
-import { AggregateRoot } from '@nestjs/cqrs';
 
-export class SubscriptionPlanAggregate extends AggregateRoot {
+export class SubscriptionPlanAggregate extends BaseAggregate {
   private readonly _id: SubscriptionPlanUuidValueObject;
   private _name: SubscriptionPlanNameValueObject;
   private _slug: SubscriptionPlanSlugValueObject;
@@ -42,7 +43,7 @@ export class SubscriptionPlanAggregate extends AggregateRoot {
     props: ISubscriptionPlanCreateDto,
     generateEvent: boolean = true,
   ) {
-    super();
+    super(props.createdAt, props.updatedAt);
 
     this._id = props.id;
     this._name = props.name;
@@ -116,6 +117,8 @@ export class SubscriptionPlanAggregate extends AggregateRoot {
       props.stripePriceId !== undefined
         ? props.stripePriceId
         : this._stripePriceId;
+
+    this._updatedAt = new DateValueObject(new Date());
 
     if (generateEvent) {
       this.apply(
@@ -296,6 +299,8 @@ export class SubscriptionPlanAggregate extends AggregateRoot {
       features: this._features ? this._features.value : null,
       limits: this._limits ? this._limits.value : null,
       stripePriceId: this._stripePriceId ? this._stripePriceId.value : null,
+      createdAt: this._createdAt.value,
+      updatedAt: this._updatedAt.value,
     };
   }
 }

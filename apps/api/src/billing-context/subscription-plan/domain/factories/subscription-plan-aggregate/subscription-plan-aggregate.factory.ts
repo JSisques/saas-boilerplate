@@ -15,6 +15,7 @@ import { SubscriptionPlanStripePriceIdValueObject } from '@/billing-context/subs
 import { SubscriptionPlanTrialPeriodDaysValueObject } from '@/billing-context/subscription-plan/domain/value-objects/subscription-plan-trial-period-days/subscription-plan-trial-period-days.vo';
 import { SubscriptionPlanTypeValueObject } from '@/billing-context/subscription-plan/domain/value-objects/subscription-plan-type/subscription-plan-type.vo';
 import { IWriteFactory } from '@/shared/domain/interfaces/write-factory.interface';
+import { DateValueObject } from '@/shared/domain/value-objects/date/date.vo';
 import { SubscriptionPlanUuidValueObject } from '@/shared/domain/value-objects/identifiers/subscription-plan/subscription-plan-uuid.vo';
 import { UserNameValueObject } from '@/user-context/users/domain/value-objects/user-name/user-name.vo';
 import { Injectable } from '@nestjs/common';
@@ -48,6 +49,8 @@ export class SubscriptionPlanAggregateFactory
    * @param data.features - The subscription plan features.
    * @param data.limits - The subscription plan limits.
    * @param data.stripePriceId - The subscription plan stripe price id.
+   * @param data.createdAt - The subscription plan created at.
+   * @param data.updatedAt - The subscription plan updated at.
    * @param generateEvent - Whether to generate a creation event (default: true).
    * @returns {SubscriptionPlanAggregate} - The created subscription plan aggregate entity.
    */
@@ -76,6 +79,8 @@ export class SubscriptionPlanAggregateFactory
    * @param data.features - The subscription plan features.
    * @param data.limits - The subscription plan limits.
    * @param data.stripePriceId - The subscription plan stripe price id.
+   * @param data.createdAt - The subscription plan created at.
+   * @param data.updatedAt - The subscription plan updated at.
    * @returns The created subscription plan aggregate entity.
    */
   public fromPrimitives(
@@ -111,6 +116,8 @@ export class SubscriptionPlanAggregateFactory
       stripePriceId: data.stripePriceId
         ? new SubscriptionPlanStripePriceIdValueObject(data.stripePriceId)
         : null,
+      createdAt: new DateValueObject(data.createdAt),
+      updatedAt: new DateValueObject(data.updatedAt),
     });
   }
 }

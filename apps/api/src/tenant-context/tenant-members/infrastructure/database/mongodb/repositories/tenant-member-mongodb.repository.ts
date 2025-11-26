@@ -1,24 +1,24 @@
 import { Criteria } from '@/shared/domain/entities/criteria';
 import { PaginatedResult } from '@/shared/domain/entities/paginated-result.entity';
-import { BaseMongoRepository } from '@/shared/infrastructure/database/mongodb/base-mongo.repository';
-import { MongoService } from '@/shared/infrastructure/database/mongodb/mongo.service';
+import { BaseMongoMasterRepository } from '@/shared/infrastructure/database/mongodb/base-mongo/base-mongo-master/base-mongo-master.repository';
+import { MongoMasterService } from '@/shared/infrastructure/database/mongodb/services/mongo-master/mongo-master.service';
 import { TenantMemberReadRepository } from '@/tenant-context/tenant-members/domain/repositories/tenant-member-read.repository';
-import { TenantMemberViewModel } from '@/tenant-context/tenant-members/domain/view-models/tenant-member.view-model';
+import { TenantMemberViewModel } from '@/tenant-context/tenant-members/domain/view-models/tenant-member/tenant-member.view-model';
 import { TenantMemberMongoDBMapper } from '@/tenant-context/tenant-members/infrastructure/database/mongodb/mappers/tenant-member-mongodb.mapper';
 import { Injectable, Logger } from '@nestjs/common';
 
 @Injectable()
 export class TenantMemberMongoRepository
-  extends BaseMongoRepository
+  extends BaseMongoMasterRepository
   implements TenantMemberReadRepository
 {
   private readonly collectionName = 'tenant-members';
 
   constructor(
-    mongoService: MongoService,
+    mongoMasterService: MongoMasterService,
     private readonly tenantMemberMongoDBMapper: TenantMemberMongoDBMapper,
   ) {
-    super(mongoService);
+    super(mongoMasterService);
     this.logger = new Logger(TenantMemberMongoRepository.name);
   }
 
@@ -31,7 +31,9 @@ export class TenantMemberMongoRepository
   async findById(id: string): Promise<TenantMemberViewModel | null> {
     this.logger.log(`Finding tenant member by id: ${id}`);
 
-    const collection = this.mongoService.getCollection(this.collectionName);
+    const collection = this.mongoMasterService.getCollection(
+      this.collectionName,
+    );
     const tenantMemberViewModel = await collection.findOne({ id });
 
     return tenantMemberViewModel
@@ -57,7 +59,9 @@ export class TenantMemberMongoRepository
   ): Promise<TenantMemberViewModel[] | null> {
     this.logger.log(`Finding tenant members by tenant id: ${tenantId}`);
 
-    const collection = this.mongoService.getCollection(this.collectionName);
+    const collection = this.mongoMasterService.getCollection(
+      this.collectionName,
+    );
     const tenantMembers = await collection.find({ tenantId }).toArray();
 
     return tenantMembers.map((doc) =>
@@ -80,7 +84,9 @@ export class TenantMemberMongoRepository
   async findByUserId(userId: string): Promise<TenantMemberViewModel[] | null> {
     this.logger.log(`Finding tenant members by user id: ${userId}`);
 
-    const collection = this.mongoService.getCollection(this.collectionName);
+    const collection = this.mongoMasterService.getCollection(
+      this.collectionName,
+    );
     const tenantMembers = await collection.find({ userId }).toArray();
 
     return tenantMembers.map((doc) =>
@@ -109,7 +115,9 @@ export class TenantMemberMongoRepository
       `Finding tenant members by criteria: ${JSON.stringify(criteria)}`,
     );
 
-    const collection = this.mongoService.getCollection(this.collectionName);
+    const collection = this.mongoMasterService.getCollection(
+      this.collectionName,
+    );
 
     // 01: Build MongoDB query from criteria
     const mongoQuery = this.buildMongoQuery(criteria);
@@ -161,7 +169,9 @@ export class TenantMemberMongoRepository
       `Saving tenant member view model with id: ${tenantMemberViewModel.id}`,
     );
 
-    const collection = this.mongoService.getCollection(this.collectionName);
+    const collection = this.mongoMasterService.getCollection(
+      this.collectionName,
+    );
     const mongoData = this.tenantMemberMongoDBMapper.toMongoData(
       tenantMemberViewModel,
     );
@@ -181,7 +191,9 @@ export class TenantMemberMongoRepository
   async delete(id: string): Promise<boolean> {
     this.logger.log(`Deleting tenant member view model by id: ${id}`);
 
-    const collection = this.mongoService.getCollection(this.collectionName);
+    const collection = this.mongoMasterService.getCollection(
+      this.collectionName,
+    );
 
     // 01: Delete the tenant member view model from the collection
     await collection.deleteOne({ id });

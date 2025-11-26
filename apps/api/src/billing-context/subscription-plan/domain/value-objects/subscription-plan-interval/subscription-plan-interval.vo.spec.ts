@@ -1,6 +1,6 @@
 import { SubscriptionPlanIntervalEnum } from '@/billing-context/subscription-plan/domain/enum/subscription-plan-interval.enum';
 import { SubscriptionPlanIntervalValueObject } from '@/billing-context/subscription-plan/domain/value-objects/subscription-plan-interval/subscription-plan-interval.vo';
-import { InvalidEnumValueException } from '@/shared/domain/exceptions/value-objects/invalid-enum-value.exception';
+import { InvalidEnumValueException } from '@/shared/domain/exceptions/value-objects/invalid-enum-value/invalid-enum-value.exception';
 
 describe('SubscriptionPlanIntervalValueObject', () => {
   describe('constructor', () => {

@@ -1,7 +1,7 @@
 import { HealthCheckService } from '@/health-context/health/application/services/health-check/health-check.service';
 import { HealthViewModel } from '@/health-context/health/domain/view-models/health.view-model';
-import { HealthRestMapper } from '@/health-context/health/transport/rest/mappers/health-rest.mapper';
 import { HealthController } from '@/health-context/health/transport/rest/controllers/health.controller';
+import { HealthRestMapper } from '@/health-context/health/transport/rest/mappers/health-rest.mapper';
 
 describe('HealthController', () => {
   let controller: HealthController;
@@ -29,8 +29,16 @@ describe('HealthController', () => {
   });
 
   it('should return mapped health response', async () => {
-    const viewModel = new HealthViewModel({ status: 'OK' });
-    const responseDto = { status: 'OK' };
+    const viewModel = new HealthViewModel({
+      status: 'OK',
+      writeDatabaseStatus: 'OK',
+      readDatabaseStatus: 'OK',
+    });
+    const responseDto = {
+      status: 'OK',
+      writeDatabaseStatus: 'OK',
+      readDatabaseStatus: 'OK',
+    };
 
     mockHealthCheckService.execute.mockResolvedValue(viewModel);
     mockHealthRestMapper.toResponseDto.mockReturnValue(responseDto);

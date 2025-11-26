@@ -3,22 +3,22 @@ import { PromptViewModel } from '@/llm-context/prompt/domain/view-models/prompt.
 import { PromptMongoDBMapper } from '@/llm-context/prompt/infrastructure/database/mongodb/mappers/prompt-mongodb.mapper';
 import { Criteria } from '@/shared/domain/entities/criteria';
 import { PaginatedResult } from '@/shared/domain/entities/paginated-result.entity';
-import { BaseMongoRepository } from '@/shared/infrastructure/database/mongodb/base-mongo.repository';
-import { MongoService } from '@/shared/infrastructure/database/mongodb/mongo.service';
+import { BaseMongoMasterRepository } from '@/shared/infrastructure/database/mongodb/base-mongo/base-mongo-master/base-mongo-master.repository';
+import { MongoMasterService } from '@/shared/infrastructure/database/mongodb/services/mongo-master/mongo-master.service';
 import { Injectable, Logger } from '@nestjs/common';
 
 @Injectable()
 export class PromptMongoRepository
-  extends BaseMongoRepository
+  extends BaseMongoMasterRepository
   implements PromptReadRepository
 {
   private readonly collectionName = 'prompts';
 
   constructor(
-    mongoService: MongoService,
+    mongoMasterService: MongoMasterService,
     private readonly promptMongoDBMapper: PromptMongoDBMapper,
   ) {
-    super(mongoService);
+    super(mongoMasterService);
     this.logger = new Logger(PromptMongoRepository.name);
   }
 
@@ -31,7 +31,9 @@ export class PromptMongoRepository
   async findById(id: string): Promise<PromptViewModel | null> {
     this.logger.log(`Finding prompt by id: ${id}`);
 
-    const collection = this.mongoService.getCollection(this.collectionName);
+    const collection = this.mongoMasterService.getCollection(
+      this.collectionName,
+    );
     const promptViewModel = await collection.findOne({ id });
 
     return promptViewModel
@@ -62,7 +64,9 @@ export class PromptMongoRepository
   ): Promise<PaginatedResult<PromptViewModel>> {
     this.logger.log(`Finding prompts by criteria: ${JSON.stringify(criteria)}`);
 
-    const collection = this.mongoService.getCollection(this.collectionName);
+    const collection = this.mongoMasterService.getCollection(
+      this.collectionName,
+    );
 
     // 01: Build MongoDB query from criteria
     const mongoQuery = this.buildMongoQuery(criteria);
@@ -111,7 +115,9 @@ export class PromptMongoRepository
   async save(promptViewModel: PromptViewModel): Promise<void> {
     this.logger.log(`Saving prompt view model with id: ${promptViewModel.id}`);
 
-    const collection = this.mongoService.getCollection(this.collectionName);
+    const collection = this.mongoMasterService.getCollection(
+      this.collectionName,
+    );
     const mongoData = this.promptMongoDBMapper.toMongoData(promptViewModel);
 
     // 01: Use upsert to either insert or update the prompt view model
@@ -129,7 +135,9 @@ export class PromptMongoRepository
   async delete(id: string): Promise<boolean> {
     this.logger.log(`Deleting prompt view model by id: ${id}`);
 
-    const collection = this.mongoService.getCollection(this.collectionName);
+    const collection = this.mongoMasterService.getCollection(
+      this.collectionName,
+    );
 
     // 01: Delete the prompt view model from the collection
     await collection.deleteOne({ id });

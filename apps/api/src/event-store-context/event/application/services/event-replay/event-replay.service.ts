@@ -1,7 +1,7 @@
 import { EventReplayCommand } from '@/event-store-context/event/application/commands/event-replay/event-replay.command';
 import { EventPublishService } from '@/event-store-context/event/application/services/event-publish/event-publish.service';
 import { EventAggregate } from '@/event-store-context/event/domain/aggregates/event.aggregate';
-import { EventViewModelFactory } from '@/event-store-context/event/domain/factories/event-view-model.factory';
+import { EventViewModelFactory } from '@/event-store-context/event/domain/factories/event-view-model/event-view-model.factory';
 import {
   EVENT_READ_REPOSITORY_TOKEN,
   EventReadRepository,
@@ -10,7 +10,7 @@ import {
   EVENT_WRITE_REPOSITORY_TOKEN,
   EventWriteRepository,
 } from '@/event-store-context/event/domain/repositories/event-write.repository';
-import { IBaseService } from '@/shared/application/services/base-service.interface';
+import { IBaseService } from '@/shared/application/services/base-service/base-service.interface';
 import { Pagination, Sort } from '@/shared/domain/entities/criteria';
 import { Inject, Injectable, Logger } from '@nestjs/common';
 
@@ -67,7 +67,10 @@ export class EventReplayService
         await this.eventReadRepository.save(view);
 
         // TODO: Replace this delay with a better throttling/batching/queuing approach
-        await new Promise((resolve) => setTimeout(resolve, 500));
+        await new Promise((resolve) => {
+          const timeout = setTimeout(resolve, 500);
+          timeout.unref();
+        });
       }
 
       totalEvents += events.length;

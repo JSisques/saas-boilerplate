@@ -18,6 +18,8 @@ export class AuthGraphQLMapper {
       provider: auth.provider,
       providerId: auth.providerId,
       twoFactorEnabled: auth.twoFactorEnabled,
+      createdAt: auth.createdAt,
+      updatedAt: auth.updatedAt,
     };
   }
 

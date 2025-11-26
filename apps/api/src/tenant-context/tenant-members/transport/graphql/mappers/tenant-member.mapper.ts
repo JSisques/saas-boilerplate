@@ -1,5 +1,5 @@
 import { PaginatedResult } from '@/shared/domain/entities/paginated-result.entity';
-import { TenantMemberViewModel } from '@/tenant-context/tenant-members/domain/view-models/tenant-member.view-model';
+import { TenantMemberViewModel } from '@/tenant-context/tenant-members/domain/view-models/tenant-member/tenant-member.view-model';
 import {
   PaginatedTenantMemberResultDto,
   TenantMemberResponseDto,
@@ -14,6 +14,8 @@ export class TenantMemberGraphQLMapper {
       tenantId: tenantMember.tenantId,
       userId: tenantMember.userId,
       role: tenantMember.role,
+      createdAt: tenantMember.createdAt,
+      updatedAt: tenantMember.updatedAt,
     };
   }
 

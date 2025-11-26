@@ -1,9 +1,9 @@
-import { EventGraphQLMapper } from '@/event-store-context/event/transport/graphql/mappers/event.mapper';
+import { EventViewModel } from '@/event-store-context/event/domain/view-models/event-store.view-model';
 import {
   EventResponseDto,
   PaginatedEventResultDto,
 } from '@/event-store-context/event/transport/graphql/dtos/responses/event.response.dto';
-import { EventViewModel } from '@/event-store-context/event/domain/view-models/event-store.view-model';
+import { EventGraphQLMapper } from '@/event-store-context/event/transport/graphql/mappers/event.mapper';
 import { PaginatedResult } from '@/shared/domain/entities/paginated-result.entity';
 
 describe('EventGraphQLMapper', () => {
@@ -37,6 +37,8 @@ describe('EventGraphQLMapper', () => {
       aggregateId: viewModel.aggregateId,
       payload: JSON.stringify(viewModel.payload),
       timestamp: viewModel.timestamp,
+      createdAt: viewModel.createdAt,
+      updatedAt: viewModel.updatedAt,
     });
   });
 
@@ -68,6 +70,8 @@ describe('EventGraphQLMapper', () => {
           aggregateId: viewModel.aggregateId,
           payload: JSON.stringify(viewModel.payload),
           timestamp: viewModel.timestamp,
+          createdAt: viewModel.createdAt,
+          updatedAt: viewModel.updatedAt,
         },
       ],
       total: 1,

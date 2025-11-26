@@ -2,20 +2,20 @@ import { EventAggregate } from '@/event-store-context/event/domain/aggregates/ev
 import { IEventFilterDto } from '@/event-store-context/event/domain/dtos/filters/event-filter.dto';
 import { EventWriteRepository } from '@/event-store-context/event/domain/repositories/event-write.repository';
 import { EventPrismaMapper } from '@/event-store-context/event/infrastructure/prisma/mappers/event-prisma.mapper';
-import { BasePrismaRepository } from '@/shared/infrastructure/database/prisma/base-prisma.repository';
-import { PrismaService } from '@/shared/infrastructure/database/prisma/prisma.service';
+import { BasePrismaMasterRepository } from '@/shared/infrastructure/database/prisma/base-prisma/base-prisma-master/base-prisma-master.repository';
+import { PrismaMasterService } from '@/shared/infrastructure/database/prisma/services/prisma-master/prisma-master.service';
 import { Injectable, Logger } from '@nestjs/common';
 
 @Injectable()
 export class EventPrismaRepository
-  extends BasePrismaRepository
+  extends BasePrismaMasterRepository
   implements EventWriteRepository
 {
   constructor(
-    prisma: PrismaService,
+    prismaMasterService: PrismaMasterService,
     private readonly eventPrismaMapper: EventPrismaMapper,
   ) {
-    super(prisma);
+    super(prismaMasterService);
     this.logger = new Logger(EventPrismaRepository.name);
   }
 
@@ -28,7 +28,7 @@ export class EventPrismaRepository
   async findById(id: string): Promise<EventAggregate | null> {
     this.logger.log(`Finding event by id: ${id}`);
 
-    const EventData = await this.prismaService.event.findUnique({
+    const EventData = await this.prismaMasterService.event.findUnique({
       where: { id },
     });
 
@@ -42,7 +42,7 @@ export class EventPrismaRepository
   async findByCriteria(filters: IEventFilterDto): Promise<EventAggregate[]> {
     this.logger.log(`Finding events by criteria: ${JSON.stringify(filters)}`);
 
-    const events = await this.prismaService.event.findMany({
+    const events = await this.prismaMasterService.event.findMany({
       where: {
         eventType: filters.eventType,
         aggregateId: filters.aggregateId,
@@ -73,7 +73,7 @@ export class EventPrismaRepository
 
     const eventData = this.eventPrismaMapper.toPrismaData(event);
 
-    const result = await this.prismaService.event.upsert({
+    const result = await this.prismaMasterService.event.upsert({
       where: { id: event.id.value },
       update: eventData,
       create: eventData,
@@ -91,7 +91,7 @@ export class EventPrismaRepository
   async delete(id: string): Promise<boolean> {
     this.logger.log(`Deleting event by id: ${id}`);
 
-    await this.prismaService.event.delete({
+    await this.prismaMasterService.event.delete({
       where: { id },
     });
 

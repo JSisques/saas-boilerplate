@@ -1,5 +1,5 @@
 import { SubscriptionPlanPriceYearlyValueObject } from '@/billing-context/subscription-plan/domain/value-objects/subscription-plan-price-yearly/subscription-plan-price-yearly.vo';
-import { InvalidNumberException } from '@/shared/domain/exceptions/value-objects/invalid-number.exception';
+import { InvalidNumberException } from '@/shared/domain/exceptions/value-objects/invalid-number/invalid-number.exception';
 
 describe('SubscriptionPlanPriceYearlyValueObject', () => {
   describe('constructor', () => {

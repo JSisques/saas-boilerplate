@@ -1,5 +1,5 @@
 import { EventCreatedEventHandler } from '@/event-store-context/event/application/event-handlers/event/event-created/event-created.event-handler';
-import { EventViewModelFactory } from '@/event-store-context/event/domain/factories/event-view-model.factory';
+import { EventViewModelFactory } from '@/event-store-context/event/domain/factories/event-view-model/event-view-model.factory';
 import { EventReadRepository } from '@/event-store-context/event/domain/repositories/event-read.repository';
 import { EventViewModel } from '@/event-store-context/event/domain/view-models/event-store.view-model';
 import { EventCreatedEvent } from '@/shared/domain/events/event-store/event-created/event-created.event';

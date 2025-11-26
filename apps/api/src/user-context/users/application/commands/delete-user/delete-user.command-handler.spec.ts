@@ -1,5 +1,8 @@
 import { UserDeletedEvent } from '@/shared/domain/events/users/user-deleted/user-deleted.event';
+import { DateValueObject } from '@/shared/domain/value-objects/date/date.vo';
 import { UserUuidValueObject } from '@/shared/domain/value-objects/identifiers/user-uuid/user-uuid.vo';
+import { UserDeleteCommand } from '@/user-context/users/application/commands/delete-user/delete-user.command';
+import { UserDeleteCommandHandler } from '@/user-context/users/application/commands/delete-user/delete-user.command-handler';
 import { IUserDeleteCommandDto } from '@/user-context/users/application/dtos/commands/user-delete/user-delete-command.dto';
 import { UserNotFoundException } from '@/user-context/users/application/exceptions/user-not-found/user-not-found.exception';
 import { AssertUserExsistsService } from '@/user-context/users/application/services/assert-user-exsits/assert-user-exsits.service';
@@ -11,8 +14,6 @@ import { UserRoleValueObject } from '@/user-context/users/domain/value-objects/u
 import { UserStatusValueObject } from '@/user-context/users/domain/value-objects/user-status/user-status.vo';
 import { UserUserNameValueObject } from '@/user-context/users/domain/value-objects/user-user-name/user-user-name.vo';
 import { EventBus } from '@nestjs/cqrs';
-import { UserDeleteCommand } from './delete-user.command';
-import { UserDeleteCommandHandler } from './delete-user.command-handler';
 
 describe('UserDeleteCommandHandler', () => {
   let handler: UserDeleteCommandHandler;
@@ -62,6 +63,8 @@ describe('UserDeleteCommandHandler', () => {
           userName: new UserUserNameValueObject('johndoe'),
           role: new UserRoleValueObject(UserRoleEnum.USER),
           status: new UserStatusValueObject(UserStatusEnum.ACTIVE),
+          createdAt: new DateValueObject(new Date()),
+          updatedAt: new DateValueObject(new Date()),
         },
         false,
       );
@@ -116,6 +119,8 @@ describe('UserDeleteCommandHandler', () => {
           userName: new UserUserNameValueObject('johndoe'),
           role: new UserRoleValueObject(UserRoleEnum.USER),
           status: new UserStatusValueObject(UserStatusEnum.ACTIVE),
+          createdAt: new DateValueObject(new Date()),
+          updatedAt: new DateValueObject(new Date()),
         },
         false,
       );
@@ -133,6 +138,8 @@ describe('UserDeleteCommandHandler', () => {
           userName: new UserUserNameValueObject('johndoe'),
           role: new UserRoleValueObject(UserRoleEnum.USER),
           status: new UserStatusValueObject(UserStatusEnum.ACTIVE),
+          createdAt: new DateValueObject(new Date()),
+          updatedAt: new DateValueObject(new Date()),
         },
         false,
       );
@@ -165,6 +172,8 @@ describe('UserDeleteCommandHandler', () => {
           userName: new UserUserNameValueObject('johndoe'),
           role: new UserRoleValueObject(UserRoleEnum.USER),
           status: new UserStatusValueObject(UserStatusEnum.ACTIVE),
+          createdAt: new DateValueObject(new Date()),
+          updatedAt: new DateValueObject(new Date()),
         },
         false,
       );
@@ -195,6 +204,8 @@ describe('UserDeleteCommandHandler', () => {
           userName: new UserUserNameValueObject('johndoe'),
           role: new UserRoleValueObject(UserRoleEnum.USER),
           status: new UserStatusValueObject(UserStatusEnum.ACTIVE),
+          createdAt: new DateValueObject(new Date()),
+          updatedAt: new DateValueObject(new Date()),
         },
         false,
       );
@@ -225,6 +236,8 @@ describe('UserDeleteCommandHandler', () => {
           userName: new UserUserNameValueObject('johndoe'),
           role: new UserRoleValueObject(UserRoleEnum.USER),
           status: new UserStatusValueObject(UserStatusEnum.ACTIVE),
+          createdAt: new DateValueObject(new Date()),
+          updatedAt: new DateValueObject(new Date()),
         },
         false,
       );
@@ -254,6 +267,8 @@ describe('UserDeleteCommandHandler', () => {
           userName: new UserUserNameValueObject('johndoe'),
           role: new UserRoleValueObject(UserRoleEnum.USER),
           status: new UserStatusValueObject(UserStatusEnum.ACTIVE),
+          createdAt: new DateValueObject(new Date()),
+          updatedAt: new DateValueObject(new Date()),
         },
         false,
       );

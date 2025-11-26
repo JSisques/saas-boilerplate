@@ -1,6 +1,8 @@
+import { BaseAggregate } from '@/shared/domain/aggregates/base-aggregate/base.aggregate';
 import { UserCreatedEvent } from '@/shared/domain/events/users/user-created/user-created.event';
 import { UserDeletedEvent } from '@/shared/domain/events/users/user-deleted/user-deleted.event';
 import { UserUpdatedEvent } from '@/shared/domain/events/users/user-updated/user-updated.event';
+import { DateValueObject } from '@/shared/domain/value-objects/date/date.vo';
 import { UserUuidValueObject } from '@/shared/domain/value-objects/identifiers/user-uuid/user-uuid.vo';
 import { IUserCreateDto } from '@/user-context/users/domain/dtos/entities/user-create/user-create.dto';
 import { IUserUpdateDto } from '@/user-context/users/domain/dtos/entities/user-update/user-update.dto';
@@ -12,9 +14,8 @@ import { UserNameValueObject } from '@/user-context/users/domain/value-objects/u
 import { UserRoleValueObject } from '@/user-context/users/domain/value-objects/user-role/user-role.vo';
 import { UserStatusValueObject } from '@/user-context/users/domain/value-objects/user-status/user-status.vo';
 import { UserUserNameValueObject } from '@/user-context/users/domain/value-objects/user-user-name/user-user-name.vo';
-import { AggregateRoot } from '@nestjs/cqrs';
 
-export class UserAggregate extends AggregateRoot {
+export class UserAggregate extends BaseAggregate {
   private readonly _id: UserUuidValueObject;
   private _avatarUrl: UserAvatarUrlValueObject | null;
   private _bio: UserBioValueObject | null;
@@ -25,7 +26,7 @@ export class UserAggregate extends AggregateRoot {
   private _userName: UserUserNameValueObject | null;
 
   constructor(props: IUserCreateDto, generateEvent: boolean = true) {
-    super();
+    super(props.createdAt, props.updatedAt);
 
     // 01: Set the properties
     this._id = props.id;
@@ -73,6 +74,8 @@ export class UserAggregate extends AggregateRoot {
     this._status = props.status !== undefined ? props.status : this._status;
     this._userName =
       props.userName !== undefined ? props.userName : this._userName;
+
+    this._updatedAt = new DateValueObject(new Date());
 
     if (generateEvent) {
       this.apply(
@@ -194,6 +197,8 @@ export class UserAggregate extends AggregateRoot {
       role: this._role.value,
       status: this._status.value,
       userName: this._userName ? this._userName.value : null,
+      createdAt: this._createdAt.value,
+      updatedAt: this._updatedAt.value,
     };
   }
 }

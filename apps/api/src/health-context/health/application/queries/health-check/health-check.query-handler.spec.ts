@@ -19,7 +19,11 @@ describe('HealthCheckQueryHandler', () => {
   });
 
   it('should delegate execution to health check service', async () => {
-    const expectedResult = new HealthViewModel({ status: 'OK' });
+    const expectedResult = new HealthViewModel({
+      status: 'OK',
+      writeDatabaseStatus: 'OK',
+      readDatabaseStatus: 'OK',
+    });
     mockHealthCheckService.execute.mockResolvedValue(expectedResult);
 
     const result = await handler.execute();

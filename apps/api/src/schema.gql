@@ -40,6 +40,12 @@ type AuthResponseDto {
 
   """The two factor enabled of the auth"""
   twoFactorEnabled: Boolean
+
+  """The created at of the auth"""
+  createdAt: DateTime
+
+  """The updated at of the auth"""
+  updatedAt: DateTime
 }
 
 """
@@ -96,7 +102,7 @@ type SubscriptionPlanResponseDto {
   intervalCount: Float!
 
   """The trial period days of the subscription plan"""
-  trialPeriodDays: Float!
+  trialPeriodDays: Float
 
   """The is active of the subscription plan"""
   isActive: Boolean!
@@ -109,6 +115,12 @@ type SubscriptionPlanResponseDto {
 
   """The stripe price id of the subscription plan"""
   stripePriceId: String
+
+  """The created at of the subscription plan"""
+  createdAt: DateTime!
+
+  """The updated at of the subscription plan"""
+  updatedAt: DateTime!
 }
 
 type PaginatedSubscriptionPlanResultDto {
@@ -209,6 +221,12 @@ type EventResponseDto {
 
   """The timestamp of the event"""
   timestamp: DateTime
+
+  """The created at of the event"""
+  createdAt: DateTime
+
+  """The updated at of the event"""
+  updatedAt: DateTime
 }
 
 type PaginatedEventResultDto {
@@ -231,6 +249,12 @@ type PaginatedEventResultDto {
 type HealthResponseDto {
   """The status of the check"""
   status: String!
+
+  """The status of the write database check"""
+  writeDatabaseStatus: String!
+
+  """The status of the read database check"""
+  readDatabaseStatus: String!
 }
 
 type PromptResponseDto {
@@ -290,6 +314,7 @@ type PaginatedPromptResultDto {
   items: [PromptResponseDto!]!
 }
 
+<<<<<<< HEAD
 type MutationResponseArrayDto {
   success: Boolean!
   message: String
@@ -340,6 +365,50 @@ type StorageResponseDto {
 }
 
 type PaginatedStorageResultDto {
+=======
+type TenantDatabaseResponseDto {
+  """The id of the tenant database"""
+  id: String!
+
+  """The tenant id of the tenant database"""
+  tenantId: String
+
+  """The database name of the tenant database"""
+  databaseName: String
+
+  """The database URL of the tenant database"""
+  readDatabaseName: String
+
+  """The status of the tenant database"""
+  status: TenantDatabaseStatusEnum
+
+  """The schema version of the tenant database"""
+  schemaVersion: String
+
+  """The last migration at of the tenant database"""
+  lastMigrationAt: DateTime
+
+  """The error message of the tenant database"""
+  errorMessage: String
+
+  """The created at of the tenant database"""
+  createdAt: DateTime
+
+  """The updated at of the tenant database"""
+  updatedAt: DateTime
+}
+
+"""The status of the tenant database"""
+enum TenantDatabaseStatusEnum {
+  PROVISIONING
+  ACTIVE
+  MIGRATING
+  FAILED
+  SUSPENDED
+}
+
+type PaginatedTenantDatabaseResultDto {
+>>>>>>> main
   """The total number of items"""
   total: Int!
 
@@ -352,8 +421,13 @@ type PaginatedStorageResultDto {
   """The total number of pages"""
   totalPages: Int!
 
+<<<<<<< HEAD
   """The storage items"""
   items: [StorageResponseDto!]!
+=======
+  """The tenant databases in the current page"""
+  items: [TenantDatabaseResponseDto!]!
+>>>>>>> main
 }
 
 type TenantMemberResponseDto {
@@ -368,6 +442,12 @@ type TenantMemberResponseDto {
 
   """The role of the tenant member"""
   role: String
+
+  """The created at of the tenant member"""
+  createdAt: DateTime
+
+  """The updated at of the tenant member"""
+  updatedAt: DateTime
 }
 
 type PaginatedTenantMemberResultDto {
@@ -508,6 +588,12 @@ type UserResponseDto {
 
   """The name of the user"""
   name: String
+
+  """The created at of the user"""
+  createdAt: DateTime
+
+  """The updated at of the user"""
+  updatedAt: DateTime
 }
 
 type PaginatedUserResultDto {
@@ -534,10 +620,13 @@ type Query {
   findAuthsByCriteria(input: AuthFindByCriteriaRequestDto): PaginatedAuthResultDto!
   tenantFindByCriteria(input: TenantFindByCriteriaRequestDto): PaginatedTenantResultDto!
   tenantMemberFindByCriteria(input: TenantMemberFindByCriteriaRequestDto): PaginatedTenantMemberResultDto!
+  tenantDatabaseFindByCriteria(input: TenantDatabaseFindByCriteriaRequestDto): PaginatedTenantDatabaseResultDto!
+  tenantDatabaseFindById(input: TenantDatabaseFindByIdRequestDto!): TenantDatabaseResponseDto!
   usersFindByCriteria(input: UserFindByCriteriaRequestDto): PaginatedUserResultDto!
   userFindById(input: UserFindByIdRequestDto!): UserResponseDto!
   healthCheck: HealthResponseDto!
   subscriptionPlanFindByCriteria(input: SubscriptionPlanFindByCriteriaRequestDto): PaginatedSubscriptionPlanResultDto!
+  subscriptionPlanFindById(input: SubscriptionPlanFindByIdRequestDto!): SubscriptionPlanResponseDto!
   subscriptionFindByCriteria(input: SubscriptionFindByCriteriaRequestDto): PaginatedSubscriptionResultDto!
   subscriptionFindById(input: SubscriptionFindByIdRequestDto!): SubscriptionResponseDto!
   subscriptionFindByTenantId(input: SubscriptionFindByTenantIdRequestDto!): SubscriptionResponseDto!
@@ -636,6 +725,22 @@ input TenantMemberFindByCriteriaRequestDto {
   pagination: BasePaginationInput = {page: 1, perPage: 10}
 }
 
+input TenantDatabaseFindByCriteriaRequestDto {
+  """The filters to find by"""
+  filters: [BaseFilterInput!] = []
+
+  """The sorts to find by"""
+  sorts: [BaseSortInput!] = []
+
+  """The pagination to find by"""
+  pagination: BasePaginationInput = {page: 1, perPage: 10}
+}
+
+input TenantDatabaseFindByIdRequestDto {
+  """The id of the tenant database"""
+  id: String!
+}
+
 input UserFindByCriteriaRequestDto {
   """The filters to find by"""
   filters: [BaseFilterInput!] = []
@@ -661,6 +766,11 @@ input SubscriptionPlanFindByCriteriaRequestDto {
 
   """The pagination to find by"""
   pagination: BasePaginationInput = {page: 1, perPage: 10}
+}
+
+input SubscriptionPlanFindByIdRequestDto {
+  """The ID of the subscription plan to find"""
+  id: String!
 }
 
 input SubscriptionFindByCriteriaRequestDto {
@@ -717,7 +827,7 @@ input StorageFindByCriteriaRequestDto {
 }
 
 type Mutation {
-  eventsReplay(input: EventReplayRequestDto!): MutationResponseDto!
+  eventReplay(input: EventReplayRequestDto!): MutationResponseDto!
   loginByEmail(input: AuthLoginByEmailRequestDto!): LoginResponseDto!
   registerByEmail(input: AuthRegisterByEmailRequestDto!): MutationResponseDto!
   logout(input: UpdateUserRequestDto!): MutationResponseDto!
@@ -727,6 +837,9 @@ type Mutation {
   tenantMemberAdd(input: TenantMemberAddRequestDto!): MutationResponseDto!
   tenantMemberUpdate(input: TenantMemberUpdateRequestDto!): MutationResponseDto!
   tenantMemberRemove(input: TenantMemberRemoveRequestDto!): MutationResponseDto!
+  tenantDatabaseCreate(input: TenantDatabaseCreateRequestDto!): MutationResponseDto!
+  tenantDatabaseUpdate(input: TenantDatabaseUpdateRequestDto!): MutationResponseDto!
+  tenantDatabaseDelete(input: TenantDatabaseDeleteRequestDto!): MutationResponseDto!
   createUser(input: CreateUserRequestDto!): MutationResponseDto!
   updateUser(input: UpdateUserRequestDto!): MutationResponseDto!
   deleteUser(input: DeleteUserRequestDto!): MutationResponseDto!
@@ -996,6 +1109,45 @@ input TenantMemberUpdateRequestDto {
 
 input TenantMemberRemoveRequestDto {
   """The unique identifier of the tenant member"""
+  id: String!
+}
+
+input TenantDatabaseCreateRequestDto {
+  """The id of the tenant."""
+  tenantId: String!
+
+  """The name of the database."""
+  databaseName: String!
+
+  """The URL of the database."""
+  databaseUrl: String
+}
+
+input TenantDatabaseUpdateRequestDto {
+  """The unique identifier of the tenant database"""
+  id: String!
+
+  """The name of the database"""
+  databaseName: String
+
+  """The URL of the database"""
+  databaseUrl: String
+
+  """The status of the database"""
+  status: TenantDatabaseStatusEnum
+
+  """The schema version of the database"""
+  schemaVersion: String
+
+  """The last migration at of the database"""
+  lastMigrationAt: DateTime
+
+  """The error message of the database"""
+  errorMessage: String
+}
+
+input TenantDatabaseDeleteRequestDto {
+  """The unique identifier of the tenant database"""
   id: String!
 }
 

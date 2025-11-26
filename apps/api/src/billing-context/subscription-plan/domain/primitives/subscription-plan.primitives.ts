@@ -1,4 +1,6 @@
-export type SubscriptionPlanPrimitives = {
+import { BasePrimitives } from '@/shared/domain/primitives/base-primitives/base.primitives';
+
+export type SubscriptionPlanPrimitives = BasePrimitives & {
   id: string;
   name: string;
   slug: string;

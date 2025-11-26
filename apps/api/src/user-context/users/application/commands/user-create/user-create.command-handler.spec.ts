@@ -1,19 +1,20 @@
-import { EventBus } from '@nestjs/cqrs';
-import { UserCreateCommandHandler } from './user-create.command-handler';
-import { UserCreateCommand } from './user-create.command';
+import { UserCreatedEvent } from '@/shared/domain/events/users/user-created/user-created.event';
+import { DateValueObject } from '@/shared/domain/value-objects/date/date.vo';
+import { UserUuidValueObject } from '@/shared/domain/value-objects/identifiers/user-uuid/user-uuid.vo';
 import { IUserCreateCommandDto } from '@/user-context/users/application/dtos/commands/user-create/user-create-command.dto';
-import { UserWriteRepository } from '@/user-context/users/domain/repositories/user-write.repository';
-import { UserAggregateFactory } from '@/user-context/users/domain/factories/user-aggregate/user-aggregate.factory';
+import { UserUsernameIsNotUniqueException } from '@/user-context/users/application/exceptions/user-username-is-not-unique/user-username-is-not-unique.exception';
 import { AssertUserUsernameIsUniqueService } from '@/user-context/users/application/services/assert-user-username-is-unique/assert-user-username-is-unique.service';
 import { UserAggregate } from '@/user-context/users/domain/aggregates/user.aggregate';
-import { UserUuidValueObject } from '@/shared/domain/value-objects/identifiers/user-uuid/user-uuid.vo';
-import { UserUserNameValueObject } from '@/user-context/users/domain/value-objects/user-user-name/user-user-name.vo';
-import { UserRoleValueObject } from '@/user-context/users/domain/value-objects/user-role/user-role.vo';
-import { UserStatusValueObject } from '@/user-context/users/domain/value-objects/user-status/user-status.vo';
 import { UserRoleEnum } from '@/user-context/users/domain/enums/user-role/user-role.enum';
 import { UserStatusEnum } from '@/user-context/users/domain/enums/user-status/user-status.enum';
-import { UserUsernameIsNotUniqueException } from '@/user-context/users/application/exceptions/user-username-is-not-unique/user-username-is-not-unique.exception';
-import { UserCreatedEvent } from '@/shared/domain/events/users/user-created/user-created.event';
+import { UserAggregateFactory } from '@/user-context/users/domain/factories/user-aggregate/user-aggregate.factory';
+import { UserWriteRepository } from '@/user-context/users/domain/repositories/user-write.repository';
+import { UserRoleValueObject } from '@/user-context/users/domain/value-objects/user-role/user-role.vo';
+import { UserStatusValueObject } from '@/user-context/users/domain/value-objects/user-status/user-status.vo';
+import { UserUserNameValueObject } from '@/user-context/users/domain/value-objects/user-user-name/user-user-name.vo';
+import { EventBus } from '@nestjs/cqrs';
+import { UserCreateCommand } from './user-create.command';
+import { UserCreateCommandHandler } from './user-create.command-handler';
 
 describe('UserCreateCommandHandler', () => {
   let handler: UserCreateCommandHandler;
@@ -73,6 +74,8 @@ describe('UserCreateCommandHandler', () => {
           userName: new UserUserNameValueObject('johndoe'),
           role: new UserRoleValueObject(UserRoleEnum.USER),
           status: new UserStatusValueObject(UserStatusEnum.ACTIVE),
+          createdAt: new DateValueObject(new Date()),
+          updatedAt: new DateValueObject(new Date()),
         },
         true,
       );
@@ -93,16 +96,24 @@ describe('UserCreateCommandHandler', () => {
       expect(
         mockAssertUserUsernameIsUniqueService.execute,
       ).toHaveBeenCalledTimes(1);
-      expect(mockUserAggregateFactory.create).toHaveBeenCalledWith({
-        id: command.id,
-        userName: command.userName,
-        name: command.name,
-        lastName: command.lastName,
-        bio: command.bio,
-        avatarUrl: command.avatarUrl,
-        role: command.role,
-        status: command.status,
-      });
+      expect(mockUserAggregateFactory.create).toHaveBeenCalledWith(
+        expect.objectContaining({
+          id: command.id,
+          userName: command.userName,
+          name: command.name,
+          lastName: command.lastName,
+          bio: command.bio,
+          avatarUrl: command.avatarUrl,
+          role: command.role,
+          status: command.status,
+        }),
+      );
+      const createCall = mockUserAggregateFactory.create.mock.calls[0][0];
+      expect(createCall.createdAt).toBeInstanceOf(DateValueObject);
+      expect(createCall.updatedAt).toBeInstanceOf(DateValueObject);
+      expect(createCall.createdAt.value.getTime()).toBe(
+        createCall.updatedAt.value.getTime(),
+      );
       expect(mockUserWriteRepository.save).toHaveBeenCalledWith(mockUser);
       expect(mockUserWriteRepository.save).toHaveBeenCalledTimes(1);
       expect(mockEventBus.publishAll).toHaveBeenCalledWith(
@@ -127,6 +138,8 @@ describe('UserCreateCommandHandler', () => {
           userName: null,
           role: new UserRoleValueObject(UserRoleEnum.USER),
           status: new UserStatusValueObject(UserStatusEnum.ACTIVE),
+          createdAt: new DateValueObject(new Date()),
+          updatedAt: new DateValueObject(new Date()),
         },
         true,
       );
@@ -185,6 +198,8 @@ describe('UserCreateCommandHandler', () => {
           userName: new UserUserNameValueObject('johndoe'),
           role: new UserRoleValueObject(UserRoleEnum.USER),
           status: new UserStatusValueObject(UserStatusEnum.ACTIVE),
+          createdAt: new DateValueObject(new Date()),
+          updatedAt: new DateValueObject(new Date()),
         },
         true,
       );
@@ -220,6 +235,8 @@ describe('UserCreateCommandHandler', () => {
           userName: new UserUserNameValueObject('johndoe'),
           role: new UserRoleValueObject(UserRoleEnum.USER),
           status: new UserStatusValueObject(UserStatusEnum.ACTIVE),
+          createdAt: new DateValueObject(new Date()),
+          updatedAt: new DateValueObject(new Date()),
         },
         true,
       );
@@ -256,6 +273,8 @@ describe('UserCreateCommandHandler', () => {
           userName: new UserUserNameValueObject('johndoe'),
           role: new UserRoleValueObject(UserRoleEnum.USER),
           status: new UserStatusValueObject(UserStatusEnum.ACTIVE),
+          createdAt: new DateValueObject(new Date()),
+          updatedAt: new DateValueObject(new Date()),
         },
         true,
       );

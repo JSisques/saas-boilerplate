@@ -1,4 +1,6 @@
-export type UserPrimitives = {
+import { BasePrimitives } from '@/shared/domain/primitives/base-primitives/base.primitives';
+
+export type UserPrimitives = BasePrimitives & {
   id: string;
   avatarUrl: string | null;
   bio: string | null;
@@ -7,4 +9,6 @@ export type UserPrimitives = {
   role: string;
   status: string;
   userName: string;
+  createdAt: Date;
+  updatedAt: Date;
 };

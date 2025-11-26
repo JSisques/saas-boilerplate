@@ -1,6 +1,7 @@
+import { BasePrismaDto } from '@/shared/infrastructure/database/prisma/dtos/base-prisma.dto';
 import { RenewalMethodEnum, SubscriptionStatusEnum } from '@prisma/client';
 
-export type SubscriptionPrismaDto = {
+export type SubscriptionPrismaDto = BasePrismaDto & {
   id: string;
   tenantId: string;
   planId: string;

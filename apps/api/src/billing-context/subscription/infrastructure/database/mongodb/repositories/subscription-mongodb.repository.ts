@@ -3,22 +3,22 @@ import { SubscriptionViewModel } from '@/billing-context/subscription/domain/vie
 import { SubscriptionMongoDBMapper } from '@/billing-context/subscription/infrastructure/database/mongodb/mappers/subscription-mongodb.mapper';
 import { Criteria } from '@/shared/domain/entities/criteria';
 import { PaginatedResult } from '@/shared/domain/entities/paginated-result.entity';
-import { BaseMongoRepository } from '@/shared/infrastructure/database/mongodb/base-mongo.repository';
-import { MongoService } from '@/shared/infrastructure/database/mongodb/mongo.service';
+import { BaseMongoMasterRepository } from '@/shared/infrastructure/database/mongodb/base-mongo/base-mongo-master/base-mongo-master.repository';
+import { MongoMasterService } from '@/shared/infrastructure/database/mongodb/services/mongo-master/mongo-master.service';
 import { Injectable, Logger } from '@nestjs/common';
 
 @Injectable()
 export class SubscriptionMongoRepository
-  extends BaseMongoRepository
+  extends BaseMongoMasterRepository
   implements SubscriptionReadRepository
 {
   private readonly collectionName = 'subscriptions';
 
   constructor(
-    mongoService: MongoService,
+    mongoMasterService: MongoMasterService,
     private readonly subscriptionMongoDBMapper: SubscriptionMongoDBMapper,
   ) {
-    super(mongoService);
+    super(mongoMasterService);
     this.logger = new Logger(SubscriptionMongoRepository.name);
   }
 
@@ -31,7 +31,9 @@ export class SubscriptionMongoRepository
   async findById(id: string): Promise<SubscriptionViewModel | null> {
     this.logger.log(`Finding subscription by id: ${id}`);
 
-    const collection = this.mongoService.getCollection(this.collectionName);
+    const collection = this.mongoMasterService.getCollection(
+      this.collectionName,
+    );
     const subscriptionViewModel = await collection.findOne({ id });
 
     return subscriptionViewModel
@@ -63,7 +65,9 @@ export class SubscriptionMongoRepository
   ): Promise<SubscriptionViewModel | null> {
     this.logger.log(`Finding subscriptions by tenant id: ${tenantId}`);
 
-    const collection = this.mongoService.getCollection(this.collectionName);
+    const collection = this.mongoMasterService.getCollection(
+      this.collectionName,
+    );
     const subscription = await collection.findOne({ tenantId });
 
     return subscription
@@ -98,7 +102,9 @@ export class SubscriptionMongoRepository
       `Finding subscriptions by criteria: ${JSON.stringify(criteria)}`,
     );
 
-    const collection = this.mongoService.getCollection(this.collectionName);
+    const collection = this.mongoMasterService.getCollection(
+      this.collectionName,
+    );
 
     // 01: Build MongoDB query from criteria
     const mongoQuery = this.buildMongoQuery(criteria);
@@ -156,7 +162,9 @@ export class SubscriptionMongoRepository
       `Saving subscription view model with id: ${subscriptionViewModel.id}`,
     );
 
-    const collection = this.mongoService.getCollection(this.collectionName);
+    const collection = this.mongoMasterService.getCollection(
+      this.collectionName,
+    );
     const mongoData = this.subscriptionMongoDBMapper.toMongoData(
       subscriptionViewModel,
     );
@@ -176,7 +184,9 @@ export class SubscriptionMongoRepository
   async delete(id: string): Promise<boolean> {
     this.logger.log(`Deleting subscription view model by id: ${id}`);
 
-    const collection = this.mongoService.getCollection(this.collectionName);
+    const collection = this.mongoMasterService.getCollection(
+      this.collectionName,
+    );
 
     // 01: Delete the subscription view model from the collection
     await collection.deleteOne({ id });

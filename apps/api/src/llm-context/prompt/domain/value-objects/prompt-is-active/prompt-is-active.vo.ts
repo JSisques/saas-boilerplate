@@ -1,4 +1,4 @@
-import { BooleanValueObject } from '@/shared/domain/value-objects/boolean.vo';
+import { BooleanValueObject } from '@/shared/domain/value-objects/boolean/boolean.vo';
 
 /**
  * PromptIsActiveValueObject represents whether a prompt version is active in the domain.

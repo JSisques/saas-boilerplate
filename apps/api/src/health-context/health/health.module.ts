@@ -1,5 +1,7 @@
 import { HealthCheckQueryHandler } from '@/health-context/health/application/queries/health-check/health-check.query-handler';
 import { HealthCheckService } from '@/health-context/health/application/services/health-check/health-check.service';
+import { HealthReadDatabaseCheckService } from '@/health-context/health/application/services/health-read-database-check/health-read-database-check.service';
+import { HealthWriteDatabaseCheckService } from '@/health-context/health/application/services/health-write-database-check/health-write-database-check.service';
 import { HealthViewModelFactory } from '@/health-context/health/domain/factories/health-view-model.factory';
 import { HealthGraphQLMapper } from '@/health-context/health/transport/graphql/mappers/health.mapper';
 import { HealthQueryResolver } from '@/health-context/health/transport/graphql/resolvers/health-queries.resolver';
@@ -10,7 +12,11 @@ import { Module } from '@nestjs/common';
 
 const RESOLVERS = [HealthQueryResolver];
 
-const SERVICES = [HealthCheckService];
+const SERVICES = [
+  HealthCheckService,
+  HealthWriteDatabaseCheckService,
+  HealthReadDatabaseCheckService,
+];
 
 const QUERY_HANDLERS = [HealthCheckQueryHandler];
 

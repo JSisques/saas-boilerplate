@@ -1,4 +1,4 @@
-import { BasePaginatedResultDto } from '@/shared/transport/graphql/dtos/responses';
+import { BasePaginatedResultDto } from '@/shared/transport/graphql/dtos/responses/base-paginated-result/base-paginated-result.dto';
 import { Field, ObjectType } from '@nestjs/graphql';
 
 @ObjectType('EventResponseDto')
@@ -29,6 +29,18 @@ export class EventResponseDto {
     description: 'The timestamp of the event',
   })
   timestamp?: Date;
+
+  @Field(() => Date, {
+    nullable: true,
+    description: 'The created at of the event',
+  })
+  createdAt?: Date;
+
+  @Field(() => Date, {
+    nullable: true,
+    description: 'The updated at of the event',
+  })
+  updatedAt?: Date;
 }
 
 @ObjectType('PaginatedEventResultDto')

@@ -1,20 +1,21 @@
 import { SubscriptionPlanAggregate } from '@/billing-context/subscription-plan/domain/aggregates/subscription-plan.aggregate';
 import { SubscriptionPlanWriteRepository } from '@/billing-context/subscription-plan/domain/repositories/subscription-plan-write/subscription-plan-write.repository';
 import { SubscriptionPlanPrismaMapper } from '@/billing-context/subscription-plan/infrastructure/database/prisma/mappers/subscription-plan-prisma.mapper';
-import { BasePrismaRepository } from '@/shared/infrastructure/database/prisma/base-prisma.repository';
-import { PrismaService } from '@/shared/infrastructure/database/prisma/prisma.service';
+import { BasePrismaMasterRepository } from '@/shared/infrastructure/database/prisma/base-prisma/base-prisma-master/base-prisma-master.repository';
+import { PrismaMasterService } from '@/shared/infrastructure/database/prisma/services/prisma-master/prisma-master.service';
 import { Injectable, Logger } from '@nestjs/common';
+import { SubscriptionPlanTypeEnum } from '@prisma/client';
 
 @Injectable()
 export class SubscriptionPlanPrismaRepository
-  extends BasePrismaRepository
+  extends BasePrismaMasterRepository
   implements SubscriptionPlanWriteRepository
 {
   constructor(
-    prisma: PrismaService,
+    prismaMasterService: PrismaMasterService,
     private readonly subscriptionPlanPrismaMapper: SubscriptionPlanPrismaMapper,
   ) {
-    super(prisma);
+    super(prismaMasterService);
     this.logger = new Logger(SubscriptionPlanPrismaRepository.name);
   }
 
@@ -26,7 +27,7 @@ export class SubscriptionPlanPrismaRepository
    */
   async findById(id: string): Promise<SubscriptionPlanAggregate | null> {
     const subscriptionPlanData =
-      await this.prismaService.subscriptionPlan.findUnique({
+      await this.prismaMasterService.subscriptionPlan.findUnique({
         where: { id },
       });
 
@@ -50,6 +51,8 @@ export class SubscriptionPlanPrismaRepository
       features: subscriptionPlanData.features as Record<string, any>,
       limits: subscriptionPlanData.limits as Record<string, any>,
       stripePriceId: subscriptionPlanData.stripePriceId,
+      createdAt: subscriptionPlanData.createdAt,
+      updatedAt: subscriptionPlanData.updatedAt,
     });
   }
 
@@ -61,7 +64,7 @@ export class SubscriptionPlanPrismaRepository
    */
   async findBySlug(slug: string): Promise<SubscriptionPlanAggregate | null> {
     const subscriptionPlanData =
-      await this.prismaService.subscriptionPlan.findUnique({
+      await this.prismaMasterService.subscriptionPlan.findFirst({
         where: { slug },
       });
 
@@ -85,6 +88,47 @@ export class SubscriptionPlanPrismaRepository
       features: subscriptionPlanData.features as Record<string, any>,
       limits: subscriptionPlanData.limits as Record<string, any>,
       stripePriceId: subscriptionPlanData.stripePriceId,
+      createdAt: subscriptionPlanData.createdAt,
+      updatedAt: subscriptionPlanData.updatedAt,
+    });
+  }
+
+  /**
+   * Finds a subscription plan by their type
+   *
+   * @param type - The type of the subscription plan to find
+   * @returns The subscription plan if found, null otherwise
+   */
+  async findByType(
+    type: SubscriptionPlanTypeEnum,
+  ): Promise<SubscriptionPlanAggregate | null> {
+    const subscriptionPlanData =
+      await this.prismaMasterService.subscriptionPlan.findFirst({
+        where: { type },
+      });
+
+    if (!subscriptionPlanData) {
+      return null;
+    }
+
+    return this.subscriptionPlanPrismaMapper.toDomainEntity({
+      id: subscriptionPlanData.id,
+      name: subscriptionPlanData.name,
+      slug: subscriptionPlanData.slug,
+      type: subscriptionPlanData.type,
+      description: subscriptionPlanData.description,
+      priceMonthly: subscriptionPlanData.priceMonthly.toNumber(),
+      priceYearly: subscriptionPlanData.priceYearly.toNumber(),
+      currency: subscriptionPlanData.currency,
+      interval: subscriptionPlanData.interval,
+      intervalCount: subscriptionPlanData.intervalCount,
+      trialPeriodDays: subscriptionPlanData.trialPeriodDays,
+      isActive: subscriptionPlanData.isActive,
+      features: subscriptionPlanData.features as Record<string, any>,
+      limits: subscriptionPlanData.limits as Record<string, any>,
+      stripePriceId: subscriptionPlanData.stripePriceId,
+      createdAt: subscriptionPlanData.createdAt,
+      updatedAt: subscriptionPlanData.updatedAt,
     });
   }
 
@@ -100,7 +144,7 @@ export class SubscriptionPlanPrismaRepository
     const subscriptionPlanData =
       this.subscriptionPlanPrismaMapper.toPrismaData(subscriptionPlan);
 
-    const result = await this.prismaService.subscriptionPlan.upsert({
+    const result = await this.prismaMasterService.subscriptionPlan.upsert({
       where: { id: subscriptionPlan.id.value },
       update: subscriptionPlanData,
       create: subscriptionPlanData,
@@ -122,6 +166,8 @@ export class SubscriptionPlanPrismaRepository
       features: result.features as Record<string, any>,
       limits: result.limits as Record<string, any>,
       stripePriceId: result.stripePriceId,
+      createdAt: result.createdAt,
+      updatedAt: result.updatedAt,
     });
   }
 
@@ -134,7 +180,7 @@ export class SubscriptionPlanPrismaRepository
   async delete(id: string): Promise<boolean> {
     this.logger.log(`Deleting subscription plan by id: ${id}`);
 
-    await this.prismaService.subscriptionPlan.delete({
+    await this.prismaMasterService.subscriptionPlan.delete({
       where: { id },
     });
 

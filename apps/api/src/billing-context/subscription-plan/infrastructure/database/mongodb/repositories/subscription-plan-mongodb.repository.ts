@@ -3,22 +3,22 @@ import { SubscriptionPlanViewModel } from '@/billing-context/subscription-plan/d
 import { SubscriptionPlanMongoDBMapper } from '@/billing-context/subscription-plan/infrastructure/database/mongodb/mappers/subscription-plan-mongodb.mapper';
 import { Criteria } from '@/shared/domain/entities/criteria';
 import { PaginatedResult } from '@/shared/domain/entities/paginated-result.entity';
-import { BaseMongoRepository } from '@/shared/infrastructure/database/mongodb/base-mongo.repository';
-import { MongoService } from '@/shared/infrastructure/database/mongodb/mongo.service';
+import { BaseMongoMasterRepository } from '@/shared/infrastructure/database/mongodb/base-mongo/base-mongo-master/base-mongo-master.repository';
+import { MongoMasterService } from '@/shared/infrastructure/database/mongodb/services/mongo-master/mongo-master.service';
 import { Injectable, Logger } from '@nestjs/common';
 
 @Injectable()
 export class SubscriptionPlanMongoRepository
-  extends BaseMongoRepository
+  extends BaseMongoMasterRepository
   implements SubscriptionPlanReadRepository
 {
   private readonly collectionName = 'subscription-plans';
 
   constructor(
-    mongoService: MongoService,
+    mongoMasterService: MongoMasterService,
     private readonly subscriptionPlanMongoDBMapper: SubscriptionPlanMongoDBMapper,
   ) {
-    super(mongoService);
+    super(mongoMasterService);
     this.logger = new Logger(SubscriptionPlanMongoRepository.name);
   }
 
@@ -31,7 +31,9 @@ export class SubscriptionPlanMongoRepository
   async findById(id: string): Promise<SubscriptionPlanViewModel | null> {
     this.logger.log(`Finding subscription plan by id: ${id}`);
 
-    const collection = this.mongoService.getCollection(this.collectionName);
+    const collection = this.mongoMasterService.getCollection(
+      this.collectionName,
+    );
     const subscriptionPlanViewModel = await collection.findOne({ id });
 
     return subscriptionPlanViewModel
@@ -68,7 +70,9 @@ export class SubscriptionPlanMongoRepository
   ): Promise<SubscriptionPlanViewModel[] | null> {
     this.logger.log(`Finding subscription plans by tenant id: ${tenantId}`);
 
-    const collection = this.mongoService.getCollection(this.collectionName);
+    const collection = this.mongoMasterService.getCollection(
+      this.collectionName,
+    );
     const subscriptionPlans = await collection.find({ tenantId }).toArray();
 
     return subscriptionPlans.map((doc) =>
@@ -104,7 +108,9 @@ export class SubscriptionPlanMongoRepository
   ): Promise<SubscriptionPlanViewModel[] | null> {
     this.logger.log(`Finding subscription plans by user id: ${userId}`);
 
-    const collection = this.mongoService.getCollection(this.collectionName);
+    const collection = this.mongoMasterService.getCollection(
+      this.collectionName,
+    );
     const subscriptionPlans = await collection.find({ userId }).toArray();
 
     return subscriptionPlans.map((doc) =>
@@ -144,7 +150,9 @@ export class SubscriptionPlanMongoRepository
       `Finding subscription plans by criteria: ${JSON.stringify(criteria)}`,
     );
 
-    const collection = this.mongoService.getCollection(this.collectionName);
+    const collection = this.mongoMasterService.getCollection(
+      this.collectionName,
+    );
 
     // 01: Build MongoDB query from criteria
     const mongoQuery = this.buildMongoQuery(criteria);
@@ -209,7 +217,9 @@ export class SubscriptionPlanMongoRepository
       `Saving subscription plan view model with id: ${subscriptionPlanViewModel.id}`,
     );
 
-    const collection = this.mongoService.getCollection(this.collectionName);
+    const collection = this.mongoMasterService.getCollection(
+      this.collectionName,
+    );
     const mongoData = this.subscriptionPlanMongoDBMapper.toMongoData(
       subscriptionPlanViewModel,
     );
@@ -233,7 +243,9 @@ export class SubscriptionPlanMongoRepository
   async delete(id: string): Promise<boolean> {
     this.logger.log(`Deleting subscription plan view model by id: ${id}`);
 
-    const collection = this.mongoService.getCollection(this.collectionName);
+    const collection = this.mongoMasterService.getCollection(
+      this.collectionName,
+    );
 
     // 01: Delete the subscription plan view model from the collection
     await collection.deleteOne({ id });

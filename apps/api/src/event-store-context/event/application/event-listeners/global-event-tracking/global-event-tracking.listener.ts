@@ -27,6 +27,8 @@ export class GlobalEventTrackingListener
    * Subscribes to the event bus and tracks events.
    */
   onModuleInit(): void {
+    this.logger.log('Subscribing to the event bus');
+
     this.subscription = this.eventBus.subscribe((event) => {
       if (!(event instanceof BaseEvent)) {
         return;
@@ -48,6 +50,7 @@ export class GlobalEventTrackingListener
    * Unsubscribes from the event bus on module destroy.
    */
   onModuleDestroy(): void {
+    this.logger.log('Unsubscribing from the event bus');
     this.subscription?.unsubscribe();
   }
 
@@ -60,6 +63,7 @@ export class GlobalEventTrackingListener
    */
   private async trackEvent(event: BaseEvent<unknown>): Promise<void> {
     try {
+      this.logger.log(`Tracking event: ${event.eventType}`);
       await this.eventTrackingService.execute(event);
     } catch (error) {
       const stack = (error as Error)?.stack;

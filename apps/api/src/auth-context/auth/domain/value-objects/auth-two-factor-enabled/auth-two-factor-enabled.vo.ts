@@ -1,4 +1,4 @@
-import { BooleanValueObject } from '@/shared/domain/value-objects/boolean.vo';
+import { BooleanValueObject } from '@/shared/domain/value-objects/boolean/boolean.vo';
 
 /**
  * AuthTwoFactorEnabledValueObject represents the two-factor authentication enabled status.

@@ -19,12 +19,19 @@
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "prisma:init": "prisma init",
-    "prisma:generate": "prisma generate",
-    "prisma:migrate": "prisma migrate dev",
-    "prisma:studio": "prisma studio",
-    "prisma:seed": "prisma db seed",
-    "prisma:push": "prisma db push",
-    "prisma:format": "prisma format"
+    "prisma:generate:master": "prisma generate --schema=prisma/master/schema.prisma",
+    "prisma:generate:tenant": "prisma generate --schema=prisma/tenant/schema.prisma",
+    "prisma:generate:all": "prisma generate --schema=prisma/master/schema.prisma && prisma generate --schema=prisma/tenant/schema.prisma",
+    "prisma:migrate:master": "prisma migrate dev --schema=prisma/master/schema.prisma --create-only",
+    "prisma:migrate:tenant": "prisma migrate dev --schema=prisma/tenant/schema.prisma --create-only",
+    "prisma:studio:master": "prisma studio --schema=prisma/master/schema.prisma",
+    "prisma:seed:master": "prisma db seed --schema=prisma/master/schema.prisma",
+    "prisma:push:master": "prisma db push --schema=prisma/master/schema.prisma",
+    "prisma:format:master": "prisma format --schema=prisma/master/schema.prisma",
+    "provision:tenant": "ts-node -r tsconfig-paths/register src/shared/infrastructure/database/prisma/scripts/provision-tenant.ts",
+    "migrate:tenant": "ts-node -r tsconfig-paths/register src/shared/infrastructure/database/prisma/scripts/migrate-tenant.ts",
+    "migrate:tenant:all": "ts-node -r tsconfig-paths/register src/shared/infrastructure/database/prisma/scripts/migrate-tenant.ts --all",
+    "git:clean": "git branch --merged | grep -vE '^*|main|dev' | xargs -n 1 git branch -d"
   },
   "dependencies": {
     "@apollo/server": "^5.0.0",
@@ -33,7 +40,7 @@
     "@aws-sdk/s3-request-presigner": "^3.929.0",
     "@nestjs/apollo": "^13.2.1",
     "@nestjs/axios": "^4.0.1",
-    "@nestjs/common": "^10.0.0",
+    "@nestjs/common": "^11.1.9",
     "@nestjs/config": "^4.0.2",
     "@nestjs/core": "^10.0.0",
     "@nestjs/cqrs": "^11.0.3",
@@ -53,7 +60,7 @@
     "form-data": "^4.0.4",
     "graphql": "^16.11.0",
     "graphql-upload": "^17.0.0",
-    "mongodb": "^6.20.0",
+    "mongodb": "^7.0.0",
     "nest-winston": "^1.10.2",
     "passport": "^0.7.0",
     "passport-jwt": "^4.0.1",
@@ -101,7 +108,13 @@
       "^.+\\.(t|j)s$": "ts-jest"
     },
     "collectCoverageFrom": [
-      "**/*.(t|j)s"
+      "**/*.(t|j)s",
+      "!**/domain/repositories/**",
+      "!**/interfaces/**",
+      "!**/dtos/**",
+      "!**/value-objects/**",
+      "!**/*.module.ts",
+      "!**/*.primitives.ts"
     ],
     "coverageDirectory": "../coverage",
     "testEnvironment": "node",

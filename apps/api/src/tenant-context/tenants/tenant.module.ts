@@ -8,11 +8,12 @@ import { TenantMemberAddedEventHandler } from '@/tenant-context/tenants/applicat
 import { TenantUpdatedEventHandler } from '@/tenant-context/tenants/application/event-handlers/tenant-updated/tenant-updated.event-handler';
 import { FindTenantByIdQueryHandler } from '@/tenant-context/tenants/application/queries/find-tenant-by-id/find-tenant-by-id.query-handler';
 import { FindTenantsByCriteriaQueryHandler } from '@/tenant-context/tenants/application/queries/find-tenants-by-criteria/find-tenants-by-criteria.query-handler';
+import { TenantCreatedProvisionDatabaseSaga } from '@/tenant-context/tenants/application/sagas/tenant-created-provision-database/tenant-created-provision-database.saga';
 import { AssertTenantExsistsService } from '@/tenant-context/tenants/application/services/assert-tenant-exsits/assert-tenant-exsits.service';
 import { AssertTenantSlugIsUniqueService } from '@/tenant-context/tenants/application/services/assert-tenant-slug-is-unique/assert-tenant-slug-is-unique.service';
 import { AssertTenantViewModelExsistsService } from '@/tenant-context/tenants/application/services/assert-tenant-view-model-exsits/assert-tenant-view-model-exsits.service';
-import { TenantAggregateFactory } from '@/tenant-context/tenants/domain/factories/tenant-aggregate.factory';
-import { TenantViewModelFactory } from '@/tenant-context/tenants/domain/factories/tenant-view-model.factory';
+import { TenantAggregateFactory } from '@/tenant-context/tenants/domain/factories/tenant-aggregate/tenant-aggregate.factory';
+import { TenantViewModelFactory } from '@/tenant-context/tenants/domain/factories/tenant-view-model/tenant-view-model.factory';
 import { TENANT_READ_REPOSITORY_TOKEN } from '@/tenant-context/tenants/domain/repositories/tenant-read.repository';
 import { TENANT_WRITE_REPOSITORY_TOKEN } from '@/tenant-context/tenants/domain/repositories/tenant-write.repository';
 import { TenantMongoDBMapper } from '@/tenant-context/tenants/infrastructure/database/mongodb/mappers/tenant-mongodb.mapper';
@@ -47,9 +48,10 @@ const EVENT_HANDLERS = [
   TenantCreatedEventHandler,
   TenantUpdatedEventHandler,
   TenantDeletedEventHandler,
-
   TenantMemberAddedEventHandler,
 ];
+
+const SAGAS = [TenantCreatedProvisionDatabaseSaga];
 
 const FACTORIES = [TenantAggregateFactory, TenantViewModelFactory];
 
@@ -75,6 +77,7 @@ const REPOSITORIES = [
     ...QUERY_HANDLERS,
     ...COMMAND_HANDLERS,
     ...EVENT_HANDLERS,
+    ...SAGAS,
     ...REPOSITORIES,
     ...FACTORIES,
     ...MAPPERS,

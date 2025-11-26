@@ -1,5 +1,5 @@
-import { BasePrismaRepository } from '@/shared/infrastructure/database/prisma/base-prisma.repository';
-import { PrismaService } from '@/shared/infrastructure/database/prisma/prisma.service';
+import { BasePrismaMasterRepository } from '@/shared/infrastructure/database/prisma/base-prisma/base-prisma-master/base-prisma-master.repository';
+import { PrismaMasterService } from '@/shared/infrastructure/database/prisma/services/prisma-master/prisma-master.service';
 import { TenantMemberAggregate } from '@/tenant-context/tenant-members/domain/aggregates/tenant-member.aggregate';
 import { TenantMemberWriteRepository } from '@/tenant-context/tenant-members/domain/repositories/tenant-member-write.repository';
 import { TenantMemberPrismaMapper } from '@/tenant-context/tenant-members/infrastructure/database/prisma/mappers/tenant-member-prisma.mapper';
@@ -7,14 +7,14 @@ import { Injectable, Logger } from '@nestjs/common';
 
 @Injectable()
 export class TenantMemberPrismaRepository
-  extends BasePrismaRepository
+  extends BasePrismaMasterRepository
   implements TenantMemberWriteRepository
 {
   constructor(
-    prisma: PrismaService,
+    prismaMasterService: PrismaMasterService,
     private readonly tenantMemberPrismaMapper: TenantMemberPrismaMapper,
   ) {
-    super(prisma);
+    super(prismaMasterService);
     this.logger = new Logger(TenantMemberPrismaRepository.name);
   }
 
@@ -25,9 +25,10 @@ export class TenantMemberPrismaRepository
    * @returns The tenant if found, null otherwise
    */
   async findById(id: string): Promise<TenantMemberAggregate | null> {
-    const tenantMemberData = await this.prismaService.tenantMember.findUnique({
-      where: { id },
-    });
+    const tenantMemberData =
+      await this.prismaMasterService.tenantMember.findUnique({
+        where: { id },
+      });
 
     if (!tenantMemberData) {
       return null;
@@ -45,9 +46,10 @@ export class TenantMemberPrismaRepository
   async findByTenantId(
     tenantId: string,
   ): Promise<TenantMemberAggregate[] | null> {
-    const tenantMembersData = await this.prismaService.tenantMember.findMany({
-      where: { tenantId },
-    });
+    const tenantMembersData =
+      await this.prismaMasterService.tenantMember.findMany({
+        where: { tenantId },
+      });
 
     return tenantMembersData.map((tenantMemberData) =>
       this.tenantMemberPrismaMapper.toDomainEntity(tenantMemberData),
@@ -61,9 +63,10 @@ export class TenantMemberPrismaRepository
    * @returns The tenant members found
    */
   async findByUserId(userId: string): Promise<TenantMemberAggregate[] | null> {
-    const tenantMembersData = await this.prismaService.tenantMember.findMany({
-      where: { userId },
-    });
+    const tenantMembersData =
+      await this.prismaMasterService.tenantMember.findMany({
+        where: { userId },
+      });
 
     return tenantMembersData.map((tenantMemberData) =>
       this.tenantMemberPrismaMapper.toDomainEntity(tenantMemberData),
@@ -81,9 +84,10 @@ export class TenantMemberPrismaRepository
     tenantId: string,
     userId: string,
   ): Promise<TenantMemberAggregate | null> {
-    const tenantMemberData = await this.prismaService.tenantMember.findFirst({
-      where: { tenantId, userId },
-    });
+    const tenantMemberData =
+      await this.prismaMasterService.tenantMember.findFirst({
+        where: { tenantId, userId },
+      });
 
     return tenantMemberData
       ? this.tenantMemberPrismaMapper.toDomainEntity(tenantMemberData)
@@ -102,7 +106,7 @@ export class TenantMemberPrismaRepository
     const tenantMemberData =
       this.tenantMemberPrismaMapper.toPrismaData(tenantMember);
 
-    const result = await this.prismaService.tenantMember.upsert({
+    const result = await this.prismaMasterService.tenantMember.upsert({
       where: { id: tenantMember.id.value },
       update: tenantMemberData,
       create: tenantMemberData,
@@ -120,7 +124,7 @@ export class TenantMemberPrismaRepository
   async delete(id: string): Promise<boolean> {
     this.logger.log(`Deleting tenant member by id: ${id}`);
 
-    await this.prismaService.tenantMember.delete({
+    await this.prismaMasterService.tenantMember.delete({
       where: { id },
     });
 

@@ -4,7 +4,7 @@ import {
   PROMPT_WRITE_REPOSITORY_TOKEN,
   PromptWriteRepository,
 } from '@/llm-context/prompt/domain/repositories/prompt-write/prompt-write.repository';
-import { IBaseService } from '@/shared/application/services/base-service.interface';
+import { IBaseService } from '@/shared/application/services/base-service/base-service.interface';
 import { Inject, Injectable, Logger } from '@nestjs/common';
 
 @Injectable()

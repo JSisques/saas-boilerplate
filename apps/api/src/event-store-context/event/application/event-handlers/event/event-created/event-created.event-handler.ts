@@ -1,4 +1,4 @@
-import { EventViewModelFactory } from '@/event-store-context/event/domain/factories/event-view-model.factory';
+import { EventViewModelFactory } from '@/event-store-context/event/domain/factories/event-view-model/event-view-model.factory';
 import {
   EVENT_READ_REPOSITORY_TOKEN,
   EventReadRepository,

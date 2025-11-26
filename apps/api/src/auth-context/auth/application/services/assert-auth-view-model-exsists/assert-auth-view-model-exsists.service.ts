@@ -4,7 +4,7 @@ import {
   AuthReadRepository,
 } from '@/auth-context/auth/domain/repositories/auth-read.repository';
 import { AuthViewModel } from '@/auth-context/auth/domain/view-models/auth.view-model';
-import { IBaseService } from '@/shared/application/services/base-service.interface';
+import { IBaseService } from '@/shared/application/services/base-service/base-service.interface';
 import { Inject, Injectable, Logger } from '@nestjs/common';
 
 @Injectable()

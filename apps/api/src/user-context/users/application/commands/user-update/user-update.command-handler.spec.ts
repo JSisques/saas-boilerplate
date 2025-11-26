@@ -1,4 +1,5 @@
 import { UserUpdatedEvent } from '@/shared/domain/events/users/user-updated/user-updated.event';
+import { DateValueObject } from '@/shared/domain/value-objects/date/date.vo';
 import { UserUuidValueObject } from '@/shared/domain/value-objects/identifiers/user-uuid/user-uuid.vo';
 import { IUserUpdateCommandDto } from '@/user-context/users/application/dtos/commands/user-update/user-update-command.dto';
 import { UserNotFoundException } from '@/user-context/users/application/exceptions/user-not-found/user-not-found.exception';
@@ -52,6 +53,8 @@ describe('UserUpdateCommandHandler', () => {
   describe('execute', () => {
     it('should update user successfully when user exists', async () => {
       const userId = '123e4567-e89b-12d3-a456-426614174000';
+      const now = new Date();
+
       const commandDto: IUserUpdateCommandDto = {
         id: userId,
         name: 'Jane',
@@ -64,6 +67,8 @@ describe('UserUpdateCommandHandler', () => {
           userName: new UserUserNameValueObject('johndoe'),
           role: new UserRoleValueObject(UserRoleEnum.USER),
           status: new UserStatusValueObject(UserStatusEnum.ACTIVE),
+          createdAt: new DateValueObject(now),
+          updatedAt: new DateValueObject(now),
         },
         false,
       );
@@ -113,12 +118,15 @@ describe('UserUpdateCommandHandler', () => {
       };
 
       const command = new UserUpdateCommand(commandDto);
+      const now = new Date();
       const existingUser = new UserAggregate(
         {
           id: new UserUuidValueObject(userId),
           userName: new UserUserNameValueObject('johndoe'),
           role: new UserRoleValueObject(UserRoleEnum.USER),
           status: new UserStatusValueObject(UserStatusEnum.ACTIVE),
+          createdAt: new DateValueObject(now),
+          updatedAt: new DateValueObject(now),
         },
         false,
       );
@@ -141,6 +149,7 @@ describe('UserUpdateCommandHandler', () => {
 
     it('should exclude id from update data', async () => {
       const userId = '123e4567-e89b-12d3-a456-426614174000';
+      const now = new Date();
       const commandDto: IUserUpdateCommandDto = {
         id: userId,
         name: 'Jane',
@@ -153,6 +162,8 @@ describe('UserUpdateCommandHandler', () => {
           userName: new UserUserNameValueObject('johndoe'),
           role: new UserRoleValueObject(UserRoleEnum.USER),
           status: new UserStatusValueObject(UserStatusEnum.ACTIVE),
+          createdAt: new DateValueObject(now),
+          updatedAt: new DateValueObject(now),
         },
         false,
       );
@@ -178,6 +189,7 @@ describe('UserUpdateCommandHandler', () => {
       };
 
       const command = new UserUpdateCommand(commandDto);
+      const now = new Date();
 
       // Verify that update() generates an event when called directly
       const testUser = new UserAggregate(
@@ -186,6 +198,8 @@ describe('UserUpdateCommandHandler', () => {
           userName: new UserUserNameValueObject('johndoe'),
           role: new UserRoleValueObject(UserRoleEnum.USER),
           status: new UserStatusValueObject(UserStatusEnum.ACTIVE),
+          createdAt: new DateValueObject(now),
+          updatedAt: new DateValueObject(now),
         },
         false,
       );
@@ -202,6 +216,8 @@ describe('UserUpdateCommandHandler', () => {
           userName: new UserUserNameValueObject('johndoe'),
           role: new UserRoleValueObject(UserRoleEnum.USER),
           status: new UserStatusValueObject(UserStatusEnum.ACTIVE),
+          createdAt: new DateValueObject(now),
+          updatedAt: new DateValueObject(now),
         },
         false,
       );
@@ -223,6 +239,8 @@ describe('UserUpdateCommandHandler', () => {
 
     it('should save user before publishing events', async () => {
       const userId = '123e4567-e89b-12d3-a456-426614174000';
+      const now = new Date();
+
       const commandDto: IUserUpdateCommandDto = {
         id: userId,
         name: 'Jane',
@@ -235,6 +253,8 @@ describe('UserUpdateCommandHandler', () => {
           userName: new UserUserNameValueObject('johndoe'),
           role: new UserRoleValueObject(UserRoleEnum.USER),
           status: new UserStatusValueObject(UserStatusEnum.ACTIVE),
+          createdAt: new DateValueObject(now),
+          updatedAt: new DateValueObject(now),
         },
         false,
       );
@@ -253,6 +273,8 @@ describe('UserUpdateCommandHandler', () => {
 
     it('should commit events after publishing', async () => {
       const userId = '123e4567-e89b-12d3-a456-426614174000';
+      const now = new Date();
+
       const commandDto: IUserUpdateCommandDto = {
         id: userId,
         name: 'Jane',
@@ -265,6 +287,8 @@ describe('UserUpdateCommandHandler', () => {
           userName: new UserUserNameValueObject('johndoe'),
           role: new UserRoleValueObject(UserRoleEnum.USER),
           status: new UserStatusValueObject(UserStatusEnum.ACTIVE),
+          createdAt: new DateValueObject(now),
+          updatedAt: new DateValueObject(now),
         },
         false,
       );

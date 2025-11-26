@@ -2,7 +2,7 @@ import { Criteria } from '@/shared/domain/entities/criteria';
 import { PaginatedResult } from '@/shared/domain/entities/paginated-result.entity';
 import { FilterOperator } from '@/shared/domain/enums/filter-operator.enum';
 import { SortDirection } from '@/shared/domain/enums/sort-direction.enum';
-import { MongoService } from '@/shared/infrastructure/database/mongodb/mongo.service';
+import { MongoMasterService } from '@/shared/infrastructure/database/mongodb/services/mongo-master/mongo-master.service';
 import { IUserCreateViewModelDto } from '@/user-context/users/domain/dtos/view-models/user-create/user-create-view-model.dto';
 import { UserRoleEnum } from '@/user-context/users/domain/enums/user-role/user-role.enum';
 import { UserStatusEnum } from '@/user-context/users/domain/enums/user-status/user-status.enum';
@@ -14,7 +14,7 @@ import { Collection } from 'mongodb';
 
 describe('UserMongoRepository', () => {
   let repository: UserMongoRepository;
-  let mockMongoService: jest.Mocked<MongoService>;
+  let mockMongoMasterService: jest.Mocked<MongoMasterService>;
   let mockUserMongoDBMapper: jest.Mocked<UserMongoDBMapper>;
   let mockCollection: jest.Mocked<Collection>;
 
@@ -27,9 +27,9 @@ describe('UserMongoRepository', () => {
       countDocuments: jest.fn(),
     } as unknown as jest.Mocked<Collection>;
 
-    mockMongoService = {
+    mockMongoMasterService = {
       getCollection: jest.fn().mockReturnValue(mockCollection),
-    } as unknown as jest.Mocked<MongoService>;
+    } as unknown as jest.Mocked<MongoMasterService>;
 
     mockUserMongoDBMapper = {
       toViewModel: jest.fn(),
@@ -37,7 +37,7 @@ describe('UserMongoRepository', () => {
     } as unknown as jest.Mocked<UserMongoDBMapper>;
 
     repository = new UserMongoRepository(
-      mockMongoService,
+      mockMongoMasterService,
       mockUserMongoDBMapper,
     );
   });
@@ -84,7 +84,9 @@ describe('UserMongoRepository', () => {
       const result = await repository.findById(userId);
 
       expect(result).toBe(viewModel);
-      expect(mockMongoService.getCollection).toHaveBeenCalledWith('users');
+      expect(mockMongoMasterService.getCollection).toHaveBeenCalledWith(
+        'users',
+      );
       expect(mockCollection.findOne).toHaveBeenCalledWith({ id: userId });
       expect(mockUserMongoDBMapper.toViewModel).toHaveBeenCalledWith({
         id: userId,

@@ -1,4 +1,4 @@
-import { BasePaginatedResultDto } from '@/shared/transport/graphql/dtos/responses';
+import { BasePaginatedResultDto } from '@/shared/transport/graphql/dtos/responses/base-paginated-result/base-paginated-result.dto';
 import { Field, ObjectType } from '@nestjs/graphql';
 
 @ObjectType('HealthResponseDto')
@@ -8,6 +8,17 @@ export class HealthResponseDto {
     description: 'The status of the check',
   })
   status: string;
+
+  @Field(() => String, {
+    nullable: false,
+    description: 'The status of the write database check',
+  })
+  writeDatabaseStatus: string;
+  @Field(() => String, {
+    nullable: false,
+    description: 'The status of the read database check',
+  })
+  readDatabaseStatus: string;
 }
 
 @ObjectType('PaginatedHealthResultDto')

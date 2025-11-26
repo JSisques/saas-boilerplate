@@ -1,20 +1,20 @@
 import { SubscriptionAggregate } from '@/billing-context/subscription/domain/aggregates/subscription.aggregate';
 import { SubscriptionWriteRepository } from '@/billing-context/subscription/domain/repositories/subscription-write/subscription-write.repository';
 import { SubscriptionPrismaMapper } from '@/billing-context/subscription/infrastructure/database/prisma/mappers/subscription-prisma.mapper';
-import { BasePrismaRepository } from '@/shared/infrastructure/database/prisma/base-prisma.repository';
-import { PrismaService } from '@/shared/infrastructure/database/prisma/prisma.service';
+import { BasePrismaMasterRepository } from '@/shared/infrastructure/database/prisma/base-prisma/base-prisma-master/base-prisma-master.repository';
+import { PrismaMasterService } from '@/shared/infrastructure/database/prisma/services/prisma-master/prisma-master.service';
 import { Injectable, Logger } from '@nestjs/common';
 
 @Injectable()
 export class SubscriptionPrismaRepository
-  extends BasePrismaRepository
+  extends BasePrismaMasterRepository
   implements SubscriptionWriteRepository
 {
   constructor(
-    prisma: PrismaService,
+    prismaMasterService: PrismaMasterService,
     private readonly subscriptionPrismaMapper: SubscriptionPrismaMapper,
   ) {
-    super(prisma);
+    super(prismaMasterService);
     this.logger = new Logger(SubscriptionPrismaRepository.name);
   }
 
@@ -25,9 +25,10 @@ export class SubscriptionPrismaRepository
    * @returns The subscription if found, null otherwise
    */
   async findById(id: string): Promise<SubscriptionAggregate | null> {
-    const subscriptionData = await this.prismaService.subscription.findUnique({
-      where: { id },
-    });
+    const subscriptionData =
+      await this.prismaMasterService.subscription.findUnique({
+        where: { id },
+      });
 
     if (!subscriptionData) {
       return null;
@@ -44,6 +45,8 @@ export class SubscriptionPrismaRepository
       stripeSubscriptionId: subscriptionData.stripeSubscriptionId,
       stripeCustomerId: subscriptionData.stripeCustomerId,
       renewalMethod: subscriptionData.renewalMethod,
+      createdAt: subscriptionData.createdAt,
+      updatedAt: subscriptionData.updatedAt,
     });
   }
 
@@ -56,9 +59,10 @@ export class SubscriptionPrismaRepository
   async findByTenantId(
     tenantId: string,
   ): Promise<SubscriptionAggregate | null> {
-    const subscriptionData = await this.prismaService.subscription.findUnique({
-      where: { tenantId },
-    });
+    const subscriptionData =
+      await this.prismaMasterService.subscription.findUnique({
+        where: { tenantId },
+      });
 
     if (!subscriptionData) {
       return null;
@@ -75,6 +79,8 @@ export class SubscriptionPrismaRepository
       stripeSubscriptionId: subscriptionData.stripeSubscriptionId,
       stripeCustomerId: subscriptionData.stripeCustomerId,
       renewalMethod: subscriptionData.renewalMethod,
+      createdAt: subscriptionData.createdAt,
+      updatedAt: subscriptionData.updatedAt,
     });
   }
 
@@ -90,7 +96,7 @@ export class SubscriptionPrismaRepository
     const subscriptionData =
       this.subscriptionPrismaMapper.toPrismaData(subscription);
 
-    const result = await this.prismaService.subscription.upsert({
+    const result = await this.prismaMasterService.subscription.upsert({
       where: { id: subscription.id.value },
       update: subscriptionData,
       create: subscriptionData,
@@ -107,6 +113,8 @@ export class SubscriptionPrismaRepository
       stripeSubscriptionId: result.stripeSubscriptionId,
       stripeCustomerId: result.stripeCustomerId,
       renewalMethod: result.renewalMethod,
+      createdAt: result.createdAt,
+      updatedAt: result.updatedAt,
     });
   }
 
@@ -119,7 +127,7 @@ export class SubscriptionPrismaRepository
   async delete(id: string): Promise<boolean> {
     this.logger.log(`Deleting subscription by id: ${id}`);
 
-    await this.prismaService.subscription.delete({
+    await this.prismaMasterService.subscription.delete({
       where: { id },
     });
 

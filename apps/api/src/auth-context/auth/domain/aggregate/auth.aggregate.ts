@@ -9,15 +9,16 @@ import { AuthPhoneNumberValueObject } from '@/auth-context/auth/domain/value-obj
 import { AuthProviderIdValueObject } from '@/auth-context/auth/domain/value-objects/auth-provider-id/auth-provider-id.vo';
 import { AuthProviderValueObject } from '@/auth-context/auth/domain/value-objects/auth-provider/auth-provider.vo';
 import { AuthTwoFactorEnabledValueObject } from '@/auth-context/auth/domain/value-objects/auth-two-factor-enabled/auth-two-factor-enabled.vo';
+import { BaseAggregate } from '@/shared/domain/aggregates/base-aggregate/base.aggregate';
 import { AuthCreatedEvent } from '@/shared/domain/events/auth/auth-created/auth-created.event';
 import { AuthDeletedEvent } from '@/shared/domain/events/auth/auth-deleted/auth-deleted.event';
 import { AuthUpdatedLastLoginAtEvent } from '@/shared/domain/events/auth/auth-updated-last-login-at/auth-updated-last-login-at.event';
 import { AuthUpdatedEvent } from '@/shared/domain/events/auth/auth-updated/auth-updated.event';
+import { DateValueObject } from '@/shared/domain/value-objects/date/date.vo';
 import { AuthUuidValueObject } from '@/shared/domain/value-objects/identifiers/auth-uuid/auth-uuid.vo';
 import { UserUuidValueObject } from '@/shared/domain/value-objects/identifiers/user-uuid/user-uuid.vo';
-import { AggregateRoot } from '@nestjs/cqrs';
 
-export class AuthAggregate extends AggregateRoot {
+export class AuthAggregate extends BaseAggregate {
   private readonly _id: AuthUuidValueObject;
   private readonly _userId: UserUuidValueObject;
   private _email: AuthEmailValueObject | null;
@@ -30,7 +31,7 @@ export class AuthAggregate extends AggregateRoot {
   private _twoFactorEnabled: AuthTwoFactorEnabledValueObject;
 
   constructor(props: IAuthCreateDto, generateEvent: boolean = true) {
-    super();
+    super(props.createdAt, props.updatedAt);
 
     // 01: Set the properties
     this._id = props.id;
@@ -92,6 +93,8 @@ export class AuthAggregate extends AggregateRoot {
       props.twoFactorEnabled !== undefined
         ? props.twoFactorEnabled
         : this._twoFactorEnabled;
+
+    this._updatedAt = new DateValueObject(new Date());
 
     if (generateEvent) {
       this.apply(
@@ -204,6 +207,8 @@ export class AuthAggregate extends AggregateRoot {
       provider: this._provider.value,
       providerId: this._providerId ? this._providerId.value : null,
       twoFactorEnabled: this._twoFactorEnabled.value,
+      createdAt: this._createdAt.value,
+      updatedAt: this._updatedAt.value,
     };
   }
 }

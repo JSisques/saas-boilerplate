@@ -3,22 +3,22 @@ import { EventViewModel } from '@/event-store-context/event/domain/view-models/e
 import { EventMongoMapper } from '@/event-store-context/event/infrastructure/mongodb/mappers/event-mongodb.mapper';
 import { Criteria } from '@/shared/domain/entities/criteria';
 import { PaginatedResult } from '@/shared/domain/entities/paginated-result.entity';
-import { BaseMongoRepository } from '@/shared/infrastructure/database/mongodb/base-mongo.repository';
-import { MongoService } from '@/shared/infrastructure/database/mongodb/mongo.service';
+import { BaseMongoMasterRepository } from '@/shared/infrastructure/database/mongodb/base-mongo/base-mongo-master/base-mongo-master.repository';
+import { MongoMasterService } from '@/shared/infrastructure/database/mongodb/services/mongo-master/mongo-master.service';
 import { Injectable, Logger } from '@nestjs/common';
 
 @Injectable()
 export class EventMongoRepository
-  extends BaseMongoRepository
+  extends BaseMongoMasterRepository
   implements EventReadRepository
 {
   private readonly collectionName = 'events';
 
   constructor(
-    mongoService: MongoService,
+    mongoMasterService: MongoMasterService,
     private readonly eventMongoMapper: EventMongoMapper,
   ) {
-    super(mongoService);
+    super(mongoMasterService);
     this.logger = new Logger(EventMongoRepository.name);
   }
 
@@ -31,7 +31,9 @@ export class EventMongoRepository
   async findById(id: string): Promise<EventViewModel | null> {
     this.logger.log(`Finding event by id: ${id}`);
 
-    const collection = this.mongoService.getCollection(this.collectionName);
+    const collection = this.mongoMasterService.getCollection(
+      this.collectionName,
+    );
     const EventViewModel = await collection.findOne({ id });
 
     return EventViewModel
@@ -60,7 +62,9 @@ export class EventMongoRepository
   ): Promise<PaginatedResult<EventViewModel>> {
     this.logger.log(`Finding events by criteria: ${JSON.stringify(criteria)}`);
 
-    const collection = this.mongoService.getCollection(this.collectionName);
+    const collection = this.mongoMasterService.getCollection(
+      this.collectionName,
+    );
 
     // 01: Build MongoDB query from criteria
     const mongoQuery = this.buildMongoQuery(criteria);
@@ -105,7 +109,9 @@ export class EventMongoRepository
   async save(EventViewModel: EventViewModel): Promise<void> {
     this.logger.log(`Saving event view model with id: ${EventViewModel.id}`);
 
-    const collection = this.mongoService.getCollection(this.collectionName);
+    const collection = this.mongoMasterService.getCollection(
+      this.collectionName,
+    );
 
     const doc = this.eventMongoMapper.toMongoData(EventViewModel);
 
@@ -138,7 +144,9 @@ export class EventMongoRepository
   async delete(id: string): Promise<boolean> {
     this.logger.log(`Deleting event view model by id: ${id}`);
 
-    const collection = this.mongoService.getCollection(this.collectionName);
+    const collection = this.mongoMasterService.getCollection(
+      this.collectionName,
+    );
 
     // 01: Delete the event view model from the collection
     await collection.deleteOne({ id });

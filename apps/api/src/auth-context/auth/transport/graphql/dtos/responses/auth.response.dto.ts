@@ -1,4 +1,4 @@
-import { BasePaginatedResultDto } from '@/shared/transport/graphql/dtos/responses';
+import { BasePaginatedResultDto } from '@/shared/transport/graphql/dtos/responses/base-paginated-result/base-paginated-result.dto';
 import { Field, ObjectType } from '@nestjs/graphql';
 
 @ObjectType('AuthResponseDto')
@@ -41,6 +41,18 @@ export class AuthResponseDto {
     description: 'The two factor enabled of the auth',
   })
   twoFactorEnabled?: boolean;
+
+  @Field(() => Date, {
+    nullable: true,
+    description: 'The created at of the auth',
+  })
+  createdAt?: Date;
+
+  @Field(() => Date, {
+    nullable: true,
+    description: 'The updated at of the auth',
+  })
+  updatedAt?: Date;
 }
 
 @ObjectType('PaginatedAuthResultDto')

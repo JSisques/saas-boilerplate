@@ -1,11 +1,15 @@
 import { SubscriptionPlanUpdateCommand } from '@/billing-context/subscription-plan/application/commands/subscription-plan-update/subscription-plan-update.command';
 import { AssertSubscriptionPlanExsistsService } from '@/billing-context/subscription-plan/application/services/assert-subscription-plan-exsits/assert-subscription-plan-exsits.service';
+import { AssertSubscriptionPlanSlugIsUniqueService } from '@/billing-context/subscription-plan/application/services/assert-subscription-plan-slug-is-unique/assert-subscription-plan-slug-is-unique.service';
+import { AssertSubscriptionPlanTypeIsUniqueService } from '@/billing-context/subscription-plan/application/services/assert-subscription-plan-type-is-unique/assert-subscription-plan-type-is-unique.service';
 import { ISubscriptionPlanUpdateDto } from '@/billing-context/subscription-plan/domain/dtos/entities/subscription-plan-update/subscription-plan-update.dto';
+import { SubscriptionPlanTypeEnum } from '@/billing-context/subscription-plan/domain/enum/subscription-plan-type.enum';
 import {
   SUBSCRIPTION_PLAN_WRITE_REPOSITORY_TOKEN,
   SubscriptionPlanWriteRepository,
 } from '@/billing-context/subscription-plan/domain/repositories/subscription-plan-write/subscription-plan-write.repository';
-import { BaseUpdateCommandHandler } from '@/shared/application/commands/update/base-update.command-handler';
+import { IBaseCommandHandler } from '@/shared/application/commands/interfaces/base-command-handler.interface';
+import { BaseUpdateCommandHandler } from '@/shared/application/commands/update/base-update/base-update.command-handler';
 import { Inject, Logger } from '@nestjs/common';
 import { CommandHandler, EventBus, ICommandHandler } from '@nestjs/cqrs';
 
@@ -15,7 +19,9 @@ export class SubscriptionPlanUpdateCommandHandler
     SubscriptionPlanUpdateCommand,
     ISubscriptionPlanUpdateDto
   >
-  implements ICommandHandler<SubscriptionPlanUpdateCommand>
+  implements
+    ICommandHandler<SubscriptionPlanUpdateCommand>,
+    IBaseCommandHandler<SubscriptionPlanUpdateCommand>
 {
   protected readonly logger = new Logger(
     SubscriptionPlanUpdateCommandHandler.name,
@@ -23,6 +29,8 @@ export class SubscriptionPlanUpdateCommandHandler
 
   constructor(
     private readonly assertSubscriptionPlanExsistsService: AssertSubscriptionPlanExsistsService,
+    private readonly assertSubscriptionPlanSlugIsUniqueService: AssertSubscriptionPlanSlugIsUniqueService,
+    private readonly assertSubscriptionPlanTypeIsUniqueService: AssertSubscriptionPlanTypeIsUniqueService,
     private readonly eventBus: EventBus,
     @Inject(SUBSCRIPTION_PLAN_WRITE_REPOSITORY_TOKEN)
     private readonly subscriptionPlanWriteRepository: SubscriptionPlanWriteRepository,
@@ -44,20 +52,43 @@ export class SubscriptionPlanUpdateCommandHandler
     const existingSubscriptionPlan =
       await this.assertSubscriptionPlanExsistsService.execute(command.id.value);
 
-    // 02: Extract update data excluding the id field
+    // 02: Execute asserts
+    await this.executeAsserts(command);
+
+    // 03: Extract update data excluding the id field
     const updateData = this.extractUpdateData(command, ['id']);
     this.logger.debug(`Update data: ${JSON.stringify(updateData)}`);
 
-    // 03: Update the subscription plan
+    // 04: Update the subscription plan
     existingSubscriptionPlan.update(updateData);
 
-    // 04: Save the subscription plan
+    // 05: Save the subscription plan
     await this.subscriptionPlanWriteRepository.save(existingSubscriptionPlan);
 
-    // 05: Publish the subscription plan updated event
+    // 06: Publish the subscription plan updated event
     await this.eventBus.publishAll(
       existingSubscriptionPlan.getUncommittedEvents(),
     );
     await existingSubscriptionPlan.commit();
+  }
+
+  /**
+   * Executes the asserts for the subscription plan update command
+   *
+   * @param command - The command to execute
+   * @returns The asserts results
+   */
+  async executeAsserts(
+    command: SubscriptionPlanUpdateCommand,
+  ): Promise<void[]> {
+    const promises = [
+      this.assertSubscriptionPlanSlugIsUniqueService.execute(
+        command.slug?.value,
+      ),
+      this.assertSubscriptionPlanTypeIsUniqueService.execute(
+        command.type?.value as SubscriptionPlanTypeEnum,
+      ),
+    ];
+    return Promise.all(promises);
   }
 }

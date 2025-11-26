@@ -1,4 +1,4 @@
-import { ColorValueObject } from '@/shared/domain/value-objects/color.vo';
+import { ColorValueObject } from '@/shared/domain/value-objects/color/color.vo';
 
 /**
  * TenantPrimaryColorValueObject represents a tenant's primary color in the domain.

@@ -1,65 +1,123 @@
 version: 2
 updates:
-  - package-ecosystem: 'npm'
-    directory: '/'
+  # Root package.json
+  - package-ecosystem: "npm"
+    directory: "/"
+    target-branch: "dev"
     schedule:
-      interval: 'weekly'
+      interval: "weekly"
     open-pull-requests-limit: 5
     commit-message:
-      prefix: 'chore(deps)'
+      prefix: "[PULL REQUEST] - Dependabot"
     labels:
-      - 'dependencies'
-  - package-ecosystem: 'npm'
-    directory: '/'
+      - "dependencies"
+
+  # Apps
+  - package-ecosystem: "npm"
+    directory: "/apps/api/"
+    target-branch: "dev"
     schedule:
-      interval: 'weekly'
+      interval: "weekly"
     open-pull-requests-limit: 5
     commit-message:
-      prefix: 'chore(deps)'
+      prefix: "[PULL REQUEST] - Dependabot api"
     labels:
-      - 'dependencies'
-  - package-ecosystem: 'npm'
-    directory: '/apps/mobile/'
+      - "dependencies"
+      - "api"
+
+  - package-ecosystem: "npm"
+    directory: "/apps/web/"
+    target-branch: "dev"
     schedule:
-      interval: 'weekly'
+      interval: "weekly"
     open-pull-requests-limit: 5
     commit-message:
-      prefix: 'chore(deps)'
+      prefix: "[PULL REQUEST] - Dependabot web"
     labels:
-      - 'dependencies'
-  - package-ecosystem: 'npm'
-    directory: '/apps/web/'
+      - "dependencies"
+      - "web"
+
+  - package-ecosystem: "npm"
+    directory: "/apps/admin/"
+    target-branch: "dev"
     schedule:
-      interval: 'weekly'
+      interval: "weekly"
     open-pull-requests-limit: 5
     commit-message:
-      prefix: 'chore(deps)'
+      prefix: "[PULL REQUEST] - Dependabot admin"
     labels:
-      - 'dependencies'
-  - package-ecosystem: 'npm'
-    directory: '/packages/eslint-config/'
+      - "dependencies"
+      - "admin"
+
+  - package-ecosystem: "npm"
+    directory: "/apps/mobile/"
+    target-branch: "dev"
     schedule:
-      interval: 'weekly'
+      interval: "weekly"
     open-pull-requests-limit: 5
     commit-message:
-      prefix: 'chore(deps)'
+      prefix: "[PULL REQUEST] - Dependabot mobile"
     labels:
-      - 'dependencies'
-  - package-ecosystem: 'npm'
-    directory: '/packages/typescript-config/'
+      - "dependencies"
+      - "mobile"
+
+  - package-ecosystem: "npm"
+    directory: "/apps/docs/"
+    target-branch: "dev"
     schedule:
-      interval: 'weekly'
+      interval: "weekly"
     open-pull-requests-limit: 5
     commit-message:
-      prefix: 'chore(deps)'
+      prefix: "[PULL REQUEST] - Dependabot docs"
     labels:
-      - 'dependencies'
-  - package-ecosystem: 'npm'
-    directory: '/packages/ui/'
+      - "dependencies"
+      - "docs"
+
+  # Packages
+  - package-ecosystem: "npm"
+    directory: "/packages/sdk/"
+    target-branch: "dev"
     schedule:
-      interval: 'weekly'
+      interval: "weekly"
     open-pull-requests-limit: 5
     commit-message:
-      prefix: 'chore(deps)'
+      prefix: "[PULL REQUEST] - Dependabot sdk"
     labels:
-      - 'dependencies'
+      - "dependencies"
+      - "sdk"
+
+  - package-ecosystem: "npm"
+    directory: "/packages/shared/"
+    target-branch: "dev"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: "[PULL REQUEST] - Dependabot shared"
+    labels:
+      - "dependencies"
+      - "shared"
+
+  - package-ecosystem: "npm"
+    directory: "/packages/eslint-config/"
+    target-branch: "dev"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: "[PULL REQUEST] - Dependabot eslint-config"
+    labels:
+      - "dependencies"
+      - "eslint-config"
+
+  - package-ecosystem: "npm"
+    directory: "/packages/typescript-config/"
+    target-branch: "dev"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: "[PULL REQUEST] - Dependabot typescript-config"
+    labels:
+      - "dependencies"
+      - "typescript-config"

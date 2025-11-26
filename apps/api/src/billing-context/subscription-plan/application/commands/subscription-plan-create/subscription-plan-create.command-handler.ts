@@ -1,16 +1,22 @@
 import { SubscriptionPlanCreateCommand } from '@/billing-context/subscription-plan/application/commands/subscription-plan-create/subscription-plan-create.command';
 import { AssertSubscriptionPlanSlugIsUniqueService } from '@/billing-context/subscription-plan/application/services/assert-subscription-plan-slug-is-unique/assert-subscription-plan-slug-is-unique.service';
+import { AssertSubscriptionPlanTypeIsUniqueService } from '@/billing-context/subscription-plan/application/services/assert-subscription-plan-type-is-unique/assert-subscription-plan-type-is-unique.service';
+import { SubscriptionPlanTypeEnum } from '@/billing-context/subscription-plan/domain/enum/subscription-plan-type.enum';
 import { SubscriptionPlanAggregateFactory } from '@/billing-context/subscription-plan/domain/factories/subscription-plan-aggregate/subscription-plan-aggregate.factory';
 import {
   SUBSCRIPTION_PLAN_WRITE_REPOSITORY_TOKEN,
   SubscriptionPlanWriteRepository,
 } from '@/billing-context/subscription-plan/domain/repositories/subscription-plan-write/subscription-plan-write.repository';
+import { IBaseCommandHandler } from '@/shared/application/commands/interfaces/base-command-handler.interface';
+import { DateValueObject } from '@/shared/domain/value-objects/date/date.vo';
 import { Inject } from '@nestjs/common';
 import { CommandHandler, EventBus, ICommandHandler } from '@nestjs/cqrs';
 
 @CommandHandler(SubscriptionPlanCreateCommand)
 export class SubscriptionPlanCreateCommandHandler
-  implements ICommandHandler<SubscriptionPlanCreateCommand>
+  implements
+    ICommandHandler<SubscriptionPlanCreateCommand>,
+    IBaseCommandHandler<SubscriptionPlanCreateCommand>
 {
   constructor(
     @Inject(SUBSCRIPTION_PLAN_WRITE_REPOSITORY_TOKEN)
@@ -18,6 +24,7 @@ export class SubscriptionPlanCreateCommandHandler
     private readonly eventBus: EventBus,
     private readonly subscriptionPlanAggregateFactory: SubscriptionPlanAggregateFactory,
     private readonly assertSubscriptionPlanSlugIsUniqueService: AssertSubscriptionPlanSlugIsUniqueService,
+    private readonly assertSubscriptionPlanTypeIsUniqueService: AssertSubscriptionPlanTypeIsUniqueService,
   ) {}
 
   /**
@@ -27,14 +34,14 @@ export class SubscriptionPlanCreateCommandHandler
    * @returns The created subscription plan id
    */
   async execute(command: SubscriptionPlanCreateCommand): Promise<string> {
-    // 01: Assert the subscription plan slug is unique
-    await this.assertSubscriptionPlanSlugIsUniqueService.execute(
-      command.slug.value,
-    );
+    // 01: Execute asserts
+    await this.executeAsserts(command);
 
     // 02: Create the subscription plan entity
     const subscriptionPlan = this.subscriptionPlanAggregateFactory.create({
       ...command,
+      createdAt: new DateValueObject(new Date()),
+      updatedAt: new DateValueObject(new Date()),
     });
 
     // 03: Save the subscription plan entity
@@ -46,5 +53,25 @@ export class SubscriptionPlanCreateCommandHandler
 
     // 05: Return the subscription plan id
     return subscriptionPlan.id.value;
+  }
+
+  /**
+   * Executes the asserts for the subscription plan create command
+   *
+   * @param command - The command to execute
+   * @returns The asserts results
+   */
+  async executeAsserts(
+    command: SubscriptionPlanCreateCommand,
+  ): Promise<void[]> {
+    const promises = [
+      this.assertSubscriptionPlanSlugIsUniqueService.execute(
+        command.slug.value,
+      ),
+      this.assertSubscriptionPlanTypeIsUniqueService.execute(
+        command.type.value as SubscriptionPlanTypeEnum,
+      ),
+    ];
+    return Promise.all(promises);
   }
 }

@@ -1,3 +1,4 @@
+import { DateValueObject } from '@/shared/domain/value-objects/date/date.vo';
 import { UserUuidValueObject } from '@/shared/domain/value-objects/identifiers/user-uuid/user-uuid.vo';
 import { UserAggregate } from '@/user-context/users/domain/aggregates/user.aggregate';
 import { UserRoleEnum } from '@/user-context/users/domain/enums/user-role/user-role.enum';
@@ -52,6 +53,8 @@ describe('UserPrismaRepository', () => {
   describe('findById', () => {
     it('should return user aggregate when user exists', async () => {
       const userId = '123e4567-e89b-12d3-a456-426614174000';
+      const now = new Date();
+
       const prismaData: UserPrismaDto = {
         id: userId,
         userName: 'johndoe',
@@ -61,6 +64,8 @@ describe('UserPrismaRepository', () => {
         avatarUrl: null,
         role: PrismaUserRoleEnum.USER,
         status: PrismaStatusEnum.ACTIVE,
+        createdAt: now,
+        updatedAt: now,
       };
 
       const userAggregate = new UserAggregate(
@@ -69,6 +74,8 @@ describe('UserPrismaRepository', () => {
           userName: new UserUserNameValueObject('johndoe'),
           role: new UserRoleValueObject(UserRoleEnum.USER),
           status: new UserStatusValueObject(UserStatusEnum.ACTIVE),
+          createdAt: new DateValueObject(now),
+          updatedAt: new DateValueObject(now),
         },
         false,
       );
@@ -107,6 +114,7 @@ describe('UserPrismaRepository', () => {
     it('should return user aggregate when user exists', async () => {
       const userId = '123e4567-e89b-12d3-a456-426614174000';
       const userName = 'johndoe';
+      const now = new Date();
       const prismaData: UserPrismaDto = {
         id: userId,
         userName,
@@ -116,6 +124,8 @@ describe('UserPrismaRepository', () => {
         avatarUrl: null,
         role: PrismaUserRoleEnum.USER,
         status: PrismaStatusEnum.ACTIVE,
+        createdAt: now,
+        updatedAt: now,
       };
 
       const userAggregate = new UserAggregate(
@@ -124,6 +134,8 @@ describe('UserPrismaRepository', () => {
           userName: new UserUserNameValueObject(userName),
           role: new UserRoleValueObject(UserRoleEnum.USER),
           status: new UserStatusValueObject(UserStatusEnum.ACTIVE),
+          createdAt: new DateValueObject(now),
+          updatedAt: new DateValueObject(now),
         },
         false,
       );
@@ -161,12 +173,16 @@ describe('UserPrismaRepository', () => {
   describe('save', () => {
     it('should save user aggregate and return saved aggregate', async () => {
       const userId = '123e4567-e89b-12d3-a456-426614174000';
+      const now = new Date();
+
       const userAggregate = new UserAggregate(
         {
           id: new UserUuidValueObject(userId),
           userName: new UserUserNameValueObject('johndoe'),
           role: new UserRoleValueObject(UserRoleEnum.USER),
           status: new UserStatusValueObject(UserStatusEnum.ACTIVE),
+          createdAt: new DateValueObject(now),
+          updatedAt: new DateValueObject(now),
         },
         false,
       );
@@ -180,6 +196,8 @@ describe('UserPrismaRepository', () => {
         avatarUrl: null,
         role: PrismaUserRoleEnum.USER,
         status: PrismaStatusEnum.ACTIVE,
+        createdAt: now,
+        updatedAt: now,
       };
 
       const savedPrismaData: UserPrismaDto = {
@@ -194,6 +212,8 @@ describe('UserPrismaRepository', () => {
           userName: new UserUserNameValueObject('johndoe'),
           role: new UserRoleValueObject(UserRoleEnum.USER),
           status: new UserStatusValueObject(UserStatusEnum.ACTIVE),
+          createdAt: new DateValueObject(now),
+          updatedAt: new DateValueObject(now),
         },
         false,
       );
@@ -220,12 +240,16 @@ describe('UserPrismaRepository', () => {
 
     it('should handle upsert operation for existing user', async () => {
       const userId = '123e4567-e89b-12d3-a456-426614174000';
+      const now = new Date();
+
       const userAggregate = new UserAggregate(
         {
           id: new UserUuidValueObject(userId),
           userName: new UserUserNameValueObject('johndoe'),
           role: new UserRoleValueObject(UserRoleEnum.ADMIN),
           status: new UserStatusValueObject(UserStatusEnum.INACTIVE),
+          createdAt: new DateValueObject(now),
+          updatedAt: new DateValueObject(now),
         },
         false,
       );
@@ -239,6 +263,8 @@ describe('UserPrismaRepository', () => {
         avatarUrl: null,
         role: PrismaUserRoleEnum.ADMIN,
         status: PrismaStatusEnum.INACTIVE,
+        createdAt: now,
+        updatedAt: now,
       };
 
       mockUserPrismaMapper.toPrismaData.mockReturnValue(prismaData);

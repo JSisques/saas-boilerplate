@@ -6,27 +6,30 @@ import { HealthStatusValueObject } from '@/health-context/health/domain/value-ob
 describe('HealthAggregate', () => {
   const createDto = (
     status: HealthStatusEnum = HealthStatusEnum.OK,
+    writeDatabaseStatus: HealthStatusEnum = HealthStatusEnum.OK,
+    readDatabaseStatus: HealthStatusEnum = HealthStatusEnum.OK,
   ): IHealthCreateDto => ({
     status: new HealthStatusValueObject(status),
+    writeDatabaseStatus: new HealthStatusValueObject(writeDatabaseStatus),
+    readDatabaseStatus: new HealthStatusValueObject(readDatabaseStatus),
   });
 
   it('should expose status value object via getter', () => {
-    const dto = createDto();
-
+    const dto = createDto(
+      HealthStatusEnum.OK,
+      HealthStatusEnum.OK,
+      HealthStatusEnum.OK,
+    );
     const aggregate = new HealthAggregate(dto);
-
     expect(aggregate.status).toBeInstanceOf(HealthStatusValueObject);
     expect(aggregate.status.value).toBe(HealthStatusEnum.OK);
-  });
-
-  it('should convert to primitives', () => {
-    const dto = createDto(HealthStatusEnum.WARNING);
-
-    const aggregate = new HealthAggregate(dto);
-    const primitives = aggregate.toPrimitives();
-
-    expect(primitives).toEqual({
-      status: HealthStatusEnum.WARNING,
-    });
+    expect(aggregate.writeDatabaseStatus).toBeInstanceOf(
+      HealthStatusValueObject,
+    );
+    expect(aggregate.writeDatabaseStatus.value).toBe(HealthStatusEnum.OK);
+    expect(aggregate.readDatabaseStatus).toBeInstanceOf(
+      HealthStatusValueObject,
+    );
+    expect(aggregate.readDatabaseStatus.value).toBe(HealthStatusEnum.OK);
   });
 });

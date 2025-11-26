@@ -1,4 +1,6 @@
-export interface IAuthEventData {
+import { IBaseEventData } from '@/shared/domain/interfaces/base-event-data.interface';
+
+export interface IAuthEventData extends IBaseEventData {
   id: string;
   userId: string;
   email: string | null;

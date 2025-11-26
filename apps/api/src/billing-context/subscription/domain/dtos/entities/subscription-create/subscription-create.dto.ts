@@ -5,6 +5,7 @@ import { SubscriptionStatusValueObject } from '@/billing-context/subscription/do
 import { SubscriptionStripeCustomerIdValueObject } from '@/billing-context/subscription/domain/value-objects/subscription-stripe-customer-id/subscription-stripe-customer-id.vo';
 import { SubscriptionStripeSubscriptionIdValueObject } from '@/billing-context/subscription/domain/value-objects/subscription-stripe-id/subscription-stripe-id.vo';
 import { SubscriptionTrialEndDateValueObject } from '@/billing-context/subscription/domain/value-objects/subscription-trial-end-date/subscription-trial-end-date.vo';
+import { IBaseAggregateDto } from '@/shared/domain/interfaces/base-aggregate-dto.interface';
 import { SubscriptionPlanUuidValueObject } from '@/shared/domain/value-objects/identifiers/subscription-plan/subscription-plan-uuid.vo';
 import { SubscriptionUuidValueObject } from '@/shared/domain/value-objects/identifiers/subscription/subscription-uuid.vo';
 import { TenantUuidValueObject } from '@/shared/domain/value-objects/identifiers/tenant-uuid/tenant-uuid.vo';
@@ -24,7 +25,7 @@ import { TenantUuidValueObject } from '@/shared/domain/value-objects/identifiers
  * @property {SubscriptionStripeCustomerIdValueObject | null} stripeCustomerId - The stripe customer id of the subscription.
  * @property {SubscriptionRenewalMethodValueObject} renewalMethod - The renewal method of the subscription.
  */
-export interface ISubscriptionCreateDto {
+export interface ISubscriptionCreateDto extends IBaseAggregateDto {
   id: SubscriptionUuidValueObject;
   tenantId: TenantUuidValueObject;
   planId: SubscriptionPlanUuidValueObject;

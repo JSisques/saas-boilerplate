@@ -1,4 +1,4 @@
-import { InvalidEnumValueException } from '@/shared/domain/exceptions/value-objects/invalid-enum-value.exception';
+import { InvalidEnumValueException } from '@/shared/domain/exceptions/value-objects/invalid-enum-value/invalid-enum-value.exception';
 import { UserStatusEnum } from '@/user-context/users/domain/enums/user-status/user-status.enum';
 import { UserStatusValueObject } from '@/user-context/users/domain/value-objects/user-status/user-status.vo';
 

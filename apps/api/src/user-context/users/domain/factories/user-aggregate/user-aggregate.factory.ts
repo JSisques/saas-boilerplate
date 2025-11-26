@@ -1,4 +1,5 @@
 import { IWriteFactory } from '@/shared/domain/interfaces/write-factory.interface';
+import { DateValueObject } from '@/shared/domain/value-objects/date/date.vo';
 import { UserUuidValueObject } from '@/shared/domain/value-objects/identifiers/user-uuid/user-uuid.vo';
 import { UserAggregate } from '@/user-context/users/domain/aggregates/user.aggregate';
 import { IUserCreateDto } from '@/user-context/users/domain/dtos/entities/user-create/user-create.dto';
@@ -74,6 +75,8 @@ export class UserAggregateFactory
       userName: data.userName
         ? new UserUserNameValueObject(data.userName)
         : null,
+      createdAt: new DateValueObject(data.createdAt),
+      updatedAt: new DateValueObject(data.updatedAt),
     });
   }
 }
