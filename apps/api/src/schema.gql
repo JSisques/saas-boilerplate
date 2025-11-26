@@ -325,7 +325,7 @@ type TenantDatabaseResponseDto {
   databaseName: String
 
   """The database URL of the tenant database"""
-  databaseUrl: String
+  readDatabaseName: String
 
   """The status of the tenant database"""
   status: TenantDatabaseStatusEnum

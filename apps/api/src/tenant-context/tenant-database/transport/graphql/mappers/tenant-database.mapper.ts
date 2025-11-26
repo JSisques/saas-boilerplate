@@ -25,7 +25,7 @@ export class TenantDatabaseGraphQLMapper {
       id: tenantDatabase.id,
       tenantId: tenantDatabase.tenantId,
       databaseName: tenantDatabase.databaseName,
-      databaseUrl: tenantDatabase.databaseUrl,
+      readDatabaseName: tenantDatabase.readDatabaseName,
       status: tenantDatabase.status as TenantDatabaseStatusEnum,
       schemaVersion: tenantDatabase.schemaVersion,
       lastMigrationAt: tenantDatabase.lastMigrationAt,

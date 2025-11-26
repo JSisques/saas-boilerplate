@@ -123,8 +123,8 @@ enum TenantDatabaseStatusEnum {
 model TenantDatabase {
   id          String                    @id @default(uuid())
   tenantId    String                    @unique // Tenant ID
-  databaseName String                   // Database name (e.g., tenant_abc123)
-  databaseUrl  String                   // Full database connection URL
+  databaseName String                   // Database name for write operations (e.g., tenant_abc123)
+  readDatabaseName String                // Database name for read operations (e.g., tenant_abc123_read)
   status      TenantDatabaseStatusEnum  @default(PROVISIONING) // Status of the database
   schemaVersion String?                 // Current schema version/migration version
   lastMigrationAt DateTime?            // Last migration timestamp

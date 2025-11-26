@@ -5,14 +5,13 @@ import { TenantDatabaseLastMigrationAtValueObject } from '@/tenant-context/tenan
 import { TenantDatabaseNameValueObject } from '@/tenant-context/tenant-database/domain/value-objects/tenant-database-name/tenant-database-name.vo';
 import { TenantDatabaseSchemaVersionValueObject } from '@/tenant-context/tenant-database/domain/value-objects/tenant-database-schema-version/tenant-database-schema-version.vo';
 import { TenantDatabaseStatusValueObject } from '@/tenant-context/tenant-database/domain/value-objects/tenant-database-status/tenant-database-status.vo';
-import { TenantDatabaseUrlValueObject } from '@/tenant-context/tenant-database/domain/value-objects/tenant-database-url/tenant-database-url.vo';
 import { TenantDatabaseStatusEnum } from '@prisma/client';
 
 export class TenantDatabaseCreateCommand {
   readonly id: TenantUuidValueObject;
   readonly tenantId: TenantUuidValueObject;
   readonly databaseName: TenantDatabaseNameValueObject;
-  readonly databaseUrl: TenantDatabaseUrlValueObject;
+  readonly readDatabaseName: TenantDatabaseNameValueObject;
   readonly status: TenantDatabaseStatusValueObject;
   readonly schemaVersion: TenantDatabaseSchemaVersionValueObject | null;
   readonly lastMigrationAt: TenantDatabaseLastMigrationAtValueObject | null;
@@ -22,7 +21,9 @@ export class TenantDatabaseCreateCommand {
     this.id = new TenantUuidValueObject();
     this.tenantId = new TenantUuidValueObject(props.tenantId);
     this.databaseName = new TenantDatabaseNameValueObject(props.databaseName);
-    this.databaseUrl = new TenantDatabaseUrlValueObject(props.databaseUrl);
+    this.readDatabaseName = new TenantDatabaseNameValueObject(
+      props.databaseName,
+    );
     this.status = new TenantDatabaseStatusValueObject(
       TenantDatabaseStatusEnum.PROVISIONING,
     );

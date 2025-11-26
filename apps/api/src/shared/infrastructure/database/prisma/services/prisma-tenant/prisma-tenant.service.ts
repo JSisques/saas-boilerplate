@@ -43,7 +43,7 @@ export class PrismaTenantService {
 
     // Build the database URL dynamically (databaseUrl field contains only the database name)
     const databaseUrl = this.urlBuilder.buildDatabaseUrl(
-      tenantDatabase.databaseUrl,
+      tenantDatabase.databaseName,
     );
 
     // Get or create Prisma client for this tenant

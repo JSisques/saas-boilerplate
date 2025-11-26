@@ -1,13 +1,13 @@
 import { Criteria } from '@/shared/domain/entities/criteria';
 import { FilterOperator } from '@/shared/domain/enums/filter-operator.enum';
 import { SortDirection } from '@/shared/domain/enums/sort-direction.enum';
+import { BaseMongoMasterRepository } from '@/shared/infrastructure/database/mongodb/base-mongo/base-mongo-master/base-mongo-master.repository';
+import { MongoMasterService } from '@/shared/infrastructure/database/mongodb/services/mongo-master/mongo-master.service';
 import { Test, TestingModule } from '@nestjs/testing';
-import { MongoService } from '../services/mongo.service';
-import { BaseMongoRepository } from './base-mongo.repository';
 
-describe('BaseMongoRepository', () => {
-  let repository: BaseMongoRepository;
-  let mongoService: MongoService;
+describe('BaseMongoMasterRepository', () => {
+  let repository: BaseMongoMasterRepository;
+  let mongoMasterService: MongoMasterService;
   let module: TestingModule;
   let mockCollection: any;
 
@@ -51,21 +51,23 @@ describe('BaseMongoRepository', () => {
     module = await Test.createTestingModule({
       providers: [
         {
-          provide: MongoService,
+          provide: MongoMasterService,
           useValue: mockMongoService,
         },
         {
-          provide: BaseMongoRepository,
-          useFactory: (mongo: MongoService) => {
-            return new BaseMongoRepository(mongo);
+          provide: BaseMongoMasterRepository,
+          useFactory: (mongo: MongoMasterService) => {
+            return new BaseMongoMasterRepository(mongo);
           },
-          inject: [MongoService],
+          inject: [MongoMasterService],
         },
       ],
     }).compile();
 
-    mongoService = module.get<MongoService>(MongoService);
-    repository = module.get<BaseMongoRepository>(BaseMongoRepository);
+    mongoMasterService = module.get<MongoMasterService>(MongoMasterService);
+    repository = module.get<BaseMongoMasterRepository>(
+      BaseMongoMasterRepository,
+    );
   });
 
   afterEach(async () => {
@@ -76,8 +78,8 @@ describe('BaseMongoRepository', () => {
     expect(repository).toBeDefined();
   });
 
-  it('should have mongoService injected', () => {
-    expect(repository['mongoService']).toBe(mongoService);
+  it('should have mongoMasterService injected', () => {
+    expect(repository['mongoMasterService']).toBe(mongoMasterService);
   });
 
   it('should have logger initialized', () => {

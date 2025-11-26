@@ -1,16 +1,16 @@
+import { AuthProviderEnum } from '@/auth-context/auth/domain/enums/auth-provider.enum';
+import { AuthViewModel } from '@/auth-context/auth/domain/view-models/auth.view-model';
+import { AuthMongoDbDto } from '@/auth-context/auth/infrastructure/database/mongodb/dtos/auth-mongodb.dto';
+import { AuthMongoDBMapper } from '@/auth-context/auth/infrastructure/database/mongodb/mappers/auth-mongodb.mapper';
+import { AuthMongoRepository } from '@/auth-context/auth/infrastructure/database/mongodb/repositories/auth-mongodb.repository';
 import { Criteria } from '@/shared/domain/entities/criteria';
 import { PaginatedResult } from '@/shared/domain/entities/paginated-result.entity';
-import { MongoService } from '@/shared/infrastructure/database/mongodb/services/mongo.service';
-import { AuthViewModel } from '@/auth-context/auth/domain/view-models/auth.view-model';
-import { AuthMongoRepository } from '@/auth-context/auth/infrastructure/database/mongodb/repositories/auth-mongodb.repository';
-import { AuthMongoDBMapper } from '@/auth-context/auth/infrastructure/database/mongodb/mappers/auth-mongodb.mapper';
-import { AuthMongoDbDto } from '@/auth-context/auth/infrastructure/database/mongodb/dtos/auth-mongodb.dto';
-import { AuthProviderEnum } from '@/auth-context/auth/domain/enums/auth-provider.enum';
+import { MongoMasterService } from '@/shared/infrastructure/database/mongodb/services/mongo-master/mongo-master.service';
 import { Collection } from 'mongodb';
 
 describe('AuthMongoRepository', () => {
   let repository: AuthMongoRepository;
-  let mockMongoService: jest.Mocked<MongoService>;
+  let mockMongoMasterService: jest.Mocked<MongoMasterService>;
   let mockAuthMongoDBMapper: jest.Mocked<AuthMongoDBMapper>;
   let mockCollection: jest.Mocked<Collection>;
 
@@ -30,9 +30,9 @@ describe('AuthMongoRepository', () => {
       countDocuments: jest.fn(),
     } as unknown as jest.Mocked<Collection>;
 
-    mockMongoService = {
+    mockMongoMasterService = {
       getCollection: jest.fn().mockReturnValue(mockCollection),
-    } as unknown as jest.Mocked<MongoService>;
+    } as unknown as jest.Mocked<MongoMasterService>;
 
     mockAuthMongoDBMapper = {
       toViewModel: jest.fn(),
@@ -40,7 +40,7 @@ describe('AuthMongoRepository', () => {
     } as unknown as jest.Mocked<AuthMongoDBMapper>;
 
     repository = new AuthMongoRepository(
-      mockMongoService,
+      mockMongoMasterService,
       mockAuthMongoDBMapper,
     );
   });
@@ -91,7 +91,9 @@ describe('AuthMongoRepository', () => {
       const result = await repository.findById(authId);
 
       expect(result).toBe(viewModel);
-      expect(mockMongoService.getCollection).toHaveBeenCalledWith('auths');
+      expect(mockMongoMasterService.getCollection).toHaveBeenCalledWith(
+        'auths',
+      );
       expect(mockCollection.findOne).toHaveBeenCalledWith({ id: authId });
       expect(mockAuthMongoDBMapper.toViewModel).toHaveBeenCalledWith(mongoDoc);
     });
@@ -182,7 +184,9 @@ describe('AuthMongoRepository', () => {
       expect(result.total).toBe(2);
       expect(result.page).toBe(1);
       expect(result.perPage).toBe(10);
-      expect(mockMongoService.getCollection).toHaveBeenCalledWith('auths');
+      expect(mockMongoMasterService.getCollection).toHaveBeenCalledWith(
+        'auths',
+      );
       expect(mockAuthMongoDBMapper.toViewModel).toHaveBeenCalledTimes(2);
     });
 
@@ -254,7 +258,9 @@ describe('AuthMongoRepository', () => {
 
       await repository.save(viewModel);
 
-      expect(mockMongoService.getCollection).toHaveBeenCalledWith('auths');
+      expect(mockMongoMasterService.getCollection).toHaveBeenCalledWith(
+        'auths',
+      );
       expect(mockAuthMongoDBMapper.toMongoData).toHaveBeenCalledWith(viewModel);
       expect(mockCollection.replaceOne).toHaveBeenCalledWith(
         { id: authId },
@@ -276,7 +282,9 @@ describe('AuthMongoRepository', () => {
       const result = await repository.delete(authId);
 
       expect(result).toBe(true);
-      expect(mockMongoService.getCollection).toHaveBeenCalledWith('auths');
+      expect(mockMongoMasterService.getCollection).toHaveBeenCalledWith(
+        'auths',
+      );
       expect(mockCollection.deleteOne).toHaveBeenCalledWith({ id: authId });
     });
   });

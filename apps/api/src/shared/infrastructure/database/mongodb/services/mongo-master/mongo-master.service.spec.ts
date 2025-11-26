@@ -1,24 +1,31 @@
+import { ConfigService } from '@nestjs/config';
 import { Test, TestingModule } from '@nestjs/testing';
 import { Db, MongoClient } from 'mongodb';
-import { MongoService } from './mongo.service';
+import { MongoMasterService } from './mongo-master.service';
 
 jest.mock('mongodb');
 
-describe('MongoService', () => {
-  let service: MongoService;
+describe('MongoMasterService', () => {
+  let service: MongoMasterService;
   let module: TestingModule;
   let mockClient: jest.Mocked<MongoClient>;
   let mockDb: jest.Mocked<Db>;
-
-  const originalEnv = process.env;
+  let mockConfigService: jest.Mocked<ConfigService>;
 
   beforeEach(() => {
-    jest.resetModules();
-    process.env = {
-      ...originalEnv,
-      MONGODB_URI: 'mongodb://localhost:27017',
-      MONGODB_DATABASE: 'test-db',
-    };
+    mockConfigService = {
+      get: jest.fn((key: string) => {
+        const config: Record<string, string> = {
+          MONGODB_URI: 'mongodb://localhost:27017',
+          MONGODB_DATABASE: 'test-db',
+          MONGODB_MAX_POOL_SIZE: '10',
+          MONGODB_MIN_POOL_SIZE: '2',
+          MONGODB_MAX_IDLE_TIME_MS: '30000',
+          MONGODB_WAIT_QUEUE_TIMEOUT_MS: '0',
+        };
+        return config[key];
+      }),
+    } as any;
 
     mockDb = {
       collection: jest.fn(),
@@ -36,7 +43,6 @@ describe('MongoService', () => {
   });
 
   afterEach(async () => {
-    process.env = originalEnv;
     // Initialize client if not already done to avoid errors in onModuleDestroy
     if (module && service && !service['client']) {
       service['client'] = mockClient;
@@ -52,10 +58,16 @@ describe('MongoService', () => {
 
   beforeEach(async () => {
     module = await Test.createTestingModule({
-      providers: [MongoService],
+      providers: [
+        MongoMasterService,
+        {
+          provide: ConfigService,
+          useValue: mockConfigService,
+        },
+      ],
     }).compile();
 
-    service = module.get<MongoService>(MongoService);
+    service = module.get<MongoMasterService>(MongoMasterService);
   });
 
   it('should be defined', () => {
@@ -68,6 +80,10 @@ describe('MongoService', () => {
 
       expect(MongoClient).toHaveBeenCalledWith('mongodb://localhost:27017', {
         authSource: 'admin',
+        maxPoolSize: 10,
+        minPoolSize: 2,
+        maxIdleTimeMS: 30000,
+        waitQueueTimeoutMS: 0,
       });
       expect(mockClient.connect).toHaveBeenCalledTimes(1);
       expect(mockClient.db).toHaveBeenCalledWith('test-db');
@@ -81,7 +97,7 @@ describe('MongoService', () => {
       await expect(service.onModuleInit()).rejects.toThrow(error);
 
       expect(errorSpy).toHaveBeenCalledWith(
-        expect.stringContaining('Error connecting to MongoDB'),
+        expect.stringContaining('Error connecting to MongoDB Master:'),
       );
       errorSpy.mockRestore();
     });
