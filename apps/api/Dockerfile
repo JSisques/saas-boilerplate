@@ -7,17 +7,21 @@ WORKDIR /app
 # Copy package files
 COPY package.json package-lock.json* pnpm-lock.yaml* ./
 
-# Install pnpm if using pnpm, or use npm
+# Install pnpm (fallback to npm global install if corepack is unavailable)
 RUN corepack enable && corepack prepare pnpm@latest --activate || npm install -g pnpm
 
-# Install all dependencies
-RUN pnpm install --frozen-lockfile || npm ci
+# Install all dependencies (skip frozen lockfile when the file is missing)
+RUN if [ -f pnpm-lock.yaml ]; then \
+      pnpm install --frozen-lockfile; \
+    else \
+      pnpm install --no-frozen-lockfile; \
+    fi
 
 # Copy Prisma schema
 COPY prisma ./prisma
 
 # Generate Prisma Client
-RUN pnpm prisma:generate || npx prisma generate
+RUN pnpm prisma:generate:all || npx prisma generate:all
 
 # Stage 2: Build
 # Compile TypeScript application
@@ -50,13 +54,17 @@ RUN addgroup -g 1001 -S nodejs && \
 # Copy package files
 COPY package.json package-lock.json* pnpm-lock.yaml* ./
 
-# Install only production dependencies
-RUN corepack enable && corepack prepare pnpm@latest --activate || npm install -g pnpm && \
-    pnpm install --prod --frozen-lockfile || npm ci --only=production
+# Install only production dependencies (fallback to non-frozen when lockfile is absent)
+RUN corepack enable && corepack prepare pnpm@latest --activate || npm install -g pnpm
+RUN if [ -f pnpm-lock.yaml ]; then \
+      pnpm install --prod --frozen-lockfile; \
+    else \
+      pnpm install --prod --no-frozen-lockfile; \
+    fi
 
 # Copy Prisma files and generate client for production
 COPY prisma ./prisma
-RUN pnpm prisma:generate || npx prisma generate
+RUN pnpm prisma:generate:all || npx prisma generate:all
 
 # Copy built application from build stage
 COPY --from=build /app/dist ./dist
