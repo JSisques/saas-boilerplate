@@ -21,7 +21,7 @@ RUN if [ -f pnpm-lock.yaml ]; then \
 COPY prisma ./prisma
 
 # Generate Prisma Client
-RUN pnpm prisma:generate || npx prisma generate
+RUN pnpm prisma:generate:all || npx prisma generate:all
 
 # Stage 2: Build
 # Compile TypeScript application
@@ -64,7 +64,7 @@ RUN if [ -f pnpm-lock.yaml ]; then \
 
 # Copy Prisma files and generate client for production
 COPY prisma ./prisma
-RUN pnpm prisma:generate || npx prisma generate
+RUN pnpm prisma:generate:all || npx prisma generate:all
 
 # Copy built application from build stage
 COPY --from=build /app/dist ./dist
