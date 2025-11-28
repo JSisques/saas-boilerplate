@@ -1,4 +1,5 @@
 import { PaginatedResult } from '@/shared/domain/entities/paginated-result.entity';
+import { FindTenantMembersByCriteriaQuery } from '@/tenant-context/tenant-members/application/queries/tenant-member-find-by-criteria/tenant-member-find-by-criteria.query';
 import {
   TENANT_MEMBER_READ_REPOSITORY_TOKEN,
   TenantMemberReadRepository,
@@ -6,7 +7,6 @@ import {
 import { TenantMemberViewModel } from '@/tenant-context/tenant-members/domain/view-models/tenant-member/tenant-member.view-model';
 import { Inject, Logger } from '@nestjs/common';
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
-import { FindTenantMembersByCriteriaQuery } from './tenant-member-find-by-criteria.query';
 
 @QueryHandler(FindTenantMembersByCriteriaQuery)
 export class FindTenantMembersByCriteriaQueryHandler

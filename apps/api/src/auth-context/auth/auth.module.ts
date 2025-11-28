@@ -19,9 +19,10 @@ import { AuthMongoDBMapper } from '@/auth-context/auth/infrastructure/database/m
 import { AuthMongoRepository } from '@/auth-context/auth/infrastructure/database/mongodb/repositories/auth-mongodb.repository';
 import { AuthPrismaMapper } from '@/auth-context/auth/infrastructure/database/prisma/mappers/auth-prisma.mapper';
 import { AuthPrismaRepository } from '@/auth-context/auth/infrastructure/database/prisma/repositories/auth-prisma.repository';
-import { OwnerGuard } from '@/auth-context/auth/infrastructure/guards/owner.guard';
-import { RolesGuard } from '@/auth-context/auth/infrastructure/guards/roles.guard';
-import { TenantGuard } from '@/auth-context/auth/infrastructure/guards/tenant.guard';
+import { OwnerGuard } from '@/auth-context/auth/infrastructure/guards/owner/owner.guard';
+import { RolesGuard } from '@/auth-context/auth/infrastructure/guards/roles/roles.guard';
+import { TenantRolesGuard } from '@/auth-context/auth/infrastructure/guards/tenant-roles/tenant-roles.guard';
+import { TenantGuard } from '@/auth-context/auth/infrastructure/guards/tenant/tenant.guard';
 import { JwtStrategy } from '@/auth-context/auth/infrastructure/strategies/jwt/jwt.strategy';
 import { AuthGraphQLMapper } from '@/auth-context/auth/transport/graphql/mappers/auth.mapper';
 import { AuthMutationsResolver } from '@/auth-context/auth/transport/graphql/resolvers/auth-mutations.resolver';
@@ -62,7 +63,13 @@ const MAPPERS = [AuthPrismaMapper, AuthMongoDBMapper, AuthGraphQLMapper];
 
 const STRATEGIES = [JwtStrategy];
 
-const GUARDS = [JwtAuthGuard, RolesGuard, OwnerGuard, TenantGuard];
+const GUARDS = [
+  JwtAuthGuard,
+  RolesGuard,
+  OwnerGuard,
+  TenantGuard,
+  TenantRolesGuard,
+];
 
 const REPOSITORIES = [
   {
@@ -106,6 +113,6 @@ const REPOSITORIES = [
     ...STRATEGIES,
     ...GUARDS,
   ],
-  exports: [JwtAuthService, JwtAuthGuard, RolesGuard, OwnerGuard, TenantGuard],
+  exports: [...SERVICES, ...GUARDS],
 })
 export class AuthModule {}
