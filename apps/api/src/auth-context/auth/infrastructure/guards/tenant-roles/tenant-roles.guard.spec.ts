@@ -1,19 +1,11 @@
 import { TENANT_ROLES_KEY } from '@/auth-context/auth/infrastructure/decorators/tenant-roles/tenant-roles.decorator';
 import { TenantRolesGuard } from '@/auth-context/auth/infrastructure/guards/tenant-roles/tenant-roles.guard';
 import { TenantMemberRoleEnum } from '@/prisma/master/client';
-import {
-  TENANT_MEMBER_WRITE_REPOSITORY_TOKEN,
-  TenantMemberWriteRepository,
-} from '@/tenant-context/tenant-members/domain/repositories/tenant-member-write.repository';
+import { FindTenantMemberByTenantIdAndUserIdQuery } from '@/tenant-context/tenant-members/application/queries/tenant-member-find-by-tenant-id-and-user-id/tenant-member-find-by-tenant-id-and-user-id.query';
 import { TenantMemberAggregate } from '@/tenant-context/tenant-members/domain/aggregates/tenant-member.aggregate';
-import { TenantMemberUuidValueObject } from '@/shared/domain/value-objects/identifiers/tenant-member-uuid/tenant-member-uuid.vo';
-import { TenantUuidValueObject } from '@/shared/domain/value-objects/identifiers/tenant-uuid/tenant-uuid.vo';
-import { UserUuidValueObject } from '@/shared/domain/value-objects/identifiers/user-uuid/user-uuid.vo';
-import {
-  ExecutionContext,
-  ForbiddenException,
-} from '@nestjs/common';
+import { ExecutionContext, ForbiddenException } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
+import { QueryBus } from '@nestjs/cqrs';
 import { GqlExecutionContext } from '@nestjs/graphql';
 
 jest.mock('@nestjs/graphql');
@@ -21,7 +13,7 @@ jest.mock('@nestjs/graphql');
 describe('TenantRolesGuard', () => {
   let guard: TenantRolesGuard;
   let mockReflector: jest.Mocked<Reflector>;
-  let mockTenantMemberRepository: jest.Mocked<TenantMemberWriteRepository>;
+  let mockQueryBus: jest.Mocked<QueryBus>;
   let mockContext: ExecutionContext;
   let mockGqlContext: any;
   let mockRequest: any;
@@ -57,19 +49,11 @@ describe('TenantRolesGuard', () => {
       getAllAndOverride: jest.fn(),
     } as unknown as jest.Mocked<Reflector>;
 
-    mockTenantMemberRepository = {
-      findById: jest.fn(),
-      findByTenantId: jest.fn(),
-      findByUserId: jest.fn(),
-      findByTenantIdAndUserId: jest.fn(),
-      save: jest.fn(),
-      delete: jest.fn(),
-    } as unknown as jest.Mocked<TenantMemberWriteRepository>;
+    mockQueryBus = {
+      execute: jest.fn(),
+    } as unknown as jest.Mocked<QueryBus>;
 
-    guard = new TenantRolesGuard(
-      mockReflector,
-      mockTenantMemberRepository,
-    );
+    guard = new TenantRolesGuard(mockReflector, mockQueryBus);
   });
 
   afterEach(() => {
@@ -92,8 +76,9 @@ describe('TenantRolesGuard', () => {
     it('should allow access when user has required tenant role', async () => {
       const requiredRoles = [TenantMemberRoleEnum.OWNER];
       mockReflector.getAllAndOverride.mockReturnValue(requiredRoles);
-      mockRequest.user = { userId: 'user-123' };
-      mockRequest.headers['x-tenant-id'] = 'tenant-123';
+      mockRequest.user = { userId: '4657e342-154c-4903-8394-9b39c36440b4' };
+      mockRequest.headers['x-tenant-id'] =
+        'fb2dce89-a5f6-408a-9e01-8857003d9f64';
 
       const mockTenantMember = {
         role: {
@@ -101,16 +86,19 @@ describe('TenantRolesGuard', () => {
         },
       } as Partial<TenantMemberAggregate>;
 
-      mockTenantMemberRepository.findByTenantIdAndUserId.mockResolvedValue(
+      mockQueryBus.execute.mockResolvedValue(
         mockTenantMember as TenantMemberAggregate,
       );
 
       const result = await guard.canActivate(mockContext);
 
       expect(result).toBe(true);
-      expect(
-        mockTenantMemberRepository.findByTenantIdAndUserId,
-      ).toHaveBeenCalledWith('tenant-123', 'user-123');
+      expect(mockQueryBus.execute).toHaveBeenCalledWith(
+        new FindTenantMemberByTenantIdAndUserIdQuery({
+          tenantId: 'fb2dce89-a5f6-408a-9e01-8857003d9f64',
+          userId: '4657e342-154c-4903-8394-9b39c36440b4',
+        }),
+      );
     });
 
     it('should allow access when user has one of multiple required tenant roles', async () => {
@@ -119,8 +107,9 @@ describe('TenantRolesGuard', () => {
         TenantMemberRoleEnum.ADMIN,
       ];
       mockReflector.getAllAndOverride.mockReturnValue(requiredRoles);
-      mockRequest.user = { userId: 'user-123' };
-      mockRequest.headers['x-tenant-id'] = 'tenant-123';
+      mockRequest.user = { userId: '4657e342-154c-4903-8394-9b39c36440b4' };
+      mockRequest.headers['x-tenant-id'] =
+        'fb2dce89-a5f6-408a-9e01-8857003d9f64';
 
       const mockTenantMember = {
         role: {
@@ -128,7 +117,7 @@ describe('TenantRolesGuard', () => {
         },
       } as Partial<TenantMemberAggregate>;
 
-      mockTenantMemberRepository.findByTenantIdAndUserId.mockResolvedValue(
+      mockQueryBus.execute.mockResolvedValue(
         mockTenantMember as TenantMemberAggregate,
       );
 
@@ -153,7 +142,7 @@ describe('TenantRolesGuard', () => {
     it('should throw ForbiddenException when tenant ID is not provided', async () => {
       const requiredRoles = [TenantMemberRoleEnum.OWNER];
       mockReflector.getAllAndOverride.mockReturnValue(requiredRoles);
-      mockRequest.user = { userId: 'user-123' };
+      mockRequest.user = { userId: '4657e342-154c-4903-8394-9b39c36440b4' };
       mockRequest.headers = {};
 
       await expect(guard.canActivate(mockContext)).rejects.toThrow(
@@ -168,7 +157,8 @@ describe('TenantRolesGuard', () => {
       const requiredRoles = [TenantMemberRoleEnum.OWNER];
       mockReflector.getAllAndOverride.mockReturnValue(requiredRoles);
       mockRequest.user = {};
-      mockRequest.headers['x-tenant-id'] = 'tenant-123';
+      mockRequest.headers['x-tenant-id'] =
+        'fb2dce89-a5f6-408a-9e01-8857003d9f64';
 
       await expect(guard.canActivate(mockContext)).rejects.toThrow(
         ForbiddenException,
@@ -181,12 +171,13 @@ describe('TenantRolesGuard', () => {
     it('should throw ForbiddenException when user is not a member of the tenant', async () => {
       const requiredRoles = [TenantMemberRoleEnum.OWNER];
       mockReflector.getAllAndOverride.mockReturnValue(requiredRoles);
-      mockRequest.user = { userId: 'user-123' };
-      mockRequest.headers['x-tenant-id'] = 'tenant-123';
+      mockRequest.user = {
+        userId: '4657e342-154c-4903-8394-9b39c36440b4',
+      };
+      mockRequest.headers['x-tenant-id'] =
+        'fb2dce89-a5f6-408a-9e01-8857003d9f64';
 
-      mockTenantMemberRepository.findByTenantIdAndUserId.mockResolvedValue(
-        null,
-      );
+      mockQueryBus.execute.mockResolvedValue(null);
 
       await expect(guard.canActivate(mockContext)).rejects.toThrow(
         ForbiddenException,
@@ -199,8 +190,9 @@ describe('TenantRolesGuard', () => {
     it('should throw ForbiddenException when user does not have required tenant role', async () => {
       const requiredRoles = [TenantMemberRoleEnum.OWNER];
       mockReflector.getAllAndOverride.mockReturnValue(requiredRoles);
-      mockRequest.user = { userId: 'user-123' };
-      mockRequest.headers['x-tenant-id'] = 'tenant-123';
+      mockRequest.user = { userId: '4657e342-154c-4903-8394-9b39c36440b4' };
+      mockRequest.headers['x-tenant-id'] =
+        'fb2dce89-a5f6-408a-9e01-8857003d9f64';
 
       const mockTenantMember = {
         role: {
@@ -208,7 +200,7 @@ describe('TenantRolesGuard', () => {
         },
       } as Partial<TenantMemberAggregate>;
 
-      mockTenantMemberRepository.findByTenantIdAndUserId.mockResolvedValue(
+      mockQueryBus.execute.mockResolvedValue(
         mockTenantMember as TenantMemberAggregate,
       );
 
@@ -223,8 +215,8 @@ describe('TenantRolesGuard', () => {
     it('should accept tenant ID from request.tenantId', async () => {
       const requiredRoles = [TenantMemberRoleEnum.ADMIN];
       mockReflector.getAllAndOverride.mockReturnValue(requiredRoles);
-      mockRequest.user = { userId: 'user-123' };
-      mockRequest.tenantId = 'tenant-456';
+      mockRequest.user = { userId: '4657e342-154c-4903-8394-9b39c36440b4' };
+      mockRequest.tenantId = 'fb2dce89-a5f6-408a-9e01-8857003d9f64';
       mockRequest.headers = {};
 
       const mockTenantMember = {
@@ -233,17 +225,19 @@ describe('TenantRolesGuard', () => {
         },
       } as Partial<TenantMemberAggregate>;
 
-      mockTenantMemberRepository.findByTenantIdAndUserId.mockResolvedValue(
+      mockQueryBus.execute.mockResolvedValue(
         mockTenantMember as TenantMemberAggregate,
       );
 
       const result = await guard.canActivate(mockContext);
 
       expect(result).toBe(true);
-      expect(
-        mockTenantMemberRepository.findByTenantIdAndUserId,
-      ).toHaveBeenCalledWith('tenant-456', 'user-123');
+      expect(mockQueryBus.execute).toHaveBeenCalledWith(
+        new FindTenantMemberByTenantIdAndUserIdQuery({
+          tenantId: 'fb2dce89-a5f6-408a-9e01-8857003d9f64',
+          userId: '4657e342-154c-4903-8394-9b39c36440b4',
+        }),
+      );
     });
   });
 });
-

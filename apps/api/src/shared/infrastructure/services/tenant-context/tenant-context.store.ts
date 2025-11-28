@@ -17,10 +17,7 @@ export class TenantContextStore {
    * @param fn - Function to run with context
    * @returns Result of the function
    */
-  static run<T>(
-    context: { tenantId?: string; request?: any },
-    fn: () => T,
-  ): T {
+  static run<T>(context: { tenantId?: string; request?: any }, fn: () => T): T {
     return this.asyncLocalStorage.run(context, fn);
   }
 
@@ -50,5 +47,3 @@ export class TenantContextStore {
     return context?.request;
   }
 }
-
-

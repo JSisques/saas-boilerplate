@@ -59,4 +59,3 @@ describe('TenantRoles', () => {
     expect(SetMetadata).toHaveBeenCalledWith(TENANT_ROLES_KEY, []);
   });
 });
-
