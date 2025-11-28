@@ -1,3 +1,4 @@
+import { FindTenantMemberViewModelByTenantIdQuery } from '@/tenant-context/tenant-members/application/queries/tenant-member-find-view-model-by-tenant-id/tenant-member-find-view-model-by-tenant-id.query';
 import { TenantMemberViewModelFactory } from '@/tenant-context/tenant-members/domain/factories/tenant-member-view-model/tenant-member-view-model.factory';
 import {
   TENANT_MEMBER_READ_REPOSITORY_TOKEN,
@@ -6,7 +7,6 @@ import {
 import { TenantMemberViewModel } from '@/tenant-context/tenant-members/domain/view-models/tenant-member/tenant-member.view-model';
 import { Inject, Logger } from '@nestjs/common';
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
-import { FindTenantMemberViewModelByTenantIdQuery } from './tenant-member-find-view-model-by-tenant-id.query';
 
 @QueryHandler(FindTenantMemberViewModelByTenantIdQuery)
 export class FindTenantMemberViewModelByTenantIdQueryHandler
