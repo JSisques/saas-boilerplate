@@ -17,6 +17,14 @@ export const AUTH_REGISTER_BY_EMAIL_MUTATION = `
   }
 `;
 
+export const AUTH_REFRESH_TOKEN_MUTATION = `
+  mutation RefreshToken($input: AuthRefreshTokenRequestDto!) {
+    refreshToken(input: $input) {
+      accessToken
+    }
+  }
+`;
+
 export const AUTH_LOGOUT_MUTATION = `
   mutation Logout($input: UpdateUserRequestDto!) {
     logout(input: $input) {
@@ -26,4 +34,3 @@ export const AUTH_LOGOUT_MUTATION = `
     }
   }
 `;
-

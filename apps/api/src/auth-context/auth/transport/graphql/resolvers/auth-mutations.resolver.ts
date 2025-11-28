@@ -1,9 +1,12 @@
 import { AuthLoginByEmailCommand } from '@/auth-context/auth/application/commands/auth-login-by-email/auth-login-by-email.command';
+import { AuthRefreshTokenCommand } from '@/auth-context/auth/application/commands/auth-refresh-token/auth-refresh-token.command';
 import { AuthRegisterByEmailCommand } from '@/auth-context/auth/application/commands/auth-register-by-email/auth-register-by-email.command';
 import { Public } from '@/auth-context/auth/infrastructure/decorators/public/public.decorator';
 import { AuthLoginByEmailRequestDto } from '@/auth-context/auth/transport/graphql/dtos/requests/auth-login-by-email.request.dto';
+import { AuthRefreshTokenRequestDto } from '@/auth-context/auth/transport/graphql/dtos/requests/auth-refresh-token.request.dto';
 import { AuthRegisterByEmailRequestDto } from '@/auth-context/auth/transport/graphql/dtos/requests/auth-register-by-email.request.dto';
 import { LoginResponseDto } from '@/auth-context/auth/transport/graphql/dtos/responses/login.response.dto';
+import { RefreshTokenResponseDto } from '@/auth-context/auth/transport/graphql/dtos/responses/refresh-token.response.dto';
 import { MutationResponseDto } from '@/shared/transport/graphql/dtos/responses/success-response/success-response.dto';
 import { MutationResponseGraphQLMapper } from '@/shared/transport/graphql/mappers/mutation-response/mutation-response.mapper';
 import { UpdateUserRequestDto } from '@/user-context/users/transport/graphql/dtos/requests/update-user.request.dto';
@@ -59,6 +62,25 @@ export class AuthMutationsResolver {
       message: 'Auth registered successfully',
       id: registeredAuthId,
     });
+  }
+
+  @Mutation(() => RefreshTokenResponseDto)
+  async refreshToken(
+    @Args('input') input: AuthRefreshTokenRequestDto,
+  ): Promise<RefreshTokenResponseDto> {
+    this.logger.log('Refresh token requested');
+
+    // 01: Send the command to the command bus
+    const newAccessToken = await this.commandBus.execute(
+      new AuthRefreshTokenCommand({
+        refreshToken: input.refreshToken,
+      }),
+    );
+
+    // 02: Return new access token
+    return {
+      accessToken: newAccessToken,
+    };
   }
 
   @Mutation(() => MutationResponseDto)

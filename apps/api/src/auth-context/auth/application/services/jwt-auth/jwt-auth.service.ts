@@ -103,6 +103,25 @@ export class JwtAuthService {
   }
 
   /**
+   * Refresh access token using refresh token
+   * @param refreshToken - Refresh token to use for generating new access token
+   * @returns New access token (optionally with new refresh token)
+   */
+  refreshToken(refreshToken: string): string {
+    this.logger.log('Refreshing access token using refresh token');
+
+    // Verify and decode the refresh token
+    const payload = this.verifyRefreshToken(refreshToken);
+
+    // Generate a new access token with the same payload
+    const newAccessToken = this.generateAccessToken(payload);
+
+    this.logger.log(`New access token generated for user: ${payload.userId}`);
+
+    return newAccessToken;
+  }
+
+  /**
    * Decode token without verification
    * @param token - Token to decode
    * @returns Decoded payload

@@ -1,8 +1,8 @@
-import { SubscriptionPlanAggregate } from "@/billing-context/subscription-plan/domain/aggregates/user.aggregate";
-import { ISubscriptionPlanCreateViewModelDto } from "@/billing-context/subscription-plan/domain/dtos/view-models/subscription-plan-create-view-model/subscription-plan-create-view-model.dto";
-import { SubscriptionPlanPrimitives } from "@/billing-context/subscription-plan/domain/primitives/subscription-plan.primitives";
-import { SubscriptionPlanViewModel } from "@/billing-context/subscription-plan/domain/view-models/subscription-plan.view-model";
-import { IReadFactory } from "@repo/shared/domain/interfaces/read-factory.interface";
+import { SubscriptionPlanAggregate } from '@/billing-context/subscription-plan/domain/aggregates/subscription-plan.aggregate';
+import { ISubscriptionPlanCreateViewModelDto } from '@/billing-context/subscription-plan/domain/dtos/view-models/subscription-plan-create-view-model/subscription-plan-create-view-model.dto';
+import { SubscriptionPlanPrimitives } from '@/billing-context/subscription-plan/domain/primitives/subscription-plan.primitives';
+import { SubscriptionPlanViewModel } from '@/billing-context/subscription-plan/domain/view-models/subscription-plan.view-model';
+import { IReadFactory } from '@repo/shared/domain/interfaces/read-factory.interface';
 
 /**
  * This factory class is used to create a new subscription plan view model.
@@ -22,7 +22,7 @@ export class SubscriptionPlanViewModelFactory
    * @returns The created view model.
    */
   public create(
-    data: ISubscriptionPlanCreateViewModelDto
+    data: ISubscriptionPlanCreateViewModelDto,
   ): SubscriptionPlanViewModel {
     return new SubscriptionPlanViewModel(data);
   }
@@ -34,7 +34,7 @@ export class SubscriptionPlanViewModelFactory
    * @returns The subscription plan view model.
    */
   fromPrimitives(
-    subscriptionPlanPrimitives: SubscriptionPlanPrimitives
+    subscriptionPlanPrimitives: SubscriptionPlanPrimitives,
   ): SubscriptionPlanViewModel {
     const now = new Date();
 
@@ -66,7 +66,7 @@ export class SubscriptionPlanViewModelFactory
    * @returns The subscription plan view model.
    */
   fromAggregate(
-    subscriptionPlanAggregate: SubscriptionPlanAggregate
+    subscriptionPlanAggregate: SubscriptionPlanAggregate,
   ): SubscriptionPlanViewModel {
     const now = new Date();
 

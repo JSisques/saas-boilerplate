@@ -156,5 +156,61 @@
         "updatedAt": "Updated At"
       }
     }
+  },
+  "authPage": {
+    "title": {
+      "login": "Welcome back",
+      "signup": "Create an account"
+    },
+    "description": {
+      "login": "Enter your email and password to sign in",
+      "signup": "Enter your information to create a new account"
+    },
+    "fields": {
+      "email": {
+        "label": "Email",
+        "placeholder": "name@example.com"
+      },
+      "password": {
+        "label": "Password",
+        "placeholder": {
+          "login": "Enter your password",
+          "signup": "At least 8 characters"
+        }
+      },
+      "confirmPassword": {
+        "label": "Confirm Password",
+        "placeholder": "Confirm your password"
+      }
+    },
+    "actions": {
+      "login": "Sign in",
+      "signup": "Create account",
+      "switchToSignup": "Sign up",
+      "switchToLogin": "Sign in",
+      "loading": {
+        "login": "Signing in...",
+        "signup": "Creating account..."
+      }
+    },
+    "messages": {
+      "switchToSignup": "Don't have an account?",
+      "switchToLogin": "Already have an account?",
+      "error": "An error occurred. Please try again."
+    },
+    "validation": {
+      "email": {
+        "required": "Email is required",
+        "invalid": "Invalid email format"
+      },
+      "password": {
+        "required": "Password is required",
+        "minLength": "Password must be at least 8 characters"
+      },
+      "confirmPassword": {
+        "required": "Please confirm your password",
+        "mismatch": "Passwords don't match"
+      }
+    }
   }
 }

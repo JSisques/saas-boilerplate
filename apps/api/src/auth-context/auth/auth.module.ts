@@ -1,4 +1,5 @@
 import { AuthLoginByEmailCommandHandler } from '@/auth-context/auth/application/commands/auth-login-by-email/auth-login-by-email.command-handler';
+import { AuthRefreshTokenCommandHandler } from '@/auth-context/auth/application/commands/auth-refresh-token/auth-refresh-token.command-handler';
 import { AuthRegisterByEmailCommandHandler } from '@/auth-context/auth/application/commands/auth-register-by-email/auth-register-by-email.command-handler';
 import { AuthCreatedEventHandler } from '@/auth-context/auth/application/event-handlers/auth-created/auth-created.event-handler';
 import { AuthLoggedInByEmailEventHandler } from '@/auth-context/auth/application/event-handlers/auth-logged-in-by-email/auth-logged-in-by-email.event-handler';
@@ -47,6 +48,7 @@ const QUERY_HANDLERS = [FindAuthsByCriteriaQueryHandler];
 
 const COMMAND_HANDLERS = [
   AuthLoginByEmailCommandHandler,
+  AuthRefreshTokenCommandHandler,
   AuthRegisterByEmailCommandHandler,
 ];
 

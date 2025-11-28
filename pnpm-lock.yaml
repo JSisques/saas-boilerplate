@@ -30,6 +30,9 @@ importers:
 
   apps/admin:
     dependencies:
+      '@hookform/resolvers':
+        specifier: ^5.2.2
+        version: 5.2.2(react-hook-form@7.66.0(react@19.2.0))
       '@repo/sdk':
         specifier: workspace:*
         version: link:../../packages/sdk
@@ -57,9 +60,15 @@ importers:
       react-dom:
         specifier: 19.2.0
         version: 19.2.0(react@19.2.0)
+      react-hook-form:
+        specifier: ^7.66.0
+        version: 7.66.0(react@19.2.0)
       tw-animate-css:
         specifier: ^1.4.0
         version: 1.4.0
+      zod:
+        specifier: ^4.1.12
+        version: 4.1.12
       zustand:
         specifier: ^5.0.8
         version: 5.0.8(@types/react@19.1.0)(react@19.2.0)(use-sync-external-store@1.6.0(react@19.2.0))
