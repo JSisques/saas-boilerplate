@@ -513,9 +513,94 @@ The module uses two repositories following CQRS pattern:
 - Supports complex queries with filters, sorts, and pagination
 - Collection name: `storages`
 
+## Authentication & Authorization
+
+All storage operations require authentication and tenant context. The module uses multiple guards to ensure security and proper tenant isolation.
+
+### Required Headers
+
+Every request to the storage API must include:
+
+1. **Authorization Header** - JWT token for authentication
+   ```http
+   Authorization: Bearer <jwt-token>
+   ```
+
+2. **Tenant ID Header** - Tenant context for multi-tenant isolation
+   ```http
+   x-tenant-id: <tenant-uuid>
+   ```
+   or
+   ```http
+   X-Tenant-Id: <tenant-uuid>
+   ```
+
+### Guards
+
+The module applies the following guards to all endpoints:
+
+1. **JwtAuthGuard** - Validates JWT token and extracts user information
+2. **TenantGuard** - Validates tenant context and ensures user has access to the tenant
+3. **RolesGuard** - Validates user has ADMIN or USER role
+4. **TenantRolesGuard** - Validates user has appropriate tenant member role (OWNER, ADMIN, or MEMBER)
+
+### Tenant Context Validation
+
+- The `x-tenant-id` header is **required** for all operations
+- The tenant ID must match one of the tenant IDs in the user's JWT token (`tenantIds` array)
+- Users with ADMIN role can access any tenant
+- Regular users can only access tenants they are members of
+- If the tenant ID is missing or invalid, the request will be rejected with a `ForbiddenException`
+
+### Example Request
+
+```bash
+curl -X POST http://localhost:4100/api/graphql \
+  -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..." \
+  -H "x-tenant-id: 123e4567-e89b-12d3-a456-426614174000" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "query": "query { storageFindById(input: { id: \"...\" }) { id fileName } }"
+  }'
+```
+
 ## GraphQL API
 
 The module exposes a GraphQL API through two resolvers:
+
+### Authentication & Authorization
+
+All storage operations require:
+
+1. **JWT Authentication** - Valid JWT token in `Authorization` header
+2. **Tenant Context** - Tenant ID in `x-tenant-id` or `X-Tenant-Id` header
+3. **User Role** - User must have ADMIN or USER role
+4. **Tenant Role** - User must be a member of the tenant with appropriate role
+
+**Required Headers:**
+
+```http
+Authorization: Bearer <jwt-token>
+x-tenant-id: <tenant-uuid>
+```
+
+**Example Request:**
+
+```bash
+curl -X POST http://localhost:4100/api/graphql \
+  -H "Authorization: Bearer your-jwt-token" \
+  -H "x-tenant-id: tenant-uuid-here" \
+  -H "Content-Type: application/json" \
+  -d '{"query": "..."}'
+```
+
+**Important Notes:**
+
+- The `x-tenant-id` header is **required** for all operations
+- The tenant ID must match one of the tenant IDs in the user's JWT token
+- Users with ADMIN role can access any tenant
+- Regular users can only access tenants they are members of
+- The tenant context is automatically extracted and used for data isolation
 
 ### StorageQueryResolver
 
@@ -523,7 +608,7 @@ Handles read operations (queries).
 
 **Guards:**
 - `JwtAuthGuard`: Requires authentication
-- `TenantGuard`: Requires tenant context
+- `TenantGuard`: Requires tenant context (validates `x-tenant-id` header)
 - `RolesGuard`: Requires user role (ADMIN or USER)
 - `TenantRolesGuard`: Requires tenant member role
 
@@ -784,6 +869,8 @@ app.use(
 1. **Method:** `POST`
 2. **URL:** `http://localhost:4100/api/graphql`
 3. **Headers:**
+   - `Authorization: Bearer <your-jwt-token>` (required for authentication)
+   - `x-tenant-id: <tenant-uuid>` (required for tenant context)
    - `apollo-require-preflight: true` (required for CSRF protection)
 
 4. **Body:** Select `form-data` and add three fields:
@@ -810,6 +897,8 @@ app.use(
 
 ```bash
 curl -X POST http://localhost:4100/api/graphql \
+  -H "Authorization: Bearer your-jwt-token" \
+  -H "x-tenant-id: tenant-uuid-here" \
   -H "apollo-require-preflight: true" \
   -F 'operations={"query":"mutation StorageUploadFile($file: Upload!) { storageUploadFile(file: $file) { success message id } }","variables":{"file":null}}' \
   -F 'map={"0":["variables.file"]}' \
@@ -846,6 +935,8 @@ formData.append('0', file);
 const response = await fetch('http://localhost:4100/api/graphql', {
   method: 'POST',
   headers: {
+    'Authorization': `Bearer ${yourJwtToken}`,
+    'x-tenant-id': tenantUuid,
     'apollo-require-preflight': 'true',
   },
   body: formData,
@@ -874,6 +965,8 @@ const client = new ApolloClient({
   link: createUploadLink({
     uri: 'http://localhost:4100/api/graphql',
     headers: {
+      'Authorization': `Bearer ${yourJwtToken}`,
+      'x-tenant-id': tenantUuid,
       'apollo-require-preflight': 'true',
     },
   }),
@@ -1042,6 +1135,8 @@ Two repositories are used:
 - Tenant context is automatically injected via `TenantContextService`
 - Each tenant has isolated storage records
 - Write and read databases are tenant-specific
+- **Tenant ID must be provided in every request** via `x-tenant-id` or `X-Tenant-Id` header
+- The tenant ID is validated against the user's JWT token to ensure proper access control
 
 ## Troubleshooting
 
@@ -1064,6 +1159,9 @@ Two repositories are used:
 
 6. **Tenant Context Missing:**
    - Solution: Ensure `TenantGuard` is applied and tenant context is set in request headers
+   - **Required Header:** `x-tenant-id: <tenant-uuid>`
+   - The tenant ID must be included in every request
+   - The tenant ID must match one of the tenant IDs in the user's JWT token
 
 ### Debugging
 
