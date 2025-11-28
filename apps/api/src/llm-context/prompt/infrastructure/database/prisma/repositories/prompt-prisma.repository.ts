@@ -25,7 +25,7 @@ export class PromptPrismaRepository
    * @returns The prompt if found, null otherwise
    */
   async findById(id: string): Promise<PromptAggregate | null> {
-    const promptData = await this.prismaMasterService.prompt.findUnique({
+    const promptData = await this.prismaMasterService.client.prompt.findUnique({
       where: { id },
     });
 
@@ -54,7 +54,7 @@ export class PromptPrismaRepository
   async save(prompt: PromptAggregate): Promise<PromptAggregate> {
     const promptData = this.promptPrismaMapper.toPrismaData(prompt);
 
-    const result = await this.prismaMasterService.prompt.upsert({
+    const result = await this.prismaMasterService.client.prompt.upsert({
       where: { id: prompt.id.value },
       update: promptData,
       create: promptData,
@@ -81,7 +81,7 @@ export class PromptPrismaRepository
   async delete(id: string): Promise<boolean> {
     this.logger.log(`Deleting prompt by id: ${id}`);
 
-    await this.prismaMasterService.prompt.delete({
+    await this.prismaMasterService.client.prompt.delete({
       where: { id },
     });
 
