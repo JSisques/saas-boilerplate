@@ -5,8 +5,6 @@ import { BaseDomainException } from '@/shared/domain/exceptions/base-domain.exce
  * Thrown when a hash string is not in the expected format
  */
 export class InvalidHashFormatException extends BaseDomainException {
-  public readonly domain: string = 'PasswordHashing';
-
   constructor(hash?: string) {
     const message = hash
       ? `Invalid hash format: ${hash}`

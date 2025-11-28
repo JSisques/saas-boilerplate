@@ -1,4 +1,5 @@
 import { ROLES_KEY } from '@/auth-context/auth/infrastructure/decorators/roles/roles.decorator';
+import { UserRoleEnum } from '@/prisma/master/client';
 import {
   CanActivate,
   ExecutionContext,
@@ -7,7 +8,6 @@ import {
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { GqlExecutionContext } from '@nestjs/graphql';
-import { UserRoleEnum } from '@prisma/client';
 
 /**
  * Roles Guard

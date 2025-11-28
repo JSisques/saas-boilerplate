@@ -1,5 +1,5 @@
-import { BaseDomainException } from '@/shared/domain/exceptions/base-domain.exception';
 import { InvalidHashFormatException } from '@/auth-context/auth/application/exceptions/auth-invalid-hash-format/auth-invalid-hash-format.exception';
+import { BaseDomainException } from '@/shared/domain/exceptions/base-domain.exception';
 
 describe('InvalidHashFormatException', () => {
   const testHash = '$2b$12$invalidhashformat';
@@ -29,10 +29,10 @@ describe('InvalidHashFormatException', () => {
     expect(exception.name).toBe('InvalidHashFormatException');
   });
 
-  it('should set the domain to PasswordHashing', () => {
+  it('should set the layer to Domain', () => {
     const exception = new InvalidHashFormatException(testHash);
 
-    expect(exception.domain).toBe('PasswordHashing');
+    expect(exception.layer).toBe('Domain');
   });
 
   it('should have a timestamp', () => {
@@ -52,7 +52,7 @@ describe('InvalidHashFormatException', () => {
     const detailedMessage = exception.getDetailedMessage();
 
     expect(detailedMessage).toBe(
-      `[PasswordHashing] InvalidHashFormatException: Invalid hash format: ${testHash}`,
+      `[Domain] InvalidHashFormatException: Invalid hash format: ${testHash}`,
     );
   });
 });

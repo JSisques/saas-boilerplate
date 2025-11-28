@@ -26,15 +26,13 @@ describe('InvalidIpException', () => {
   it('should set the domain to ValueObject', () => {
     const exception = new InvalidIpException(testMessage);
 
-    expect(exception.domain).toBe('ValueObject');
+    expect(exception.layer).toBe('Domain');
   });
 
   it('should return a detailed message', () => {
     const exception = new InvalidIpException(testMessage);
     const detailedMessage = exception.getDetailedMessage();
 
-    expect(detailedMessage).toBe(
-      `[ValueObject] InvalidIpException: ${testMessage}`,
-    );
+    expect(detailedMessage).toBe(`[Domain] InvalidIpException: ${testMessage}`);
   });
 });

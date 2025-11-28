@@ -25,7 +25,7 @@ export class TenantPrismaRepository
    * @returns The tenant if found, null otherwise
    */
   async findById(id: string): Promise<TenantAggregate | null> {
-    const tenantData = await this.prismaMasterService.tenant.findUnique({
+    const tenantData = await this.prismaMasterService.client.tenant.findUnique({
       where: { id },
     });
 
@@ -43,7 +43,7 @@ export class TenantPrismaRepository
    * @returns The tenant if found, null otherwise
    */
   async findBySlug(slug: string): Promise<TenantAggregate | null> {
-    const tenantData = await this.prismaMasterService.tenant.findUnique({
+    const tenantData = await this.prismaMasterService.client.tenant.findUnique({
       where: { slug },
     });
 
@@ -63,7 +63,7 @@ export class TenantPrismaRepository
   async save(tenant: TenantAggregate): Promise<TenantAggregate> {
     const tenantData = this.tenantPrismaMapper.toPrismaData(tenant);
 
-    const result = await this.prismaMasterService.tenant.upsert({
+    const result = await this.prismaMasterService.client.tenant.upsert({
       where: { id: tenant.id.value },
       update: tenantData,
       create: tenantData,
@@ -81,7 +81,7 @@ export class TenantPrismaRepository
   async delete(id: string): Promise<boolean> {
     this.logger.log(`Deleting tenant by id: ${id}`);
 
-    await this.prismaMasterService.tenant.delete({
+    await this.prismaMasterService.client.tenant.delete({
       where: { id },
     });
 

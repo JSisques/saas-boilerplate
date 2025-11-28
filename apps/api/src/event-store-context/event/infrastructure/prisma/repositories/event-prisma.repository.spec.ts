@@ -48,11 +48,13 @@ describe('EventPrismaRepository', () => {
     mockDelete = jest.fn();
 
     mockPrismaService = {
-      event: {
-        findUnique: mockFindUnique,
-        findMany: mockFindMany,
-        upsert: mockUpsert,
-        delete: mockDelete,
+      client: {
+        event: {
+          findUnique: mockFindUnique,
+          findMany: mockFindMany,
+          upsert: mockUpsert,
+          delete: mockDelete,
+        },
       },
     };
 

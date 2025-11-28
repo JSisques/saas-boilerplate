@@ -30,7 +30,7 @@ export class StoragePrismaRepository
     this.logger.log(`Finding storage by id: ${id}`);
 
     const client = await this.getTenantClient();
-    const storageData = await client.storage.findFirst({
+    const storageData = await client.client.storage.findFirst({
       where: { id },
     });
 
@@ -51,7 +51,7 @@ export class StoragePrismaRepository
     this.logger.log(`Finding storage by path: ${path}`);
 
     const client = await this.getTenantClient();
-    const storageData = await client.storage.findFirst({
+    const storageData = await client.client.storage.findFirst({
       where: { path },
     });
 
@@ -74,7 +74,7 @@ export class StoragePrismaRepository
     const storageData = this.storagePrismaMapper.toPrismaData(storage);
 
     const client = await this.getTenantClient();
-    const result = await client.storage.upsert({
+    const result = await client.client.storage.upsert({
       where: { id: storage.id.value },
       update: storageData,
       create: storageData,
@@ -93,7 +93,7 @@ export class StoragePrismaRepository
     this.logger.log(`Deleting storage by id: ${id}`);
 
     const client = await this.getTenantClient();
-    await client.storage.delete({
+    await client.client.storage.delete({
       where: { id },
     });
 

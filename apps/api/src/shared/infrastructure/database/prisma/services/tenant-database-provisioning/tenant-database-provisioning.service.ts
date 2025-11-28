@@ -1,3 +1,4 @@
+import { TenantDatabaseStatusEnum } from '@/prisma/master/client';
 import { PrismaTenantFactory } from '@/shared/infrastructure/database/prisma/factories/prisma-tenant-factory/prisma-tenant-factory.service';
 import { PrismaMasterService } from '@/shared/infrastructure/database/prisma/services/prisma-master/prisma-master.service';
 import { TenantDatabaseUrlBuilderService } from '@/shared/infrastructure/database/prisma/services/tenant-database-url-builder/tenant-database-url-builder.service';
@@ -15,7 +16,6 @@ import {
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
-import { TenantDatabaseStatusEnum } from '@prisma/client';
 
 export interface CreateTenantDatabaseParams {
   tenantId: string;
@@ -254,7 +254,7 @@ export class TenantDatabaseProvisioningService {
     // 01: Connect to the default 'postgres' database to create the new database
     const postgresUrl = this.getPostgresConnectionUrl();
 
-    const { PrismaClient } = await import('@prisma/client');
+    const { PrismaClient } = await import('@/prisma/master/client');
     const adminClient = new PrismaClient({
       datasources: {
         db: {
@@ -292,7 +292,7 @@ export class TenantDatabaseProvisioningService {
   private async dropPostgresDatabase(databaseName: string): Promise<void> {
     const postgresUrl = this.getPostgresConnectionUrl();
 
-    const { PrismaClient } = await import('@prisma/client');
+    const { PrismaClient } = await import('@/prisma/master/client');
     const adminClient = new PrismaClient({
       datasources: {
         db: {

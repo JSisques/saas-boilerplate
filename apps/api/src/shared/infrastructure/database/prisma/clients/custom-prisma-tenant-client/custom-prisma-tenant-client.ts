@@ -1,7 +1,7 @@
+import { PrismaClient } from '@/prisma/tenant/client';
 import { filterSoftDeletedExtension } from '@/shared/infrastructure/database/prisma/extensions/prisma-filter-soft-delete/prisma-filter-soft-delete.extension';
 import { prismaSoftDeleteManyExtension } from '@/shared/infrastructure/database/prisma/extensions/prisma-soft-delete-many/prisma-soft-delete-many.extension';
 import { softDeleteExtension } from '@/shared/infrastructure/database/prisma/extensions/prisma-soft-delete/prisma-soft-delete.extension';
-import { PrismaClient } from '../../../../../../../prisma/tenant/client';
 
 // Function to give us a prismaClient with extensions we want
 export const customPrismaTenantClient = (prismaClient: PrismaClient) => {

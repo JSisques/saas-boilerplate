@@ -26,7 +26,7 @@ describe('InvalidPasswordException', () => {
   it('should set the domain to ValueObject', () => {
     const exception = new InvalidPasswordException(testMessage);
 
-    expect(exception.domain).toBe('ValueObject');
+    expect(exception.layer).toBe('Domain');
   });
 
   it('should return a detailed message', () => {
@@ -34,7 +34,7 @@ describe('InvalidPasswordException', () => {
     const detailedMessage = exception.getDetailedMessage();
 
     expect(detailedMessage).toBe(
-      `[ValueObject] InvalidPasswordException: ${testMessage}`,
+      `[Domain] InvalidPasswordException: ${testMessage}`,
     );
   });
 });

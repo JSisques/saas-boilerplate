@@ -1,3 +1,4 @@
+import { TenantDatabaseStatusEnum } from '@/prisma/master/client';
 import { TenantUuidValueObject } from '@/shared/domain/value-objects/identifiers/tenant-uuid/tenant-uuid.vo';
 import { ITenantDatabaseCreateCommandDto } from '@/tenant-context/tenant-database/application/dtos/commands/tenant-database-create/tenant-database-create-command.dto';
 import { TenantDatabaseErrorMessageValueObject } from '@/tenant-context/tenant-database/domain/value-objects/tenant-database-error-message/tenant-database-error-message.vo';
@@ -5,7 +6,6 @@ import { TenantDatabaseLastMigrationAtValueObject } from '@/tenant-context/tenan
 import { TenantDatabaseNameValueObject } from '@/tenant-context/tenant-database/domain/value-objects/tenant-database-name/tenant-database-name.vo';
 import { TenantDatabaseSchemaVersionValueObject } from '@/tenant-context/tenant-database/domain/value-objects/tenant-database-schema-version/tenant-database-schema-version.vo';
 import { TenantDatabaseStatusValueObject } from '@/tenant-context/tenant-database/domain/value-objects/tenant-database-status/tenant-database-status.vo';
-import { TenantDatabaseStatusEnum } from '@prisma/client';
 
 export class TenantDatabaseCreateCommand {
   readonly id: TenantUuidValueObject;

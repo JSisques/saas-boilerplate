@@ -1,7 +1,7 @@
 import { AuthAggregate } from '@/auth-context/auth/domain/aggregate/auth.aggregate';
 import { AuthAggregateFactory } from '@/auth-context/auth/domain/factories/auth-aggregate/auth-aggregate.factory';
+import { AuthProviderEnum } from '@/prisma/master/client';
 import { Injectable, Logger } from '@nestjs/common';
-import { AuthProviderEnum } from '@prisma/client';
 import { AuthPrismaDto } from '../dtos/auth-prisma.dto';
 
 @Injectable()

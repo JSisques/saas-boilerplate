@@ -26,7 +26,7 @@ export class TenantMemberPrismaRepository
    */
   async findById(id: string): Promise<TenantMemberAggregate | null> {
     const tenantMemberData =
-      await this.prismaMasterService.tenantMember.findUnique({
+      await this.prismaMasterService.client.tenantMember.findUnique({
         where: { id },
       });
 
@@ -47,7 +47,7 @@ export class TenantMemberPrismaRepository
     tenantId: string,
   ): Promise<TenantMemberAggregate[] | null> {
     const tenantMembersData =
-      await this.prismaMasterService.tenantMember.findMany({
+      await this.prismaMasterService.client.tenantMember.findMany({
         where: { tenantId },
       });
 
@@ -64,7 +64,7 @@ export class TenantMemberPrismaRepository
    */
   async findByUserId(userId: string): Promise<TenantMemberAggregate[] | null> {
     const tenantMembersData =
-      await this.prismaMasterService.tenantMember.findMany({
+      await this.prismaMasterService.client.tenantMember.findMany({
         where: { userId },
       });
 
@@ -85,7 +85,7 @@ export class TenantMemberPrismaRepository
     userId: string,
   ): Promise<TenantMemberAggregate | null> {
     const tenantMemberData =
-      await this.prismaMasterService.tenantMember.findFirst({
+      await this.prismaMasterService.client.tenantMember.findFirst({
         where: { tenantId, userId },
       });
 
@@ -106,7 +106,7 @@ export class TenantMemberPrismaRepository
     const tenantMemberData =
       this.tenantMemberPrismaMapper.toPrismaData(tenantMember);
 
-    const result = await this.prismaMasterService.tenantMember.upsert({
+    const result = await this.prismaMasterService.client.tenantMember.upsert({
       where: { id: tenantMember.id.value },
       update: tenantMemberData,
       create: tenantMemberData,
@@ -124,7 +124,7 @@ export class TenantMemberPrismaRepository
   async delete(id: string): Promise<boolean> {
     this.logger.log(`Deleting tenant member by id: ${id}`);
 
-    await this.prismaMasterService.tenantMember.delete({
+    await this.prismaMasterService.client.tenantMember.delete({
       where: { id },
     });
 

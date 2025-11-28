@@ -23,7 +23,7 @@ export class PrismaTenantService {
   async getTenantClient(tenantId: string): Promise<PrismaTenantClientExtended> {
     // Fetch tenant database configuration from master database
     const tenantDatabase =
-      await this.prismaMasterService.tenantDatabase.findUnique({
+      await this.prismaMasterService.client.tenantDatabase.findUnique({
         where: {
           tenantId,
         },
@@ -58,7 +58,7 @@ export class PrismaTenantService {
   async isTenantDatabaseActive(tenantId: string): Promise<boolean> {
     try {
       const tenantDatabase =
-        await this.prismaMasterService.tenantDatabase.findUnique({
+        await this.prismaMasterService.client.tenantDatabase.findUnique({
           where: {
             tenantId,
           },

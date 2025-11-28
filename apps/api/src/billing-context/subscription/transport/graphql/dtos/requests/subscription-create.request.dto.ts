@@ -1,5 +1,5 @@
+import { RenewalMethodEnum } from '@/prisma/master/client';
 import { Field, InputType } from '@nestjs/graphql';
-import { RenewalMethodEnum } from '@prisma/client';
 import {
   IsDate,
   IsEnum,

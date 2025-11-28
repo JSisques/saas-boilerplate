@@ -26,7 +26,7 @@ describe('InvalidUrlException', () => {
   it('should set the domain to ValueObject', () => {
     const exception = new InvalidUrlException(testMessage);
 
-    expect(exception.domain).toBe('ValueObject');
+    expect(exception.layer).toBe('Domain');
   });
 
   it('should return a detailed message', () => {
@@ -34,7 +34,7 @@ describe('InvalidUrlException', () => {
     const detailedMessage = exception.getDetailedMessage();
 
     expect(detailedMessage).toBe(
-      `[ValueObject] InvalidUrlException: ${testMessage}`,
+      `[Domain] InvalidUrlException: ${testMessage}`,
     );
   });
 });

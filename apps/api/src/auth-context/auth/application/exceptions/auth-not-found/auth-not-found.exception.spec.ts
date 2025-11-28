@@ -1,5 +1,5 @@
-import { BaseApplicationException } from '@/shared/application/exceptions/base-application/base-application.exception';
 import { AuthNotFoundException } from '@/auth-context/auth/application/exceptions/auth-not-found/auth-not-found.exception';
+import { BaseApplicationException } from '@/shared/application/exceptions/base-application/base-application.exception';
 
 describe('AuthNotFoundException', () => {
   const authId = '123e4567-e89b-12d3-a456-426614174000';
@@ -26,7 +26,7 @@ describe('AuthNotFoundException', () => {
   it('should set the domain to Application', () => {
     const exception = new AuthNotFoundException(authId);
 
-    expect(exception.domain).toBe('Application');
+    expect(exception.layer).toBe('Application');
   });
 
   it('should have a timestamp', () => {

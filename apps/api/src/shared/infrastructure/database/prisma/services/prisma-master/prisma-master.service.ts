@@ -17,7 +17,7 @@ export class PrismaMasterService
     this.logger.log(`🚀 Initializing Prisma Master`);
 
     try {
-      await this.$connect();
+      await this.client.$connect();
       this.logger.log(`🚀 Prisma Master connected successfully`);
     } catch (error) {
       this.logger.error(`🚀 Error connecting to Prisma Master: ${error}`);
@@ -28,7 +28,7 @@ export class PrismaMasterService
     this.logger.log(`🚀 Disconnecting Prisma Master`);
 
     try {
-      await this.$disconnect();
+      await this.client.$disconnect();
       this.logger.log(`🚀 Prisma Master disconnected successfully`);
     } catch (error) {
       this.logger.error(`🚀 Error disconnecting from Prisma Master: ${error}`);

@@ -1,9 +1,9 @@
-import { BasePrismaDto } from '@/shared/infrastructure/database/prisma/dtos/base-prisma.dto';
 import {
   CurrencyEnum,
   SubscriptionPlanIntervalEnum,
   SubscriptionPlanTypeEnum,
-} from '@prisma/client';
+} from '@/prisma/master/client';
+import { BasePrismaDto } from '@/shared/infrastructure/database/prisma/dtos/base-prisma.dto';
 
 export type SubscriptionPlanPrismaDto = BasePrismaDto & {
   id: string;

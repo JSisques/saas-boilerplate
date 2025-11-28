@@ -1,3 +1,4 @@
+import { TenantMemberRoleEnum as PrismaTenantMemberRoleEnum } from '@/prisma/master/client';
 import { DateValueObject } from '@/shared/domain/value-objects/date/date.vo';
 import { TenantMemberUuidValueObject } from '@/shared/domain/value-objects/identifiers/tenant-member-uuid/tenant-member-uuid.vo';
 import { TenantUuidValueObject } from '@/shared/domain/value-objects/identifiers/tenant-uuid/tenant-uuid.vo';
@@ -7,7 +8,6 @@ import { TenantMemberRoleEnum } from '@/tenant-context/tenant-members/domain/enu
 import { TenantMemberAggregateFactory } from '@/tenant-context/tenant-members/domain/factories/tenant-member-aggregate/tenant-member-aggregate.factory';
 import { TenantMemberRoleValueObject } from '@/tenant-context/tenant-members/domain/value-objects/tenant-member-role/tenant-member-role.vo';
 import { TenantMemberPrismaDto } from '@/tenant-context/tenant-members/infrastructure/database/prisma/dtos/tenant-member-prisma.dto';
-import { TenantMemberRoleEnum as PrismaTenantMemberRoleEnum } from '@prisma/client';
 import { TenantMemberPrismaMapper } from './tenant-member-prisma.mapper';
 
 describe('TenantMemberPrismaMapper', () => {

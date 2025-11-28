@@ -1,3 +1,4 @@
+import { TenantDatabaseStatusEnum } from '@/prisma/master/client';
 import { PrismaMasterService } from '@/shared/infrastructure/database/prisma/services/prisma-master/prisma-master.service';
 import { PrismaTenantService } from '@/shared/infrastructure/database/prisma/services/prisma-tenant/prisma-tenant.service';
 import { TenantDatabaseUrlBuilderService } from '@/shared/infrastructure/database/prisma/services/tenant-database-url-builder/tenant-database-url-builder.service';
@@ -9,7 +10,6 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { CommandBus } from '@nestjs/cqrs';
-import { TenantDatabaseStatusEnum } from '@prisma/client';
 import { exec } from 'child_process';
 import { join } from 'path';
 import { promisify } from 'util';
@@ -41,7 +41,7 @@ export class TenantDatabaseMigrationService {
    */
   async migrateTenantDatabase(tenantId: string): Promise<MigrationResult> {
     const tenantDatabase =
-      await this.prismaMasterService.tenantDatabase.findUnique({
+      await this.prismaMasterService.client.tenantDatabase.findUnique({
         where: { tenantId },
       });
 
@@ -130,7 +130,7 @@ export class TenantDatabaseMigrationService {
    */
   async migrateAllTenantDatabases(): Promise<MigrationResult[]> {
     const tenantDatabases =
-      await this.prismaMasterService.tenantDatabase.findMany({
+      await this.prismaMasterService.client.tenantDatabase.findMany({
         where: {
           status: TenantDatabaseStatusEnum.ACTIVE,
           deletedAt: null,
@@ -224,7 +224,7 @@ export class TenantDatabaseMigrationService {
    */
   async getTenantMigrationStatus(tenantId: string) {
     const tenantDatabase =
-      await this.prismaMasterService.tenantDatabase.findUnique({
+      await this.prismaMasterService.client.tenantDatabase.findUnique({
         where: { tenantId },
       });
 

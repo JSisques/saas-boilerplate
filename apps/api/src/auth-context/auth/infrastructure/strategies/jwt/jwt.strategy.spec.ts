@@ -7,12 +7,12 @@ import { AuthEmailValueObject } from '@/auth-context/auth/domain/value-objects/a
 import { AuthProviderValueObject } from '@/auth-context/auth/domain/value-objects/auth-provider/auth-provider.vo';
 import { AuthTwoFactorEnabledValueObject } from '@/auth-context/auth/domain/value-objects/auth-two-factor-enabled/auth-two-factor-enabled.vo';
 import { JwtStrategy } from '@/auth-context/auth/infrastructure/strategies/jwt/jwt.strategy';
+import { UserRoleEnum } from '@/prisma/master/client';
 import { DateValueObject } from '@/shared/domain/value-objects/date/date.vo';
 import { AuthUuidValueObject } from '@/shared/domain/value-objects/identifiers/auth-uuid/auth-uuid.vo';
 import { UserUuidValueObject } from '@/shared/domain/value-objects/identifiers/user-uuid/user-uuid.vo';
 import { UnauthorizedException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { UserRoleEnum } from '@prisma/client';
 
 describe('JwtStrategy', () => {
   let strategy: JwtStrategy;

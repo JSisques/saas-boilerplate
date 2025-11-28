@@ -1,6 +1,6 @@
+import { PrismaClient } from '@/prisma/master/client';
 import { PrismaMasterService } from '@/shared/infrastructure/database/prisma/services/prisma-master/prisma-master.service';
 import { Test, TestingModule } from '@nestjs/testing';
-import { PrismaClient } from '@prisma/client';
 
 describe('PrismaMasterService', () => {
   let service: PrismaMasterService;

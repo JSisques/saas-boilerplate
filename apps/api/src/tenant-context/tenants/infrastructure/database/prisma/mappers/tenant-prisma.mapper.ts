@@ -1,8 +1,8 @@
+import { TenantStatusEnum } from '@/prisma/master/client';
 import { TenantAggregate } from '@/tenant-context/tenants/domain/aggregates/tenant.aggregate';
 import { TenantAggregateFactory } from '@/tenant-context/tenants/domain/factories/tenant-aggregate/tenant-aggregate.factory';
 import { TenantPrismaDto } from '@/tenant-context/tenants/infrastructure/database/prisma/dtos/tenant-prisma.dto';
 import { Injectable, Logger } from '@nestjs/common';
-import { TenantStatusEnum } from '@prisma/client';
 
 @Injectable()
 export class TenantPrismaMapper {

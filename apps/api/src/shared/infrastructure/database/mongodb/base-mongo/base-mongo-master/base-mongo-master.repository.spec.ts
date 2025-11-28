@@ -125,7 +125,7 @@ describe('BaseMongoMasterRepository', () => {
       const query = repository['buildMongoQuery'](criteria);
 
       expect(query).toEqual({
-        id: { $regex: '^123', $options: 'i' },
+        id: { $in: ['123'] },
       });
     });
 
@@ -148,10 +148,9 @@ describe('BaseMongoMasterRepository', () => {
 
       const query = repository['buildMongoQuery'](criteria);
 
-      // Note: The actual implementation has a bug where LESS_THAN uses $gt instead of $lt
-      // This test reflects the actual (buggy) behavior
-      expect(query.age).toBeDefined();
-      expect(query.age).toEqual({ $gt: 65 });
+      expect(query).toEqual({
+        age: { $lt: 65 },
+      });
     });
 
     it('should build query with GREATER_THAN_OR_EQUAL operator', () => {

@@ -1,9 +1,9 @@
+import { Storage as PrismaStorage } from '@/prisma/tenant/client';
 import { StorageAggregate } from '@/storage-context/storage/domain/aggregate/storage.aggregate';
 import { StorageProviderEnum } from '@/storage-context/storage/domain/enums/storage-provider.enum';
 import { StorageAggregateFactory } from '@/storage-context/storage/domain/factories/storage-aggregate.factory';
 import { StoragePrismaDto } from '@/storage-context/storage/infrastructure/database/prisma/dtos/storage-prisma.dto';
 import { Injectable, Logger } from '@nestjs/common';
-import { Storage as PrismaStorage } from '../../../../../../../prisma/tenant/client';
 
 @Injectable()
 export class StoragePrismaMapper {

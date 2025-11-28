@@ -26,7 +26,7 @@ describe('InvalidEnumValueException', () => {
   it('should set the domain to ValueObject', () => {
     const exception = new InvalidEnumValueException(testMessage);
 
-    expect(exception.domain).toBe('ValueObject');
+    expect(exception.layer).toBe('Domain');
   });
 
   it('should return a detailed message', () => {
@@ -34,7 +34,7 @@ describe('InvalidEnumValueException', () => {
     const detailedMessage = exception.getDetailedMessage();
 
     expect(detailedMessage).toBe(
-      `[ValueObject] InvalidEnumValueException: ${testMessage}`,
+      `[Domain] InvalidEnumValueException: ${testMessage}`,
     );
   });
 });

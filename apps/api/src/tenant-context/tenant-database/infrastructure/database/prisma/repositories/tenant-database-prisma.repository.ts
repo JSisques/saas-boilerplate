@@ -26,7 +26,7 @@ export class TenantDatabasePrismaRepository
    */
   async findById(id: string): Promise<TenantDatabaseAggregate | null> {
     const tenantDatabaseData =
-      await this.prismaMasterService.tenantDatabase.findUnique({
+      await this.prismaMasterService.client.tenantDatabase.findUnique({
         where: { id },
       });
 
@@ -47,7 +47,7 @@ export class TenantDatabasePrismaRepository
     tenantId: string,
   ): Promise<TenantDatabaseAggregate[] | null> {
     const tenantDatabasesData =
-      await this.prismaMasterService.tenantDatabase.findMany({
+      await this.prismaMasterService.client.tenantDatabase.findMany({
         where: { tenantId },
       });
 
@@ -68,7 +68,7 @@ export class TenantDatabasePrismaRepository
     const tenantDatabaseData =
       this.tenantDatabasePrismaMapper.toPrismaData(tenantDatabase);
 
-    const result = await this.prismaMasterService.tenantDatabase.upsert({
+    const result = await this.prismaMasterService.client.tenantDatabase.upsert({
       where: { id: tenantDatabase.id.value },
       update: tenantDatabaseData,
       create: tenantDatabaseData,
@@ -86,7 +86,7 @@ export class TenantDatabasePrismaRepository
   async delete(id: string): Promise<boolean> {
     this.logger.log(`Deleting tenant database by id: ${id}`);
 
-    await this.prismaMasterService.tenantDatabase.delete({
+    await this.prismaMasterService.client.tenantDatabase.delete({
       where: { id },
     });
 

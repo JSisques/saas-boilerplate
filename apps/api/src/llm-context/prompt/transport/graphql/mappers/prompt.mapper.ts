@@ -3,9 +3,9 @@ import {
   PaginatedPromptResultDto,
   PromptResponseDto,
 } from '@/llm-context/prompt/transport/graphql/dtos/responses/prompt.response.dto';
+import { PromptStatusEnum } from '@/prisma/master/client';
 import { PaginatedResult } from '@/shared/domain/entities/paginated-result.entity';
 import { Injectable, Logger } from '@nestjs/common';
-import { PromptStatusEnum } from '@prisma/client';
 
 @Injectable()
 export class PromptGraphQLMapper {

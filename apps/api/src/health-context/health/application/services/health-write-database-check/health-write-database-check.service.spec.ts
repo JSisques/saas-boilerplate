@@ -8,7 +8,9 @@ describe('HealthWriteDatabaseCheckService', () => {
 
   beforeEach(() => {
     mockPrismaMasterService = {
-      $queryRaw: jest.fn(),
+      client: {
+        $queryRaw: jest.fn(),
+      },
     } as unknown as jest.Mocked<PrismaMasterService>;
 
     service = new HealthWriteDatabaseCheckService(mockPrismaMasterService);
@@ -19,11 +21,13 @@ describe('HealthWriteDatabaseCheckService', () => {
   });
 
   it('should return OK when database connection is healthy', async () => {
-    mockPrismaMasterService.$queryRaw.mockResolvedValue([{ '?column?': 1 }]);
+    mockPrismaMasterService.client.$queryRaw.mockResolvedValue([
+      { '?column?': 1 },
+    ]);
 
     const result = await service.execute();
 
-    expect(mockPrismaMasterService.$queryRaw).toHaveBeenCalledWith(
+    expect(mockPrismaMasterService.client.$queryRaw).toHaveBeenCalledWith(
       expect.anything(),
     );
     expect(result).toBe(HealthStatusEnum.OK);
@@ -31,11 +35,11 @@ describe('HealthWriteDatabaseCheckService', () => {
 
   it('should return ERROR when database connection fails', async () => {
     const error = new Error('Database connection failed');
-    mockPrismaMasterService.$queryRaw.mockRejectedValue(error);
+    mockPrismaMasterService.client.$queryRaw.mockRejectedValue(error);
 
     const result = await service.execute();
 
-    expect(mockPrismaMasterService.$queryRaw).toHaveBeenCalledWith(
+    expect(mockPrismaMasterService.client.$queryRaw).toHaveBeenCalledWith(
       expect.anything(),
     );
     expect(result).toBe(HealthStatusEnum.ERROR);

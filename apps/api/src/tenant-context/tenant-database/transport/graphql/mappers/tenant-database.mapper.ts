@@ -1,9 +1,9 @@
+import { TenantDatabaseStatusEnum } from '@/prisma/master/client';
 import { PaginatedResult } from '@/shared/domain/entities/paginated-result.entity';
 import { TenantDatabaseViewModel } from '@/tenant-context/tenant-database/domain/view-models/tenant-database/tenant-database.view-model';
 import { TenantDatabaseResponseDto } from '@/tenant-context/tenant-database/transport/graphql/dtos/responses/tenant-database.response.dto';
 import { PaginatedTenantMemberResultDto } from '@/tenant-context/tenant-members/transport/graphql/dtos/responses/tenant-member.response.dto';
 import { Injectable, Logger } from '@nestjs/common';
-import { TenantDatabaseStatusEnum } from '@prisma/client';
 
 @Injectable()
 export class TenantDatabaseGraphQLMapper {

@@ -1,5 +1,5 @@
+import { PromptStatusEnum } from '@/prisma/master/client';
 import { Field, InputType } from '@nestjs/graphql';
-import { PromptStatusEnum } from '@prisma/client';
 import { IsEnum, IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
 @InputType('PromptCreateRequestDto')

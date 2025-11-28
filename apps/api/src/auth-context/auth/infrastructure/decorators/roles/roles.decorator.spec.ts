@@ -1,7 +1,9 @@
+import {
+  Roles,
+  ROLES_KEY,
+} from '@/auth-context/auth/infrastructure/decorators/roles/roles.decorator';
+import { UserRoleEnum } from '@/prisma/master/client';
 import { SetMetadata } from '@nestjs/common';
-import { UserRoleEnum } from '@prisma/client';
-import { Roles } from '@/auth-context/auth/infrastructure/decorators/roles/roles.decorator';
-import { ROLES_KEY } from '@/auth-context/auth/infrastructure/decorators/roles/roles.decorator';
 
 jest.mock('@nestjs/common', () => ({
   ...jest.requireActual('@nestjs/common'),

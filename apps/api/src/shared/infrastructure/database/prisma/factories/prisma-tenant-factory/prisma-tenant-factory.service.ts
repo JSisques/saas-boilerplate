@@ -25,7 +25,7 @@ export class PrismaTenantFactory implements OnModuleDestroy {
 
       // Verify the connection is still valid
       try {
-        await existingClient.$queryRaw`SELECT 1`;
+        await existingClient.client.$queryRaw`SELECT 1`;
         return existingClient;
       } catch (error) {
         this.logger.warn(
@@ -35,7 +35,7 @@ export class PrismaTenantFactory implements OnModuleDestroy {
           `Error connecting to tenant database ${tenantId}: ${error}`,
         );
         // Disconnect and remove invalid client
-        await existingClient.$disconnect().catch(() => {});
+        await existingClient.client.$disconnect().catch(() => {});
         this.tenantClients.delete(tenantId);
       }
     }
@@ -52,7 +52,7 @@ export class PrismaTenantFactory implements OnModuleDestroy {
 
     // Connect to the database
     try {
-      await client.$connect();
+      await client.client.$connect();
       this.tenantClients.set(tenantId, client);
       this.logger.log(
         `Prisma client created and connected for tenant: ${tenantId}`,
@@ -62,7 +62,7 @@ export class PrismaTenantFactory implements OnModuleDestroy {
       this.logger.error(
         `Failed to connect to tenant database ${tenantId}: ${error}`,
       );
-      await client.$disconnect().catch(() => {});
+      await client.client.$disconnect().catch(() => {});
       throw error;
     }
   }
@@ -75,7 +75,7 @@ export class PrismaTenantFactory implements OnModuleDestroy {
     const client = this.tenantClients.get(tenantId);
     if (client) {
       this.logger.log(`Removing Prisma client for tenant: ${tenantId}`);
-      await client.$disconnect().catch(() => {});
+      await client.client.$disconnect().catch(() => {});
       this.tenantClients.delete(tenantId);
     }
   }
@@ -94,7 +94,7 @@ export class PrismaTenantFactory implements OnModuleDestroy {
   async disconnectAll(): Promise<void> {
     this.logger.log(`Disconnecting all tenant Prisma clients...`);
     const disconnectPromises = Array.from(this.tenantClients.values()).map(
-      (client) => client.$disconnect().catch(() => {}),
+      (client) => client.client.$disconnect().catch(() => {}),
     );
     await Promise.all(disconnectPromises);
     this.tenantClients.clear();

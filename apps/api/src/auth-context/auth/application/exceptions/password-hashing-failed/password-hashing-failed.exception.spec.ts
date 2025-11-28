@@ -1,5 +1,5 @@
-import { BaseApplicationException } from '@/shared/application/exceptions/base-application/base-application.exception';
 import { PasswordHashingFailedException } from '@/auth-context/auth/application/exceptions/password-hashing-failed/password-hashing-failed.exception';
+import { BaseApplicationException } from '@/shared/application/exceptions/base-application/base-application.exception';
 
 describe('PasswordHashingFailedException', () => {
   it('should be an instance of BaseApplicationException', () => {
@@ -24,7 +24,7 @@ describe('PasswordHashingFailedException', () => {
   it('should set the domain to Application', () => {
     const exception = new PasswordHashingFailedException();
 
-    expect(exception.domain).toBe('Application');
+    expect(exception.layer).toBe('Application');
   });
 
   it('should have a timestamp', () => {

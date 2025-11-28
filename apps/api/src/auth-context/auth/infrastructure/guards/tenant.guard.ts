@@ -1,3 +1,4 @@
+import { UserRoleEnum } from '@/prisma/master/client';
 import {
   CanActivate,
   ExecutionContext,
@@ -5,7 +6,6 @@ import {
   Injectable,
 } from '@nestjs/common';
 import { GqlExecutionContext } from '@nestjs/graphql';
-import { UserRoleEnum } from '@prisma/client';
 
 /**
  * Tenant Guard

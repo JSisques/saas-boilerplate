@@ -5,14 +5,14 @@ import { SubscriptionPlanCreateRequestDto } from '@/billing-context/subscription
 import { SubscriptionPlanDeleteRequestDto } from '@/billing-context/subscription-plan/transport/graphql/dtos/requests/subscription-plan-delete.request.dto';
 import { SubscriptionPlanUpdateRequestDto } from '@/billing-context/subscription-plan/transport/graphql/dtos/requests/subscription-plan-update.request.dto';
 import { SubscriptionPlanMutationsResolver } from '@/billing-context/subscription-plan/transport/graphql/resolvers/subscription-plan-mutations.resolver';
-import { MutationResponseDto } from '@/shared/transport/graphql/dtos/responses/success-response/success-response.dto';
-import { MutationResponseGraphQLMapper } from '@/shared/transport/graphql/mappers/mutation-response/mutation-response.mapper';
-import { CommandBus } from '@nestjs/cqrs';
 import {
   CurrencyEnum,
   SubscriptionPlanIntervalEnum,
   SubscriptionPlanTypeEnum,
-} from '@prisma/client';
+} from '@/prisma/master/client';
+import { MutationResponseDto } from '@/shared/transport/graphql/dtos/responses/success-response/success-response.dto';
+import { MutationResponseGraphQLMapper } from '@/shared/transport/graphql/mappers/mutation-response/mutation-response.mapper';
+import { CommandBus } from '@nestjs/cqrs';
 
 describe('SubscriptionPlanMutationsResolver', () => {
   let resolver: SubscriptionPlanMutationsResolver;

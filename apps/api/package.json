@@ -50,7 +50,7 @@
     "@nestjs/platform-express": "^10.0.0",
     "@nestjs/swagger": "^11.2.1",
     "@nestjs/terminus": "^11.0.0",
-    "@prisma/client": "^6.18.0",
+    "@/prisma/master/client": "^6.18.0",
     "@supabase/supabase-js": "^2.81.1",
     "@types/bcrypt": "^6.0.0",
     "axios": "^1.13.2",
@@ -119,6 +119,8 @@
     "coverageDirectory": "../coverage",
     "testEnvironment": "node",
     "moduleNameMapper": {
+      "^@/prisma/master/client$": "<rootDir>/../prisma/master/client/index.js",
+      "^@/prisma/tenant/client$": "<rootDir>/../prisma/tenant/client/index.js",
       "^@/(.*)$": "<rootDir>/$1"
     }
   }
