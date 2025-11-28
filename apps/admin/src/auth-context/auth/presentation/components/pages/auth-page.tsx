@@ -10,25 +10,15 @@ import type {
   AuthRegisterByEmailFormValues,
 } from '@/auth-context/auth/presentation/dtos/schemas';
 import { useAuthPageStore } from '@/auth-context/auth/presentation/stores/auth-page-store';
-import { useAuthStore } from '@/auth-context/auth/presentation/stores/auth-store';
 import { useRoutes } from '@/shared/presentation/hooks/use-routes';
 import { useAuth } from '@repo/sdk';
 import { useRouter } from 'next/navigation';
-import { useEffect } from 'react';
 
 const AuthPage = () => {
   const router = useRouter();
   const { routes } = useRoutes();
   const { isLogin, setIsLogin } = useAuthPageStore();
-  const { setAccessToken, setRefreshToken, accessToken } = useAuthStore();
   const { loginByEmail, registerByEmail } = useAuth();
-
-  // Redirect if already authenticated
-  useEffect(() => {
-    if (accessToken) {
-      router.push(routes.dashboard);
-    }
-  }, [accessToken, router, routes.dashboard]);
 
   const handleLoginSubmit = async (values: AuthLoginByEmailFormValues) => {
     try {
@@ -37,17 +27,7 @@ const AuthPage = () => {
         password: values.password,
       });
 
-      if (result) {
-        // Tokens are automatically saved by the SDK
-        // Update local store as well
-        setAccessToken(result.accessToken);
-        setRefreshToken(result.refreshToken);
-
-        // Clear password from store after successful login
-        const { setPassword, setConfirmPassword } = useAuthPageStore.getState();
-        setPassword('');
-        setConfirmPassword('');
-
+      if (result && result.accessToken) {
         // Redirect to dashboard
         router.push(routes.dashboard);
       }
@@ -72,15 +52,6 @@ const AuthPage = () => {
         });
 
         if (loginResult) {
-          setAccessToken(loginResult.accessToken);
-          setRefreshToken(loginResult.refreshToken);
-
-          // Clear password from store after successful signup
-          const { setPassword, setConfirmPassword } =
-            useAuthPageStore.getState();
-          setPassword('');
-          setConfirmPassword('');
-
           // Redirect to dashboard
           router.push(routes.dashboard);
         }

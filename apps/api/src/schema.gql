@@ -10,6 +10,11 @@ type LoginResponseDto {
   refreshToken: String!
 }
 
+type RefreshTokenResponseDto {
+  """The new access token"""
+  accessToken: String!
+}
+
 type MutationResponseDto {
   success: Boolean!
   message: String
@@ -838,6 +843,7 @@ type Mutation {
   eventReplay(input: EventReplayRequestDto!): MutationResponseDto!
   loginByEmail(input: AuthLoginByEmailRequestDto!): LoginResponseDto!
   registerByEmail(input: AuthRegisterByEmailRequestDto!): MutationResponseDto!
+  refreshToken(input: AuthRefreshTokenRequestDto!): RefreshTokenResponseDto!
   logout(input: UpdateUserRequestDto!): MutationResponseDto!
   tenantCreate(input: TenantCreateRequestDto!): MutationResponseDto!
   tenantUpdate(input: TenantUpdateRequestDto!): MutationResponseDto!
@@ -912,6 +918,11 @@ input AuthRegisterByEmailRequestDto {
 
   """The password of the auth"""
   password: String!
+}
+
+input AuthRefreshTokenRequestDto {
+  """The refresh token to use for generating a new access token"""
+  refreshToken: String!
 }
 
 input UpdateUserRequestDto {
