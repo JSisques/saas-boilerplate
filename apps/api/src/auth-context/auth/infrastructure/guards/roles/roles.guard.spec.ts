@@ -1,5 +1,5 @@
 import { ROLES_KEY } from '@/auth-context/auth/infrastructure/decorators/roles/roles.decorator';
-import { RolesGuard } from '@/auth-context/auth/infrastructure/guards/roles.guard';
+import { RolesGuard } from '@/auth-context/auth/infrastructure/guards/roles/roles.guard';
 import { UserRoleEnum } from '@/prisma/master/client';
 import { ExecutionContext, ForbiddenException } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';

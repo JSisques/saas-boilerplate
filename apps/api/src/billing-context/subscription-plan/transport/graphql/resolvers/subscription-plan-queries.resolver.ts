@@ -1,6 +1,6 @@
 import { JwtAuthGuard } from '@/auth-context/auth/infrastructure/auth/jwt-auth.guard';
 import { Roles } from '@/auth-context/auth/infrastructure/decorators/roles/roles.decorator';
-import { RolesGuard } from '@/auth-context/auth/infrastructure/guards/roles.guard';
+import { RolesGuard } from '@/auth-context/auth/infrastructure/guards/roles/roles.guard';
 import { FindSubscriptionPlansByCriteriaQuery } from '@/billing-context/subscription-plan/application/queries/subscription-plan-find-by-criteria/subscription-plan-find-by-criteria.query';
 import { FindSubscriptionPlanViewModelByIdQuery } from '@/billing-context/subscription-plan/application/queries/subscription-plan-find-view-model-by-id/subscription-plan-find-view-model-by-id.query';
 import { SubscriptionPlanFindByCriteriaRequestDto } from '@/billing-context/subscription-plan/transport/graphql/dtos/requests/subscription-plan-find-by-criteria.request.dto';
