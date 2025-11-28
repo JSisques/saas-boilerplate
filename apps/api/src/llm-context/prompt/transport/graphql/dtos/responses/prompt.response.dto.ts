@@ -1,6 +1,6 @@
+import { PromptStatusEnum } from '@/prisma/master/client';
 import { BasePaginatedResultDto } from '@/shared/transport/graphql/dtos/responses/base-paginated-result/base-paginated-result.dto';
 import { Field, ObjectType } from '@nestjs/graphql';
-import { PromptStatusEnum } from '@prisma/client';
 
 @ObjectType('PromptResponseDto')
 export class PromptResponseDto {

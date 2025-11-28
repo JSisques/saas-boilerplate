@@ -26,7 +26,7 @@ describe('InvalidNumberException', () => {
   it('should set the domain to ValueObject', () => {
     const exception = new InvalidNumberException(testMessage);
 
-    expect(exception.domain).toBe('ValueObject');
+    expect(exception.layer).toBe('Domain');
   });
 
   it('should return a detailed message', () => {
@@ -34,7 +34,7 @@ describe('InvalidNumberException', () => {
     const detailedMessage = exception.getDetailedMessage();
 
     expect(detailedMessage).toBe(
-      `[ValueObject] InvalidNumberException: ${testMessage}`,
+      `[Domain] InvalidNumberException: ${testMessage}`,
     );
   });
 });

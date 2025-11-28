@@ -1,8 +1,8 @@
+import { StatusEnum, UserRoleEnum } from '@/prisma/master/client';
 import { UserAggregate } from '@/user-context/users/domain/aggregates/user.aggregate';
 import { UserAggregateFactory } from '@/user-context/users/domain/factories/user-aggregate/user-aggregate.factory';
 import { UserPrismaDto } from '@/user-context/users/infrastructure/database/prisma/dtos/user-prisma.dto';
 import { Injectable, Logger } from '@nestjs/common';
-import { StatusEnum, UserRoleEnum } from '@prisma/client';
 
 @Injectable()
 export class UserPrismaMapper {

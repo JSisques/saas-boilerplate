@@ -3,9 +3,9 @@ import {
   SUBSCRIPTION_PLAN_WRITE_REPOSITORY_TOKEN,
   SubscriptionPlanWriteRepository,
 } from '@/billing-context/subscription-plan/domain/repositories/subscription-plan-write/subscription-plan-write.repository';
+import { SubscriptionPlanTypeEnum } from '@/prisma/master/client';
 import { IBaseService } from '@/shared/application/services/base-service/base-service.interface';
 import { Inject, Injectable, Logger } from '@nestjs/common';
-import { SubscriptionPlanTypeEnum } from '@prisma/client';
 
 @Injectable()
 export class AssertSubscriptionPlanTypeIsUniqueService

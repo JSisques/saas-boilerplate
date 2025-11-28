@@ -1,5 +1,5 @@
-import { BaseDomainException } from '@/shared/domain/exceptions/base-domain.exception';
 import { InvalidSaltRoundsException } from '@/auth-context/auth/application/exceptions/auth-invalid-salt-rounds/auth-invalid-salt-rounds.exception';
+import { BaseDomainException } from '@/shared/domain/exceptions/base-domain.exception';
 
 describe('InvalidSaltRoundsException', () => {
   const invalidRounds = 35;
@@ -28,7 +28,7 @@ describe('InvalidSaltRoundsException', () => {
   it('should set the domain to PasswordHashing', () => {
     const exception = new InvalidSaltRoundsException(invalidRounds);
 
-    expect(exception.domain).toBe('PasswordHashing');
+    expect(exception.layer).toBe('Domain');
   });
 
   it('should have a timestamp', () => {
@@ -48,7 +48,7 @@ describe('InvalidSaltRoundsException', () => {
     const detailedMessage = exception.getDetailedMessage();
 
     expect(detailedMessage).toBe(
-      `[PasswordHashing] InvalidSaltRoundsException: Invalid salt rounds: ${invalidRounds}. Salt rounds must be between 4 and 31`,
+      `[Domain] InvalidSaltRoundsException: Invalid salt rounds: ${invalidRounds}. Salt rounds must be between 4 and 31`,
     );
   });
 

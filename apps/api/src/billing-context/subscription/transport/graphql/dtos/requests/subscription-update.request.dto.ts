@@ -1,5 +1,8 @@
+import {
+  RenewalMethodEnum,
+  SubscriptionStatusEnum,
+} from '@/prisma/master/client';
 import { Field, InputType } from '@nestjs/graphql';
-import { RenewalMethodEnum, SubscriptionStatusEnum } from '@prisma/client';
 import {
   IsDate,
   IsEnum,

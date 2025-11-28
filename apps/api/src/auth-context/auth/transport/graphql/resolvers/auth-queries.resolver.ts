@@ -5,11 +5,11 @@ import { RolesGuard } from '@/auth-context/auth/infrastructure/guards/roles.guar
 import { AuthFindByCriteriaRequestDto } from '@/auth-context/auth/transport/graphql/dtos/requests/auth-find-by-criteria.request.dto';
 import { PaginatedAuthResultDto } from '@/auth-context/auth/transport/graphql/dtos/responses/auth.response.dto';
 import { AuthGraphQLMapper } from '@/auth-context/auth/transport/graphql/mappers/auth.mapper';
+import { UserRoleEnum } from '@/prisma/master/client';
 import { Criteria } from '@/shared/domain/entities/criteria';
 import { UseGuards } from '@nestjs/common';
 import { QueryBus } from '@nestjs/cqrs';
 import { Args, Query, Resolver } from '@nestjs/graphql';
-import { UserRoleEnum } from '@prisma/client';
 
 @Resolver()
 @UseGuards(JwtAuthGuard, RolesGuard)

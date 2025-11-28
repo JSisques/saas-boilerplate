@@ -25,7 +25,7 @@ export class UserPrismaRepository
    * @returns The user if found, null otherwise
    */
   async findById(id: string): Promise<UserAggregate | null> {
-    const userData = await this.prismaMasterService.user.findUnique({
+    const userData = await this.prismaMasterService.client.user.findUnique({
       where: { id },
     });
 
@@ -43,7 +43,7 @@ export class UserPrismaRepository
    * @returns The user if found, null otherwise
    */
   async findByUserName(userName: string): Promise<UserAggregate | null> {
-    const userData = await this.prismaMasterService.user.findUnique({
+    const userData = await this.prismaMasterService.client.user.findUnique({
       where: { userName },
     });
 
@@ -63,7 +63,7 @@ export class UserPrismaRepository
   async save(user: UserAggregate): Promise<UserAggregate> {
     const userData = this.userPrismaMapper.toPrismaData(user);
 
-    const result = await this.prismaMasterService.user.upsert({
+    const result = await this.prismaMasterService.client.user.upsert({
       where: { id: user.id.value },
       update: userData,
       create: userData,
@@ -81,7 +81,7 @@ export class UserPrismaRepository
   async delete(id: string): Promise<boolean> {
     this.logger.log(`Deleting user by id: ${id}`);
 
-    await this.prismaMasterService.user.delete({
+    await this.prismaMasterService.client.user.delete({
       where: { id },
     });
 

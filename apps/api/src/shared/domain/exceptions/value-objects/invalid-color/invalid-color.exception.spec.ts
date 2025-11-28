@@ -26,7 +26,7 @@ describe('InvalidColorException', () => {
   it('should set the domain to ValueObject', () => {
     const exception = new InvalidColorException(testMessage);
 
-    expect(exception.domain).toBe('ValueObject');
+    expect(exception.layer).toBe('Domain');
   });
 
   it('should return a detailed message', () => {
@@ -34,7 +34,7 @@ describe('InvalidColorException', () => {
     const detailedMessage = exception.getDetailedMessage();
 
     expect(detailedMessage).toBe(
-      `[ValueObject] InvalidColorException: ${testMessage}`,
+      `[Domain] InvalidColorException: ${testMessage}`,
     );
   });
 });

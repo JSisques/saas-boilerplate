@@ -1,12 +1,12 @@
 import { SubscriptionPlanAggregate } from '@/billing-context/subscription-plan/domain/aggregates/subscription-plan.aggregate';
 import { SubscriptionPlanAggregateFactory } from '@/billing-context/subscription-plan/domain/factories/subscription-plan-aggregate/subscription-plan-aggregate.factory';
 import { SubscriptionPlanPrismaDto } from '@/billing-context/subscription-plan/infrastructure/database/prisma/dtos/subscription-plan-prisma.dto';
-import { Injectable, Logger } from '@nestjs/common';
 import {
   CurrencyEnum,
   SubscriptionPlanIntervalEnum,
   SubscriptionPlanTypeEnum,
-} from '@prisma/client';
+} from '@/prisma/master/client';
+import { Injectable, Logger } from '@nestjs/common';
 
 @Injectable()
 export class SubscriptionPlanPrismaMapper {

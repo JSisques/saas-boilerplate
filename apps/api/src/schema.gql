@@ -314,6 +314,72 @@ type PaginatedPromptResultDto {
   items: [PromptResponseDto!]!
 }
 
+type MutationResponseArrayDto {
+  success: Boolean!
+  message: String
+  ids: [String!]
+}
+
+type StorageDownloadFileResponseDto {
+  """The file content as base64"""
+  content: String!
+
+  """The file name"""
+  fileName: String!
+
+  """The MIME type"""
+  mimeType: String!
+
+  """The file size in bytes"""
+  fileSize: Float!
+}
+
+type StorageResponseDto {
+  """The storage ID"""
+  id: String!
+
+  """The file name"""
+  fileName: String!
+
+  """The file size in bytes"""
+  fileSize: Float!
+
+  """The MIME type"""
+  mimeType: String!
+
+  """The storage provider"""
+  provider: String!
+
+  """The file URL"""
+  url: String!
+
+  """The file path"""
+  path: String!
+
+  """The creation date"""
+  createdAt: DateTime!
+
+  """The update date"""
+  updatedAt: DateTime!
+}
+
+type PaginatedStorageResultDto {
+  """The total number of items"""
+  total: Int!
+
+  """The page number"""
+  page: Int!
+
+  """The number of items per page"""
+  perPage: Int!
+
+  """The total number of pages"""
+  totalPages: Int!
+
+  """The storage items"""
+  items: [StorageResponseDto!]!
+}
+
 type TenantDatabaseResponseDto {
   """The id of the tenant database"""
   id: String!
@@ -574,6 +640,8 @@ type Query {
   subscriptionFindByTenantId(input: SubscriptionFindByTenantIdRequestDto!): SubscriptionResponseDto!
   promptFindByCriteria(input: PromptFindByCriteriaRequestDto): PaginatedPromptResultDto!
   promptFindById(input: PromptFindByIdRequestDto!): PromptResponseDto!
+  storageFindById(input: StorageFindByIdRequestDto!): StorageResponseDto
+  storageFindByCriteria(input: StorageFindByCriteriaRequestDto): PaginatedStorageResultDto!
 }
 
 input EventFindByCriteriaRequestDto {
@@ -750,6 +818,22 @@ input PromptFindByIdRequestDto {
   id: String!
 }
 
+input StorageFindByIdRequestDto {
+  """The id of the storage"""
+  id: String!
+}
+
+input StorageFindByCriteriaRequestDto {
+  """The filters to find by"""
+  filters: [BaseFilterInput!] = []
+
+  """The sorts to find by"""
+  sorts: [BaseSortInput!] = []
+
+  """The pagination to find by"""
+  pagination: BasePaginationInput = {page: 1, perPage: 10}
+}
+
 type Mutation {
   eventReplay(input: EventReplayRequestDto!): MutationResponseDto!
   loginByEmail(input: AuthLoginByEmailRequestDto!): LoginResponseDto!
@@ -784,6 +868,9 @@ type Mutation {
   promptDraft(input: PromptDraftRequestDto!): MutationResponseDto!
   promptArchive(input: PromptArchiveRequestDto!): MutationResponseDto!
   promptDeprecate(input: PromptDeprecateRequestDto!): MutationResponseDto!
+  storageUploadFile(file: Upload!): MutationResponseDto!
+  storageDownloadFiles(input: StorageDownloadFileRequestDto!): [StorageDownloadFileResponseDto!]!
+  storageDeleteFile(input: StorageDeleteFileRequestDto!): MutationResponseArrayDto!
 }
 
 input EventReplayRequestDto {
@@ -1329,4 +1416,17 @@ input PromptArchiveRequestDto {
 input PromptDeprecateRequestDto {
   """The unique identifier of the prompt"""
   id: String!
+}
+
+"""The `Upload` scalar type represents a file upload."""
+scalar Upload
+
+input StorageDownloadFileRequestDto {
+  """The unique identifiers of the storages"""
+  ids: [String!]!
+}
+
+input StorageDeleteFileRequestDto {
+  """The unique identifiers of the storages"""
+  ids: [String!]!
 }

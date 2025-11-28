@@ -3,9 +3,12 @@ import {
   PaginatedSubscriptionResultDto,
   SubscriptionResponseDto,
 } from '@/billing-context/subscription/transport/graphql/dtos/responses/subscription.response.dto';
+import {
+  RenewalMethodEnum,
+  SubscriptionStatusEnum,
+} from '@/prisma/master/client';
 import { PaginatedResult } from '@/shared/domain/entities/paginated-result.entity';
 import { Injectable, Logger } from '@nestjs/common';
-import { RenewalMethodEnum, SubscriptionStatusEnum } from '@prisma/client';
 
 @Injectable()
 export class SubscriptionGraphQLMapper {

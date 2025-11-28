@@ -1,10 +1,10 @@
 import { SubscriptionPlanAggregate } from '@/billing-context/subscription-plan/domain/aggregates/subscription-plan.aggregate';
 import { SubscriptionPlanWriteRepository } from '@/billing-context/subscription-plan/domain/repositories/subscription-plan-write/subscription-plan-write.repository';
 import { SubscriptionPlanPrismaMapper } from '@/billing-context/subscription-plan/infrastructure/database/prisma/mappers/subscription-plan-prisma.mapper';
+import { SubscriptionPlanTypeEnum } from '@/prisma/master/client';
 import { BasePrismaMasterRepository } from '@/shared/infrastructure/database/prisma/base-prisma/base-prisma-master/base-prisma-master.repository';
 import { PrismaMasterService } from '@/shared/infrastructure/database/prisma/services/prisma-master/prisma-master.service';
 import { Injectable, Logger } from '@nestjs/common';
-import { SubscriptionPlanTypeEnum } from '@prisma/client';
 
 @Injectable()
 export class SubscriptionPlanPrismaRepository
@@ -27,7 +27,7 @@ export class SubscriptionPlanPrismaRepository
    */
   async findById(id: string): Promise<SubscriptionPlanAggregate | null> {
     const subscriptionPlanData =
-      await this.prismaMasterService.subscriptionPlan.findUnique({
+      await this.prismaMasterService.client.subscriptionPlan.findUnique({
         where: { id },
       });
 
@@ -64,7 +64,7 @@ export class SubscriptionPlanPrismaRepository
    */
   async findBySlug(slug: string): Promise<SubscriptionPlanAggregate | null> {
     const subscriptionPlanData =
-      await this.prismaMasterService.subscriptionPlan.findFirst({
+      await this.prismaMasterService.client.subscriptionPlan.findFirst({
         where: { slug },
       });
 
@@ -103,7 +103,7 @@ export class SubscriptionPlanPrismaRepository
     type: SubscriptionPlanTypeEnum,
   ): Promise<SubscriptionPlanAggregate | null> {
     const subscriptionPlanData =
-      await this.prismaMasterService.subscriptionPlan.findFirst({
+      await this.prismaMasterService.client.subscriptionPlan.findFirst({
         where: { type },
       });
 
@@ -144,11 +144,12 @@ export class SubscriptionPlanPrismaRepository
     const subscriptionPlanData =
       this.subscriptionPlanPrismaMapper.toPrismaData(subscriptionPlan);
 
-    const result = await this.prismaMasterService.subscriptionPlan.upsert({
-      where: { id: subscriptionPlan.id.value },
-      update: subscriptionPlanData,
-      create: subscriptionPlanData,
-    });
+    const result =
+      await this.prismaMasterService.client.subscriptionPlan.upsert({
+        where: { id: subscriptionPlan.id.value },
+        update: subscriptionPlanData,
+        create: subscriptionPlanData,
+      });
 
     return this.subscriptionPlanPrismaMapper.toDomainEntity({
       id: result.id,
@@ -180,7 +181,7 @@ export class SubscriptionPlanPrismaRepository
   async delete(id: string): Promise<boolean> {
     this.logger.log(`Deleting subscription plan by id: ${id}`);
 
-    await this.prismaMasterService.subscriptionPlan.delete({
+    await this.prismaMasterService.client.subscriptionPlan.delete({
       where: { id },
     });
 

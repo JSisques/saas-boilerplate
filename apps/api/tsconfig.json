@@ -11,7 +11,9 @@
     "outDir": "./dist",
     "baseUrl": "./",
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "@/prisma/tenant/client": ["./prisma/tenant/client/index.js"],
+      "@/prisma/master/client": ["./prisma/master/client/index.js"]
     },
     "incremental": true,
     "skipLibCheck": true,

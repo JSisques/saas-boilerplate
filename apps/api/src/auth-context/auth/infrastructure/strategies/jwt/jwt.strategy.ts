@@ -49,13 +49,15 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
       throw new UnauthorizedException('User not found');
     }
 
-    // Return the auth aggregate with role and userId from JWT payload
+    // Return the auth aggregate with role, userId, and tenantIds from JWT payload
     // This allows the RolesGuard to access the user's role
     // and guards can access userId to validate ownership
+    // and TenantGuard can access tenantIds to validate tenant access
     return {
       ...auth,
       role: payload.role,
       userId: payload.userId,
+      tenantIds: payload.tenantIds,
     };
   }
 }

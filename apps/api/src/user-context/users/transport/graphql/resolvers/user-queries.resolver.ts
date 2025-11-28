@@ -2,6 +2,7 @@ import { JwtAuthGuard } from '@/auth-context/auth/infrastructure/auth/jwt-auth.g
 import { Roles } from '@/auth-context/auth/infrastructure/decorators/roles/roles.decorator';
 import { OwnerGuard } from '@/auth-context/auth/infrastructure/guards/owner.guard';
 import { RolesGuard } from '@/auth-context/auth/infrastructure/guards/roles.guard';
+import { UserRoleEnum } from '@/prisma/master/client';
 import { Criteria } from '@/shared/domain/entities/criteria';
 import { FindUsersByCriteriaQuery } from '@/user-context/users/application/queries/find-users-by-criteria/find-users-by-criteria.query';
 import { UserViewModelFindByIdQuery } from '@/user-context/users/application/queries/user-view-model-find-by-id/user-view-model-find-by-id.query';
@@ -15,7 +16,6 @@ import { UserGraphQLMapper } from '@/user-context/users/transport/graphql/mapper
 import { UseGuards } from '@nestjs/common';
 import { QueryBus } from '@nestjs/cqrs';
 import { Args, Query, Resolver } from '@nestjs/graphql';
-import { UserRoleEnum } from '@prisma/client';
 
 @Resolver()
 @UseGuards(JwtAuthGuard, RolesGuard)

@@ -145,7 +145,15 @@ describe('AuthLoginByEmailCommandHandler', () => {
 
       mockAssertAuthEmailExistsService.execute.mockResolvedValue(mockAuth);
       mockPasswordHashingService.verifyPassword.mockResolvedValue(true);
-      mockQueryBus.execute.mockResolvedValue(mockUser);
+      // Mock queryBus.execute to return different values for different queries
+      mockQueryBus.execute.mockImplementation((query: any) => {
+        // First call: UserFindByIdQuery returns UserAggregate
+        if (query.constructor.name === 'UserFindByIdQuery') {
+          return Promise.resolve(mockUser);
+        }
+        // Second call: FindTenantMemberByUserIdQuery returns TenantMemberAggregate[]
+        return Promise.resolve([]);
+      });
       mockAuthWriteRepository.save.mockResolvedValue(undefined);
       mockEventBus.publishAll.mockResolvedValue(undefined);
       mockJwtAuthService.generateTokenPair.mockReturnValue(mockTokens);
@@ -179,6 +187,7 @@ describe('AuthLoginByEmailCommandHandler', () => {
         email: email,
         username: 'johndoe',
         role: UserRoleEnum.USER,
+        tenantIds: [],
       });
 
       updateLastLoginAtSpy.mockRestore();

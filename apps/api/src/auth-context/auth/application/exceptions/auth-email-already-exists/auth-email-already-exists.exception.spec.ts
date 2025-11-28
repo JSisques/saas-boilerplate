@@ -1,5 +1,5 @@
-import { BaseApplicationException } from '@/shared/application/exceptions/base-application/base-application.exception';
 import { AuthEmailAlreadyExistsException } from '@/auth-context/auth/application/exceptions/auth-email-already-exists/auth-email-already-exists.exception';
+import { BaseApplicationException } from '@/shared/application/exceptions/base-application/base-application.exception';
 
 describe('AuthEmailAlreadyExistsException', () => {
   const email = 'test@example.com';
@@ -26,7 +26,7 @@ describe('AuthEmailAlreadyExistsException', () => {
   it('should set the domain to Application', () => {
     const exception = new AuthEmailAlreadyExistsException(email);
 
-    expect(exception.domain).toBe('Application');
+    expect(exception.layer).toBe('Application');
   });
 
   it('should have a timestamp', () => {

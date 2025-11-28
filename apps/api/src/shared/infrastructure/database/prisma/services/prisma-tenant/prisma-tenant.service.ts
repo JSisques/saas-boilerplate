@@ -1,4 +1,4 @@
-import { PrismaClientExtended } from '@/shared/infrastructure/database/prisma/clients/custom-prisma-client/custom-prisma-client';
+import { PrismaTenantClientExtended } from '@/shared/infrastructure/database/prisma/clients/custom-prisma-tenant-client/custom-prisma-tenant-client';
 import { PrismaTenantFactory } from '@/shared/infrastructure/database/prisma/factories/prisma-tenant-factory/prisma-tenant-factory.service';
 import { PrismaMasterService } from '@/shared/infrastructure/database/prisma/services/prisma-master/prisma-master.service';
 import { TenantDatabaseUrlBuilderService } from '@/shared/infrastructure/database/prisma/services/tenant-database-url-builder/tenant-database-url-builder.service';
@@ -20,10 +20,10 @@ export class PrismaTenantService {
    * @returns PrismaClientExtended instance for the tenant
    * @throws NotFoundException if tenant database is not found or not active
    */
-  async getTenantClient(tenantId: string): Promise<PrismaClientExtended> {
+  async getTenantClient(tenantId: string): Promise<PrismaTenantClientExtended> {
     // Fetch tenant database configuration from master database
     const tenantDatabase =
-      await this.prismaMasterService.tenantDatabase.findUnique({
+      await this.prismaMasterService.client.tenantDatabase.findUnique({
         where: {
           tenantId,
         },
@@ -58,7 +58,7 @@ export class PrismaTenantService {
   async isTenantDatabaseActive(tenantId: string): Promise<boolean> {
     try {
       const tenantDatabase =
-        await this.prismaMasterService.tenantDatabase.findUnique({
+        await this.prismaMasterService.client.tenantDatabase.findUnique({
           where: {
             tenantId,
           },

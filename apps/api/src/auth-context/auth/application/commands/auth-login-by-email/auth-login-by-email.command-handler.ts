@@ -12,6 +12,7 @@ import {
   AuthWriteRepository,
 } from '@/auth-context/auth/domain/repositories/auth-write.repository';
 import { AuthLastLoginAtValueObject } from '@/auth-context/auth/domain/value-objects/auth-last-login-at/auth-last-login-at.vo';
+import { FindTenantMemberByUserIdQuery } from '@/tenant-context/tenant-members/application/queries/tenant-member-find-by-user-id/tenant-member-find-by-user-id.query';
 import { UserFindByIdQuery } from '@/user-context/users/application/queries/user-find-by-id/user-find-by-id.query';
 import { Inject, Logger, UnauthorizedException } from '@nestjs/common';
 import {
@@ -83,13 +84,21 @@ export class AuthLoginByEmailCommandHandler
     await this.eventBus.publishAll(auth.getUncommittedEvents());
     await auth.commit();
 
-    // 08: Generate JWT tokens
+    // 08: Get tenant members for the user to extract tenant IDs
+    const tenantMembers = await this.queryBus.execute(
+      new FindTenantMemberByUserIdQuery({ id: auth.userId.value }),
+    );
+    const tenantIds =
+      tenantMembers?.map((member) => member.tenantId.value) || [];
+
+    // 09: Generate JWT tokens
     const tokens = this.jwtAuthService.generateTokenPair({
       id: auth.id.value,
       userId: auth.userId.value,
       email: auth.email?.value || undefined,
       username: user?.userName?.value ?? undefined,
       role: user?.role?.value ?? undefined,
+      tenantIds: tenantIds,
     });
 
     this.logger.log(`Login successful for auth: ${auth.id.value}`);

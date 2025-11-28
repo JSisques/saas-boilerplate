@@ -1,4 +1,4 @@
-import { PromptStatusEnum } from '@prisma/client';
+import { PromptStatusEnum } from '@/prisma/master/client';
 
 export type PromptPrismaDto = {
   id: string;

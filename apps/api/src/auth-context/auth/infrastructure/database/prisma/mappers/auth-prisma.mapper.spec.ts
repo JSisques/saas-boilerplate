@@ -1,8 +1,8 @@
 import { AuthAggregate } from '@/auth-context/auth/domain/aggregate/auth.aggregate';
 import { AuthAggregateFactory } from '@/auth-context/auth/domain/factories/auth-aggregate/auth-aggregate.factory';
-import { AuthPrismaMapper } from '@/auth-context/auth/infrastructure/database/prisma/mappers/auth-prisma.mapper';
 import { AuthPrismaDto } from '@/auth-context/auth/infrastructure/database/prisma/dtos/auth-prisma.dto';
-import { AuthProviderEnum } from '@prisma/client';
+import { AuthPrismaMapper } from '@/auth-context/auth/infrastructure/database/prisma/mappers/auth-prisma.mapper';
+import { AuthProviderEnum } from '@/prisma/master/client';
 import { AuthUuidValueObject } from '@/shared/domain/value-objects/identifiers/auth-uuid/auth-uuid.vo';
 import { UserUuidValueObject } from '@/shared/domain/value-objects/identifiers/user-uuid/user-uuid.vo';
 

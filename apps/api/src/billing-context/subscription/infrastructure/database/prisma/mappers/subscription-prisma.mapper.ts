@@ -1,8 +1,11 @@
 import { SubscriptionAggregate } from '@/billing-context/subscription/domain/aggregates/subscription.aggregate';
 import { SubscriptionAggregateFactory } from '@/billing-context/subscription/domain/factories/subscription-aggregate/subscription-aggregate.factory';
 import { SubscriptionPrismaDto } from '@/billing-context/subscription/infrastructure/database/prisma/dtos/subscription-prisma.dto';
+import {
+  RenewalMethodEnum,
+  SubscriptionStatusEnum,
+} from '@/prisma/master/client';
 import { Injectable, Logger } from '@nestjs/common';
-import { RenewalMethodEnum, SubscriptionStatusEnum } from '@prisma/client';
 
 @Injectable()
 export class SubscriptionPrismaMapper {

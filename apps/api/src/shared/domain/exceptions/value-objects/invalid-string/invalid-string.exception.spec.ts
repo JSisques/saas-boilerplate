@@ -26,7 +26,7 @@ describe('InvalidStringException', () => {
   it('should set the domain to ValueObject', () => {
     const exception = new InvalidStringException(testMessage);
 
-    expect(exception.domain).toBe('ValueObject');
+    expect(exception.layer).toBe('Domain');
   });
 
   it('should return a detailed message', () => {
@@ -34,7 +34,7 @@ describe('InvalidStringException', () => {
     const detailedMessage = exception.getDetailedMessage();
 
     expect(detailedMessage).toBe(
-      `[ValueObject] InvalidStringException: ${testMessage}`,
+      `[Domain] InvalidStringException: ${testMessage}`,
     );
   });
 });

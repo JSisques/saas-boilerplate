@@ -1,5 +1,5 @@
+import { TenantDatabaseStatusEnum } from '@/prisma/master/client';
 import { BasePrismaDto } from '@/shared/infrastructure/database/prisma/dtos/base-prisma.dto';
-import { TenantDatabaseStatusEnum } from '@prisma/client';
 
 export type TenantDatabasePrismaDto = BasePrismaDto & {
   id: string;

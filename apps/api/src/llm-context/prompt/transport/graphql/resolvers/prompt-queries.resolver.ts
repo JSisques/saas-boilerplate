@@ -10,11 +10,11 @@ import {
   PromptResponseDto,
 } from '@/llm-context/prompt/transport/graphql/dtos/responses/prompt.response.dto';
 import { PromptGraphQLMapper } from '@/llm-context/prompt/transport/graphql/mappers/prompt.mapper';
+import { UserRoleEnum } from '@/prisma/master/client';
 import { Criteria } from '@/shared/domain/entities/criteria';
 import { Logger, UseGuards } from '@nestjs/common';
 import { QueryBus } from '@nestjs/cqrs';
 import { Args, Query, Resolver } from '@nestjs/graphql';
-import { UserRoleEnum } from '@prisma/client';
 
 @Resolver()
 @UseGuards(JwtAuthGuard, RolesGuard)

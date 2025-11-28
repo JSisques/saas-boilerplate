@@ -26,7 +26,7 @@ describe('InvalidTimezoneException', () => {
   it('should set the domain to Domain (inherited from base)', () => {
     const exception = new InvalidTimezoneException(testMessage);
 
-    expect(exception.domain).toBe('Domain');
+    expect(exception.layer).toBe('Domain');
   });
 
   it('should return a detailed message', () => {

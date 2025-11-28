@@ -1,3 +1,4 @@
+import { StatusEnum, UserRoleEnum } from '@/prisma/master/client';
 import { MutationResponseDto } from '@/shared/transport/graphql/dtos/responses/success-response/success-response.dto';
 import { MutationResponseGraphQLMapper } from '@/shared/transport/graphql/mappers/mutation-response/mutation-response.mapper';
 import { UserDeleteCommand } from '@/user-context/users/application/commands/delete-user/delete-user.command';
@@ -7,7 +8,6 @@ import { CreateUserRequestDto } from '@/user-context/users/transport/graphql/dto
 import { DeleteUserRequestDto } from '@/user-context/users/transport/graphql/dtos/requests/delete-user.request.dto';
 import { UpdateUserRequestDto } from '@/user-context/users/transport/graphql/dtos/requests/update-user.request.dto';
 import { CommandBus } from '@nestjs/cqrs';
-import { StatusEnum, UserRoleEnum } from '@prisma/client';
 import { UserMutationsResolver } from './user-mutations.resolver';
 
 describe('UserMutationsResolver', () => {

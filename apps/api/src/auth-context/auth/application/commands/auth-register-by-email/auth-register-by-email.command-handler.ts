@@ -9,6 +9,7 @@ import { AuthEmailVerifiedValueObject } from '@/auth-context/auth/domain/value-o
 import { AuthPasswordValueObject } from '@/auth-context/auth/domain/value-objects/auth-password/auth-password.vo';
 import { AuthProviderValueObject } from '@/auth-context/auth/domain/value-objects/auth-provider/auth-provider.vo';
 import { AuthTwoFactorEnabledValueObject } from '@/auth-context/auth/domain/value-objects/auth-two-factor-enabled/auth-two-factor-enabled.vo';
+import { AuthProviderEnum } from '@/prisma/master/client';
 import { DateValueObject } from '@/shared/domain/value-objects/date/date.vo';
 import { AuthUuidValueObject } from '@/shared/domain/value-objects/identifiers/auth-uuid/auth-uuid.vo';
 import { UserUuidValueObject } from '@/shared/domain/value-objects/identifiers/user-uuid/user-uuid.vo';
@@ -20,7 +21,6 @@ import {
   EventBus,
   ICommandHandler,
 } from '@nestjs/cqrs';
-import { AuthProviderEnum } from '@prisma/client';
 import { AuthRegisterByEmailCommand } from './auth-register-by-email.command';
 
 @CommandHandler(AuthRegisterByEmailCommand)

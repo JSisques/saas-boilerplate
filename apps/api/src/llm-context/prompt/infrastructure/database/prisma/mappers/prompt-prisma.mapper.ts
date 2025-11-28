@@ -1,8 +1,8 @@
 import { PromptAggregate } from '@/llm-context/prompt/domain/aggregates/prompt.aggregate';
 import { PromptAggregateFactory } from '@/llm-context/prompt/domain/factories/prompt-aggregate/prompt-aggregate.factory';
 import { PromptPrismaDto } from '@/llm-context/prompt/infrastructure/database/prisma/dtos/prompt-prisma.dto';
+import { PromptStatusEnum } from '@/prisma/master/client';
 import { Injectable, Logger } from '@nestjs/common';
-import { PromptStatusEnum } from '@prisma/client';
 
 @Injectable()
 export class PromptPrismaMapper {

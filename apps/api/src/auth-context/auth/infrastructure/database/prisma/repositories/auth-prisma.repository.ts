@@ -25,7 +25,7 @@ export class AuthPrismaRepository
    * @returns The auth if found, null otherwise
    */
   async findById(id: string): Promise<AuthAggregate | null> {
-    const authData = await this.prismaMasterService.auth.findUnique({
+    const authData = await this.prismaMasterService.client.auth.findUnique({
       where: { id },
     });
 
@@ -43,7 +43,7 @@ export class AuthPrismaRepository
    * @returns The auth if found, null otherwise
    */
   async findByEmail(email: string): Promise<AuthAggregate | null> {
-    const authData = await this.prismaMasterService.auth.findFirst({
+    const authData = await this.prismaMasterService.client.auth.findFirst({
       where: { email },
     });
 
@@ -61,7 +61,7 @@ export class AuthPrismaRepository
    * @returns The auth if found, null otherwise
    */
   async findByUserId(userId: string): Promise<AuthAggregate | null> {
-    const authData = await this.prismaMasterService.auth.findFirst({
+    const authData = await this.prismaMasterService.client.auth.findFirst({
       where: { userId },
     });
 
@@ -81,7 +81,7 @@ export class AuthPrismaRepository
   async save(auth: AuthAggregate): Promise<AuthAggregate> {
     const authData = this.authPrismaMapper.toPrismaData(auth);
 
-    const result = await this.prismaMasterService.auth.upsert({
+    const result = await this.prismaMasterService.client.auth.upsert({
       where: { id: auth.id.value },
       update: authData,
       create: authData,
@@ -99,7 +99,7 @@ export class AuthPrismaRepository
   async delete(id: string): Promise<boolean> {
     this.logger.log(`Deleting auth by id: ${id}`);
 
-    await this.prismaMasterService.auth.delete({
+    await this.prismaMasterService.client.auth.delete({
       where: { id },
     });
 

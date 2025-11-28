@@ -1,5 +1,5 @@
+import { StatusEnum, UserRoleEnum } from '@/prisma/master/client';
 import { Field, InputType } from '@nestjs/graphql';
-import { StatusEnum, UserRoleEnum } from '@prisma/client';
 import { IsEnum, IsOptional, IsString, IsUrl } from 'class-validator';
 
 @InputType('CreateUserRequestDto')

@@ -19,13 +19,13 @@ import { SubscriptionPlanTypeValueObject } from '@/billing-context/subscription-
 import { SubscriptionPlanPrismaDto } from '@/billing-context/subscription-plan/infrastructure/database/prisma/dtos/subscription-plan-prisma.dto';
 import { SubscriptionPlanPrismaMapper } from '@/billing-context/subscription-plan/infrastructure/database/prisma/mappers/subscription-plan-prisma.mapper';
 import { SubscriptionPlanPrismaRepository } from '@/billing-context/subscription-plan/infrastructure/database/prisma/repositories/subscription-plan-prisma.repository';
-import { DateValueObject } from '@/shared/domain/value-objects/date/date.vo';
-import { SubscriptionPlanUuidValueObject } from '@/shared/domain/value-objects/identifiers/subscription-plan/subscription-plan-uuid.vo';
 import {
   CurrencyEnum as PrismaCurrencyEnum,
   SubscriptionPlanIntervalEnum as PrismaSubscriptionPlanIntervalEnum,
   SubscriptionPlanTypeEnum as PrismaSubscriptionPlanTypeEnum,
-} from '@prisma/client';
+} from '@/prisma/master/client';
+import { DateValueObject } from '@/shared/domain/value-objects/date/date.vo';
+import { SubscriptionPlanUuidValueObject } from '@/shared/domain/value-objects/identifiers/subscription-plan/subscription-plan-uuid.vo';
 
 describe('SubscriptionPlanPrismaRepository', () => {
   let repository: SubscriptionPlanPrismaRepository;
@@ -43,11 +43,13 @@ describe('SubscriptionPlanPrismaRepository', () => {
     mockDelete = jest.fn();
 
     mockPrismaService = {
-      subscriptionPlan: {
-        findUnique: mockFindUnique,
-        findFirst: mockFindFirst,
-        upsert: mockUpsert,
-        delete: mockDelete,
+      client: {
+        subscriptionPlan: {
+          findUnique: mockFindUnique,
+          findFirst: mockFindFirst,
+          upsert: mockUpsert,
+          delete: mockDelete,
+        },
       },
     };
 

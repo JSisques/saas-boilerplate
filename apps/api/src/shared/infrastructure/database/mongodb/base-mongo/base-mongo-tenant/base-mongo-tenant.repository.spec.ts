@@ -1,14 +1,16 @@
-import { Test, TestingModule } from '@nestjs/testing';
 import { MongoTenantService } from '@/shared/infrastructure/database/mongodb/services/mongo-tenant/mongo-tenant.service';
-import { BaseMongoTenantRepository } from './base-mongo-tenant.repository';
+import { TenantContextService } from '@/shared/infrastructure/services/tenant-context/tenant-context.service';
+import { Test, TestingModule } from '@nestjs/testing';
 import { Db } from 'mongodb';
+import { BaseMongoTenantRepository } from './base-mongo-tenant.repository';
 
 // Create a concrete implementation for testing
 class TestMongoTenantRepository extends BaseMongoTenantRepository {
-  protected readonly tenantId = 'test-tenant-123';
-
-  constructor(mongoTenantService: MongoTenantService) {
-    super(mongoTenantService);
+  constructor(
+    mongoTenantService: MongoTenantService,
+    tenantContextService: TenantContextService,
+  ) {
+    super(mongoTenantService, tenantContextService);
   }
 
   // Expose protected method for testing
@@ -20,6 +22,7 @@ class TestMongoTenantRepository extends BaseMongoTenantRepository {
 describe('BaseMongoTenantRepository', () => {
   let repository: TestMongoTenantRepository;
   let mongoTenantService: jest.Mocked<MongoTenantService>;
+  let tenantContextService: jest.Mocked<TenantContextService>;
   let module: TestingModule;
   let mockDb: jest.Mocked<Db>;
 
@@ -28,6 +31,10 @@ describe('BaseMongoTenantRepository', () => {
 
     mongoTenantService = {
       getTenantDatabase: jest.fn().mockResolvedValue(mockDb),
+    } as any;
+
+    tenantContextService = {
+      getTenantIdOrThrow: jest.fn().mockReturnValue('test-tenant-123'),
     } as any;
   });
 
@@ -47,7 +54,7 @@ describe('BaseMongoTenantRepository', () => {
         {
           provide: TestMongoTenantRepository,
           useFactory: (service: MongoTenantService) => {
-            return new TestMongoTenantRepository(service);
+            return new TestMongoTenantRepository(service, tenantContextService);
           },
           inject: [MongoTenantService],
         },
@@ -74,12 +81,20 @@ describe('BaseMongoTenantRepository', () => {
     });
 
     it('should throw error if tenantId is not set', async () => {
-      // Create repository without tenantId
-      class InvalidRepository extends BaseMongoTenantRepository {
-        protected readonly tenantId: string = undefined as any;
+      // Create a mock tenantContextService that throws an error
+      const errorTenantContextService = {
+        getTenantIdOrThrow: jest.fn().mockImplementation(() => {
+          throw new Error('Tenant ID is required but not set');
+        }),
+      } as any;
 
-        constructor(mongoTenantService: MongoTenantService) {
-          super(mongoTenantService);
+      // Create repository with error-throwing tenantContextService
+      class InvalidRepository extends BaseMongoTenantRepository {
+        constructor(
+          mongoTenantService: MongoTenantService,
+          tenantContextService: TenantContextService,
+        ) {
+          super(mongoTenantService, tenantContextService);
         }
 
         async getTenantDatabaseForTest(): Promise<Db> {
@@ -87,7 +102,10 @@ describe('BaseMongoTenantRepository', () => {
         }
       }
 
-      const invalidRepo = new InvalidRepository(mongoTenantService);
+      const invalidRepo = new InvalidRepository(
+        mongoTenantService,
+        errorTenantContextService,
+      );
 
       await expect(invalidRepo.getTenantDatabaseForTest()).rejects.toThrow(
         'Tenant ID is required but not set',

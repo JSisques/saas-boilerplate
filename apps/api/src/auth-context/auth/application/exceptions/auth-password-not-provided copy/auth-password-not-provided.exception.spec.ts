@@ -1,5 +1,5 @@
-import { BaseApplicationException } from '@/shared/application/exceptions/base-application/base-application.exception';
 import { AuthPasswordNotProvidedException } from '@/auth-context/auth/application/exceptions/auth-password-not-provided copy/auth-password-not-provided.exception';
+import { BaseApplicationException } from '@/shared/application/exceptions/base-application/base-application.exception';
 
 describe('AuthPasswordNotProvidedException', () => {
   it('should be an instance of BaseApplicationException', () => {
@@ -24,7 +24,7 @@ describe('AuthPasswordNotProvidedException', () => {
   it('should set the domain to Application', () => {
     const exception = new AuthPasswordNotProvidedException();
 
-    expect(exception.domain).toBe('Application');
+    expect(exception.layer).toBe('Application');
   });
 
   it('should have a timestamp', () => {

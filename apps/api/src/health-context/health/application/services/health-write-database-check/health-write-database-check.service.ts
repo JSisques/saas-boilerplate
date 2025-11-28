@@ -22,7 +22,7 @@ export class HealthWriteDatabaseCheckService {
     try {
       // Execute a simple query to verify the database connection
       // Using $queryRaw with SELECT 1 is a lightweight way to check connectivity
-      await this.prismaMasterService.$queryRaw`SELECT 1`;
+      await this.prismaMasterService.client.$queryRaw`SELECT 1`;
 
       this.logger.log('Write database connection is healthy');
       return HealthStatusEnum.OK;

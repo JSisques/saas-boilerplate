@@ -1,5 +1,3 @@
-import { FilterOperator } from '@/shared/domain/enums/filter-operator.enum';
-import { SortDirection } from '@/shared/domain/enums/sort-direction.enum';
 import {
   CurrencyEnum,
   PromptStatusEnum,
@@ -11,7 +9,9 @@ import {
   TenantMemberRoleEnum,
   TenantStatusEnum,
   UserRoleEnum,
-} from '@prisma/client';
+} from '@/prisma/master/client';
+import { FilterOperator } from '@/shared/domain/enums/filter-operator.enum';
+import { SortDirection } from '@/shared/domain/enums/sort-direction.enum';
 
 // Import the module to trigger enum registration
 import './registered-enums.graphql';

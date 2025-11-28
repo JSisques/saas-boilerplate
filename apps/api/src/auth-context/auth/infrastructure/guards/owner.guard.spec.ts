@@ -1,7 +1,7 @@
+import { OwnerGuard } from '@/auth-context/auth/infrastructure/guards/owner.guard';
+import { UserRoleEnum } from '@/prisma/master/client';
 import { ExecutionContext, ForbiddenException } from '@nestjs/common';
 import { GqlExecutionContext } from '@nestjs/graphql';
-import { UserRoleEnum } from '@prisma/client';
-import { OwnerGuard } from '@/auth-context/auth/infrastructure/guards/owner.guard';
 
 jest.mock('@nestjs/graphql');
 

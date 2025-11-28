@@ -28,7 +28,7 @@ export class EventPrismaRepository
   async findById(id: string): Promise<EventAggregate | null> {
     this.logger.log(`Finding event by id: ${id}`);
 
-    const EventData = await this.prismaMasterService.event.findUnique({
+    const EventData = await this.prismaMasterService.client.event.findUnique({
       where: { id },
     });
 
@@ -42,7 +42,7 @@ export class EventPrismaRepository
   async findByCriteria(filters: IEventFilterDto): Promise<EventAggregate[]> {
     this.logger.log(`Finding events by criteria: ${JSON.stringify(filters)}`);
 
-    const events = await this.prismaMasterService.event.findMany({
+    const events = await this.prismaMasterService.client.event.findMany({
       where: {
         eventType: filters.eventType,
         aggregateId: filters.aggregateId,
@@ -73,7 +73,7 @@ export class EventPrismaRepository
 
     const eventData = this.eventPrismaMapper.toPrismaData(event);
 
-    const result = await this.prismaMasterService.event.upsert({
+    const result = await this.prismaMasterService.client.event.upsert({
       where: { id: event.id.value },
       update: eventData,
       create: eventData,
@@ -91,7 +91,7 @@ export class EventPrismaRepository
   async delete(id: string): Promise<boolean> {
     this.logger.log(`Deleting event by id: ${id}`);
 
-    await this.prismaMasterService.event.delete({
+    await this.prismaMasterService.client.event.delete({
       where: { id },
     });
 

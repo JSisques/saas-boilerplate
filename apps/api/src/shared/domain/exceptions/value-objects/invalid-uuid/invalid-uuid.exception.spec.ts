@@ -1,5 +1,5 @@
-import { InvalidUuidException } from '@/shared/domain/exceptions/value-objects/invalid-uuid/invalid-uuid.exception';
 import { BaseDomainException } from '@/shared/domain/exceptions/base-domain.exception';
+import { InvalidUuidException } from '@/shared/domain/exceptions/value-objects/invalid-uuid/invalid-uuid.exception';
 
 describe('InvalidUuidException', () => {
   const testMessage = 'Invalid UUID value';
@@ -26,7 +26,7 @@ describe('InvalidUuidException', () => {
   it('should set the domain to ValueObject', () => {
     const exception = new InvalidUuidException(testMessage);
 
-    expect(exception.domain).toBe('ValueObject');
+    expect(exception.layer).toBe('Domain');
   });
 
   it('should return a detailed message', () => {
@@ -34,7 +34,7 @@ describe('InvalidUuidException', () => {
     const detailedMessage = exception.getDetailedMessage();
 
     expect(detailedMessage).toBe(
-      `[ValueObject] InvalidUuidException: ${testMessage}`,
+      `[Domain] InvalidUuidException: ${testMessage}`,
     );
   });
 });

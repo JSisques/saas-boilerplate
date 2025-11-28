@@ -1,3 +1,4 @@
+import { TenantMemberRoleEnum as PrismaTenantMemberRoleEnum } from '@/prisma/master/client';
 import { DateValueObject } from '@/shared/domain/value-objects/date/date.vo';
 import { TenantMemberUuidValueObject } from '@/shared/domain/value-objects/identifiers/tenant-member-uuid/tenant-member-uuid.vo';
 import { TenantUuidValueObject } from '@/shared/domain/value-objects/identifiers/tenant-uuid/tenant-uuid.vo';
@@ -7,7 +8,6 @@ import { TenantMemberRoleEnum } from '@/tenant-context/tenant-members/domain/enu
 import { TenantMemberRoleValueObject } from '@/tenant-context/tenant-members/domain/value-objects/tenant-member-role/tenant-member-role.vo';
 import { TenantMemberPrismaDto } from '@/tenant-context/tenant-members/infrastructure/database/prisma/dtos/tenant-member-prisma.dto';
 import { TenantMemberPrismaMapper } from '@/tenant-context/tenant-members/infrastructure/database/prisma/mappers/tenant-member-prisma.mapper';
-import { TenantMemberRoleEnum as PrismaTenantMemberRoleEnum } from '@prisma/client';
 import { TenantMemberPrismaRepository } from './tenant-member-prisma.repository';
 
 describe('TenantMemberPrismaRepository', () => {
@@ -28,12 +28,14 @@ describe('TenantMemberPrismaRepository', () => {
     mockDelete = jest.fn();
 
     mockPrismaService = {
-      tenantMember: {
-        findUnique: mockFindUnique,
-        findMany: mockFindMany,
-        findFirst: mockFindFirst,
-        upsert: mockUpsert,
-        delete: mockDelete,
+      client: {
+        tenantMember: {
+          findUnique: mockFindUnique,
+          findMany: mockFindMany,
+          findFirst: mockFindFirst,
+          upsert: mockUpsert,
+          delete: mockDelete,
+        },
       },
     };
 
