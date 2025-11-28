@@ -1,7 +1,8 @@
 import { JwtAuthGuard } from '@/auth-context/auth/infrastructure/auth/jwt-auth.guard';
 import { Roles } from '@/auth-context/auth/infrastructure/decorators/roles/roles.decorator';
-import { RolesGuard } from '@/auth-context/auth/infrastructure/guards/roles.guard';
-import { TenantGuard } from '@/auth-context/auth/infrastructure/guards/tenant.guard';
+import { RolesGuard } from '@/auth-context/auth/infrastructure/guards/roles/roles.guard';
+import { TenantRolesGuard } from '@/auth-context/auth/infrastructure/guards/tenant-roles/tenant-roles.guard';
+import { TenantGuard } from '@/auth-context/auth/infrastructure/guards/tenant/tenant.guard';
 import { Criteria } from '@/shared/domain/entities/criteria';
 import { StorageFindByCriteriaQuery } from '@/storage-context/storage/application/queries/storage-find-by-criteria/storage-find-by-criteria.query';
 import { StorageFindByIdQuery } from '@/storage-context/storage/application/queries/storage-find-by-id/storage-find-by-id.query';
@@ -18,7 +19,7 @@ import { QueryBus } from '@nestjs/cqrs';
 import { Args, Query, Resolver } from '@nestjs/graphql';
 
 @Resolver()
-@UseGuards(JwtAuthGuard, TenantGuard, RolesGuard)
+@UseGuards(JwtAuthGuard, TenantGuard, RolesGuard, TenantRolesGuard)
 @Roles(UserRoleEnum.ADMIN, UserRoleEnum.USER)
 export class StorageQueryResolver {
   private readonly logger = new Logger(StorageQueryResolver.name);

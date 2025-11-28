@@ -1,6 +1,6 @@
 import { JwtAuthGuard } from '@/auth-context/auth/infrastructure/auth/jwt-auth.guard';
 import { Roles } from '@/auth-context/auth/infrastructure/decorators/roles/roles.decorator';
-import { RolesGuard } from '@/auth-context/auth/infrastructure/guards/roles.guard';
+import { RolesGuard } from '@/auth-context/auth/infrastructure/guards/roles/roles.guard';
 import { SubscriptionActivateCommand } from '@/billing-context/subscription/application/commands/subscription-activate/subscription-activate.command';
 import { SubscriptionCancelCommand } from '@/billing-context/subscription/application/commands/subscription-cancel/subscription-cancel.command';
 import { SubscriptionCreateCommand } from '@/billing-context/subscription/application/commands/subscription-create/subscription-create.command';

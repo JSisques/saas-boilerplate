@@ -8,5 +8,3 @@ export class FindTenantMemberByUserIdQuery {
     this.userId = new UserUuidValueObject(props.id);
   }
 }
-
-

@@ -1,3 +1,4 @@
+import { FindTenantMemberByUserIdQuery } from '@/tenant-context/tenant-members/application/queries/tenant-member-find-by-user-id/tenant-member-find-by-user-id.query';
 import { TenantMemberAggregate } from '@/tenant-context/tenant-members/domain/aggregates/tenant-member.aggregate';
 import {
   TENANT_MEMBER_WRITE_REPOSITORY_TOKEN,
@@ -5,7 +6,6 @@ import {
 } from '@/tenant-context/tenant-members/domain/repositories/tenant-member-write.repository';
 import { Inject, Logger } from '@nestjs/common';
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
-import { FindTenantMemberByUserIdQuery } from './tenant-member-find-by-user-id.query';
 
 @QueryHandler(FindTenantMemberByUserIdQuery)
 export class FindTenantMemberByUserIdQueryHandler

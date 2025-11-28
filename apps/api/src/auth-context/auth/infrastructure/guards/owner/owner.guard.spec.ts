@@ -1,4 +1,4 @@
-import { OwnerGuard } from '@/auth-context/auth/infrastructure/guards/owner.guard';
+import { OwnerGuard } from '@/auth-context/auth/infrastructure/guards/owner/owner.guard';
 import { UserRoleEnum } from '@/prisma/master/client';
 import { ExecutionContext, ForbiddenException } from '@nestjs/common';
 import { GqlExecutionContext } from '@nestjs/graphql';
