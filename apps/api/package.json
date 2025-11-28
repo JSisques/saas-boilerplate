@@ -50,7 +50,6 @@
     "@nestjs/platform-express": "^10.0.0",
     "@nestjs/swagger": "^11.2.1",
     "@nestjs/terminus": "^11.0.0",
-    "@/prisma/master/client": "^6.18.0",
     "@supabase/supabase-js": "^2.81.1",
     "@types/bcrypt": "^6.0.0",
     "axios": "^1.13.2",
