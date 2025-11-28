@@ -1,3 +1,7 @@
+import {
+  StatusEnum as PrismaStatusEnum,
+  UserRoleEnum as PrismaUserRoleEnum,
+} from '@/prisma/master/client';
 import { DateValueObject } from '@/shared/domain/value-objects/date/date.vo';
 import { UserUuidValueObject } from '@/shared/domain/value-objects/identifiers/user-uuid/user-uuid.vo';
 import { UserAggregate } from '@/user-context/users/domain/aggregates/user.aggregate';
@@ -9,10 +13,6 @@ import { UserUserNameValueObject } from '@/user-context/users/domain/value-objec
 import { UserPrismaDto } from '@/user-context/users/infrastructure/database/prisma/dtos/user-prisma.dto';
 import { UserPrismaMapper } from '@/user-context/users/infrastructure/database/prisma/mappers/user-prisma.mapper';
 import { UserPrismaRepository } from '@/user-context/users/infrastructure/database/prisma/repositories/user-prisma.repository';
-import {
-  StatusEnum as PrismaStatusEnum,
-  UserRoleEnum as PrismaUserRoleEnum,
-} from '@prisma/client';
 
 describe('UserPrismaRepository', () => {
   let repository: UserPrismaRepository;
@@ -28,10 +28,12 @@ describe('UserPrismaRepository', () => {
     mockDelete = jest.fn();
 
     mockPrismaService = {
-      user: {
-        findUnique: mockFindUnique,
-        upsert: mockUpsert,
-        delete: mockDelete,
+      client: {
+        user: {
+          findUnique: mockFindUnique,
+          upsert: mockUpsert,
+          delete: mockDelete,
+        },
       },
     };
 

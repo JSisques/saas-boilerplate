@@ -1,9 +1,9 @@
-import { Field, InputType } from '@nestjs/graphql';
 import {
   CurrencyEnum,
   SubscriptionPlanIntervalEnum,
   SubscriptionPlanTypeEnum,
-} from '@prisma/client';
+} from '@/prisma/master/client';
+import { Field, InputType } from '@nestjs/graphql';
 import {
   IsArray,
   IsEnum,

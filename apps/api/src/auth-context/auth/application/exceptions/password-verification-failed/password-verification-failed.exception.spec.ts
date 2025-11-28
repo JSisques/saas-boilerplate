@@ -1,5 +1,5 @@
-import { BaseApplicationException } from '@/shared/application/exceptions/base-application/base-application.exception';
 import { PasswordVerificationFailedException } from '@/auth-context/auth/application/exceptions/password-verification-failed/password-verification-failed.exception';
+import { BaseApplicationException } from '@/shared/application/exceptions/base-application/base-application.exception';
 
 describe('PasswordVerificationFailedException', () => {
   it('should be an instance of BaseApplicationException', () => {
@@ -24,7 +24,7 @@ describe('PasswordVerificationFailedException', () => {
   it('should set the domain to Application', () => {
     const exception = new PasswordVerificationFailedException();
 
-    expect(exception.domain).toBe('Application');
+    expect(exception.layer).toBe('Application');
   });
 
   it('should have a timestamp', () => {

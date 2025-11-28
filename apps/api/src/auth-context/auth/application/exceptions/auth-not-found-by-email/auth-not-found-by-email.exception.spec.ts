@@ -1,5 +1,5 @@
-import { BaseApplicationException } from '@/shared/application/exceptions/base-application/base-application.exception';
 import { AuthNotFoundByEmailException } from '@/auth-context/auth/application/exceptions/auth-not-found-by-email/auth-not-found-by-email.exception';
+import { BaseApplicationException } from '@/shared/application/exceptions/base-application/base-application.exception';
 
 describe('AuthNotFoundByEmailException', () => {
   const email = 'test@example.com';
@@ -26,7 +26,7 @@ describe('AuthNotFoundByEmailException', () => {
   it('should set the domain to Application', () => {
     const exception = new AuthNotFoundByEmailException(email);
 
-    expect(exception.domain).toBe('Application');
+    expect(exception.layer).toBe('Application');
   });
 
   it('should have a timestamp', () => {

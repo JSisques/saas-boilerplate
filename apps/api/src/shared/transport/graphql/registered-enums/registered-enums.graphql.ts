@@ -1,6 +1,3 @@
-import { FilterOperator } from '@/shared/domain/enums/filter-operator.enum';
-import { SortDirection } from '@/shared/domain/enums/sort-direction.enum';
-import { registerEnumType } from '@nestjs/graphql';
 import {
   CurrencyEnum,
   PromptStatusEnum,
@@ -13,7 +10,10 @@ import {
   TenantMemberRoleEnum,
   TenantStatusEnum,
   UserRoleEnum,
-} from '@prisma/client';
+} from '@/prisma/master/client';
+import { FilterOperator } from '@/shared/domain/enums/filter-operator.enum';
+import { SortDirection } from '@/shared/domain/enums/sort-direction.enum';
+import { registerEnumType } from '@nestjs/graphql';
 const registeredEnums = [
   {
     enum: FilterOperator,

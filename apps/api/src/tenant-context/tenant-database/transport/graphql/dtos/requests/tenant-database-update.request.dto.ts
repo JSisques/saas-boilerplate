@@ -1,5 +1,5 @@
+import { TenantDatabaseStatusEnum } from '@/prisma/master/client';
 import { Field, InputType } from '@nestjs/graphql';
-import { TenantDatabaseStatusEnum } from '@prisma/client';
 import {
   IsDate,
   IsEnum,

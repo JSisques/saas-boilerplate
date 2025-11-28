@@ -1,5 +1,5 @@
-import { BaseApplicationException } from '@/shared/application/exceptions/base-application/base-application.exception';
 import { AuthEmailNotProvidedException } from '@/auth-context/auth/application/exceptions/auth-email-not-provided/auth-email-not-provided.exception';
+import { BaseApplicationException } from '@/shared/application/exceptions/base-application/base-application.exception';
 
 describe('AuthEmailNotProvidedException', () => {
   it('should be an instance of BaseApplicationException', () => {
@@ -24,7 +24,7 @@ describe('AuthEmailNotProvidedException', () => {
   it('should set the domain to Application', () => {
     const exception = new AuthEmailNotProvidedException();
 
-    expect(exception.domain).toBe('Application');
+    expect(exception.layer).toBe('Application');
   });
 
   it('should have a timestamp', () => {

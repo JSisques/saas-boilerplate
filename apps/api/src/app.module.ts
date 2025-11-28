@@ -8,6 +8,7 @@ import { LLMContextModule } from '@/llm-context/llm-context.module';
 import { LoggingContextModule } from '@/logging-context/logging-context.module';
 import { SharedModule } from '@/shared/shared.module';
 import '@/shared/transport/graphql/registered-enums/registered-enums.graphql';
+import { StorageContextModule } from '@/storage-context/storage-context.module';
 import { TenantContextModule } from '@/tenant-context/tenant-context.module';
 import { UserContextModule } from '@/user-context/user-context.module';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
@@ -26,6 +27,7 @@ const CONTEXT_MODULES = [
   HealthContextModule,
   BillingContextModule,
   LLMContextModule,
+  StorageContextModule,
 ];
 
 const MODULES = [FeaturesModule, SharedModule];
@@ -42,6 +44,7 @@ const MODULES = [FeaturesModule, SharedModule];
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
       playground: true,
       introspection: true,
+      context: ({ req }) => ({ req }),
     }),
     ...MODULES,
     ...CONTEXT_MODULES,

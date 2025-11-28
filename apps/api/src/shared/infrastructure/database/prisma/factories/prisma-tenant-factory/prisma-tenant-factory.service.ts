@@ -1,10 +1,13 @@
-import { PrismaClientExtended } from '@/shared/infrastructure/database/prisma/clients/custom-prisma-client/custom-prisma-client';
+import { PrismaTenantClientExtended } from '@/shared/infrastructure/database/prisma/clients/custom-prisma-tenant-client/custom-prisma-tenant-client';
 import { Injectable, Logger, OnModuleDestroy } from '@nestjs/common';
 
 @Injectable()
 export class PrismaTenantFactory implements OnModuleDestroy {
   private readonly logger = new Logger(PrismaTenantFactory.name);
-  private readonly tenantClients = new Map<string, PrismaClientExtended>();
+  private readonly tenantClients = new Map<
+    string,
+    PrismaTenantClientExtended
+  >();
 
   /**
    * Get or create a Prisma client instance for a specific tenant
@@ -15,14 +18,14 @@ export class PrismaTenantFactory implements OnModuleDestroy {
   async getTenantClient(
     tenantId: string,
     databaseUrl: string,
-  ): Promise<PrismaClientExtended> {
+  ): Promise<PrismaTenantClientExtended> {
     // Check if client already exists for this tenant
     if (this.tenantClients.has(tenantId)) {
       const existingClient = this.tenantClients.get(tenantId)!;
 
       // Verify the connection is still valid
       try {
-        await existingClient.$queryRaw`SELECT 1`;
+        await existingClient.client.$queryRaw`SELECT 1`;
         return existingClient;
       } catch (error) {
         this.logger.warn(
@@ -32,14 +35,14 @@ export class PrismaTenantFactory implements OnModuleDestroy {
           `Error connecting to tenant database ${tenantId}: ${error}`,
         );
         // Disconnect and remove invalid client
-        await existingClient.$disconnect().catch(() => {});
+        await existingClient.client.$disconnect().catch(() => {});
         this.tenantClients.delete(tenantId);
       }
     }
 
     // Create new client instance
     this.logger.log(`Creating Prisma client for tenant: ${tenantId}`);
-    const client = new PrismaClientExtended({
+    const client = new PrismaTenantClientExtended({
       datasources: {
         db: {
           url: databaseUrl,
@@ -49,7 +52,7 @@ export class PrismaTenantFactory implements OnModuleDestroy {
 
     // Connect to the database
     try {
-      await client.$connect();
+      await client.client.$connect();
       this.tenantClients.set(tenantId, client);
       this.logger.log(
         `Prisma client created and connected for tenant: ${tenantId}`,
@@ -59,7 +62,7 @@ export class PrismaTenantFactory implements OnModuleDestroy {
       this.logger.error(
         `Failed to connect to tenant database ${tenantId}: ${error}`,
       );
-      await client.$disconnect().catch(() => {});
+      await client.client.$disconnect().catch(() => {});
       throw error;
     }
   }
@@ -72,7 +75,7 @@ export class PrismaTenantFactory implements OnModuleDestroy {
     const client = this.tenantClients.get(tenantId);
     if (client) {
       this.logger.log(`Removing Prisma client for tenant: ${tenantId}`);
-      await client.$disconnect().catch(() => {});
+      await client.client.$disconnect().catch(() => {});
       this.tenantClients.delete(tenantId);
     }
   }
@@ -91,7 +94,7 @@ export class PrismaTenantFactory implements OnModuleDestroy {
   async disconnectAll(): Promise<void> {
     this.logger.log(`Disconnecting all tenant Prisma clients...`);
     const disconnectPromises = Array.from(this.tenantClients.values()).map(
-      (client) => client.$disconnect().catch(() => {}),
+      (client) => client.client.$disconnect().catch(() => {}),
     );
     await Promise.all(disconnectPromises);
     this.tenantClients.clear();

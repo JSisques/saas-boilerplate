@@ -11,7 +11,7 @@ describe('BaseApplicationException', () => {
 
       expect(exception.message).toBe('Test error message');
       expect(exception.name).toBe('BaseApplicationException');
-      expect(exception.domain).toBe('Application');
+      expect(exception.layer).toBe('Application');
       expect(exception.timestamp).toBeInstanceOf(Date);
     });
 
@@ -24,7 +24,7 @@ describe('BaseApplicationException', () => {
     it('should set the domain to Application', () => {
       const exception = new BaseApplicationException('Error');
 
-      expect(exception.domain).toBe('Application');
+      expect(exception.layer).toBe('Application');
     });
 
     it('should set the timestamp to current date', () => {
@@ -71,7 +71,7 @@ describe('BaseApplicationException', () => {
 
       expect(json).toHaveProperty('name', 'BaseApplicationException');
       expect(json).toHaveProperty('message', 'Test error');
-      expect(json).toHaveProperty('domain', 'Application');
+      expect(json).toHaveProperty('layer', 'Application');
       expect(json).toHaveProperty('timestamp');
       expect(json).toHaveProperty('stack');
     });

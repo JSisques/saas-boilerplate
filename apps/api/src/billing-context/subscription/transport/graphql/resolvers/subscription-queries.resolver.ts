@@ -12,11 +12,11 @@ import {
   SubscriptionResponseDto,
 } from '@/billing-context/subscription/transport/graphql/dtos/responses/subscription.response.dto';
 import { SubscriptionGraphQLMapper } from '@/billing-context/subscription/transport/graphql/mappers/subscription.mapper';
+import { UserRoleEnum } from '@/prisma/master/client';
 import { Criteria } from '@/shared/domain/entities/criteria';
 import { Logger, UseGuards } from '@nestjs/common';
 import { QueryBus } from '@nestjs/cqrs';
 import { Args, Query, Resolver } from '@nestjs/graphql';
-import { UserRoleEnum } from '@prisma/client';
 
 @Resolver()
 @UseGuards(JwtAuthGuard, RolesGuard)

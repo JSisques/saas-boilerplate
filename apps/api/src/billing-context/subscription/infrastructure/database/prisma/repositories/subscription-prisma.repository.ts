@@ -26,7 +26,7 @@ export class SubscriptionPrismaRepository
    */
   async findById(id: string): Promise<SubscriptionAggregate | null> {
     const subscriptionData =
-      await this.prismaMasterService.subscription.findUnique({
+      await this.prismaMasterService.client.subscription.findUnique({
         where: { id },
       });
 
@@ -60,7 +60,7 @@ export class SubscriptionPrismaRepository
     tenantId: string,
   ): Promise<SubscriptionAggregate | null> {
     const subscriptionData =
-      await this.prismaMasterService.subscription.findUnique({
+      await this.prismaMasterService.client.subscription.findUnique({
         where: { tenantId },
       });
 
@@ -96,7 +96,7 @@ export class SubscriptionPrismaRepository
     const subscriptionData =
       this.subscriptionPrismaMapper.toPrismaData(subscription);
 
-    const result = await this.prismaMasterService.subscription.upsert({
+    const result = await this.prismaMasterService.client.subscription.upsert({
       where: { id: subscription.id.value },
       update: subscriptionData,
       create: subscriptionData,
@@ -127,7 +127,7 @@ export class SubscriptionPrismaRepository
   async delete(id: string): Promise<boolean> {
     this.logger.log(`Deleting subscription by id: ${id}`);
 
-    await this.prismaMasterService.subscription.delete({
+    await this.prismaMasterService.client.subscription.delete({
       where: { id },
     });
 

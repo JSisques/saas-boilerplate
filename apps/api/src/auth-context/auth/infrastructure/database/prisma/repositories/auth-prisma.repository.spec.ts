@@ -1,8 +1,8 @@
 import { AuthAggregate } from '@/auth-context/auth/domain/aggregate/auth.aggregate';
+import { AuthPrismaDto } from '@/auth-context/auth/infrastructure/database/prisma/dtos/auth-prisma.dto';
 import { AuthPrismaMapper } from '@/auth-context/auth/infrastructure/database/prisma/mappers/auth-prisma.mapper';
 import { AuthPrismaRepository } from '@/auth-context/auth/infrastructure/database/prisma/repositories/auth-prisma.repository';
-import { AuthPrismaDto } from '@/auth-context/auth/infrastructure/database/prisma/dtos/auth-prisma.dto';
-import { AuthProviderEnum } from '@prisma/client';
+import { AuthProviderEnum } from '@/prisma/master/client';
 import { AuthUuidValueObject } from '@/shared/domain/value-objects/identifiers/auth-uuid/auth-uuid.vo';
 import { UserUuidValueObject } from '@/shared/domain/value-objects/identifiers/user-uuid/user-uuid.vo';
 
@@ -22,11 +22,13 @@ describe('AuthPrismaRepository', () => {
     mockDelete = jest.fn();
 
     mockPrismaService = {
-      auth: {
-        findUnique: mockFindUnique,
-        findFirst: mockFindFirst,
-        upsert: mockUpsert,
-        delete: mockDelete,
+      client: {
+        auth: {
+          findUnique: mockFindUnique,
+          findFirst: mockFindFirst,
+          upsert: mockUpsert,
+          delete: mockDelete,
+        },
       },
     };
 

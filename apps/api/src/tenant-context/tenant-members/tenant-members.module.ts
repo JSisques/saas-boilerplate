@@ -8,6 +8,7 @@ import { TenantMemberUpdatedEventHandler } from '@/tenant-context/tenant-members
 import { FindTenantMembersByCriteriaQueryHandler } from '@/tenant-context/tenant-members/application/queries/tenant-member-find-by-criteria/tenant-member-find-by-criteria.query-handler';
 import { FindTenantMemberByIdQueryHandler } from '@/tenant-context/tenant-members/application/queries/tenant-member-find-by-id/tenant-member-find-by-id.query-handler';
 import { FindTenantMemberByTenantIdQueryHandler } from '@/tenant-context/tenant-members/application/queries/tenant-member-find-by-tenant-id/tenant-member-find-by-tenant-id.query-handler';
+import { FindTenantMemberByUserIdQueryHandler } from '@/tenant-context/tenant-members/application/queries/tenant-member-find-by-user-id/tenant-member-find-by-user-id.query-handler';
 import { FindTenantMemberViewModelByIdQueryHandler } from '@/tenant-context/tenant-members/application/queries/tenant-member-find-view-model-by-id/tenant-member-find-view-model-by-id.query-handler';
 import { FindTenantMemberViewModelByTenantIdQueryHandler } from '@/tenant-context/tenant-members/application/queries/tenant-member-find-view-model-by-tenant-id/tenant-member-find-view-model-by-tenant-id.query-handler';
 import { AssertTenantMemberExsistsService } from '@/tenant-context/tenant-members/application/services/assert-tenant-member-exsits/assert-tenant-member-exsits.service';
@@ -38,6 +39,7 @@ const QUERY_HANDLERS = [
   FindTenantMembersByCriteriaQueryHandler,
   FindTenantMemberByIdQueryHandler,
   FindTenantMemberByTenantIdQueryHandler,
+  FindTenantMemberByUserIdQueryHandler,
 
   // View models
   FindTenantMemberViewModelByTenantIdQueryHandler,

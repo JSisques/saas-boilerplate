@@ -1,6 +1,8 @@
 import { AppModule } from '@/app.module';
+import { TenantContextInterceptor } from '@/shared/infrastructure/interceptors/tenant-context/tenant-context.interceptor';
 import { ValidationPipe, VersioningType } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
+import graphqlUploadExpress from 'graphql-upload/graphqlUploadExpress.mjs';
 import { WINSTON_MODULE_NEST_PROVIDER } from 'nest-winston';
 
 async function bootstrap() {
@@ -14,6 +16,15 @@ async function bootstrap() {
 
     logger = app.get(WINSTON_MODULE_NEST_PROVIDER);
     app.useLogger(logger);
+
+    // GraphQL Upload middleware (must be before other middleware)
+    app.use(
+      '/graphql',
+      graphqlUploadExpress({
+        maxFileSize: 10000000, // 10MB
+        maxFiles: 10,
+      }),
+    );
 
     // Global prefix
     app.setGlobalPrefix('api');
@@ -35,6 +46,9 @@ async function bootstrap() {
         },
       }),
     );
+
+    // Global interceptor to extract tenant ID from headers
+    app.useGlobalInterceptors(new TenantContextInterceptor());
 
     // CORS
     app.enableCors({

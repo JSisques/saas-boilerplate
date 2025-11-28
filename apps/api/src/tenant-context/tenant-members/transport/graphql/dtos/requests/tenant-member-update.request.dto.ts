@@ -1,5 +1,5 @@
+import { TenantMemberRoleEnum } from '@/prisma/master/client';
 import { Field, InputType } from '@nestjs/graphql';
-import { TenantMemberRoleEnum } from '@prisma/client';
 import { IsEnum, IsNotEmpty, IsUUID } from 'class-validator';
 
 @InputType('TenantMemberUpdateRequestDto')

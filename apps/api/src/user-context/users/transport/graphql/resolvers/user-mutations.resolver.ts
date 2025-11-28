@@ -2,6 +2,7 @@ import { JwtAuthGuard } from '@/auth-context/auth/infrastructure/auth/jwt-auth.g
 import { Roles } from '@/auth-context/auth/infrastructure/decorators/roles/roles.decorator';
 import { OwnerGuard } from '@/auth-context/auth/infrastructure/guards/owner.guard';
 import { RolesGuard } from '@/auth-context/auth/infrastructure/guards/roles.guard';
+import { UserRoleEnum } from '@/prisma/master/client';
 import { MutationResponseDto } from '@/shared/transport/graphql/dtos/responses/success-response/success-response.dto';
 import { MutationResponseGraphQLMapper } from '@/shared/transport/graphql/mappers/mutation-response/mutation-response.mapper';
 import { UserDeleteCommand } from '@/user-context/users/application/commands/delete-user/delete-user.command';
@@ -13,7 +14,6 @@ import { UpdateUserRequestDto } from '@/user-context/users/transport/graphql/dto
 import { UseGuards } from '@nestjs/common';
 import { CommandBus } from '@nestjs/cqrs';
 import { Args, Mutation, Resolver } from '@nestjs/graphql';
-import { UserRoleEnum } from '@prisma/client';
 
 @Resolver()
 @UseGuards(JwtAuthGuard, RolesGuard)

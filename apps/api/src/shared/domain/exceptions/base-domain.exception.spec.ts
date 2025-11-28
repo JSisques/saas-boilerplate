@@ -19,7 +19,7 @@ describe('BaseDomainException', () => {
     it('should set the domain to "Domain" by default', () => {
       const exception = new BaseDomainException(testMessage);
 
-      expect(exception.domain).toBe('Domain');
+      expect(exception.layer).toBe('Domain');
     });
 
     it('should create a timestamp when the exception is created', () => {
@@ -69,7 +69,7 @@ describe('BaseDomainException', () => {
 
       expect(json).toHaveProperty('name', 'BaseDomainException');
       expect(json).toHaveProperty('message', testMessage);
-      expect(json).toHaveProperty('domain', 'Domain');
+      expect(json).toHaveProperty('layer', 'Domain');
       expect(json).toHaveProperty('timestamp');
       expect(json).toHaveProperty('stack');
     });

@@ -26,7 +26,7 @@ describe('InvalidBooleanException', () => {
   it('should set the domain to ValueObject', () => {
     const exception = new InvalidBooleanException(testMessage);
 
-    expect(exception.domain).toBe('ValueObject');
+    expect(exception.layer).toBe('Domain');
   });
 
   it('should create a timestamp when the exception is created', () => {
@@ -48,7 +48,7 @@ describe('InvalidBooleanException', () => {
     const detailedMessage = exception.getDetailedMessage();
 
     expect(detailedMessage).toBe(
-      `[ValueObject] InvalidBooleanException: ${testMessage}`,
+      `[Domain] InvalidBooleanException: ${testMessage}`,
     );
   });
 
@@ -58,7 +58,7 @@ describe('InvalidBooleanException', () => {
 
     expect(json).toHaveProperty('name', 'InvalidBooleanException');
     expect(json).toHaveProperty('message', testMessage);
-    expect(json).toHaveProperty('domain', 'ValueObject');
+    expect(json).toHaveProperty('layer', 'Domain');
     expect(json).toHaveProperty('timestamp');
     expect(json).toHaveProperty('stack');
   });
