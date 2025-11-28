@@ -1,3 +1,7 @@
+import { JwtAuthGuard } from '@/auth-context/auth/infrastructure/auth/jwt-auth.guard';
+import { Roles } from '@/auth-context/auth/infrastructure/decorators/roles/roles.decorator';
+import { RolesGuard } from '@/auth-context/auth/infrastructure/guards/roles.guard';
+import { TenantGuard } from '@/auth-context/auth/infrastructure/guards/tenant.guard';
 import { MutationResponseDto } from '@/shared/transport/graphql/dtos/responses/success-response/success-response.dto';
 import { MutationResponseArrayDto } from '@/shared/transport/graphql/dtos/success-response-array.dto';
 import { MutationResponseGraphQLMapper } from '@/shared/transport/graphql/mappers/mutation-response/mutation-response.mapper';
@@ -8,13 +12,16 @@ import { StorageFindByIdQuery } from '@/storage-context/storage/application/quer
 import { StorageDeleteFileRequestDto } from '@/storage-context/storage/transport/graphql/dtos/requests/storage-delete-file.request.dto';
 import { StorageDownloadFileRequestDto } from '@/storage-context/storage/transport/graphql/dtos/requests/storage-download-file.request.dto';
 import { StorageDownloadFileResponseDto } from '@/storage-context/storage/transport/graphql/dtos/responses/storage-download-file.response.dto';
-import { Logger } from '@nestjs/common';
+import { UserRoleEnum } from '@/user-context/users/domain/enums/user-role/user-role.enum';
+import { Logger, UseGuards } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { Args, Mutation, Resolver } from '@nestjs/graphql';
 import GraphQLUpload from 'graphql-upload/GraphQLUpload.mjs';
 import type { FileUpload } from 'graphql-upload/processRequest.mjs';
 
 @Resolver()
+@UseGuards(JwtAuthGuard, TenantGuard, RolesGuard)
+@Roles(UserRoleEnum.ADMIN, UserRoleEnum.USER)
 export class StorageMutationsResolver {
   private readonly logger = new Logger(StorageMutationsResolver.name);
 

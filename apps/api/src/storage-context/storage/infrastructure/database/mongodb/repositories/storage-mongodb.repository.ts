@@ -2,41 +2,26 @@ import { Criteria } from '@/shared/domain/entities/criteria';
 import { PaginatedResult } from '@/shared/domain/entities/paginated-result.entity';
 import { BaseMongoTenantRepository } from '@/shared/infrastructure/database/mongodb/base-mongo/base-mongo-tenant/base-mongo-tenant.repository';
 import { MongoTenantService } from '@/shared/infrastructure/database/mongodb/services/mongo-tenant/mongo-tenant.service';
+import { TenantContextService } from '@/shared/infrastructure/services/tenant-context/tenant-context.service';
 import { StorageReadRepository } from '@/storage-context/storage/domain/repositories/storage-read.repository';
 import { StorageViewModel } from '@/storage-context/storage/domain/view-models/storage.view-model';
 import { StorageMongoDBMapper } from '@/storage-context/storage/infrastructure/database/mongodb/mappers/storage-mongodb.mapper';
-import { Inject, Injectable, Logger, Scope } from '@nestjs/common';
-import { REQUEST } from '@nestjs/core';
-import { Request } from 'express';
+import { Injectable, Logger, Scope } from '@nestjs/common';
 
 @Injectable({ scope: Scope.REQUEST })
 export class StorageMongoRepository
   extends BaseMongoTenantRepository
   implements StorageReadRepository
 {
-  protected readonly tenantId: string;
-
   private readonly collectionName = 'storages';
 
   constructor(
     mongoTenantService: MongoTenantService,
+    tenantContextService: TenantContextService,
     private readonly storageMongoDBMapper: StorageMongoDBMapper,
-    @Inject(REQUEST) private readonly request: Request,
   ) {
-    super(mongoTenantService);
+    super(mongoTenantService, tenantContextService);
     this.logger = new Logger(StorageMongoRepository.name);
-
-    // Get tenantId from request headers or user context
-    // You can customize this based on how you pass tenantId in your requests
-    this.tenantId =
-      (this.request.headers['x-tenant-id'] as string) ||
-      (this.request.user as any)?.tenantId ||
-      (this.request.body?.tenantId as string) ||
-      (this.request.query?.tenantId as string);
-
-    if (!this.tenantId) {
-      throw new Error('Tenant ID is required but not found in request');
-    }
   }
 
   /**

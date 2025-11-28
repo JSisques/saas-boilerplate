@@ -7,11 +7,12 @@
 generator client {
   provider      = "prisma-client-js"
   binaryTargets = ["native", "linux-arm64-openssl-3.0.x", "linux-musl-openssl-3.0.x"]
+  output        = "./client"
 }
 
 datasource db {
   provider = "postgresql"
-  url = env("DATABASE_URL")
+  url      = env("DATABASE_URL")
 }
 
 enum UserRoleEnum {
@@ -35,8 +36,8 @@ model User {
   role      UserRoleEnum // Role of the user
   status    StatusEnum
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
   deletedAt DateTime?
 
   auth    Auth[]
@@ -58,8 +59,8 @@ model TenantMember {
   userId   String // User ID
   role     TenantMemberRoleEnum // Role of the tenant member
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
   deletedAt DateTime?
 
   user   User   @relation(fields: [userId], references: [id])
@@ -102,14 +103,14 @@ model Tenant {
   maxStorage  Int? // Max storage (bytes)
   maxApiCalls Int? // Max API calls per month
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
   deletedAt DateTime?
 
   // Relationships
-  members TenantMember[]
-  subscription Subscription? 
-  database TenantDatabase?
+  members      TenantMember[]
+  subscription Subscription?
+  database     TenantDatabase?
 }
 
 enum TenantDatabaseStatusEnum {
@@ -121,17 +122,17 @@ enum TenantDatabaseStatusEnum {
 }
 
 model TenantDatabase {
-  id          String                    @id @default(uuid())
-  tenantId    String                    @unique // Tenant ID
-  databaseName String                   // Database name for write operations (e.g., tenant_abc123)
-  readDatabaseName String                // Database name for read operations (e.g., tenant_abc123_read)
-  status      TenantDatabaseStatusEnum  @default(PROVISIONING) // Status of the database
-  schemaVersion String?                 // Current schema version/migration version
-  lastMigrationAt DateTime?            // Last migration timestamp
-  errorMessage String?                  // Error message if status is FAILED
+  id               String                   @id @default(uuid())
+  tenantId         String                   @unique // Tenant ID
+  databaseName     String // Database name for write operations (e.g., tenant_abc123)
+  readDatabaseName String // Database name for read operations (e.g., tenant_abc123_read)
+  status           TenantDatabaseStatusEnum @default(PROVISIONING) // Status of the database
+  schemaVersion    String? // Current schema version/migration version
+  lastMigrationAt  DateTime? // Last migration timestamp
+  errorMessage     String? // Error message if status is FAILED
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
   deletedAt DateTime?
 
   tenant Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
@@ -148,8 +149,8 @@ model Event {
   payload       Json? // Payload
   timestamp     DateTime @default(now()) // Timestamp
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
   deletedAt DateTime?
 }
 
@@ -170,14 +171,13 @@ model Auth {
   twoFactorEnabled Boolean          @default(false) // Two factor enabled
   lastLoginAt      DateTime? // Last login at
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
   deletedAt DateTime?
 
   userId String
   user   User   @relation(fields: [userId], references: [id])
 }
-
 
 enum SubscriptionPlanIntervalEnum {
   MONTHLY
@@ -195,25 +195,26 @@ enum SubscriptionPlanTypeEnum {
   PRO
   ENTERPRISE
 }
-model SubscriptionPlan{
-  id String @id @default(uuid())
-  name String // Name of the plan
-  slug String // Slug of the plan
-  type SubscriptionPlanTypeEnum // Type of the plan
-  description String? // Description of the plan
-  priceMonthly Decimal // Price of the plan
-  priceYearly Decimal // Price of the plan
-  currency CurrencyEnum // Currency of the plan (USD, EUR, GBP, etc.)
-  interval SubscriptionPlanIntervalEnum // Interval of the plan
-  intervalCount Int // Interval count of the plan
-  trialPeriodDays Int? // Trial period days of the plan
-  isActive Boolean @default(true) // Is active plan
-  features Json? // Features of the plan
-  limits Json? // Limits of the plan
-  stripePriceId String? // Stripe price ID of the plan
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+model SubscriptionPlan {
+  id              String                       @id @default(uuid())
+  name            String // Name of the plan
+  slug            String // Slug of the plan
+  type            SubscriptionPlanTypeEnum // Type of the plan
+  description     String? // Description of the plan
+  priceMonthly    Decimal // Price of the plan
+  priceYearly     Decimal // Price of the plan
+  currency        CurrencyEnum // Currency of the plan (USD, EUR, GBP, etc.)
+  interval        SubscriptionPlanIntervalEnum // Interval of the plan
+  intervalCount   Int // Interval count of the plan
+  trialPeriodDays Int? // Trial period days of the plan
+  isActive        Boolean                      @default(true) // Is active plan
+  features        Json? // Features of the plan
+  limits          Json? // Limits of the plan
+  stripePriceId   String? // Stripe price ID of the plan
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
   deletedAt DateTime?
 }
 
@@ -221,6 +222,7 @@ enum RenewalMethodEnum {
   MANUAL
   AUTOMATIC
 }
+
 enum SubscriptionStatusEnum {
   ACTIVE
   INACTIVE
@@ -228,26 +230,24 @@ enum SubscriptionStatusEnum {
   REFUNDED
 }
 
-
-model Subscription{
-  id String @id @default(uuid())
-  tenantId String @unique // Tenant ID
-  planId String // Plan ID
-  startDate DateTime // Start date of the subscription
-  endDate DateTime // End date of the subscription
-  trialEndDate DateTime? // Trial end date of the subscription
-  status SubscriptionStatusEnum // Status of the subscription
+model Subscription {
+  id                   String                 @id @default(uuid())
+  tenantId             String                 @unique // Tenant ID
+  planId               String // Plan ID
+  startDate            DateTime // Start date of the subscription
+  endDate              DateTime // End date of the subscription
+  trialEndDate         DateTime? // Trial end date of the subscription
+  status               SubscriptionStatusEnum // Status of the subscription
   stripeSubscriptionId String? // Stripe subscription ID of the subscription
-  stripeCustomerId String? // Stripe customer ID of the subscription
-  renewalMethod RenewalMethodEnum @default(AUTOMATIC) // Renewal method of the subscription
+  stripeCustomerId     String? // Stripe customer ID of the subscription
+  renewalMethod        RenewalMethodEnum      @default(AUTOMATIC) // Renewal method of the subscription
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
   deletedAt DateTime?
-  
+
   tenant Tenant @relation(fields: [tenantId], references: [id])
 }
-
 
 enum SubscriptionPaymentStatusEnum {
   PENDING
@@ -262,19 +262,20 @@ enum PaymentMethodEnum {
   PAYPAL
   STRIPE
 }
-model SubscriptionPayment{
-  id String @id @default(uuid())
-  subscriptionId String // Subscription ID
-  amount Decimal // Amount of the payment
-  currency CurrencyEnum // Currency of the payment
-  status SubscriptionPaymentStatusEnum // Status of the payment
-  paymentMethod PaymentMethodEnum // Payment method of the payment
-  invoiceNumber String? // Invoice number of the payment
-  stripeInvoiceId String? // Stripe invoice ID of the payment
-  paidAt DateTime? // Paid at of the payment
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+model SubscriptionPayment {
+  id              String                        @id @default(uuid())
+  subscriptionId  String // Subscription ID
+  amount          Decimal // Amount of the payment
+  currency        CurrencyEnum // Currency of the payment
+  status          SubscriptionPaymentStatusEnum // Status of the payment
+  paymentMethod   PaymentMethodEnum // Payment method of the payment
+  invoiceNumber   String? // Invoice number of the payment
+  stripeInvoiceId String? // Stripe invoice ID of the payment
+  paidAt          DateTime? // Paid at of the payment
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
   deletedAt DateTime?
 }
 
@@ -290,17 +291,17 @@ enum PromptStatusEnum {
 }
 
 model Prompt {
-  id          String            @id @default(uuid())
+  id          String           @id @default(uuid())
   slug        String // Slug identifier for the prompt (e.g., "categorize-content")
   version     Int // Version number of the prompt
   title       String // Title of the prompt
   description String? // Description of what the prompt does
   content     String // The actual prompt content with variables like {{variableName}}
-  status      PromptStatusEnum  @default(DRAFT) // Status of the prompt version
-  isActive    Boolean           @default(false) // Whether this version is the active one
+  status      PromptStatusEnum @default(DRAFT) // Status of the prompt version
+  isActive    Boolean          @default(false) // Whether this version is the active one
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
   deletedAt DateTime?
 
   // Relationships
@@ -314,13 +315,13 @@ model Prompt {
 }
 
 model PromptTag {
-  id          String @id @default(uuid())
-  name        String @unique // Tag name (e.g., "nlp", "content", "moderation")
+  id          String  @id @default(uuid())
+  name        String  @unique // Tag name (e.g., "nlp", "content", "moderation")
   description String? // Description of the tag
   color       String? // Optional color for UI purposes
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
   deletedAt DateTime?
 
   prompts PromptTagRelation[]
@@ -335,8 +336,8 @@ model PromptTagRelation {
 
   createdAt DateTime @default(now())
 
-  prompt Prompt     @relation(fields: [promptId], references: [id], onDelete: Cascade)
-  tag    PromptTag  @relation(fields: [tagId], references: [id], onDelete: Cascade)
+  prompt Prompt    @relation(fields: [promptId], references: [id], onDelete: Cascade)
+  tag    PromptTag @relation(fields: [tagId], references: [id], onDelete: Cascade)
 
   @@unique([promptId, tagId])
   @@index([promptId])
@@ -344,15 +345,15 @@ model PromptTagRelation {
 }
 
 model PromptVariable {
-  id          String  @id @default(uuid())
-  promptId    String
-  name        String // Variable name (e.g., "content", "language", "maxLength")
-  description String? // Description of what this variable represents
-  isRequired  Boolean @default(true) // Whether this variable is required
+  id           String  @id @default(uuid())
+  promptId     String
+  name         String // Variable name (e.g., "content", "language", "maxLength")
+  description  String? // Description of what this variable represents
+  isRequired   Boolean @default(true) // Whether this variable is required
   defaultValue String? // Default value if optional
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
   deletedAt DateTime?
 
   prompt Prompt @relation(fields: [promptId], references: [id], onDelete: Cascade)

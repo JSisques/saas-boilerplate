@@ -1,10 +1,10 @@
 import { filterSoftDeletedExtension } from '@/shared/infrastructure/database/prisma/extensions/prisma-filter-soft-delete/prisma-filter-soft-delete.extension';
 import { prismaSoftDeleteManyExtension } from '@/shared/infrastructure/database/prisma/extensions/prisma-soft-delete-many/prisma-soft-delete-many.extension';
 import { softDeleteExtension } from '@/shared/infrastructure/database/prisma/extensions/prisma-soft-delete/prisma-soft-delete.extension';
-import { PrismaClient } from '../../../../../../../prisma/master/client';
+import { PrismaClient } from '../../../../../../../prisma/tenant/client';
 
 // Function to give us a prismaClient with extensions we want
-export const customPrismaClient = (prismaClient: PrismaClient) => {
+export const customPrismaTenantClient = (prismaClient: PrismaClient) => {
   return prismaClient
     .$extends(softDeleteExtension) // Here we add our created extensions
     .$extends(prismaSoftDeleteManyExtension)
@@ -12,22 +12,24 @@ export const customPrismaClient = (prismaClient: PrismaClient) => {
 };
 
 // Create a type to our function
-export type CustomPrismaClient = ReturnType<typeof customPrismaClient>;
+export type CustomPrismaTenantClient = ReturnType<
+  typeof customPrismaTenantClient
+>;
 
 // Our Custom Prisma Client with the client set to the customPrismaClient with extension
-export class PrismaClientExtended extends PrismaClient {
-  private _customPrismaClient: CustomPrismaClient | null = null;
+export class PrismaTenantClientExtended extends PrismaClient {
+  private _customPrismaClient: CustomPrismaTenantClient | null = null;
 
-  private get extendedClient(): CustomPrismaClient {
+  private get extendedClient(): CustomPrismaTenantClient {
     if (!this._customPrismaClient) {
-      this._customPrismaClient = customPrismaClient(this);
+      this._customPrismaClient = customPrismaTenantClient(this);
     }
 
     return this._customPrismaClient;
   }
 
   // Override to get the extended client
-  get client(): CustomPrismaClient {
+  get client(): CustomPrismaTenantClient {
     return this.extendedClient;
   }
 

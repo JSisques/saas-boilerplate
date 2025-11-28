@@ -5,7 +5,7 @@ import { IStorageProvider } from '@/storage-context/storage/infrastructure/stora
 import { HttpService } from '@nestjs/axios';
 import { Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { StorageProviderEnum } from '@prisma/client';
+import { StorageProviderEnum } from '@/storage-context/storage/domain/enums/storage-provider.enum';
 import { firstValueFrom } from 'rxjs';
 
 @Injectable()

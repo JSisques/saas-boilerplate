@@ -1,5 +1,6 @@
 import { BaseMongoDatabaseRepository } from '@/shared/infrastructure/database/mongodb/base-mongo/base-mongo-database.repository';
 import { MongoTenantService } from '@/shared/infrastructure/database/mongodb/services/mongo-tenant/mongo-tenant.service';
+import { TenantContextService } from '@/shared/infrastructure/services/tenant-context/tenant-context.service';
 import { Db } from 'mongodb';
 
 /**
@@ -7,10 +8,20 @@ import { Db } from 'mongodb';
  * Extends BaseMongoDatabaseRepository to provide common MongoDB operations for tenant databases.
  */
 export abstract class BaseMongoTenantRepository extends BaseMongoDatabaseRepository {
-  protected abstract readonly tenantId: string;
-
-  constructor(protected readonly mongoTenantService: MongoTenantService) {
+  constructor(
+    protected readonly mongoTenantService: MongoTenantService,
+    protected readonly tenantContextService: TenantContextService,
+  ) {
     super();
+  }
+
+  /**
+   * Get tenant ID from tenant context service (lazy evaluation)
+   * @returns Tenant ID
+   * @throws Error if tenant ID is not found
+   */
+  protected get tenantId(): string {
+    return this.tenantContextService.getTenantIdOrThrow();
   }
 
   /**
@@ -18,10 +29,7 @@ export abstract class BaseMongoTenantRepository extends BaseMongoDatabaseReposit
    * @returns Db instance for the tenant
    */
   protected async getTenantDatabase(): Promise<Db> {
-    if (!this.tenantId) {
-      // TODO: Add a better error message
-      throw new Error('Tenant ID is required but not set');
-    }
-    return this.mongoTenantService.getTenantDatabase(this.tenantId);
+    const tenantId = this.tenantId;
+    return this.mongoTenantService.getTenantDatabase(tenantId);
   }
 }

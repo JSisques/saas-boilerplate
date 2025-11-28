@@ -1,10 +1,13 @@
-import { PrismaClientExtended } from '@/shared/infrastructure/database/prisma/clients/custom-prisma-client/custom-prisma-client';
+import { PrismaTenantClientExtended } from '@/shared/infrastructure/database/prisma/clients/custom-prisma-tenant-client/custom-prisma-tenant-client';
 import { Injectable, Logger, OnModuleDestroy } from '@nestjs/common';
 
 @Injectable()
 export class PrismaTenantFactory implements OnModuleDestroy {
   private readonly logger = new Logger(PrismaTenantFactory.name);
-  private readonly tenantClients = new Map<string, PrismaClientExtended>();
+  private readonly tenantClients = new Map<
+    string,
+    PrismaTenantClientExtended
+  >();
 
   /**
    * Get or create a Prisma client instance for a specific tenant
@@ -15,7 +18,7 @@ export class PrismaTenantFactory implements OnModuleDestroy {
   async getTenantClient(
     tenantId: string,
     databaseUrl: string,
-  ): Promise<PrismaClientExtended> {
+  ): Promise<PrismaTenantClientExtended> {
     // Check if client already exists for this tenant
     if (this.tenantClients.has(tenantId)) {
       const existingClient = this.tenantClients.get(tenantId)!;
@@ -39,7 +42,7 @@ export class PrismaTenantFactory implements OnModuleDestroy {
 
     // Create new client instance
     this.logger.log(`Creating Prisma client for tenant: ${tenantId}`);
-    const client = new PrismaClientExtended({
+    const client = new PrismaTenantClientExtended({
       datasources: {
         db: {
           url: databaseUrl,

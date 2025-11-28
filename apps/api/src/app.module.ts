@@ -44,6 +44,7 @@ const MODULES = [FeaturesModule, SharedModule];
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
       playground: true,
       introspection: true,
+      context: ({ req }) => ({ req }),
     }),
     ...MODULES,
     ...CONTEXT_MODULES,

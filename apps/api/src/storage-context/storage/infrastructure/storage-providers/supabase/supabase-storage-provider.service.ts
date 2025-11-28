@@ -1,3 +1,4 @@
+import { StorageProviderEnum } from '@/storage-context/storage/domain/enums/storage-provider.enum';
 import { SupabaseDeleteFailedException } from '@/storage-context/storage/infrastructure/exceptions/supabase/supabase-delete-failed.exception';
 import { SupabaseDownloadFailedException } from '@/storage-context/storage/infrastructure/exceptions/supabase/supabase-download-failed.exception';
 import { SupabaseFileNotFoundException } from '@/storage-context/storage/infrastructure/exceptions/supabase/supabase-file-not-found.exception';
@@ -5,7 +6,6 @@ import { SupabaseUploadFailedException } from '@/storage-context/storage/infrast
 import { IStorageProvider } from '@/storage-context/storage/infrastructure/storage-providers/storage-provider.interface';
 import { Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { StorageProviderEnum } from '@prisma/client';
 import { createClient, SupabaseClient } from '@supabase/supabase-js';
 
 @Injectable()

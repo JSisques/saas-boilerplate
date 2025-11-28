@@ -1,4 +1,4 @@
-import { StorageProviderEnum } from '@prisma/client';
+import { StorageProviderEnum } from '@/storage-context/storage/domain/enums/storage-provider.enum';
 
 /**
  * Interface for storage providers
