@@ -5,6 +5,8 @@ description: Complete guide to tenant member management
 
 The **Tenant Members** module manages user membership within tenants. It provides role-based access control and enables you to associate users with tenants and manage their permissions.
 
+> **Important:** All tenant member operations require authentication and tenant context. You must include a valid JWT token in the `Authorization` header and the tenant ID in the `x-tenant-id` header for every request.
+
 ## Tenant Member Entity
 
 A tenant member represents the relationship between a user and a tenant, including their role and permissions.
@@ -46,6 +48,40 @@ The module supports four role types:
 - Read-only or limited access
 - Minimal permissions
 - Cannot modify tenant settings
+
+## Authentication & Authorization
+
+All tenant member operations require:
+
+1. **JWT Authentication** - Valid JWT token in `Authorization` header
+2. **Tenant Context** - Tenant ID in `x-tenant-id` or `X-Tenant-Id` header
+3. **User Role** - User must have ADMIN or USER role
+4. **Tenant Role** - User must be a member of the tenant with appropriate role
+
+**Required Headers:**
+
+```http
+Authorization: Bearer <jwt-token>
+x-tenant-id: <tenant-uuid>
+```
+
+**Example Request:**
+
+```bash
+curl -X POST http://localhost:4100/api/graphql \
+  -H "Authorization: Bearer your-jwt-token" \
+  -H "x-tenant-id: tenant-uuid-here" \
+  -H "Content-Type: application/json" \
+  -d '{"query": "..."}'
+```
+
+**Important Notes:**
+
+- The `x-tenant-id` header is **required** for all operations
+- The tenant ID must match one of the tenant IDs in the user's JWT token (`tenantIds` array)
+- Users with ADMIN role can access any tenant
+- Regular users can only access tenants they are members of
+- The tenant context is automatically extracted and used for data isolation
 
 ## Commands
 
@@ -153,6 +189,144 @@ mutation RemoveTenantMember($input: TenantMemberRemoveRequestDto!) {
 **Returns:**
 
 - `MutationResponseDto` with the removed tenant member ID
+
+## GraphQL API
+
+### Queries
+
+#### tenantMemberFindByCriteria
+
+Finds tenant members by criteria with pagination.
+
+```graphql
+query FindTenantMembersByCriteria($input: TenantMemberFindByCriteriaRequestDto) {
+  tenantMemberFindByCriteria(input: $input) {
+    items {
+      id
+      tenantId
+      userId
+      role
+      createdAt
+      updatedAt
+    }
+    total
+    page
+    limit
+  }
+}
+```
+
+**Variables:**
+```json
+{
+  "input": {
+    "filters": [
+      {
+        "field": "role",
+        "operator": "EQUALS",
+        "value": "ADMIN"
+      }
+    ],
+    "sorts": [
+      {
+        "field": "createdAt",
+        "direction": "DESC"
+      }
+    ],
+    "pagination": {
+      "page": 1,
+      "limit": 10
+    }
+  }
+}
+```
+
+### Mutations
+
+#### tenantMemberAdd
+
+Adds a user as a member to a tenant.
+
+```graphql
+mutation AddTenantMember($input: TenantMemberAddRequestDto!) {
+  tenantMemberAdd(input: $input) {
+    success
+    message
+    id
+  }
+}
+```
+
+**Variables:**
+```json
+{
+  "input": {
+    "tenantId": "tenant-uuid",
+    "userId": "user-uuid",
+    "role": "ADMIN"
+  }
+}
+```
+
+**Response:**
+```json
+{
+  "data": {
+    "tenantMemberAdd": {
+      "success": true,
+      "message": "Tenant member added successfully",
+      "id": "tenant-member-uuid"
+    }
+  }
+}
+```
+
+#### tenantMemberUpdate
+
+Updates a tenant member's role.
+
+```graphql
+mutation UpdateTenantMember($input: TenantMemberUpdateRequestDto!) {
+  tenantMemberUpdate(input: $input) {
+    success
+    message
+    id
+  }
+}
+```
+
+**Variables:**
+```json
+{
+  "input": {
+    "id": "tenant-member-uuid",
+    "role": "MEMBER"
+  }
+}
+```
+
+#### tenantMemberRemove
+
+Removes a user from a tenant.
+
+```graphql
+mutation RemoveTenantMember($input: TenantMemberRemoveRequestDto!) {
+  tenantMemberRemove(input: $input) {
+    success
+    message
+    id
+  }
+}
+```
+
+**Variables:**
+```json
+{
+  "input": {
+    "id": "tenant-member-uuid"
+  }
+}
+```
 
 ## Queries
 
@@ -346,6 +520,8 @@ The aggregate root for tenant members, encapsulating business logic:
 - Used for command operations (add, update, remove)
 - Implements `TenantMemberWriteRepository`
 - Uses Prisma ORM for database operations
+- **Stores data in Master Database** (not tenant-specific database)
+- This allows for cross-tenant queries and centralized member management
 
 ### Read Repository (MongoDB)
 
@@ -481,6 +657,81 @@ mutation {
   }
 }
 ```
+
+## Database Schema
+
+### Prisma Schema (Master Database)
+
+Tenant members are stored in the master database, not in tenant-specific databases:
+
+```prisma
+enum TenantMemberRoleEnum {
+  OWNER
+  ADMIN
+  MEMBER
+  GUEST
+}
+
+model TenantMember {
+  id       String                @id @default(uuid())
+  tenantId String
+  userId   String
+  role     TenantMemberRoleEnum
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  deletedAt DateTime?
+
+  tenant Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([tenantId, userId])
+  @@index([tenantId])
+  @@index([userId])
+  @@index([role])
+}
+```
+
+**Note:** Storing tenant members in the master database allows for:
+- Cross-tenant queries (e.g., find all tenants a user belongs to)
+- Centralized member management
+- Efficient user-tenant relationship queries
+- Simplified authorization checks
+
+### MongoDB Schema (Read Database)
+
+The MongoDB collection stores view models with the same structure, optimized for read operations within tenant-specific databases.
+
+## Troubleshooting
+
+### Common Issues
+
+1. **Tenant Member Not Found:**
+   - Solution: Verify the tenant member ID exists
+   - Check if the member was soft deleted
+
+2. **Tenant Member Already Exists:**
+   - Solution: Check if user is already a member of the tenant
+   - Use `findByTenantIdAndUserId` to check existing membership
+
+3. **Tenant Context Missing:**
+   - Solution: Ensure `TenantGuard` is applied and tenant context is set in request headers
+   - **Required Header:** `x-tenant-id: <tenant-uuid>`
+   - The tenant ID must be included in every request
+   - The tenant ID must match one of the tenant IDs in the user's JWT token
+   - Error: `"Tenant ID is required. Please provide x-tenant-id header."`
+
+4. **Cannot Remove Last Owner:**
+   - Solution: Ensure at least one OWNER exists before removing
+   - Implement validation to prevent removing the last OWNER
+
+5. **User Not Found:**
+   - Solution: Verify the user exists in the User Context
+   - Check user ID is valid
+
+6. **Tenant Not Found:**
+   - Solution: Verify the tenant exists
+   - Check tenant ID is valid
 
 ## Integration with Other Modules
 
