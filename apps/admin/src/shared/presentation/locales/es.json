@@ -1,4 +1,11 @@
 {
+  "common": {
+    "loading": "Cargando...",
+    "error": "Error",
+    "success": "Éxito",
+    "noData": "No se encontraron datos",
+    "unknown": "Desconocido"
+  },
   "LandingPage": {
     "HeroSection": {
       "title": "Sisques Labs",
@@ -25,6 +32,62 @@
     "ContactSection": {
       "title": "Contacto",
       "description": "Contacto"
+    }
+  },
+  "authPage": {
+    "title": {
+      "login": "Bienvenido de nuevo",
+      "signup": "Crear una cuenta"
+    },
+    "description": {
+      "login": "Ingresa tu correo electrónico y contraseña para iniciar sesión",
+      "signup": "Ingresa tu información para crear una nueva cuenta"
+    },
+    "fields": {
+      "email": {
+        "label": "Correo electrónico",
+        "placeholder": "nombre@ejemplo.com"
+      },
+      "password": {
+        "label": "Contraseña",
+        "placeholder": {
+          "login": "Ingresa tu contraseña",
+          "signup": "Al menos 8 caracteres"
+        }
+      },
+      "confirmPassword": {
+        "label": "Confirmar contraseña",
+        "placeholder": "Confirma tu contraseña"
+      }
+    },
+    "actions": {
+      "login": "Iniciar sesión",
+      "signup": "Crear cuenta",
+      "switchToSignup": "Registrarse",
+      "switchToLogin": "Iniciar sesión",
+      "loading": {
+        "login": "Iniciando sesión...",
+        "signup": "Creando cuenta..."
+      }
+    },
+    "messages": {
+      "switchToSignup": "¿No tienes una cuenta?",
+      "switchToLogin": "¿Ya tienes una cuenta?",
+      "error": "Ocurrió un error. Por favor, intenta de nuevo."
+    },
+    "validation": {
+      "email": {
+        "required": "El correo electrónico es obligatorio",
+        "invalid": "Formato de correo electrónico inválido"
+      },
+      "password": {
+        "required": "La contraseña es obligatoria",
+        "minLength": "La contraseña debe tener al menos 8 caracteres"
+      },
+      "confirmPassword": {
+        "required": "Por favor, confirma tu contraseña",
+        "mismatch": "Las contraseñas no coinciden"
+      }
     }
   }
 }
