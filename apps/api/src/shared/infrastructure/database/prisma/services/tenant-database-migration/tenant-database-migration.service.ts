@@ -183,10 +183,11 @@ export class TenantDatabaseMigrationService {
     );
 
     try {
-      // Set DATABASE_URL environment variable for this migration
+      // Set DATABASE_TENANT_URL environment variable for this migration
+      // This must match the env variable name in prisma/tenant/schema.prisma
       const env = {
         ...process.env,
-        DATABASE_URL: databaseUrl,
+        DATABASE_TENANT_URL: databaseUrl,
       };
 
       // Run Prisma migrate deploy (for production) or migrate dev (for development)

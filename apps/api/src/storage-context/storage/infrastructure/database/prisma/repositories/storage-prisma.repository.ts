@@ -30,7 +30,7 @@ export class StoragePrismaRepository
     this.logger.log(`Finding storage by id: ${id}`);
 
     const client = await this.getTenantClient();
-    const storageData = await client.storage.findUnique({
+    const storageData = await client.storage.findFirst({
       where: { id },
     });
 
