@@ -6,9 +6,8 @@ import { AuthPhoneNumberValueObject } from '@/auth-context/auth/domain/value-obj
 import { AuthProviderIdValueObject } from '@/auth-context/auth/domain/value-objects/auth-provider-id/auth-provider-id.vo';
 import { AuthProviderValueObject } from '@/auth-context/auth/domain/value-objects/auth-provider/auth-provider.vo';
 import { AuthTwoFactorEnabledValueObject } from '@/auth-context/auth/domain/value-objects/auth-two-factor-enabled/auth-two-factor-enabled.vo';
-import { IBaseAggregateDto } from '@/shared/domain/interfaces/base-aggregate-dto.interface';
-import { AuthUuidValueObject } from '@/shared/domain/value-objects/identifiers/auth-uuid/auth-uuid.vo';
-import { UserUuidValueObject } from '@/shared/domain/value-objects/identifiers/user-uuid/user-uuid.vo';
+import { AuthUuidValueObject } from '@repo/shared/domain/value-objects/identifiers/auth-uuid/auth-uuid.vo';
+import { UserUuidValueObject } from '@repo/shared/domain/value-objects/identifiers/user-uuid/user-uuid.vo';
 
 /**
  * Interface representing the structure required to create a new auth entity.
@@ -27,7 +26,7 @@ import { UserUuidValueObject } from '@/shared/domain/value-objects/identifiers/u
  * @property {DateValueObject} createdAt - The created at of the auth.
  * @property {DateValueObject} updatedAt - The updated at of the auth.
  */
-export interface IAuthCreateDto extends IBaseAggregateDto {
+export interface IAuthCreateDto {
   id: AuthUuidValueObject;
   userId: UserUuidValueObject;
   email: AuthEmailValueObject | null;

@@ -24,7 +24,7 @@ export class AuthAggregate {
   private _providerId: AuthProviderIdValueObject | null;
   private _twoFactorEnabled: AuthTwoFactorEnabledValueObject;
 
-  constructor(props: IAuthCreateDto, generateEvent: boolean = true) {
+  constructor(props: IAuthCreateDto) {
     // 01: Set the properties
     this._id = props.id;
     this._userId = props.userId;
@@ -49,9 +49,8 @@ export class AuthAggregate {
    * @param props.provider - The provider of the auth.
    * @param props.providerId - The provider id of the auth.
    * @param props.twoFactorEnabled - The two factor enabled of the auth.
-   * @param generateEvent - Whether to generate the auth updated event. Default is true.
    */
-  public update(props: IAuthUpdateDto, generateEvent: boolean = true) {
+  public update(props: IAuthUpdateDto) {
     this._email = props.email !== undefined ? props.email : this._email;
     this._phoneNumber =
       props.phoneNumber !== undefined ? props.phoneNumber : this._phoneNumber;
@@ -79,8 +78,6 @@ export class AuthAggregate {
 
   /**
    * Delete the auth.
-   *
-   * @param generateEvent - Whether to generate the auth deleted event. Default is true.
    */
   public delete() {}
 

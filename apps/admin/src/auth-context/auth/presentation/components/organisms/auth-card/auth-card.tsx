@@ -12,10 +12,9 @@ import type { ReactNode } from 'react';
 
 interface AuthCardProps {
   children: ReactNode;
-  isLoading?: boolean;
 }
 
-export function AuthCard({ children, isLoading = false }: AuthCardProps) {
+export function AuthCard({ children }: AuthCardProps) {
   const t = useTranslations();
 
   return (
