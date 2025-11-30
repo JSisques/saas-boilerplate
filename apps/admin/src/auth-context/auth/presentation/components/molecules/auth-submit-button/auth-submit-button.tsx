@@ -6,13 +6,11 @@ import { useTranslations } from 'next-intl';
 
 interface AuthSubmitButtonProps {
   isLoading: boolean;
-  isLogin: boolean;
   disabled?: boolean;
 }
 
 export function AuthSubmitButton({
   isLoading,
-  isLogin,
   disabled = false,
 }: AuthSubmitButtonProps) {
   const t = useTranslations();
@@ -22,10 +20,10 @@ export function AuthSubmitButton({
       {isLoading ? (
         <>
           <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-          {t(`authPage.actions.loading.${isLogin ? 'login' : 'signup'}`)}
+          {t('authPage.actions.loading.login')}
         </>
       ) : (
-        t(`authPage.actions.${isLogin ? 'login' : 'signup'}`)
+        t('authPage.actions.login')
       )}
     </Button>
   );

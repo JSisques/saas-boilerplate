@@ -1,15 +1,8 @@
 'use client';
 
-import {
-  AuthCard,
-  AuthLoginForm,
-  AuthSignupForm,
-} from '@/auth-context/auth/presentation/components/organisms';
-import type {
-  AuthLoginByEmailFormValues,
-  AuthRegisterByEmailFormValues,
-} from '@/auth-context/auth/presentation/dtos/schemas';
-import { useAuthPageStore } from '@/auth-context/auth/presentation/stores/auth-page-store';
+import { AuthCard } from '@/auth-context/auth/presentation/components/organisms/auth-card/auth-card';
+import { AuthLoginForm } from '@/auth-context/auth/presentation/components/organisms/auth-login-form/auth-login-form';
+import type { AuthLoginByEmailFormValues } from '@/auth-context/auth/presentation/dtos/schemas/auth-login-by-email';
 import { useRoutes } from '@/shared/presentation/hooks/use-routes';
 import { useAuth } from '@repo/sdk';
 import { useRouter } from 'next/navigation';
@@ -17,8 +10,7 @@ import { useRouter } from 'next/navigation';
 const AuthPage = () => {
   const router = useRouter();
   const { routes } = useRoutes();
-  const { isLogin, setIsLogin } = useAuthPageStore();
-  const { loginByEmail, registerByEmail } = useAuth();
+  const { loginByEmail } = useAuth();
 
   const handleLoginSubmit = async (values: AuthLoginByEmailFormValues) => {
     try {
@@ -37,57 +29,17 @@ const AuthPage = () => {
     }
   };
 
-  const handleSignupSubmit = async (values: AuthRegisterByEmailFormValues) => {
-    try {
-      const result = await registerByEmail.fetch({
-        email: values.email,
-        password: values.password,
-      });
-
-      if (result && result.success) {
-        // After successful registration, automatically log in
-        const loginResult = await loginByEmail.fetch({
-          email: values.email,
-          password: values.password,
-        });
-
-        if (loginResult) {
-          // Redirect to dashboard
-          router.push(routes.dashboard);
-        }
-      }
-    } catch (error) {
-      // Error is handled by the hook state
-      console.error('Signup error:', error);
-    }
-  };
-
-  const handleSwitch = () => {
-    setIsLogin(!isLogin);
-    // Reset errors when switching
-    loginByEmail.reset();
-    registerByEmail.reset();
-  };
-
-  const isLoading = loginByEmail.loading || registerByEmail.loading;
-  const error = loginByEmail.error || registerByEmail.error;
+  const isLoading = loginByEmail.loading;
+  const error = loginByEmail.error;
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-linear-to-br from-background to-muted/20 p-4">
-      <AuthCard isLogin={isLogin} onSwitch={handleSwitch} isLoading={isLoading}>
-        {isLogin ? (
-          <AuthLoginForm
-            onSubmit={handleLoginSubmit}
-            isLoading={isLoading}
-            error={error}
-          />
-        ) : (
-          <AuthSignupForm
-            onSubmit={handleSignupSubmit}
-            isLoading={isLoading}
-            error={error}
-          />
-        )}
+      <AuthCard isLoading={isLoading}>
+        <AuthLoginForm
+          onSubmit={handleLoginSubmit}
+          isLoading={isLoading}
+          error={error}
+        />
       </AuthCard>
     </div>
   );

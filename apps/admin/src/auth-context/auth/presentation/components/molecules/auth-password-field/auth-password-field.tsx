@@ -15,7 +15,7 @@ interface AuthPasswordFieldProps<T extends FieldValues> {
   control: Control<T>;
   name: FieldPath<T>;
   disabled?: boolean;
-  placeholderKey?: 'login' | 'signup';
+  placeholderKey?: 'login';
   onPasswordChange?: (value: string) => void;
 }
 
@@ -38,9 +38,7 @@ export function AuthPasswordField<T extends FieldValues>({
           <FormControl>
             <Input
               type="password"
-              placeholder={t(
-                `authPage.fields.password.placeholder.${placeholderKey}`,
-              )}
+              placeholder={t('authPage.fields.password.placeholder.login')}
               disabled={disabled}
               {...field}
               onChange={(e) => {
