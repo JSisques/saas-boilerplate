@@ -106,6 +106,10 @@ export class SDK {
        */
       registerByEmail: this.authClient.registerByEmail.bind(this.authClient),
       /**
+       * Refresh the access token using a refresh token
+       */
+      refreshToken: this.authClient.refreshToken.bind(this.authClient),
+      /**
        * Logout the current user
        * Clears all stored tokens
        */

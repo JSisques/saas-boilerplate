@@ -3,8 +3,10 @@ import { useAsyncState } from '../../react/hooks/index.js';
 import { useSDKContext } from '../../react/sdk-context.js';
 import type { AuthLoginByEmailInput } from '../types/auth-login-by-email-input.type.js';
 import type { AuthLogoutInput } from '../types/auth-logout-input.type.js';
+import type { AuthRefreshTokenInput } from '../types/auth-refresh-token-input.type.js';
 import type { AuthRegisterByEmailInput } from '../types/auth-register-by-email-input.type.js';
 import type { LoginResponse } from '../types/login-response.type.js';
+import type { RefreshTokenResponse } from '../types/refresh-token-response.type.js';
 
 /**
  * Hook for authentication operations
@@ -21,6 +23,11 @@ export function useAuth() {
     [AuthRegisterByEmailInput]
   >((input: AuthRegisterByEmailInput) => sdk.auth.registerByEmail(input));
 
+  const refreshToken = useAsyncState<
+    RefreshTokenResponse,
+    [AuthRefreshTokenInput]
+  >((input: AuthRefreshTokenInput) => sdk.auth.refreshToken(input));
+
   const logout = useAsyncState<MutationResponse, [AuthLogoutInput]>(
     (input: AuthLogoutInput) => sdk.auth.logout(input),
   );
@@ -33,6 +40,10 @@ export function useAuth() {
     registerByEmail: {
       ...registerByEmail,
       fetch: registerByEmail.execute,
+    },
+    refreshToken: {
+      ...refreshToken,
+      fetch: refreshToken.execute,
     },
     logout: {
       ...logout,
