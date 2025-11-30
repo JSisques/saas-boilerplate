@@ -4,7 +4,6 @@ import { useRoutes } from '@/shared/presentation/hooks/use-routes';
 import { useAuth } from '@repo/sdk';
 import { useRouter } from 'next/navigation';
 import { useMemo } from 'react';
-
 /**
  * Hook that provides login functionality using the AuthLoginService
  * Connects presentation layer to application layer following DDD pattern

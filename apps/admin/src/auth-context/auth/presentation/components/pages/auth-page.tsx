@@ -13,7 +13,7 @@ const AuthPage = () => {
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-linear-to-br from-background to-muted/20 p-4">
-      <AuthCard isLoading={isLoading}>
+      <AuthCard isLoading={isLoading} error={error}>
         <AuthLoginForm
           onSubmit={handleLogin}
           isLoading={isLoading}

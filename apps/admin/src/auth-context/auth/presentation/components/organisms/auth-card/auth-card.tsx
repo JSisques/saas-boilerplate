@@ -1,5 +1,6 @@
 'use client';
 
+import { AuthErrorMessage } from '@/auth-context/auth/presentation/components/molecules/auth-error-message/auth-error-message';
 import {
   Card,
   CardContent,
@@ -7,14 +8,17 @@ import {
   CardHeader,
   CardTitle,
 } from '@repo/shared/presentation/components/ui/card';
+import { Spinner } from '@repo/shared/presentation/components/ui/spinner';
 import { useTranslations } from 'next-intl';
 import type { ReactNode } from 'react';
 
 interface AuthCardProps {
   children: ReactNode;
+  isLoading: boolean;
+  error: Error | null;
 }
 
-export function AuthCard({ children }: AuthCardProps) {
+export function AuthCard({ children, isLoading, error }: AuthCardProps) {
   const t = useTranslations();
 
   return (
@@ -27,7 +31,10 @@ export function AuthCard({ children }: AuthCardProps) {
           {t('authPage.description.login')}
         </CardDescription>
       </CardHeader>
-      <CardContent>{children}</CardContent>
+      <CardContent>
+        {isLoading ? <Spinner className="mx-auto" /> : children}
+        {error && <AuthErrorMessage error={error} />}
+      </CardContent>
     </Card>
   );
 }
