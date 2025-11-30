@@ -2,41 +2,20 @@
 
 import { AuthCard } from '@/auth-context/auth/presentation/components/organisms/auth-card/auth-card';
 import { AuthLoginForm } from '@/auth-context/auth/presentation/components/organisms/auth-login-form/auth-login-form';
-import type { AuthLoginByEmailFormValues } from '@/auth-context/auth/presentation/dtos/schemas/auth-login-by-email';
-import { useRoutes } from '@/shared/presentation/hooks/use-routes';
-import { useAuth } from '@repo/sdk';
-import { useRouter } from 'next/navigation';
+import { useAuthLogin } from '@/auth-context/auth/presentation/hooks/use-auth-login/use-auth-login';
 
+/**
+ * Authentication page component
+ * Uses application service through useAuthLogin hook (DDD pattern)
+ */
 const AuthPage = () => {
-  const router = useRouter();
-  const { routes } = useRoutes();
-  const { loginByEmail } = useAuth();
-
-  const handleLoginSubmit = async (values: AuthLoginByEmailFormValues) => {
-    try {
-      const result = await loginByEmail.fetch({
-        email: values.email,
-        password: values.password,
-      });
-
-      if (result && result.accessToken) {
-        // Redirect to dashboard
-        router.push(routes.dashboard);
-      }
-    } catch (error) {
-      // Error is handled by the hook state
-      console.error('Login error:', error);
-    }
-  };
-
-  const isLoading = loginByEmail.loading;
-  const error = loginByEmail.error;
+  const { handleLogin, isLoading, error } = useAuthLogin();
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-linear-to-br from-background to-muted/20 p-4">
       <AuthCard isLoading={isLoading}>
         <AuthLoginForm
-          onSubmit={handleLoginSubmit}
+          onSubmit={handleLogin}
           isLoading={isLoading}
           error={error}
         />
