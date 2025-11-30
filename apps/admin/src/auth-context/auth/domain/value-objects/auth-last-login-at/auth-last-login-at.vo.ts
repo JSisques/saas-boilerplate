@@ -1,0 +1,7 @@
+import { DateValueObject } from '@repo/shared/domain/value-objects/date.vo';
+
+/**
+ * AuthLastLoginAtValueObject represents the last login timestamp.
+ * It extends the DateValueObject to leverage common date functionalities.
+ */
+export class AuthLastLoginAtValueObject extends DateValueObject {}
