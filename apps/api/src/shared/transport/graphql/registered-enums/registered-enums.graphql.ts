@@ -2,6 +2,7 @@ import {
   CurrencyEnum,
   PromptStatusEnum,
   RenewalMethodEnum,
+  SagaStatusEnum,
   StatusEnum,
   SubscriptionPlanIntervalEnum,
   SubscriptionPlanTypeEnum,
@@ -79,6 +80,11 @@ const registeredEnums = [
     enum: TenantDatabaseStatusEnum,
     name: 'TenantDatabaseStatusEnum',
     description: 'The status of the tenant database',
+  },
+  {
+    enum: SagaStatusEnum,
+    name: 'SagaStatusEnum',
+    description: 'The status of the saga',
   },
 ];
 

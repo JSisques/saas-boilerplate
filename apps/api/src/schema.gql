@@ -319,6 +319,57 @@ type PaginatedPromptResultDto {
   items: [PromptResponseDto!]!
 }
 
+type SagaInstanceResponseDto {
+  """The saga instance ID"""
+  id: String!
+
+  """The saga instance name"""
+  name: String!
+
+  """The saga instance status"""
+  status: SagaStatusEnum!
+
+  """The saga instance start date"""
+  startDate: DateTime!
+
+  """The saga instance end date"""
+  endDate: DateTime!
+
+  """The saga instance creation date"""
+  createdAt: DateTime!
+
+  """The saga instance update date"""
+  updatedAt: DateTime!
+}
+
+"""The status of the saga"""
+enum SagaStatusEnum {
+  PENDING
+  STARTED
+  RUNNING
+  COMPLETED
+  FAILED
+  COMPENSATING
+  COMPENSATED
+}
+
+type PaginatedSagaInstanceResultDto {
+  """The total number of items"""
+  total: Int!
+
+  """The page number"""
+  page: Int!
+
+  """The number of items per page"""
+  perPage: Int!
+
+  """The total number of pages"""
+  totalPages: Int!
+
+  """The saga instance items"""
+  items: [SagaInstanceResponseDto!]!
+}
+
 type MutationResponseArrayDto {
   success: Boolean!
   message: String
@@ -647,6 +698,8 @@ type Query {
   promptFindById(input: PromptFindByIdRequestDto!): PromptResponseDto!
   storageFindById(input: StorageFindByIdRequestDto!): StorageResponseDto
   storageFindByCriteria(input: StorageFindByCriteriaRequestDto): PaginatedStorageResultDto!
+  sagaInstanceFindById(input: SagaInstanceFindByIdRequestDto!): SagaInstanceResponseDto
+  sagaInstanceFindByCriteria(input: SagaInstanceFindByCriteriaRequestDto): PaginatedSagaInstanceResultDto!
 }
 
 input EventFindByCriteriaRequestDto {
@@ -839,6 +892,22 @@ input StorageFindByCriteriaRequestDto {
   pagination: BasePaginationInput = {page: 1, perPage: 10}
 }
 
+input SagaInstanceFindByIdRequestDto {
+  """The id of the saga instance"""
+  id: String!
+}
+
+input SagaInstanceFindByCriteriaRequestDto {
+  """The filters to find by"""
+  filters: [BaseFilterInput!] = []
+
+  """The sorts to find by"""
+  sorts: [BaseSortInput!] = []
+
+  """The pagination to find by"""
+  pagination: BasePaginationInput = {page: 1, perPage: 10}
+}
+
 type Mutation {
   eventReplay(input: EventReplayRequestDto!): MutationResponseDto!
   loginByEmail(input: AuthLoginByEmailRequestDto!): LoginResponseDto!
@@ -877,6 +946,10 @@ type Mutation {
   storageUploadFile(file: Upload!): MutationResponseDto!
   storageDownloadFiles(input: StorageDownloadFileRequestDto!): [StorageDownloadFileResponseDto!]!
   storageDeleteFile(input: StorageDeleteFileRequestDto!): MutationResponseArrayDto!
+  sagaInstanceCreate(input: SagaInstanceCreateRequestDto!): MutationResponseDto!
+  sagaInstanceUpdate(input: SagaInstanceUpdateRequestDto!): MutationResponseDto!
+  sagaInstanceChangeStatus(input: SagaInstanceChangeStatusRequestDto!): MutationResponseDto!
+  sagaInstanceDelete(input: SagaInstanceDeleteRequestDto!): MutationResponseDto!
 }
 
 input EventReplayRequestDto {
@@ -1440,4 +1513,39 @@ input StorageDownloadFileRequestDto {
 input StorageDeleteFileRequestDto {
   """The unique identifiers of the storages"""
   ids: [String!]!
+}
+
+input SagaInstanceCreateRequestDto {
+  """The name of the saga instance"""
+  name: String!
+}
+
+input SagaInstanceUpdateRequestDto {
+  """The id of the saga instance"""
+  id: String!
+
+  """The name of the saga instance"""
+  name: String
+
+  """The status of the saga instance"""
+  status: SagaStatusEnum
+
+  """The start date of the saga instance"""
+  startDate: DateTime
+
+  """The end date of the saga instance"""
+  endDate: DateTime
+}
+
+input SagaInstanceChangeStatusRequestDto {
+  """The id of the saga instance"""
+  id: String!
+
+  """The status of the saga instance"""
+  status: SagaStatusEnum!
+}
+
+input SagaInstanceDeleteRequestDto {
+  """The id of the saga instance"""
+  id: String!
 }

@@ -361,3 +361,68 @@ model PromptVariable {
   @@unique([promptId, name])
   @@index([promptId])
 }
+
+enum SagaStatusEnum {
+  PENDING
+  STARTED
+  RUNNING
+  COMPLETED
+  FAILED
+  COMPENSATING
+  COMPENSATED
+  
+}
+
+model SagaInstance {
+  id String @id @default(uuid())
+  name String // Name of the saga
+  status SagaStatusEnum @default(PENDING) // Status of the saga
+  startDate DateTime? // Start date of the saga
+  endDate DateTime? // End date of the saga
+
+  steps SagaStep[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  deletedAt DateTime?
+}
+
+model SagaStep {
+  id String @id @default(uuid())
+  sagaInstanceId String
+  name String // Name of the step
+  order Int // Order of the step
+  status SagaStatusEnum @default(PENDING) // Status of the step
+  startDate DateTime? // Start date of the step
+  endDate DateTime? // End date of the step
+  errorMessage String? // Error message of the step
+  retryCount Int @default(0) // Retry count of the step
+  maxRetries Int @default(3) // Max retries of the step
+  payload Json? // Payload of the step
+  result Json? // Result of the step
+
+  sagaInstance SagaInstance @relation(fields: [sagaInstanceId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  deletedAt DateTime?
+}
+
+enum SagaLogTypeEnum {
+  INFO
+  WARNING
+  ERROR
+  DEBUG
+}
+
+model SagaLog {
+  id String @id @default(uuid())
+  sagaInstanceId String
+  sagaStepId String
+  type SagaLogTypeEnum // Type of the log
+  message String // Message of the log
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  deletedAt DateTime?
+}
