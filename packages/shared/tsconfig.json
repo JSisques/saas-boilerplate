@@ -8,9 +8,6 @@
   "paths": {
     "@/*": ["./*"]
   },
-  "include": [
-    "src",
-    "../../apps/api/src/shared/domain/value-objects/identifiers/saga-instance-uuid"
-  ],
+  "include": ["src"],
   "exclude": ["node_modules", "dist"]
 }
