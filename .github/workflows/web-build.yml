@@ -3,7 +3,7 @@ name: Web Build
 on:
   pull_request:
     paths:
-      - "apps/web/**"
+      - 'apps/web/**'
     branches: [main, dev]
 
 jobs:
@@ -17,7 +17,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: "24"
+          node-version: '24'
 
       - name: Install pnpm
         uses: pnpm/action-setup@v2
@@ -25,7 +25,12 @@ jobs:
           version: latest
 
       - name: Install dependencies
-        run: pnpm install --filter=./apps/web...
+        run: |
+          if [[ "${{ github.actor }}" == "dependabot[bot]" ]]; then
+            pnpm install --no-frozen-lockfile --filter=./apps/web...
+          else
+            pnpm install --frozen-lockfile --filter=./apps/web...
+          fi
 
       - name: Lint code
         run: pnpm lint --filter=./apps/web...
