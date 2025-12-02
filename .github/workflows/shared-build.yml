@@ -3,7 +3,7 @@ name: Shared Build
 on:
   pull_request:
     paths:
-      - "packages/shared/**"
+      - 'packages/shared/**'
     branches: [main, dev]
 
 jobs:
@@ -17,7 +17,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: "24"
+          node-version: '24'
 
       - name: Install pnpm
         uses: pnpm/action-setup@v2
@@ -25,7 +25,12 @@ jobs:
           version: latest
 
       - name: Install dependencies
-        run: pnpm install --filter=./packages/shared...
+        run: |
+          if [[ "${{ github.actor }}" == "dependabot[bot]" ]]; then
+            pnpm install --no-frozen-lockfile --filter=./packages/shared...
+          else
+            pnpm install --frozen-lockfile --filter=./packages/shared...
+          fi
 
       - name: Lint code
         run: pnpm lint --filter=./packages/shared...
