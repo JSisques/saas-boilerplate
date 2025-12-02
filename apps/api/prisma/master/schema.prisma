@@ -387,12 +387,20 @@ model SagaInstance {
   deletedAt DateTime?
 }
 
+enum SagaStepStatusEnum {
+  PENDING
+  STARTED
+  RUNNING
+  COMPLETED
+  FAILED
+}
+
 model SagaStep {
   id String @id @default(uuid())
   sagaInstanceId String
   name String // Name of the step
   order Int // Order of the step
-  status SagaStatusEnum @default(PENDING) // Status of the step
+  status SagaStepStatusEnum @default(PENDING) // Status of the step
   startDate DateTime? // Start date of the step
   endDate DateTime? // End date of the step
   errorMessage String? // Error message of the step
