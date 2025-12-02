@@ -11,7 +11,7 @@
     "git:clean": "git branch --merged | grep -vE '^*|main|dev' | xargs -n 1 git branch -d"
   },
   "dependencies": {
-    "@astrojs/starlight": "^0.36.2",
+    "@astrojs/starlight": "^0.37.0",
     "astro": "^5.6.1",
     "sharp": "^0.34.2",
     "zod": "^3.25.76"
