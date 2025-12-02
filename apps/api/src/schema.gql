@@ -370,6 +370,76 @@ type PaginatedSagaInstanceResultDto {
   items: [SagaInstanceResponseDto!]!
 }
 
+type SagaStepResponseDto {
+  """The saga step ID"""
+  id: String!
+
+  """The saga instance ID"""
+  sagaInstanceId: String!
+
+  """The saga step name"""
+  name: String!
+
+  """The saga step order"""
+  order: Float!
+
+  """The saga step status"""
+  status: SagaStepStatusEnum!
+
+  """The saga step start date"""
+  startDate: DateTime
+
+  """The saga step end date"""
+  endDate: DateTime
+
+  """The saga step error message"""
+  errorMessage: String
+
+  """The saga step retry count"""
+  retryCount: Float!
+
+  """The saga step max retries"""
+  maxRetries: Float!
+
+  """The saga step payload"""
+  payload: String
+
+  """The saga step result"""
+  result: String
+
+  """The saga step creation date"""
+  createdAt: DateTime!
+
+  """The saga step update date"""
+  updatedAt: DateTime!
+}
+
+"""The status of the saga step"""
+enum SagaStepStatusEnum {
+  PENDING
+  STARTED
+  RUNNING
+  COMPLETED
+  FAILED
+}
+
+type PaginatedSagaStepResultDto {
+  """The total number of items"""
+  total: Int!
+
+  """The page number"""
+  page: Int!
+
+  """The number of items per page"""
+  perPage: Int!
+
+  """The total number of pages"""
+  totalPages: Int!
+
+  """The saga step items"""
+  items: [SagaStepResponseDto!]!
+}
+
 type MutationResponseArrayDto {
   success: Boolean!
   message: String
@@ -700,6 +770,9 @@ type Query {
   storageFindByCriteria(input: StorageFindByCriteriaRequestDto): PaginatedStorageResultDto!
   sagaInstanceFindById(input: SagaInstanceFindByIdRequestDto!): SagaInstanceResponseDto
   sagaInstanceFindByCriteria(input: SagaInstanceFindByCriteriaRequestDto): PaginatedSagaInstanceResultDto!
+  sagaStepFindById(input: SagaStepFindByIdRequestDto!): SagaStepResponseDto
+  sagaStepFindBySagaInstanceId(input: SagaStepFindBySagaInstanceIdRequestDto!): [SagaStepResponseDto!]!
+  sagaStepFindByCriteria(input: SagaStepFindByCriteriaRequestDto): PaginatedSagaStepResultDto!
 }
 
 input EventFindByCriteriaRequestDto {
@@ -908,6 +981,27 @@ input SagaInstanceFindByCriteriaRequestDto {
   pagination: BasePaginationInput = {page: 1, perPage: 10}
 }
 
+input SagaStepFindByIdRequestDto {
+  """The id of the saga step"""
+  id: String!
+}
+
+input SagaStepFindBySagaInstanceIdRequestDto {
+  """The saga instance id"""
+  sagaInstanceId: String!
+}
+
+input SagaStepFindByCriteriaRequestDto {
+  """The filters to find by"""
+  filters: [BaseFilterInput!] = []
+
+  """The sorts to find by"""
+  sorts: [BaseSortInput!] = []
+
+  """The pagination to find by"""
+  pagination: BasePaginationInput = {page: 1, perPage: 10}
+}
+
 type Mutation {
   eventReplay(input: EventReplayRequestDto!): MutationResponseDto!
   loginByEmail(input: AuthLoginByEmailRequestDto!): LoginResponseDto!
@@ -950,6 +1044,10 @@ type Mutation {
   sagaInstanceUpdate(input: SagaInstanceUpdateRequestDto!): MutationResponseDto!
   sagaInstanceChangeStatus(input: SagaInstanceChangeStatusRequestDto!): MutationResponseDto!
   sagaInstanceDelete(input: SagaInstanceDeleteRequestDto!): MutationResponseDto!
+  sagaStepCreate(input: SagaStepCreateRequestDto!): MutationResponseDto!
+  sagaStepUpdate(input: SagaStepUpdateRequestDto!): MutationResponseDto!
+  sagaStepChangeStatus(input: SagaStepChangeStatusRequestDto!): MutationResponseDto!
+  sagaStepDelete(input: SagaStepDeleteRequestDto!): MutationResponseDto!
 }
 
 input EventReplayRequestDto {
@@ -1547,5 +1645,67 @@ input SagaInstanceChangeStatusRequestDto {
 
 input SagaInstanceDeleteRequestDto {
   """The id of the saga instance"""
+  id: String!
+}
+
+input SagaStepCreateRequestDto {
+  """The saga instance ID"""
+  sagaInstanceId: String!
+
+  """The name of the saga step"""
+  name: String!
+
+  """The order of the saga step"""
+  order: Float!
+
+  """The payload of the saga step (JSON string)"""
+  payload: String!
+}
+
+input SagaStepUpdateRequestDto {
+  """The id of the saga step"""
+  id: String!
+
+  """The name of the saga step"""
+  name: String
+
+  """The order of the saga step"""
+  order: Float
+
+  """The status of the saga step"""
+  status: SagaStepStatusEnum
+
+  """The start date of the saga step"""
+  startDate: DateTime
+
+  """The end date of the saga step"""
+  endDate: DateTime
+
+  """The error message of the saga step"""
+  errorMessage: String
+
+  """The retry count of the saga step"""
+  retryCount: Float
+
+  """The max retries of the saga step"""
+  maxRetries: Float
+
+  """The payload of the saga step (JSON string)"""
+  payload: String
+
+  """The result of the saga step (JSON string)"""
+  result: String
+}
+
+input SagaStepChangeStatusRequestDto {
+  """The id of the saga step"""
+  id: String!
+
+  """The status of the saga step"""
+  status: SagaStepStatusEnum!
+}
+
+input SagaStepDeleteRequestDto {
+  """The id of the saga step"""
   id: String!
 }
