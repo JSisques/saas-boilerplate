@@ -82,9 +82,15 @@ export class SagaStepAggregateFactory
       name: new SagaStepNameValueObject(data.name),
       order: new SagaStepOrderValueObject(data.order),
       status: new SagaStepStatusValueObject(data.status),
-      startDate: new SagaStepStartDateValueObject(data.startDate),
-      endDate: new SagaStepEndDateValueObject(data.endDate),
-      errorMessage: new SagaStepErrorMessageValueObject(data.errorMessage),
+      startDate: data.startDate
+        ? new SagaStepStartDateValueObject(data.startDate)
+        : null,
+      endDate: data.endDate
+        ? new SagaStepEndDateValueObject(data.endDate)
+        : null,
+      errorMessage: data.errorMessage
+        ? new SagaStepErrorMessageValueObject(data.errorMessage)
+        : null,
       retryCount: new SagaStepRetryCountValueObject(data.retryCount),
       maxRetries: new SagaStepMaxRetriesValueObject(data.maxRetries),
       payload: new SagaStepPayloadValueObject(data.payload),
