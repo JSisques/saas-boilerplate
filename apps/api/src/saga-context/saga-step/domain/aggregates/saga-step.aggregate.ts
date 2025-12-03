@@ -303,7 +303,7 @@ export class SagaStepAggregate extends BaseAggregate {
       retryCount: this._retryCount.value,
       maxRetries: this._maxRetries.value,
       payload: this._payload.value,
-      result: this._result.value,
+      result: this._result?.value ?? null,
       createdAt: this.createdAt.value,
       updatedAt: this.updatedAt.value,
     };
@@ -413,7 +413,7 @@ export class SagaStepAggregate extends BaseAggregate {
    *
    * @returns The result of the saga step.
    */
-  public get result(): SagaStepResultValueObject {
+  public get result(): SagaStepResultValueObject | null {
     return this._result;
   }
 }

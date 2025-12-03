@@ -10,12 +10,11 @@ import { ISagaStepCreateCommandDto } from '@/saga-context/saga-step/application/
 export interface ISagaStepUpdateCommandDto
   extends Partial<Omit<ISagaStepCreateCommandDto, 'sagaInstanceId'>> {
   id: string;
-  status: string;
-  startDate: Date | null;
-  endDate: Date | null;
-  errorMessage: string | null;
-  retryCount: number;
-  maxRetries: number;
-  payload: any;
-  result: any;
+  status?: string;
+  startDate?: Date | null;
+  endDate?: Date | null;
+  errorMessage?: string | null;
+  retryCount?: number;
+  maxRetries?: number;
+  result?: any;
 }
