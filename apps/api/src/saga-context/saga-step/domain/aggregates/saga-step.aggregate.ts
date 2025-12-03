@@ -64,6 +64,12 @@ export class SagaStepAggregate extends BaseAggregate {
     }
   }
 
+  /**
+   * Update the saga step.
+   *
+   * @param props - The properties to update.
+   * @param generateEvent - Whether to generate the saga step updated event. Default is true.
+   */
   public update(
     props: ISagaStepUpdateDto,
     generateEvent: boolean = true,
