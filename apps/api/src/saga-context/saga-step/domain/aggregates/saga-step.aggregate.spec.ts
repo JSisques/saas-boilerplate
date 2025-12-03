@@ -122,7 +122,6 @@ describe('SagaStepAggregate', () => {
   describe('getters', () => {
     it('should expose id via getter', () => {
       const aggregate = createBaseAggregate();
-      const id = new SagaStepUuidValueObject();
 
       expect(aggregate.id).toBeInstanceOf(SagaStepUuidValueObject);
       expect(aggregate.id.value).toBe('123e4567-e89b-12d3-a456-426614174000');

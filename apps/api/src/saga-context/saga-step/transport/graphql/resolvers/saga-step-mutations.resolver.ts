@@ -8,7 +8,7 @@ import { SagaStepDeleteRequestDto } from '@/saga-context/saga-step/transport/gra
 import { SagaStepUpdateRequestDto } from '@/saga-context/saga-step/transport/graphql/dtos/requests/saga-step-update.request.dto';
 import { MutationResponseDto } from '@/shared/transport/graphql/dtos/responses/success-response/success-response.dto';
 import { MutationResponseGraphQLMapper } from '@/shared/transport/graphql/mappers/mutation-response/mutation-response.mapper';
-import { Logger } from '@nestjs/common';
+import { BadRequestException, Logger } from '@nestjs/common';
 import { CommandBus } from '@nestjs/cqrs';
 import { Args, Mutation, Resolver } from '@nestjs/graphql';
 
@@ -35,7 +35,8 @@ export class SagaStepMutationsResolver {
     try {
       payload = JSON.parse(input.payload);
     } catch (error) {
-      throw new Error('Invalid JSON payload format');
+      this.logger.error(`Invalid JSON payload format: ${error.message}`);
+      throw new BadRequestException('Invalid JSON payload format');
     }
 
     // 02: Send the command to the command bus
@@ -70,7 +71,8 @@ export class SagaStepMutationsResolver {
       try {
         payload = JSON.parse(input.payload);
       } catch (error) {
-        throw new Error('Invalid JSON payload format');
+        this.logger.error(`Invalid JSON payload format: ${error.message}`);
+        throw new BadRequestException('Invalid JSON payload format');
       }
     }
 
@@ -78,7 +80,8 @@ export class SagaStepMutationsResolver {
       try {
         result = JSON.parse(input.result);
       } catch (error) {
-        throw new Error('Invalid JSON result format');
+        this.logger.error(`Invalid JSON result format: ${error.message}`);
+        throw new BadRequestException('Invalid JSON result format');
       }
     }
 

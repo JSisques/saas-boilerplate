@@ -1,7 +1,7 @@
 import { ISagaStepCreateViewModelDto } from '@/saga-context/saga-step/domain/dtos/view-models/saga-step-create/saga-step-create-view-model.dto';
 import { ISagaStepUpdateViewModelDto } from '@/saga-context/saga-step/domain/dtos/view-models/saga-step-update/saga-step-update-view-model.dto';
-import { SagaStepViewModel } from '@/saga-context/saga-step/domain/view-models/saga-step/saga-step.view-model';
 import { SagaStepStatusEnum } from '@/saga-context/saga-step/domain/enums/saga-step-status/saga-step-status.enum';
+import { SagaStepViewModel } from '@/saga-context/saga-step/domain/view-models/saga-step/saga-step.view-model';
 
 describe('SagaStepViewModel', () => {
   const createViewModelDto = (): ISagaStepCreateViewModelDto => {
@@ -236,7 +236,6 @@ describe('SagaStepViewModel', () => {
     });
 
     it('should set startDate to null when null is provided', () => {
-      const now = new Date();
       const dto: ISagaStepCreateViewModelDto = {
         ...createViewModelDto(),
         startDate: new Date('2024-01-01T10:00:00Z'),
@@ -268,7 +267,6 @@ describe('SagaStepViewModel', () => {
     });
 
     it('should set errorMessage to null when null is provided', () => {
-      const now = new Date();
       const dto: ISagaStepCreateViewModelDto = {
         ...createViewModelDto(),
         errorMessage: 'Existing error',
