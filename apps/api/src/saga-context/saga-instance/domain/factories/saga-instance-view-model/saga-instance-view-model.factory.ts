@@ -70,8 +70,8 @@ export class SagaInstanceViewModelFactory
       id: sagaInstanceAggregate.id.value,
       name: sagaInstanceAggregate.name.value,
       status: sagaInstanceAggregate.status.value,
-      startDate: sagaInstanceAggregate.startDate.value,
-      endDate: sagaInstanceAggregate.endDate.value,
+      startDate: sagaInstanceAggregate.startDate?.value ?? null,
+      endDate: sagaInstanceAggregate.endDate?.value ?? null,
       createdAt: sagaInstanceAggregate.createdAt.value,
       updatedAt: sagaInstanceAggregate.updatedAt.value,
     });

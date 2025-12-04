@@ -59,8 +59,12 @@ export class SagaInstanceAggregateFactory
       id: new SagaInstanceUuidValueObject(data.id),
       name: new SagaInstanceNameValueObject(data.name),
       status: new SagaInstanceStatusValueObject(data.status),
-      startDate: new SagaInstanceStartDateValueObject(data.startDate),
-      endDate: new SagaInstanceEndDateValueObject(data.endDate),
+      startDate: data.startDate
+        ? new SagaInstanceStartDateValueObject(data.startDate)
+        : null,
+      endDate: data.endDate
+        ? new SagaInstanceEndDateValueObject(data.endDate)
+        : null,
       createdAt: new DateValueObject(data.createdAt),
       updatedAt: new DateValueObject(data.updatedAt),
     });
