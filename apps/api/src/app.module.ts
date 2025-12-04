@@ -6,6 +6,7 @@ import { FeaturesModule } from '@/features/features.module';
 import { HealthContextModule } from '@/health-context/health-context.module';
 import { LLMContextModule } from '@/llm-context/llm-context.module';
 import { LoggingContextModule } from '@/logging-context/logging-context.module';
+import { SagaContextModule } from '@/saga-context/saga-context.module';
 import { SharedModule } from '@/shared/shared.module';
 import '@/shared/transport/graphql/registered-enums/registered-enums.graphql';
 import { StorageContextModule } from '@/storage-context/storage-context.module';
@@ -28,6 +29,7 @@ const CONTEXT_MODULES = [
   BillingContextModule,
   LLMContextModule,
   StorageContextModule,
+  SagaContextModule,
 ];
 
 const MODULES = [FeaturesModule, SharedModule];
