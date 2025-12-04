@@ -274,8 +274,6 @@ describe('SagaLogQueryResolver', () => {
     });
 
     it('should handle undefined input', async () => {
-      const createdAt = new Date('2024-01-01T10:00:00Z');
-      const updatedAt = new Date('2024-01-01T11:00:00Z');
       const viewModels: SagaLogViewModel[] = [];
 
       const paginatedResult = new PaginatedResult(viewModels, 0, 1, 10);
