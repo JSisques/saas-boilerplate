@@ -1,4 +1,4 @@
-import { AssertSagaInstanceExsistsService } from '@/saga-context/saga-instance/application/services/assert-saga-instance-exsits/assert-saga-instance-exsits.service';
+import { AssertSagaInstanceExistsService } from '@/saga-context/saga-instance/application/services/assert-saga-instance-exists/assert-saga-instance-exists.service';
 import { SagaInstanceStatusEnum } from '@/saga-context/saga-instance/domain/enums/saga-instance-status/saga-instance-status.enum';
 import {
   SAGA_INSTANCE_WRITE_REPOSITORY_TOKEN,
@@ -20,7 +20,7 @@ export class SagaInstanceChangeStatusCommandHandler
     @Inject(SAGA_INSTANCE_WRITE_REPOSITORY_TOKEN)
     private readonly sagaInstanceWriteRepository: SagaInstanceWriteRepository,
     private readonly eventBus: EventBus,
-    private readonly assertSagaInstanceExsistsService: AssertSagaInstanceExsistsService,
+    private readonly assertSagaInstanceExistsService: AssertSagaInstanceExistsService,
   ) {}
 
   /**
@@ -36,7 +36,7 @@ export class SagaInstanceChangeStatusCommandHandler
 
     // 01: Assert the saga instance exists
     const existingSagaInstance =
-      await this.assertSagaInstanceExsistsService.execute(command.id.value);
+      await this.assertSagaInstanceExistsService.execute(command.id.value);
 
     // 02: Change the saga instance status based on the provided status
     switch (command.status.value) {

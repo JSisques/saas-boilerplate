@@ -1,6 +1,6 @@
 import { SagaInstanceDeleteCommand } from '@/saga-context/saga-instance/application/commands/saga-instance-delete/saga-instance-delete.command';
 import { SagaInstanceDeleteCommandHandler } from '@/saga-context/saga-instance/application/commands/saga-instance-delete/saga-instance-delete.command-handler';
-import { AssertSagaInstanceExsistsService } from '@/saga-context/saga-instance/application/services/assert-saga-instance-exsits/assert-saga-instance-exsits.service';
+import { AssertSagaInstanceExistsService } from '@/saga-context/saga-instance/application/services/assert-saga-instance-exists/assert-saga-instance-exists.service';
 import { SagaInstanceAggregate } from '@/saga-context/saga-instance/domain/aggregates/saga-instance.aggregate';
 import {
   SAGA_INSTANCE_WRITE_REPOSITORY_TOKEN,
@@ -19,7 +19,7 @@ describe('SagaInstanceDeleteCommandHandler', () => {
   let handler: SagaInstanceDeleteCommandHandler;
   let mockSagaInstanceWriteRepository: jest.Mocked<SagaInstanceWriteRepository>;
   let mockEventBus: jest.Mocked<EventBus>;
-  let mockAssertSagaInstanceExsistsService: jest.Mocked<AssertSagaInstanceExsistsService>;
+  let mockAssertSagaInstanceExistsService: jest.Mocked<AssertSagaInstanceExistsService>;
 
   const createSagaInstanceAggregate = (): SagaInstanceAggregate => {
     const now = new Date();
@@ -53,9 +53,9 @@ describe('SagaInstanceDeleteCommandHandler', () => {
       publish: jest.fn(),
     } as unknown as jest.Mocked<EventBus>;
 
-    mockAssertSagaInstanceExsistsService = {
+    mockAssertSagaInstanceExistsService = {
       execute: jest.fn(),
-    } as unknown as jest.Mocked<AssertSagaInstanceExsistsService>;
+    } as unknown as jest.Mocked<AssertSagaInstanceExistsService>;
 
     const module = await Test.createTestingModule({
       providers: [
@@ -69,8 +69,8 @@ describe('SagaInstanceDeleteCommandHandler', () => {
           useValue: mockEventBus,
         },
         {
-          provide: AssertSagaInstanceExsistsService,
-          useValue: mockAssertSagaInstanceExsistsService,
+          provide: AssertSagaInstanceExistsService,
+          useValue: mockAssertSagaInstanceExistsService,
         },
       ],
     }).compile();
@@ -91,7 +91,7 @@ describe('SagaInstanceDeleteCommandHandler', () => {
 
       const existingSagaInstance = createSagaInstanceAggregate();
 
-      mockAssertSagaInstanceExsistsService.execute.mockResolvedValue(
+      mockAssertSagaInstanceExistsService.execute.mockResolvedValue(
         existingSagaInstance,
       );
       mockSagaInstanceWriteRepository.delete.mockResolvedValue(true);
@@ -99,7 +99,7 @@ describe('SagaInstanceDeleteCommandHandler', () => {
 
       await handler.execute(command);
 
-      expect(mockAssertSagaInstanceExsistsService.execute).toHaveBeenCalledWith(
+      expect(mockAssertSagaInstanceExistsService.execute).toHaveBeenCalledWith(
         sagaInstanceId,
       );
       expect(mockSagaInstanceWriteRepository.delete).toHaveBeenCalledWith(
@@ -115,7 +115,7 @@ describe('SagaInstanceDeleteCommandHandler', () => {
       const existingSagaInstance = createSagaInstanceAggregate();
       const deleteSpy = jest.spyOn(existingSagaInstance, 'delete');
 
-      mockAssertSagaInstanceExsistsService.execute.mockResolvedValue(
+      mockAssertSagaInstanceExistsService.execute.mockResolvedValue(
         existingSagaInstance,
       );
       mockSagaInstanceWriteRepository.delete.mockResolvedValue(true);
@@ -132,7 +132,7 @@ describe('SagaInstanceDeleteCommandHandler', () => {
 
       const existingSagaInstance = createSagaInstanceAggregate();
 
-      mockAssertSagaInstanceExsistsService.execute.mockResolvedValue(
+      mockAssertSagaInstanceExistsService.execute.mockResolvedValue(
         existingSagaInstance,
       );
       mockSagaInstanceWriteRepository.delete.mockResolvedValue(true);
@@ -153,7 +153,7 @@ describe('SagaInstanceDeleteCommandHandler', () => {
 
       const error = new Error('Saga instance not found');
 
-      mockAssertSagaInstanceExsistsService.execute.mockRejectedValue(error);
+      mockAssertSagaInstanceExistsService.execute.mockRejectedValue(error);
 
       await expect(handler.execute(command)).rejects.toThrow(error);
       expect(mockSagaInstanceWriteRepository.delete).not.toHaveBeenCalled();

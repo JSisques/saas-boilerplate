@@ -1,6 +1,6 @@
 import { FindSagaInstanceByIdQuery } from '@/saga-context/saga-instance/application/queries/saga-instance-find-by-id/saga-instance-find-by-id.query';
 import { FindSagaInstanceByIdQueryHandler } from '@/saga-context/saga-instance/application/queries/saga-instance-find-by-id/saga-instance-find-by-id.query-handler';
-import { AssertSagaInstanceExsistsService } from '@/saga-context/saga-instance/application/services/assert-saga-instance-exsits/assert-saga-instance-exsits.service';
+import { AssertSagaInstanceExistsService } from '@/saga-context/saga-instance/application/services/assert-saga-instance-exists/assert-saga-instance-exists.service';
 import { SagaInstanceAggregate } from '@/saga-context/saga-instance/domain/aggregates/saga-instance.aggregate';
 import { SagaInstanceNotFoundException } from '@/saga-context/saga-instance/application/exceptions/saga-instance-not-found/saga-instance-not-found.exception';
 import { DateValueObject } from '@/shared/domain/value-objects/date/date.vo';
@@ -12,19 +12,19 @@ import { Test } from '@nestjs/testing';
 
 describe('FindSagaInstanceByIdQueryHandler', () => {
   let handler: FindSagaInstanceByIdQueryHandler;
-  let mockAssertSagaInstanceExsistsService: jest.Mocked<AssertSagaInstanceExsistsService>;
+  let mockAssertSagaInstanceExistsService: jest.Mocked<AssertSagaInstanceExistsService>;
 
   beforeEach(async () => {
-    mockAssertSagaInstanceExsistsService = {
+    mockAssertSagaInstanceExistsService = {
       execute: jest.fn(),
-    } as unknown as jest.Mocked<AssertSagaInstanceExsistsService>;
+    } as unknown as jest.Mocked<AssertSagaInstanceExistsService>;
 
     const module = await Test.createTestingModule({
       providers: [
         FindSagaInstanceByIdQueryHandler,
         {
-          provide: AssertSagaInstanceExsistsService,
-          useValue: mockAssertSagaInstanceExsistsService,
+          provide: AssertSagaInstanceExistsService,
+          useValue: mockAssertSagaInstanceExistsService,
         },
       ],
     }).compile();
@@ -66,14 +66,14 @@ describe('FindSagaInstanceByIdQueryHandler', () => {
 
       const mockSagaInstance = createSagaInstanceAggregate();
 
-      mockAssertSagaInstanceExsistsService.execute.mockResolvedValue(
+      mockAssertSagaInstanceExistsService.execute.mockResolvedValue(
         mockSagaInstance,
       );
 
       const result = await handler.execute(query);
 
       expect(result).toBe(mockSagaInstance);
-      expect(mockAssertSagaInstanceExsistsService.execute).toHaveBeenCalledWith(
+      expect(mockAssertSagaInstanceExistsService.execute).toHaveBeenCalledWith(
         sagaInstanceId,
       );
     });
@@ -85,10 +85,10 @@ describe('FindSagaInstanceByIdQueryHandler', () => {
 
       const error = new SagaInstanceNotFoundException(sagaInstanceId);
 
-      mockAssertSagaInstanceExsistsService.execute.mockRejectedValue(error);
+      mockAssertSagaInstanceExistsService.execute.mockRejectedValue(error);
 
       await expect(handler.execute(query)).rejects.toThrow(error);
-      expect(mockAssertSagaInstanceExsistsService.execute).toHaveBeenCalledWith(
+      expect(mockAssertSagaInstanceExistsService.execute).toHaveBeenCalledWith(
         sagaInstanceId,
       );
     });

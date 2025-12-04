@@ -1,5 +1,5 @@
 import { SagaStepDeletedEventHandler } from '@/saga-context/saga-step/application/event-handlers/saga-step-deleted/saga-step-deleted.event-handler';
-import { AssertSagaStepViewModelExsistsService } from '@/saga-context/saga-step/application/services/assert-saga-step-view-model-exsits/assert-saga-step-view-model-exsits.service';
+import { AssertSagaStepViewModelExistsService } from '@/saga-context/saga-step/application/services/assert-saga-step-view-model-exists/assert-saga-step-view-model-exists.service';
 import {
   SAGA_STEP_READ_REPOSITORY_TOKEN,
   SagaStepReadRepository,
@@ -12,7 +12,7 @@ import { Test } from '@nestjs/testing';
 describe('SagaStepDeletedEventHandler', () => {
   let handler: SagaStepDeletedEventHandler;
   let mockSagaStepReadRepository: jest.Mocked<SagaStepReadRepository>;
-  let mockAssertSagaStepViewModelExsistsService: jest.Mocked<AssertSagaStepViewModelExsistsService>;
+  let mockAssertSagaStepViewModelExistsService: jest.Mocked<AssertSagaStepViewModelExistsService>;
 
   beforeEach(async () => {
     mockSagaStepReadRepository = {
@@ -23,9 +23,9 @@ describe('SagaStepDeletedEventHandler', () => {
       delete: jest.fn(),
     } as unknown as jest.Mocked<SagaStepReadRepository>;
 
-    mockAssertSagaStepViewModelExsistsService = {
+    mockAssertSagaStepViewModelExistsService = {
       execute: jest.fn(),
-    } as unknown as jest.Mocked<AssertSagaStepViewModelExsistsService>;
+    } as unknown as jest.Mocked<AssertSagaStepViewModelExistsService>;
 
     const module = await Test.createTestingModule({
       providers: [
@@ -35,8 +35,8 @@ describe('SagaStepDeletedEventHandler', () => {
           useValue: mockSagaStepReadRepository,
         },
         {
-          provide: AssertSagaStepViewModelExsistsService,
-          useValue: mockAssertSagaStepViewModelExsistsService,
+          provide: AssertSagaStepViewModelExistsService,
+          useValue: mockAssertSagaStepViewModelExistsService,
         },
       ],
     }).compile();
@@ -96,7 +96,7 @@ describe('SagaStepDeletedEventHandler', () => {
         updatedAt: new Date('2024-01-01T10:00:00Z'),
       });
 
-      mockAssertSagaStepViewModelExsistsService.execute.mockResolvedValue(
+      mockAssertSagaStepViewModelExistsService.execute.mockResolvedValue(
         existingViewModel,
       );
       mockSagaStepReadRepository.delete.mockResolvedValue(undefined);
@@ -104,10 +104,10 @@ describe('SagaStepDeletedEventHandler', () => {
       await handler.handle(event);
 
       expect(
-        mockAssertSagaStepViewModelExsistsService.execute,
+        mockAssertSagaStepViewModelExistsService.execute,
       ).toHaveBeenCalledWith(aggregateId);
       expect(
-        mockAssertSagaStepViewModelExsistsService.execute,
+        mockAssertSagaStepViewModelExistsService.execute,
       ).toHaveBeenCalledTimes(1);
       expect(mockSagaStepReadRepository.delete).toHaveBeenCalledWith(
         existingViewModel.id,
@@ -144,13 +144,11 @@ describe('SagaStepDeletedEventHandler', () => {
       );
 
       const error = new Error('Saga step view model not found');
-      mockAssertSagaStepViewModelExsistsService.execute.mockRejectedValue(
-        error,
-      );
+      mockAssertSagaStepViewModelExistsService.execute.mockRejectedValue(error);
 
       await expect(handler.handle(event)).rejects.toThrow(error);
       expect(
-        mockAssertSagaStepViewModelExsistsService.execute,
+        mockAssertSagaStepViewModelExistsService.execute,
       ).toHaveBeenCalledWith(aggregateId);
       expect(mockSagaStepReadRepository.delete).not.toHaveBeenCalled();
     });

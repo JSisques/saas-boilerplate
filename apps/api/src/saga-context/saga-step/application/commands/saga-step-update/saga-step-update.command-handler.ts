@@ -1,5 +1,5 @@
 import { SagaStepUpdateCommand } from '@/saga-context/saga-step/application/commands/saga-step-update/saga-step-update.command';
-import { AssertSagaStepExsistsService } from '@/saga-context/saga-step/application/services/assert-saga-step-exsits/assert-saga-step-exsits.service';
+import { AssertSagaStepExistsService } from '@/saga-context/saga-step/application/services/assert-saga-step-exists/assert-saga-step-exists.service';
 import { ISagaStepUpdateDto } from '@/saga-context/saga-step/domain/dtos/entities/saga-step-update/saga-step-update.dto';
 import {
   SAGA_STEP_WRITE_REPOSITORY_TOKEN,
@@ -17,7 +17,7 @@ export class SagaStepUpdateCommandHandler
   protected readonly logger = new Logger(SagaStepUpdateCommandHandler.name);
 
   constructor(
-    private readonly assertSagaStepExsistsService: AssertSagaStepExsistsService,
+    private readonly assertSagaStepExistsService: AssertSagaStepExistsService,
     private readonly eventBus: EventBus,
     @Inject(SAGA_STEP_WRITE_REPOSITORY_TOKEN)
     private readonly sagaStepWriteRepository: SagaStepWriteRepository,
@@ -36,7 +36,7 @@ export class SagaStepUpdateCommandHandler
     );
 
     // 01: Check if the saga step exists
-    const existingSagaStep = await this.assertSagaStepExsistsService.execute(
+    const existingSagaStep = await this.assertSagaStepExistsService.execute(
       command.id.value,
     );
 

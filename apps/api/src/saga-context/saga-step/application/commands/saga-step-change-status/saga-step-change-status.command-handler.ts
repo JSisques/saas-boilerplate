@@ -1,4 +1,4 @@
-import { AssertSagaStepExsistsService } from '@/saga-context/saga-step/application/services/assert-saga-step-exsits/assert-saga-step-exsits.service';
+import { AssertSagaStepExistsService } from '@/saga-context/saga-step/application/services/assert-saga-step-exists/assert-saga-step-exists.service';
 import { SagaStepStatusEnum } from '@/saga-context/saga-step/domain/enums/saga-step-status/saga-step-status.enum';
 import {
   SAGA_STEP_WRITE_REPOSITORY_TOKEN,
@@ -18,7 +18,7 @@ export class SagaStepChangeStatusCommandHandler
     @Inject(SAGA_STEP_WRITE_REPOSITORY_TOKEN)
     private readonly sagaStepWriteRepository: SagaStepWriteRepository,
     private readonly eventBus: EventBus,
-    private readonly assertSagaStepExsistsService: AssertSagaStepExsistsService,
+    private readonly assertSagaStepExistsService: AssertSagaStepExistsService,
   ) {}
 
   /**
@@ -33,7 +33,7 @@ export class SagaStepChangeStatusCommandHandler
     );
 
     // 01: Assert the saga step exists
-    const existingSagaStep = await this.assertSagaStepExsistsService.execute(
+    const existingSagaStep = await this.assertSagaStepExistsService.execute(
       command.id.value,
     );
 

@@ -1,7 +1,7 @@
 import { SagaStepUpdateCommand } from '@/saga-context/saga-step/application/commands/saga-step-update/saga-step-update.command';
 import { SagaStepUpdateCommandHandler } from '@/saga-context/saga-step/application/commands/saga-step-update/saga-step-update.command-handler';
 import { ISagaStepUpdateCommandDto } from '@/saga-context/saga-step/application/dtos/commands/saga-step-update/saga-step-update-command.dto';
-import { AssertSagaStepExsistsService } from '@/saga-context/saga-step/application/services/assert-saga-step-exsits/assert-saga-step-exsits.service';
+import { AssertSagaStepExistsService } from '@/saga-context/saga-step/application/services/assert-saga-step-exists/assert-saga-step-exists.service';
 import { SagaStepAggregate } from '@/saga-context/saga-step/domain/aggregates/saga-step.aggregate';
 import { SagaStepStatusEnum } from '@/saga-context/saga-step/domain/enums/saga-step-status/saga-step-status.enum';
 import {
@@ -26,7 +26,7 @@ describe('SagaStepUpdateCommandHandler', () => {
   let handler: SagaStepUpdateCommandHandler;
   let mockSagaStepWriteRepository: jest.Mocked<SagaStepWriteRepository>;
   let mockEventBus: jest.Mocked<EventBus>;
-  let mockAssertSagaStepExsistsService: jest.Mocked<AssertSagaStepExsistsService>;
+  let mockAssertSagaStepExistsService: jest.Mocked<AssertSagaStepExistsService>;
 
   beforeEach(async () => {
     mockSagaStepWriteRepository = {
@@ -41,9 +41,9 @@ describe('SagaStepUpdateCommandHandler', () => {
       publish: jest.fn(),
     } as unknown as jest.Mocked<EventBus>;
 
-    mockAssertSagaStepExsistsService = {
+    mockAssertSagaStepExistsService = {
       execute: jest.fn(),
-    } as unknown as jest.Mocked<AssertSagaStepExsistsService>;
+    } as unknown as jest.Mocked<AssertSagaStepExistsService>;
 
     const module = await Test.createTestingModule({
       providers: [
@@ -57,8 +57,8 @@ describe('SagaStepUpdateCommandHandler', () => {
           useValue: mockEventBus,
         },
         {
-          provide: AssertSagaStepExsistsService,
-          useValue: mockAssertSagaStepExsistsService,
+          provide: AssertSagaStepExistsService,
+          useValue: mockAssertSagaStepExistsService,
         },
       ],
     }).compile();
@@ -111,7 +111,7 @@ describe('SagaStepUpdateCommandHandler', () => {
       const updateSpy = jest.spyOn(existingSagaStep, 'update');
       const commitSpy = jest.spyOn(existingSagaStep, 'commit');
 
-      mockAssertSagaStepExsistsService.execute.mockResolvedValue(
+      mockAssertSagaStepExistsService.execute.mockResolvedValue(
         existingSagaStep,
       );
       mockSagaStepWriteRepository.save.mockResolvedValue(undefined);
@@ -119,7 +119,7 @@ describe('SagaStepUpdateCommandHandler', () => {
 
       await handler.execute(command);
 
-      expect(mockAssertSagaStepExsistsService.execute).toHaveBeenCalledWith(
+      expect(mockAssertSagaStepExistsService.execute).toHaveBeenCalledWith(
         command.id.value,
       );
       expect(updateSpy).toHaveBeenCalledWith(
@@ -145,10 +145,10 @@ describe('SagaStepUpdateCommandHandler', () => {
       const command = new SagaStepUpdateCommand(updateCommandDto);
       const error = new Error('Saga step not found');
 
-      mockAssertSagaStepExsistsService.execute.mockRejectedValue(error);
+      mockAssertSagaStepExistsService.execute.mockRejectedValue(error);
 
       await expect(handler.execute(command)).rejects.toThrow(error);
-      expect(mockAssertSagaStepExsistsService.execute).toHaveBeenCalledWith(
+      expect(mockAssertSagaStepExistsService.execute).toHaveBeenCalledWith(
         command.id.value,
       );
       expect(mockSagaStepWriteRepository.save).not.toHaveBeenCalled();
@@ -168,7 +168,7 @@ describe('SagaStepUpdateCommandHandler', () => {
       const command = new SagaStepUpdateCommand(updateCommandDto);
       const updateSpy = jest.spyOn(existingSagaStep, 'update');
 
-      mockAssertSagaStepExsistsService.execute.mockResolvedValue(
+      mockAssertSagaStepExistsService.execute.mockResolvedValue(
         existingSagaStep,
       );
       mockSagaStepWriteRepository.save.mockResolvedValue(undefined);
@@ -196,7 +196,7 @@ describe('SagaStepUpdateCommandHandler', () => {
       const command = new SagaStepUpdateCommand(updateCommandDto);
       const updateSpy = jest.spyOn(existingSagaStep, 'update');
 
-      mockAssertSagaStepExsistsService.execute.mockResolvedValue(
+      mockAssertSagaStepExistsService.execute.mockResolvedValue(
         existingSagaStep,
       );
       mockSagaStepWriteRepository.save.mockResolvedValue(undefined);
@@ -219,7 +219,7 @@ describe('SagaStepUpdateCommandHandler', () => {
 
       const command = new SagaStepUpdateCommand(updateCommandDto);
 
-      mockAssertSagaStepExsistsService.execute.mockResolvedValue(
+      mockAssertSagaStepExistsService.execute.mockResolvedValue(
         existingSagaStep,
       );
       mockSagaStepWriteRepository.save.mockResolvedValue(undefined);

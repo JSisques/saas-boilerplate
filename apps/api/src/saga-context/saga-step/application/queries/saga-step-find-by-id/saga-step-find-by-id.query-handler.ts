@@ -1,4 +1,4 @@
-import { AssertSagaStepExsistsService } from '@/saga-context/saga-step/application/services/assert-saga-step-exsits/assert-saga-step-exsits.service';
+import { AssertSagaStepExistsService } from '@/saga-context/saga-step/application/services/assert-saga-step-exists/assert-saga-step-exists.service';
 import { SagaStepAggregate } from '@/saga-context/saga-step/domain/aggregates/saga-step.aggregate';
 import { Logger } from '@nestjs/common';
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
@@ -11,7 +11,7 @@ export class FindSagaStepByIdQueryHandler
   private readonly logger = new Logger(FindSagaStepByIdQueryHandler.name);
 
   constructor(
-    private readonly assertSagaStepExsistsService: AssertSagaStepExsistsService,
+    private readonly assertSagaStepExistsService: AssertSagaStepExistsService,
   ) {}
 
   /**
@@ -24,6 +24,6 @@ export class FindSagaStepByIdQueryHandler
     this.logger.log(`Executing find saga step by id query: ${query.id.value}`);
 
     // 01: Assert the saga step exists
-    return await this.assertSagaStepExsistsService.execute(query.id.value);
+    return await this.assertSagaStepExistsService.execute(query.id.value);
   }
 }

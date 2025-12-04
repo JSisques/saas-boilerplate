@@ -1,5 +1,5 @@
 import { SagaInstanceDeleteCommand } from '@/saga-context/saga-instance/application/commands/saga-instance-delete/saga-instance-delete.command';
-import { AssertSagaInstanceExsistsService } from '@/saga-context/saga-instance/application/services/assert-saga-instance-exsits/assert-saga-instance-exsits.service';
+import { AssertSagaInstanceExistsService } from '@/saga-context/saga-instance/application/services/assert-saga-instance-exists/assert-saga-instance-exists.service';
 import {
   SAGA_INSTANCE_WRITE_REPOSITORY_TOKEN,
   SagaInstanceWriteRepository,
@@ -17,7 +17,7 @@ export class SagaInstanceDeleteCommandHandler
     @Inject(SAGA_INSTANCE_WRITE_REPOSITORY_TOKEN)
     private readonly sagaInstanceWriteRepository: SagaInstanceWriteRepository,
     private readonly eventBus: EventBus,
-    private readonly assertSagaInstanceExsistsService: AssertSagaInstanceExsistsService,
+    private readonly assertSagaInstanceExistsService: AssertSagaInstanceExistsService,
   ) {}
 
   /**
@@ -33,7 +33,7 @@ export class SagaInstanceDeleteCommandHandler
 
     // 01: Check if the saga instance exists
     const existingSagaInstance =
-      await this.assertSagaInstanceExsistsService.execute(command.id.value);
+      await this.assertSagaInstanceExistsService.execute(command.id.value);
 
     // 02: Delete the saga instance
     await existingSagaInstance.delete();

@@ -1,4 +1,4 @@
-import { AssertSagaInstanceExsistsService } from '@/saga-context/saga-instance/application/services/assert-saga-instance-exsits/assert-saga-instance-exsits.service';
+import { AssertSagaInstanceExistsService } from '@/saga-context/saga-instance/application/services/assert-saga-instance-exists/assert-saga-instance-exists.service';
 import { SagaInstanceAggregate } from '@/saga-context/saga-instance/domain/aggregates/saga-instance.aggregate';
 import { Logger } from '@nestjs/common';
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
@@ -11,7 +11,7 @@ export class FindSagaInstanceByIdQueryHandler
   private readonly logger = new Logger(FindSagaInstanceByIdQueryHandler.name);
 
   constructor(
-    private readonly assertSagaInstanceExsistsService: AssertSagaInstanceExsistsService,
+    private readonly assertSagaInstanceExistsService: AssertSagaInstanceExistsService,
   ) {}
 
   /**
@@ -28,6 +28,6 @@ export class FindSagaInstanceByIdQueryHandler
     );
 
     // 01: Assert the saga instance exists
-    return await this.assertSagaInstanceExsistsService.execute(query.id.value);
+    return await this.assertSagaInstanceExistsService.execute(query.id.value);
   }
 }

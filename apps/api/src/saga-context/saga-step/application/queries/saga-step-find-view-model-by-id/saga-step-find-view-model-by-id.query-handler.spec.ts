@@ -1,6 +1,6 @@
 import { FindSagaStepViewModelByIdQuery } from '@/saga-context/saga-step/application/queries/saga-step-find-view-model-by-id/saga-step-find-view-model-by-id.query';
 import { FindSagaStepViewModelByIdQueryHandler } from '@/saga-context/saga-step/application/queries/saga-step-find-view-model-by-id/saga-step-find-view-model-by-id.query-handler';
-import { AssertSagaStepViewModelExsistsService } from '@/saga-context/saga-step/application/services/assert-saga-step-view-model-exsits/assert-saga-step-view-model-exsits.service';
+import { AssertSagaStepViewModelExistsService } from '@/saga-context/saga-step/application/services/assert-saga-step-view-model-exists/assert-saga-step-view-model-exists.service';
 import { SagaStepViewModel } from '@/saga-context/saga-step/domain/view-models/saga-step/saga-step.view-model';
 import { SagaStepStatusEnum } from '@/saga-context/saga-step/domain/enums/saga-step-status/saga-step-status.enum';
 import { SagaStepNotFoundException } from '@/saga-context/saga-step/application/exceptions/saga-step-not-found/saga-step-not-found.exception';
@@ -8,19 +8,19 @@ import { Test } from '@nestjs/testing';
 
 describe('FindSagaStepViewModelByIdQueryHandler', () => {
   let handler: FindSagaStepViewModelByIdQueryHandler;
-  let mockAssertSagaStepViewModelExsistsService: jest.Mocked<AssertSagaStepViewModelExsistsService>;
+  let mockAssertSagaStepViewModelExistsService: jest.Mocked<AssertSagaStepViewModelExistsService>;
 
   beforeEach(async () => {
-    mockAssertSagaStepViewModelExsistsService = {
+    mockAssertSagaStepViewModelExistsService = {
       execute: jest.fn(),
-    } as unknown as jest.Mocked<AssertSagaStepViewModelExsistsService>;
+    } as unknown as jest.Mocked<AssertSagaStepViewModelExistsService>;
 
     const module = await Test.createTestingModule({
       providers: [
         FindSagaStepViewModelByIdQueryHandler,
         {
-          provide: AssertSagaStepViewModelExsistsService,
-          useValue: mockAssertSagaStepViewModelExsistsService,
+          provide: AssertSagaStepViewModelExistsService,
+          useValue: mockAssertSagaStepViewModelExistsService,
         },
       ],
     }).compile();
@@ -57,7 +57,7 @@ describe('FindSagaStepViewModelByIdQueryHandler', () => {
         updatedAt: new Date('2024-01-01T10:00:00Z'),
       });
 
-      mockAssertSagaStepViewModelExsistsService.execute.mockResolvedValue(
+      mockAssertSagaStepViewModelExistsService.execute.mockResolvedValue(
         mockViewModel,
       );
 
@@ -65,10 +65,10 @@ describe('FindSagaStepViewModelByIdQueryHandler', () => {
 
       expect(result).toBe(mockViewModel);
       expect(
-        mockAssertSagaStepViewModelExsistsService.execute,
+        mockAssertSagaStepViewModelExistsService.execute,
       ).toHaveBeenCalledWith(sagaStepId);
       expect(
-        mockAssertSagaStepViewModelExsistsService.execute,
+        mockAssertSagaStepViewModelExistsService.execute,
       ).toHaveBeenCalledTimes(1);
     });
 
@@ -78,15 +78,13 @@ describe('FindSagaStepViewModelByIdQueryHandler', () => {
       const query = new FindSagaStepViewModelByIdQuery(queryDto);
 
       const error = new SagaStepNotFoundException(sagaStepId);
-      mockAssertSagaStepViewModelExsistsService.execute.mockRejectedValue(
-        error,
-      );
+      mockAssertSagaStepViewModelExistsService.execute.mockRejectedValue(error);
 
       await expect(handler.execute(query)).rejects.toThrow(
         SagaStepNotFoundException,
       );
       expect(
-        mockAssertSagaStepViewModelExsistsService.execute,
+        mockAssertSagaStepViewModelExistsService.execute,
       ).toHaveBeenCalledWith(sagaStepId);
     });
 
@@ -114,7 +112,7 @@ describe('FindSagaStepViewModelByIdQueryHandler', () => {
         updatedAt: new Date('2024-01-01T11:00:00Z'),
       });
 
-      mockAssertSagaStepViewModelExsistsService.execute.mockResolvedValue(
+      mockAssertSagaStepViewModelExistsService.execute.mockResolvedValue(
         mockViewModel,
       );
 

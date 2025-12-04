@@ -1,4 +1,4 @@
-import { AssertSagaStepViewModelExsistsService } from '@/saga-context/saga-step/application/services/assert-saga-step-view-model-exsits/assert-saga-step-view-model-exsits.service';
+import { AssertSagaStepViewModelExistsService } from '@/saga-context/saga-step/application/services/assert-saga-step-view-model-exists/assert-saga-step-view-model-exists.service';
 import { SagaStepViewModel } from '@/saga-context/saga-step/domain/view-models/saga-step/saga-step.view-model';
 import { Logger } from '@nestjs/common';
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
@@ -13,7 +13,7 @@ export class FindSagaStepViewModelByIdQueryHandler
   );
 
   constructor(
-    private readonly assertSagaStepViewModelExsistsService: AssertSagaStepViewModelExsistsService,
+    private readonly assertSagaStepViewModelExistsService: AssertSagaStepViewModelExistsService,
   ) {}
 
   /**
@@ -30,7 +30,7 @@ export class FindSagaStepViewModelByIdQueryHandler
     );
 
     // 01: Assert the saga step view model exists
-    return await this.assertSagaStepViewModelExsistsService.execute(
+    return await this.assertSagaStepViewModelExistsService.execute(
       query.id.value,
     );
   }

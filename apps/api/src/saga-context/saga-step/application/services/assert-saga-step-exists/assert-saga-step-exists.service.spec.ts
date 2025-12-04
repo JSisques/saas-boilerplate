@@ -1,5 +1,5 @@
-import { SagaStepAlreadyExistsException } from '@/saga-context/saga-step/application/exceptions/saga-step-already-exists/saga-step-already-exists.exception';
-import { AssertSagaStepNotExsistsService } from '@/saga-context/saga-step/application/services/assert-saga-step-not-exsits/assert-saga-step-not-exsits.service';
+import { SagaStepNotFoundException } from '@/saga-context/saga-step/application/exceptions/saga-step-not-found/saga-step-not-found.exception';
+import { AssertSagaStepExistsService } from '@/saga-context/saga-step/application/services/assert-saga-step-exists/assert-saga-step-exists.service';
 import { SagaStepAggregate } from '@/saga-context/saga-step/domain/aggregates/saga-step.aggregate';
 import {
   SAGA_STEP_WRITE_REPOSITORY_TOKEN,
@@ -18,8 +18,8 @@ import { SagaStepMaxRetriesValueObject } from '@/saga-context/saga-step/domain/v
 import { SagaStepPayloadValueObject } from '@/saga-context/saga-step/domain/value-objects/saga-step-payload/saga-step-payload.vo';
 import { SagaStepResultValueObject } from '@/saga-context/saga-step/domain/value-objects/saga-step-result/saga-step-result.vo';
 
-describe('AssertSagaStepNotExsistsService', () => {
-  let service: AssertSagaStepNotExsistsService;
+describe('AssertSagaStepExistsService', () => {
+  let service: AssertSagaStepExistsService;
   let mockSagaStepWriteRepository: jest.Mocked<SagaStepWriteRepository>;
 
   beforeEach(async () => {
@@ -32,7 +32,7 @@ describe('AssertSagaStepNotExsistsService', () => {
 
     const module = await Test.createTestingModule({
       providers: [
-        AssertSagaStepNotExsistsService,
+        AssertSagaStepExistsService,
         {
           provide: SAGA_STEP_WRITE_REPOSITORY_TOKEN,
           useValue: mockSagaStepWriteRepository,
@@ -40,8 +40,8 @@ describe('AssertSagaStepNotExsistsService', () => {
       ],
     }).compile();
 
-    service = module.get<AssertSagaStepNotExsistsService>(
-      AssertSagaStepNotExsistsService,
+    service = module.get<AssertSagaStepExistsService>(
+      AssertSagaStepExistsService,
     );
   });
 
@@ -75,45 +75,44 @@ describe('AssertSagaStepNotExsistsService', () => {
   };
 
   describe('execute', () => {
-    it('should return void when saga step does not exist', async () => {
+    it('should return saga step when it exists', async () => {
       const sagaStepId = '123e4567-e89b-12d3-a456-426614174000';
+      const existingSagaStep = createSagaStepAggregate();
 
-      mockSagaStepWriteRepository.findById.mockResolvedValue(null);
+      mockSagaStepWriteRepository.findById.mockResolvedValue(existingSagaStep);
 
       const result = await service.execute(sagaStepId);
 
-      expect(result).toBeUndefined();
+      expect(result).toBe(existingSagaStep);
       expect(mockSagaStepWriteRepository.findById).toHaveBeenCalledWith(
         sagaStepId,
       );
       expect(mockSagaStepWriteRepository.findById).toHaveBeenCalledTimes(1);
     });
 
-    it('should throw SagaStepAlreadyExistsException when saga step exists', async () => {
+    it('should throw SagaStepNotFoundException when saga step does not exist', async () => {
       const sagaStepId = '123e4567-e89b-12d3-a456-426614174000';
-      const existingSagaStep = createSagaStepAggregate();
 
-      mockSagaStepWriteRepository.findById.mockResolvedValue(existingSagaStep);
+      mockSagaStepWriteRepository.findById.mockResolvedValue(null);
 
       await expect(service.execute(sagaStepId)).rejects.toThrow(
-        SagaStepAlreadyExistsException,
+        SagaStepNotFoundException,
       );
       expect(mockSagaStepWriteRepository.findById).toHaveBeenCalledWith(
         sagaStepId,
       );
     });
 
-    it('should throw SagaStepAlreadyExistsException with correct message', async () => {
+    it('should throw SagaStepNotFoundException with correct message', async () => {
       const sagaStepId = '123e4567-e89b-12d3-a456-426614174000';
-      const existingSagaStep = createSagaStepAggregate();
 
-      mockSagaStepWriteRepository.findById.mockResolvedValue(existingSagaStep);
+      mockSagaStepWriteRepository.findById.mockResolvedValue(null);
 
       try {
         await service.execute(sagaStepId);
-        fail('Should have thrown SagaStepAlreadyExistsException');
+        fail('Should have thrown SagaStepNotFoundException');
       } catch (error) {
-        expect(error).toBeInstanceOf(SagaStepAlreadyExistsException);
+        expect(error).toBeInstanceOf(SagaStepNotFoundException);
         expect(error.message).toContain(sagaStepId);
       }
     });

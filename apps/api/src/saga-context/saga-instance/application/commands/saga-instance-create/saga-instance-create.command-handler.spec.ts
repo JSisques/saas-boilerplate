@@ -1,6 +1,6 @@
 import { SagaInstanceCreateCommand } from '@/saga-context/saga-instance/application/commands/saga-instance-create/saga-instance-create.command';
 import { SagaInstanceCreateCommandHandler } from '@/saga-context/saga-instance/application/commands/saga-instance-create/saga-instance-create.command-handler';
-import { AssertSagaInstanceNotExsistsService } from '@/saga-context/saga-instance/application/services/assert-saga-instance-not-exsits/assert-saga-instance-not-exsits.service';
+import { AssertSagaInstanceNotExistsService } from '@/saga-context/saga-instance/application/services/assert-saga-instance-not-exists/assert-saga-instance-not-exists.service';
 import { SagaInstanceAggregate } from '@/saga-context/saga-instance/domain/aggregates/saga-instance.aggregate';
 import { SagaInstanceAggregateFactory } from '@/saga-context/saga-instance/domain/factories/saga-instance-aggregate/saga-instance-aggregate.factory';
 import {
@@ -21,7 +21,7 @@ describe('SagaInstanceCreateCommandHandler', () => {
   let mockEventBus: jest.Mocked<EventBus>;
   let mockQueryBus: jest.Mocked<QueryBus>;
   let mockSagaInstanceAggregateFactory: jest.Mocked<SagaInstanceAggregateFactory>;
-  let mockAssertSagaInstanceNotExsistsService: jest.Mocked<AssertSagaInstanceNotExsistsService>;
+  let mockAssertSagaInstanceNotExistsService: jest.Mocked<AssertSagaInstanceNotExistsService>;
 
   beforeEach(async () => {
     mockSagaInstanceWriteRepository = {
@@ -44,9 +44,9 @@ describe('SagaInstanceCreateCommandHandler', () => {
       fromPrimitives: jest.fn(),
     } as unknown as jest.Mocked<SagaInstanceAggregateFactory>;
 
-    mockAssertSagaInstanceNotExsistsService = {
+    mockAssertSagaInstanceNotExistsService = {
       execute: jest.fn(),
-    } as unknown as jest.Mocked<AssertSagaInstanceNotExsistsService>;
+    } as unknown as jest.Mocked<AssertSagaInstanceNotExistsService>;
 
     const module = await Test.createTestingModule({
       providers: [
@@ -68,8 +68,8 @@ describe('SagaInstanceCreateCommandHandler', () => {
           useValue: mockSagaInstanceAggregateFactory,
         },
         {
-          provide: AssertSagaInstanceNotExsistsService,
-          useValue: mockAssertSagaInstanceNotExsistsService,
+          provide: AssertSagaInstanceNotExistsService,
+          useValue: mockAssertSagaInstanceNotExistsService,
         },
       ],
     }).compile();
@@ -105,7 +105,7 @@ describe('SagaInstanceCreateCommandHandler', () => {
         false,
       );
 
-      mockAssertSagaInstanceNotExsistsService.execute.mockResolvedValue(
+      mockAssertSagaInstanceNotExistsService.execute.mockResolvedValue(
         undefined,
       );
       mockSagaInstanceAggregateFactory.create.mockReturnValue(mockSagaInstance);
@@ -118,7 +118,7 @@ describe('SagaInstanceCreateCommandHandler', () => {
 
       expect(result).toBe(mockSagaInstance.id.value);
       expect(
-        mockAssertSagaInstanceNotExsistsService.execute,
+        mockAssertSagaInstanceNotExistsService.execute,
       ).toHaveBeenCalledWith(command.id.value);
       expect(mockSagaInstanceAggregateFactory.create).toHaveBeenCalled();
       expect(markAsPendingSpy).toHaveBeenCalledWith(false);
@@ -149,7 +149,7 @@ describe('SagaInstanceCreateCommandHandler', () => {
         false,
       );
 
-      mockAssertSagaInstanceNotExsistsService.execute.mockResolvedValue(
+      mockAssertSagaInstanceNotExistsService.execute.mockResolvedValue(
         undefined,
       );
       mockSagaInstanceAggregateFactory.create.mockReturnValue(mockSagaInstance);
@@ -187,7 +187,7 @@ describe('SagaInstanceCreateCommandHandler', () => {
         true,
       );
 
-      mockAssertSagaInstanceNotExsistsService.execute.mockResolvedValue(
+      mockAssertSagaInstanceNotExistsService.execute.mockResolvedValue(
         undefined,
       );
       mockSagaInstanceAggregateFactory.create.mockReturnValue(mockSagaInstance);
@@ -211,7 +211,7 @@ describe('SagaInstanceCreateCommandHandler', () => {
       const command = new SagaInstanceCreateCommand(commandDto);
       const error = new Error('Saga instance already exists');
 
-      mockAssertSagaInstanceNotExsistsService.execute.mockRejectedValue(error);
+      mockAssertSagaInstanceNotExistsService.execute.mockRejectedValue(error);
 
       await expect(handler.execute(command)).rejects.toThrow(error);
       expect(mockSagaInstanceAggregateFactory.create).not.toHaveBeenCalled();
@@ -239,7 +239,7 @@ describe('SagaInstanceCreateCommandHandler', () => {
         false,
       );
 
-      mockAssertSagaInstanceNotExsistsService.execute.mockResolvedValue(
+      mockAssertSagaInstanceNotExistsService.execute.mockResolvedValue(
         undefined,
       );
       mockSagaInstanceAggregateFactory.create.mockReturnValue(mockSagaInstance);

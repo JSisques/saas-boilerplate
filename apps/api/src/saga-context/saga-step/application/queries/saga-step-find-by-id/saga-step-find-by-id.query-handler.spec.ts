@@ -1,6 +1,6 @@
 import { FindSagaStepByIdQuery } from '@/saga-context/saga-step/application/queries/saga-step-find-by-id/saga-step-find-by-id.query';
 import { FindSagaStepByIdQueryHandler } from '@/saga-context/saga-step/application/queries/saga-step-find-by-id/saga-step-find-by-id.query-handler';
-import { AssertSagaStepExsistsService } from '@/saga-context/saga-step/application/services/assert-saga-step-exsits/assert-saga-step-exsits.service';
+import { AssertSagaStepExistsService } from '@/saga-context/saga-step/application/services/assert-saga-step-exists/assert-saga-step-exists.service';
 import { SagaStepAggregate } from '@/saga-context/saga-step/domain/aggregates/saga-step.aggregate';
 import { SagaStepStatusEnum } from '@/saga-context/saga-step/domain/enums/saga-step-status/saga-step-status.enum';
 import { SagaStepNotFoundException } from '@/saga-context/saga-step/application/exceptions/saga-step-not-found/saga-step-not-found.exception';
@@ -18,19 +18,19 @@ import { Test } from '@nestjs/testing';
 
 describe('FindSagaStepByIdQueryHandler', () => {
   let handler: FindSagaStepByIdQueryHandler;
-  let mockAssertSagaStepExsistsService: jest.Mocked<AssertSagaStepExsistsService>;
+  let mockAssertSagaStepExistsService: jest.Mocked<AssertSagaStepExistsService>;
 
   beforeEach(async () => {
-    mockAssertSagaStepExsistsService = {
+    mockAssertSagaStepExistsService = {
       execute: jest.fn(),
-    } as unknown as jest.Mocked<AssertSagaStepExsistsService>;
+    } as unknown as jest.Mocked<AssertSagaStepExistsService>;
 
     const module = await Test.createTestingModule({
       providers: [
         FindSagaStepByIdQueryHandler,
         {
-          provide: AssertSagaStepExsistsService,
-          useValue: mockAssertSagaStepExsistsService,
+          provide: AssertSagaStepExistsService,
+          useValue: mockAssertSagaStepExistsService,
         },
       ],
     }).compile();
@@ -77,15 +77,15 @@ describe('FindSagaStepByIdQueryHandler', () => {
 
       const mockSagaStep = createSagaStepAggregate();
 
-      mockAssertSagaStepExsistsService.execute.mockResolvedValue(mockSagaStep);
+      mockAssertSagaStepExistsService.execute.mockResolvedValue(mockSagaStep);
 
       const result = await handler.execute(query);
 
       expect(result).toBe(mockSagaStep);
-      expect(mockAssertSagaStepExsistsService.execute).toHaveBeenCalledWith(
+      expect(mockAssertSagaStepExistsService.execute).toHaveBeenCalledWith(
         sagaStepId,
       );
-      expect(mockAssertSagaStepExsistsService.execute).toHaveBeenCalledTimes(1);
+      expect(mockAssertSagaStepExistsService.execute).toHaveBeenCalledTimes(1);
     });
 
     it('should throw SagaStepNotFoundException when saga step does not exist', async () => {
@@ -94,12 +94,12 @@ describe('FindSagaStepByIdQueryHandler', () => {
       const query = new FindSagaStepByIdQuery(queryDto);
 
       const error = new SagaStepNotFoundException(sagaStepId);
-      mockAssertSagaStepExsistsService.execute.mockRejectedValue(error);
+      mockAssertSagaStepExistsService.execute.mockRejectedValue(error);
 
       await expect(handler.execute(query)).rejects.toThrow(
         SagaStepNotFoundException,
       );
-      expect(mockAssertSagaStepExsistsService.execute).toHaveBeenCalledWith(
+      expect(mockAssertSagaStepExistsService.execute).toHaveBeenCalledWith(
         sagaStepId,
       );
     });

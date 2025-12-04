@@ -1,4 +1,4 @@
-import { AssertSagaInstanceViewModelExsistsService } from '@/saga-context/saga-instance/application/services/assert-saga-instance-view-model-exsits/assert-saga-instance-view-model-exsits.service';
+import { AssertSagaInstanceViewModelExistsService } from '@/saga-context/saga-instance/application/services/assert-saga-instance-view-model-exists/assert-saga-instance-view-model-exists.service';
 import { SagaInstanceNotFoundException } from '@/saga-context/saga-instance/application/exceptions/saga-instance-not-found/saga-instance-not-found.exception';
 import {
   SAGA_INSTANCE_READ_REPOSITORY_TOKEN,
@@ -8,8 +8,8 @@ import { SagaInstanceViewModel } from '@/saga-context/saga-instance/domain/view-
 import { SagaInstanceStatusEnum } from '@/saga-context/saga-instance/domain/enums/saga-instance-status/saga-instance-status.enum';
 import { Test } from '@nestjs/testing';
 
-describe('AssertSagaInstanceViewModelExsistsService', () => {
-  let service: AssertSagaInstanceViewModelExsistsService;
+describe('AssertSagaInstanceViewModelExistsService', () => {
+  let service: AssertSagaInstanceViewModelExistsService;
   let mockSagaInstanceReadRepository: jest.Mocked<SagaInstanceReadRepository>;
 
   beforeEach(async () => {
@@ -22,7 +22,7 @@ describe('AssertSagaInstanceViewModelExsistsService', () => {
 
     const module = await Test.createTestingModule({
       providers: [
-        AssertSagaInstanceViewModelExsistsService,
+        AssertSagaInstanceViewModelExistsService,
         {
           provide: SAGA_INSTANCE_READ_REPOSITORY_TOKEN,
           useValue: mockSagaInstanceReadRepository,
@@ -30,8 +30,8 @@ describe('AssertSagaInstanceViewModelExsistsService', () => {
       ],
     }).compile();
 
-    service = module.get<AssertSagaInstanceViewModelExsistsService>(
-      AssertSagaInstanceViewModelExsistsService,
+    service = module.get<AssertSagaInstanceViewModelExistsService>(
+      AssertSagaInstanceViewModelExistsService,
     );
   });
 

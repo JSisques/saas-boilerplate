@@ -1,4 +1,4 @@
-import { AssertSagaStepNotExsistsService } from '@/saga-context/saga-step/application/services/assert-saga-step-not-exsits/assert-saga-step-not-exsits.service';
+import { AssertSagaStepNotExistsService } from '@/saga-context/saga-step/application/services/assert-saga-step-not-exists/assert-saga-step-not-exists.service';
 import { SagaStepAggregateFactory } from '@/saga-context/saga-step/domain/factories/saga-step-aggregate/saga-step-aggregate.factory';
 import {
   SAGA_STEP_WRITE_REPOSITORY_TOKEN,
@@ -26,7 +26,7 @@ export class SagaStepCreateCommandHandler
     private readonly eventBus: EventBus,
     private readonly queryBus: QueryBus,
     private readonly sagaStepAggregateFactory: SagaStepAggregateFactory,
-    private readonly assertSagaStepNotExsistsService: AssertSagaStepNotExsistsService,
+    private readonly assertSagaStepNotExistsService: AssertSagaStepNotExistsService,
   ) {}
 
   /**
@@ -41,7 +41,7 @@ export class SagaStepCreateCommandHandler
     );
 
     // 01: Assert the saga step is not exists
-    await this.assertSagaStepNotExsistsService.execute(command.id.value);
+    await this.assertSagaStepNotExistsService.execute(command.id.value);
 
     // 02: Create the saga step entity
     const sagaStep = this.sagaStepAggregateFactory.create({

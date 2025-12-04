@@ -1,4 +1,4 @@
-import { AssertSagaInstanceExsistsService } from '@/saga-context/saga-instance/application/services/assert-saga-instance-exsits/assert-saga-instance-exsits.service';
+import { AssertSagaInstanceExistsService } from '@/saga-context/saga-instance/application/services/assert-saga-instance-exists/assert-saga-instance-exists.service';
 import { SagaInstanceNotFoundException } from '@/saga-context/saga-instance/application/exceptions/saga-instance-not-found/saga-instance-not-found.exception';
 import { SagaInstanceAggregate } from '@/saga-context/saga-instance/domain/aggregates/saga-instance.aggregate';
 import {
@@ -12,8 +12,8 @@ import { SagaInstanceStatusValueObject } from '@/saga-context/saga-instance/doma
 import { SagaInstanceStatusEnum } from '@/saga-context/saga-instance/domain/enums/saga-instance-status/saga-instance-status.enum';
 import { Test } from '@nestjs/testing';
 
-describe('AssertSagaInstanceExsistsService', () => {
-  let service: AssertSagaInstanceExsistsService;
+describe('AssertSagaInstanceExistsService', () => {
+  let service: AssertSagaInstanceExistsService;
   let mockSagaInstanceWriteRepository: jest.Mocked<SagaInstanceWriteRepository>;
 
   beforeEach(async () => {
@@ -25,7 +25,7 @@ describe('AssertSagaInstanceExsistsService', () => {
 
     const module = await Test.createTestingModule({
       providers: [
-        AssertSagaInstanceExsistsService,
+        AssertSagaInstanceExistsService,
         {
           provide: SAGA_INSTANCE_WRITE_REPOSITORY_TOKEN,
           useValue: mockSagaInstanceWriteRepository,
@@ -33,8 +33,8 @@ describe('AssertSagaInstanceExsistsService', () => {
       ],
     }).compile();
 
-    service = module.get<AssertSagaInstanceExsistsService>(
-      AssertSagaInstanceExsistsService,
+    service = module.get<AssertSagaInstanceExistsService>(
+      AssertSagaInstanceExistsService,
     );
   });
 

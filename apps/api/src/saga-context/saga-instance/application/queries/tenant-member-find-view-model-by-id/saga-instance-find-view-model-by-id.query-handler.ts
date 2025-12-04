@@ -1,5 +1,5 @@
 import { FindSagaInstanceViewModelByIdQuery } from '@/saga-context/saga-instance/application/queries/tenant-member-find-view-model-by-id/saga-instance-find-view-model-by-id.query';
-import { AssertSagaInstanceViewModelExsistsService } from '@/saga-context/saga-instance/application/services/assert-saga-instance-view-model-exsits/assert-saga-instance-view-model-exsits.service';
+import { AssertSagaInstanceViewModelExistsService } from '@/saga-context/saga-instance/application/services/assert-saga-instance-view-model-exists/assert-saga-instance-view-model-exists.service';
 import { SagaInstanceViewModel } from '@/saga-context/saga-instance/domain/view-models/saga-instance/saga-instance.view-model';
 import { Logger } from '@nestjs/common';
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
@@ -13,7 +13,7 @@ export class FindSagaInstanceViewModelByIdQueryHandler
   );
 
   constructor(
-    private readonly assertSagaInstanceViewModelExsistsService: AssertSagaInstanceViewModelExsistsService,
+    private readonly assertSagaInstanceViewModelExistsService: AssertSagaInstanceViewModelExistsService,
   ) {}
 
   /**
@@ -30,7 +30,7 @@ export class FindSagaInstanceViewModelByIdQueryHandler
     );
 
     // 01: Assert the saga instance view model exists
-    return await this.assertSagaInstanceViewModelExsistsService.execute(
+    return await this.assertSagaInstanceViewModelExistsService.execute(
       query.id.value,
     );
   }

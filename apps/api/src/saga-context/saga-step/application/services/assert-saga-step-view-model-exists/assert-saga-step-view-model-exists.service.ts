@@ -8,11 +8,11 @@ import { IBaseService } from '@/shared/application/services/base-service/base-se
 import { Inject, Injectable, Logger } from '@nestjs/common';
 
 @Injectable()
-export class AssertSagaStepViewModelExsistsService
+export class AssertSagaStepViewModelExistsService
   implements IBaseService<string, SagaStepViewModel>
 {
   private readonly logger = new Logger(
-    AssertSagaStepViewModelExsistsService.name,
+    AssertSagaStepViewModelExistsService.name,
   );
 
   constructor(

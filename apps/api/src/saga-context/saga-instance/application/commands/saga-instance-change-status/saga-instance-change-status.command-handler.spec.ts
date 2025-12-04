@@ -1,6 +1,6 @@
 import { SagaInstanceChangeStatusCommand } from '@/saga-context/saga-instance/application/commands/saga-instance-change-status/saga-instance-change-status.command';
 import { SagaInstanceChangeStatusCommandHandler } from '@/saga-context/saga-instance/application/commands/saga-instance-change-status/saga-instance-change-status.command-handler';
-import { AssertSagaInstanceExsistsService } from '@/saga-context/saga-instance/application/services/assert-saga-instance-exsits/assert-saga-instance-exsits.service';
+import { AssertSagaInstanceExistsService } from '@/saga-context/saga-instance/application/services/assert-saga-instance-exists/assert-saga-instance-exists.service';
 import { SagaInstanceAggregate } from '@/saga-context/saga-instance/domain/aggregates/saga-instance.aggregate';
 import {
   SAGA_INSTANCE_WRITE_REPOSITORY_TOKEN,
@@ -19,7 +19,7 @@ describe('SagaInstanceChangeStatusCommandHandler', () => {
   let handler: SagaInstanceChangeStatusCommandHandler;
   let mockSagaInstanceWriteRepository: jest.Mocked<SagaInstanceWriteRepository>;
   let mockEventBus: jest.Mocked<EventBus>;
-  let mockAssertSagaInstanceExsistsService: jest.Mocked<AssertSagaInstanceExsistsService>;
+  let mockAssertSagaInstanceExistsService: jest.Mocked<AssertSagaInstanceExistsService>;
 
   const createSagaInstanceAggregate = (): SagaInstanceAggregate => {
     const now = new Date();
@@ -53,9 +53,9 @@ describe('SagaInstanceChangeStatusCommandHandler', () => {
       publish: jest.fn(),
     } as unknown as jest.Mocked<EventBus>;
 
-    mockAssertSagaInstanceExsistsService = {
+    mockAssertSagaInstanceExistsService = {
       execute: jest.fn(),
-    } as unknown as jest.Mocked<AssertSagaInstanceExsistsService>;
+    } as unknown as jest.Mocked<AssertSagaInstanceExistsService>;
 
     const module = await Test.createTestingModule({
       providers: [
@@ -69,8 +69,8 @@ describe('SagaInstanceChangeStatusCommandHandler', () => {
           useValue: mockEventBus,
         },
         {
-          provide: AssertSagaInstanceExsistsService,
-          useValue: mockAssertSagaInstanceExsistsService,
+          provide: AssertSagaInstanceExistsService,
+          useValue: mockAssertSagaInstanceExistsService,
         },
       ],
     }).compile();
@@ -98,7 +98,7 @@ describe('SagaInstanceChangeStatusCommandHandler', () => {
         'markAsPending',
       );
 
-      mockAssertSagaInstanceExsistsService.execute.mockResolvedValue(
+      mockAssertSagaInstanceExistsService.execute.mockResolvedValue(
         existingSagaInstance,
       );
       mockSagaInstanceWriteRepository.save.mockResolvedValue(
@@ -127,7 +127,7 @@ describe('SagaInstanceChangeStatusCommandHandler', () => {
         'markAsStarted',
       );
 
-      mockAssertSagaInstanceExsistsService.execute.mockResolvedValue(
+      mockAssertSagaInstanceExistsService.execute.mockResolvedValue(
         existingSagaInstance,
       );
       mockSagaInstanceWriteRepository.save.mockResolvedValue(
@@ -153,7 +153,7 @@ describe('SagaInstanceChangeStatusCommandHandler', () => {
         'markAsRunning',
       );
 
-      mockAssertSagaInstanceExsistsService.execute.mockResolvedValue(
+      mockAssertSagaInstanceExistsService.execute.mockResolvedValue(
         existingSagaInstance,
       );
       mockSagaInstanceWriteRepository.save.mockResolvedValue(
@@ -179,7 +179,7 @@ describe('SagaInstanceChangeStatusCommandHandler', () => {
         'markAsCompleted',
       );
 
-      mockAssertSagaInstanceExsistsService.execute.mockResolvedValue(
+      mockAssertSagaInstanceExistsService.execute.mockResolvedValue(
         existingSagaInstance,
       );
       mockSagaInstanceWriteRepository.save.mockResolvedValue(
@@ -202,7 +202,7 @@ describe('SagaInstanceChangeStatusCommandHandler', () => {
       const existingSagaInstance = createSagaInstanceAggregate();
       const markAsFailedSpy = jest.spyOn(existingSagaInstance, 'markAsFailed');
 
-      mockAssertSagaInstanceExsistsService.execute.mockResolvedValue(
+      mockAssertSagaInstanceExistsService.execute.mockResolvedValue(
         existingSagaInstance,
       );
       mockSagaInstanceWriteRepository.save.mockResolvedValue(
@@ -228,7 +228,7 @@ describe('SagaInstanceChangeStatusCommandHandler', () => {
         'markAsCompensating',
       );
 
-      mockAssertSagaInstanceExsistsService.execute.mockResolvedValue(
+      mockAssertSagaInstanceExistsService.execute.mockResolvedValue(
         existingSagaInstance,
       );
       mockSagaInstanceWriteRepository.save.mockResolvedValue(
@@ -254,7 +254,7 @@ describe('SagaInstanceChangeStatusCommandHandler', () => {
         'markAsCompensated',
       );
 
-      mockAssertSagaInstanceExsistsService.execute.mockResolvedValue(
+      mockAssertSagaInstanceExistsService.execute.mockResolvedValue(
         existingSagaInstance,
       );
       mockSagaInstanceWriteRepository.save.mockResolvedValue(
@@ -276,7 +276,7 @@ describe('SagaInstanceChangeStatusCommandHandler', () => {
 
       const existingSagaInstance = createSagaInstanceAggregate();
 
-      mockAssertSagaInstanceExsistsService.execute.mockResolvedValue(
+      mockAssertSagaInstanceExistsService.execute.mockResolvedValue(
         existingSagaInstance,
       );
 
@@ -307,7 +307,7 @@ describe('SagaInstanceChangeStatusCommandHandler', () => {
 
       const existingSagaInstance = createSagaInstanceAggregate();
 
-      mockAssertSagaInstanceExsistsService.execute.mockResolvedValue(
+      mockAssertSagaInstanceExistsService.execute.mockResolvedValue(
         existingSagaInstance,
       );
       mockSagaInstanceWriteRepository.save.mockResolvedValue(
@@ -335,7 +335,7 @@ describe('SagaInstanceChangeStatusCommandHandler', () => {
 
       const error = new Error('Saga instance not found');
 
-      mockAssertSagaInstanceExsistsService.execute.mockRejectedValue(error);
+      mockAssertSagaInstanceExistsService.execute.mockRejectedValue(error);
 
       await expect(handler.execute(command)).rejects.toThrow(error);
       expect(mockSagaInstanceWriteRepository.save).not.toHaveBeenCalled();

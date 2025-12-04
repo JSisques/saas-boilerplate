@@ -1,4 +1,4 @@
-import { AssertSagaInstanceNotExsistsService } from '@/saga-context/saga-instance/application/services/assert-saga-instance-not-exsits/assert-saga-instance-not-exsits.service';
+import { AssertSagaInstanceNotExistsService } from '@/saga-context/saga-instance/application/services/assert-saga-instance-not-exists/assert-saga-instance-not-exists.service';
 import { SagaInstanceAggregateFactory } from '@/saga-context/saga-instance/domain/factories/saga-instance-aggregate/saga-instance-aggregate.factory';
 import {
   SAGA_INSTANCE_WRITE_REPOSITORY_TOKEN,
@@ -26,7 +26,7 @@ export class SagaInstanceCreateCommandHandler
     private readonly eventBus: EventBus,
     private readonly queryBus: QueryBus,
     private readonly sagaInstanceAggregateFactory: SagaInstanceAggregateFactory,
-    private readonly assertSagaInstanceNotExsistsService: AssertSagaInstanceNotExsistsService,
+    private readonly assertSagaInstanceNotExistsService: AssertSagaInstanceNotExistsService,
   ) {}
 
   /**
@@ -41,7 +41,7 @@ export class SagaInstanceCreateCommandHandler
     );
 
     // 01: Assert the saga instance is not exsists
-    await this.assertSagaInstanceNotExsistsService.execute(command.id.value);
+    await this.assertSagaInstanceNotExistsService.execute(command.id.value);
 
     // 02: Create the saga instance entity
     const sagaInstance = this.sagaInstanceAggregateFactory.create({

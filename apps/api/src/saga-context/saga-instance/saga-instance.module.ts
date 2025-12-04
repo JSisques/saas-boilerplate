@@ -9,9 +9,9 @@ import { SagaInstanceUpdatedEventHandler } from '@/saga-context/saga-instance/ap
 import { FindSagaInstancesByCriteriaQueryHandler } from '@/saga-context/saga-instance/application/queries/saga-instance-find-by-criteria/saga-instance-find-by-criteria.query-handler';
 import { FindSagaInstanceByIdQueryHandler } from '@/saga-context/saga-instance/application/queries/saga-instance-find-by-id/saga-instance-find-by-id.query-handler';
 import { FindSagaInstanceViewModelByIdQueryHandler } from '@/saga-context/saga-instance/application/queries/tenant-member-find-view-model-by-id/saga-instance-find-view-model-by-id.query-handler';
-import { AssertSagaInstanceExsistsService } from '@/saga-context/saga-instance/application/services/assert-saga-instance-exsits/assert-saga-instance-exsits.service';
-import { AssertSagaInstanceNotExsistsService } from '@/saga-context/saga-instance/application/services/assert-saga-instance-not-exsits/assert-saga-instance-not-exsits.service';
-import { AssertSagaInstanceViewModelExsistsService } from '@/saga-context/saga-instance/application/services/assert-saga-instance-view-model-exsits/assert-saga-instance-view-model-exsits.service';
+import { AssertSagaInstanceExistsService } from '@/saga-context/saga-instance/application/services/assert-saga-instance-exists/assert-saga-instance-exists.service';
+import { AssertSagaInstanceNotExistsService } from '@/saga-context/saga-instance/application/services/assert-saga-instance-not-exists/assert-saga-instance-not-exists.service';
+import { AssertSagaInstanceViewModelExistsService } from '@/saga-context/saga-instance/application/services/assert-saga-instance-view-model-exists/assert-saga-instance-view-model-exists.service';
 import { SagaInstanceAggregateFactory } from '@/saga-context/saga-instance/domain/factories/saga-instance-aggregate/saga-instance-aggregate.factory';
 import { SagaInstanceViewModelFactory } from '@/saga-context/saga-instance/domain/factories/saga-instance-view-model/saga-instance-view-model.factory';
 import { SAGA_INSTANCE_READ_REPOSITORY_TOKEN } from '@/saga-context/saga-instance/domain/repositories/saga-instance-read.repository';
@@ -29,9 +29,9 @@ import { Module } from '@nestjs/common';
 const RESOLVERS = [SagaInstanceQueryResolver, SagaInstanceMutationsResolver];
 
 const SERVICES = [
-  AssertSagaInstanceExsistsService,
-  AssertSagaInstanceNotExsistsService,
-  AssertSagaInstanceViewModelExsistsService,
+  AssertSagaInstanceExistsService,
+  AssertSagaInstanceNotExistsService,
+  AssertSagaInstanceViewModelExistsService,
 ];
 
 const QUERY_HANDLERS = [

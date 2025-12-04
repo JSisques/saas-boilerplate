@@ -1,4 +1,4 @@
-import { AssertSagaInstanceViewModelExsistsService } from '@/saga-context/saga-instance/application/services/assert-saga-instance-view-model-exsits/assert-saga-instance-view-model-exsits.service';
+import { AssertSagaInstanceViewModelExistsService } from '@/saga-context/saga-instance/application/services/assert-saga-instance-view-model-exists/assert-saga-instance-view-model-exists.service';
 import {
   SAGA_INSTANCE_READ_REPOSITORY_TOKEN,
   SagaInstanceReadRepository,
@@ -16,7 +16,7 @@ export class SagaInstanceDeletedEventHandler
   constructor(
     @Inject(SAGA_INSTANCE_READ_REPOSITORY_TOKEN)
     private readonly sagaInstanceReadRepository: SagaInstanceReadRepository,
-    private readonly assertSagaInstanceViewModelExsistsService: AssertSagaInstanceViewModelExsistsService,
+    private readonly assertSagaInstanceViewModelExistsService: AssertSagaInstanceViewModelExistsService,
   ) {}
 
   /**
@@ -31,7 +31,7 @@ export class SagaInstanceDeletedEventHandler
 
     // 01: Assert the saga instance view model exists
     const existingSagaInstanceViewModel =
-      await this.assertSagaInstanceViewModelExsistsService.execute(
+      await this.assertSagaInstanceViewModelExistsService.execute(
         event.aggregateId,
       );
 

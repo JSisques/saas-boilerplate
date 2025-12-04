@@ -1,6 +1,6 @@
 import { SagaStepDeleteCommand } from '@/saga-context/saga-step/application/commands/saga-step-delete/saga-step-delete.command';
 import { SagaStepDeleteCommandHandler } from '@/saga-context/saga-step/application/commands/saga-step-delete/saga-step-delete.command-handler';
-import { AssertSagaStepExsistsService } from '@/saga-context/saga-step/application/services/assert-saga-step-exsits/assert-saga-step-exsits.service';
+import { AssertSagaStepExistsService } from '@/saga-context/saga-step/application/services/assert-saga-step-exists/assert-saga-step-exists.service';
 import { SagaStepAggregate } from '@/saga-context/saga-step/domain/aggregates/saga-step.aggregate';
 import {
   SAGA_STEP_WRITE_REPOSITORY_TOKEN,
@@ -25,7 +25,7 @@ describe('SagaStepDeleteCommandHandler', () => {
   let handler: SagaStepDeleteCommandHandler;
   let mockSagaStepWriteRepository: jest.Mocked<SagaStepWriteRepository>;
   let mockEventBus: jest.Mocked<EventBus>;
-  let mockAssertSagaStepExsistsService: jest.Mocked<AssertSagaStepExsistsService>;
+  let mockAssertSagaStepExistsService: jest.Mocked<AssertSagaStepExistsService>;
 
   beforeEach(async () => {
     mockSagaStepWriteRepository = {
@@ -40,9 +40,9 @@ describe('SagaStepDeleteCommandHandler', () => {
       publish: jest.fn(),
     } as unknown as jest.Mocked<EventBus>;
 
-    mockAssertSagaStepExsistsService = {
+    mockAssertSagaStepExistsService = {
       execute: jest.fn(),
-    } as unknown as jest.Mocked<AssertSagaStepExsistsService>;
+    } as unknown as jest.Mocked<AssertSagaStepExistsService>;
 
     const module = await Test.createTestingModule({
       providers: [
@@ -56,8 +56,8 @@ describe('SagaStepDeleteCommandHandler', () => {
           useValue: mockEventBus,
         },
         {
-          provide: AssertSagaStepExsistsService,
-          useValue: mockAssertSagaStepExsistsService,
+          provide: AssertSagaStepExistsService,
+          useValue: mockAssertSagaStepExistsService,
         },
       ],
     }).compile();
@@ -107,7 +107,7 @@ describe('SagaStepDeleteCommandHandler', () => {
       const deleteSpy = jest.spyOn(existingSagaStep, 'delete');
       const commitSpy = jest.spyOn(existingSagaStep, 'commit');
 
-      mockAssertSagaStepExsistsService.execute.mockResolvedValue(
+      mockAssertSagaStepExistsService.execute.mockResolvedValue(
         existingSagaStep,
       );
       mockSagaStepWriteRepository.delete.mockResolvedValue(undefined);
@@ -115,7 +115,7 @@ describe('SagaStepDeleteCommandHandler', () => {
 
       await handler.execute(command);
 
-      expect(mockAssertSagaStepExsistsService.execute).toHaveBeenCalledWith(
+      expect(mockAssertSagaStepExistsService.execute).toHaveBeenCalledWith(
         command.id.value,
       );
       expect(deleteSpy).toHaveBeenCalled();
@@ -136,10 +136,10 @@ describe('SagaStepDeleteCommandHandler', () => {
       const command = new SagaStepDeleteCommand(deleteCommandDto);
       const error = new Error('Saga step not found');
 
-      mockAssertSagaStepExsistsService.execute.mockRejectedValue(error);
+      mockAssertSagaStepExistsService.execute.mockRejectedValue(error);
 
       await expect(handler.execute(command)).rejects.toThrow(error);
-      expect(mockAssertSagaStepExsistsService.execute).toHaveBeenCalledWith(
+      expect(mockAssertSagaStepExistsService.execute).toHaveBeenCalledWith(
         command.id.value,
       );
       expect(mockSagaStepWriteRepository.delete).not.toHaveBeenCalled();
@@ -154,7 +154,7 @@ describe('SagaStepDeleteCommandHandler', () => {
 
       const command = new SagaStepDeleteCommand(deleteCommandDto);
 
-      mockAssertSagaStepExsistsService.execute.mockResolvedValue(
+      mockAssertSagaStepExistsService.execute.mockResolvedValue(
         existingSagaStep,
       );
       mockSagaStepWriteRepository.delete.mockResolvedValue(undefined);

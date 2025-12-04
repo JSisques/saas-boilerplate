@@ -1,5 +1,5 @@
 import { SagaStepNotFoundException } from '@/saga-context/saga-step/application/exceptions/saga-step-not-found/saga-step-not-found.exception';
-import { AssertSagaStepViewModelExsistsService } from '@/saga-context/saga-step/application/services/assert-saga-step-view-model-exsits/assert-saga-step-view-model-exsits.service';
+import { AssertSagaStepViewModelExistsService } from '@/saga-context/saga-step/application/services/assert-saga-step-view-model-exists/assert-saga-step-view-model-exists.service';
 import {
   SAGA_STEP_READ_REPOSITORY_TOKEN,
   SagaStepReadRepository,
@@ -8,8 +8,8 @@ import { SagaStepViewModel } from '@/saga-context/saga-step/domain/view-models/s
 import { SagaStepStatusEnum } from '@/saga-context/saga-step/domain/enums/saga-step-status/saga-step-status.enum';
 import { Test } from '@nestjs/testing';
 
-describe('AssertSagaStepViewModelExsistsService', () => {
-  let service: AssertSagaStepViewModelExsistsService;
+describe('AssertSagaStepViewModelExistsService', () => {
+  let service: AssertSagaStepViewModelExistsService;
   let mockSagaStepReadRepository: jest.Mocked<SagaStepReadRepository>;
 
   beforeEach(async () => {
@@ -23,7 +23,7 @@ describe('AssertSagaStepViewModelExsistsService', () => {
 
     const module = await Test.createTestingModule({
       providers: [
-        AssertSagaStepViewModelExsistsService,
+        AssertSagaStepViewModelExistsService,
         {
           provide: SAGA_STEP_READ_REPOSITORY_TOKEN,
           useValue: mockSagaStepReadRepository,
@@ -31,8 +31,8 @@ describe('AssertSagaStepViewModelExsistsService', () => {
       ],
     }).compile();
 
-    service = module.get<AssertSagaStepViewModelExsistsService>(
-      AssertSagaStepViewModelExsistsService,
+    service = module.get<AssertSagaStepViewModelExistsService>(
+      AssertSagaStepViewModelExistsService,
     );
   });
 

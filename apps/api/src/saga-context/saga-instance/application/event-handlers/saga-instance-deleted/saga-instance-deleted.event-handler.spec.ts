@@ -1,5 +1,5 @@
 import { SagaInstanceDeletedEventHandler } from '@/saga-context/saga-instance/application/event-handlers/saga-instance-deleted/saga-instance-deleted.event-handler';
-import { AssertSagaInstanceViewModelExsistsService } from '@/saga-context/saga-instance/application/services/assert-saga-instance-view-model-exsits/assert-saga-instance-view-model-exsits.service';
+import { AssertSagaInstanceViewModelExistsService } from '@/saga-context/saga-instance/application/services/assert-saga-instance-view-model-exists/assert-saga-instance-view-model-exists.service';
 import {
   SAGA_INSTANCE_READ_REPOSITORY_TOKEN,
   SagaInstanceReadRepository,
@@ -12,7 +12,7 @@ import { Test } from '@nestjs/testing';
 describe('SagaInstanceDeletedEventHandler', () => {
   let handler: SagaInstanceDeletedEventHandler;
   let mockSagaInstanceReadRepository: jest.Mocked<SagaInstanceReadRepository>;
-  let mockAssertSagaInstanceViewModelExsistsService: jest.Mocked<AssertSagaInstanceViewModelExsistsService>;
+  let mockAssertSagaInstanceViewModelExistsService: jest.Mocked<AssertSagaInstanceViewModelExistsService>;
 
   beforeEach(async () => {
     mockSagaInstanceReadRepository = {
@@ -22,9 +22,9 @@ describe('SagaInstanceDeletedEventHandler', () => {
       delete: jest.fn(),
     } as unknown as jest.Mocked<SagaInstanceReadRepository>;
 
-    mockAssertSagaInstanceViewModelExsistsService = {
+    mockAssertSagaInstanceViewModelExistsService = {
       execute: jest.fn(),
-    } as unknown as jest.Mocked<AssertSagaInstanceViewModelExsistsService>;
+    } as unknown as jest.Mocked<AssertSagaInstanceViewModelExistsService>;
 
     const module = await Test.createTestingModule({
       providers: [
@@ -34,8 +34,8 @@ describe('SagaInstanceDeletedEventHandler', () => {
           useValue: mockSagaInstanceReadRepository,
         },
         {
-          provide: AssertSagaInstanceViewModelExsistsService,
-          useValue: mockAssertSagaInstanceViewModelExsistsService,
+          provide: AssertSagaInstanceViewModelExistsService,
+          useValue: mockAssertSagaInstanceViewModelExistsService,
         },
       ],
     }).compile();
@@ -81,7 +81,7 @@ describe('SagaInstanceDeletedEventHandler', () => {
         updatedAt: new Date('2024-01-01T10:00:00Z'),
       });
 
-      mockAssertSagaInstanceViewModelExsistsService.execute.mockResolvedValue(
+      mockAssertSagaInstanceViewModelExistsService.execute.mockResolvedValue(
         existingViewModel,
       );
       mockSagaInstanceReadRepository.delete.mockResolvedValue(undefined);
@@ -89,7 +89,7 @@ describe('SagaInstanceDeletedEventHandler', () => {
       await handler.handle(event);
 
       expect(
-        mockAssertSagaInstanceViewModelExsistsService.execute,
+        mockAssertSagaInstanceViewModelExistsService.execute,
       ).toHaveBeenCalledWith(aggregateId);
       expect(mockSagaInstanceReadRepository.delete).toHaveBeenCalledWith(
         aggregateId,

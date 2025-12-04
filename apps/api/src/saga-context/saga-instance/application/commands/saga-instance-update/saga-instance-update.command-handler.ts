@@ -1,5 +1,5 @@
 import { SagaInstanceUpdateCommand } from '@/saga-context/saga-instance/application/commands/saga-instance-update/saga-instance-update.command';
-import { AssertSagaInstanceExsistsService } from '@/saga-context/saga-instance/application/services/assert-saga-instance-exsits/assert-saga-instance-exsits.service';
+import { AssertSagaInstanceExistsService } from '@/saga-context/saga-instance/application/services/assert-saga-instance-exists/assert-saga-instance-exists.service';
 import { ISagaInstanceUpdateDto } from '@/saga-context/saga-instance/domain/dtos/entities/saga-instance-update/saga-instance-update.dto';
 import {
   SAGA_INSTANCE_WRITE_REPOSITORY_TOKEN,
@@ -20,7 +20,7 @@ export class SagaInstanceUpdateCommandHandler
   protected readonly logger = new Logger(SagaInstanceUpdateCommandHandler.name);
 
   constructor(
-    private readonly assertSagaInstanceExsistsService: AssertSagaInstanceExsistsService,
+    private readonly assertSagaInstanceExistsService: AssertSagaInstanceExistsService,
     private readonly eventBus: EventBus,
     @Inject(SAGA_INSTANCE_WRITE_REPOSITORY_TOKEN)
     private readonly sagaInstanceWriteRepository: SagaInstanceWriteRepository,
@@ -40,7 +40,7 @@ export class SagaInstanceUpdateCommandHandler
 
     // 01: Check if the saga instance exists
     const existingSagaInstance =
-      await this.assertSagaInstanceExsistsService.execute(command.id.value);
+      await this.assertSagaInstanceExistsService.execute(command.id.value);
 
     // 02: Extract update data excluding the id field
     const updateData = this.extractUpdateData(command, ['id']);

@@ -1,6 +1,6 @@
 import { SagaStepCreateCommand } from '@/saga-context/saga-step/application/commands/saga-step-create/saga-step-create.command';
 import { SagaStepCreateCommandHandler } from '@/saga-context/saga-step/application/commands/saga-step-create/saga-step-create.command-handler';
-import { AssertSagaStepNotExsistsService } from '@/saga-context/saga-step/application/services/assert-saga-step-not-exsits/assert-saga-step-not-exsits.service';
+import { AssertSagaStepNotExistsService } from '@/saga-context/saga-step/application/services/assert-saga-step-not-exists/assert-saga-step-not-exists.service';
 import { SagaStepAggregate } from '@/saga-context/saga-step/domain/aggregates/saga-step.aggregate';
 import { SagaStepAggregateFactory } from '@/saga-context/saga-step/domain/factories/saga-step-aggregate/saga-step-aggregate.factory';
 import {
@@ -20,7 +20,7 @@ describe('SagaStepCreateCommandHandler', () => {
   let mockEventBus: jest.Mocked<EventBus>;
   let mockQueryBus: jest.Mocked<QueryBus>;
   let mockSagaStepAggregateFactory: jest.Mocked<SagaStepAggregateFactory>;
-  let mockAssertSagaStepNotExsistsService: jest.Mocked<AssertSagaStepNotExsistsService>;
+  let mockAssertSagaStepNotExistsService: jest.Mocked<AssertSagaStepNotExistsService>;
 
   beforeEach(async () => {
     mockSagaStepWriteRepository = {
@@ -44,9 +44,9 @@ describe('SagaStepCreateCommandHandler', () => {
       fromPrimitives: jest.fn(),
     } as unknown as jest.Mocked<SagaStepAggregateFactory>;
 
-    mockAssertSagaStepNotExsistsService = {
+    mockAssertSagaStepNotExistsService = {
       execute: jest.fn(),
-    } as unknown as jest.Mocked<AssertSagaStepNotExsistsService>;
+    } as unknown as jest.Mocked<AssertSagaStepNotExistsService>;
 
     const module = await Test.createTestingModule({
       providers: [
@@ -68,8 +68,8 @@ describe('SagaStepCreateCommandHandler', () => {
           useValue: mockSagaStepAggregateFactory,
         },
         {
-          provide: AssertSagaStepNotExsistsService,
-          useValue: mockAssertSagaStepNotExsistsService,
+          provide: AssertSagaStepNotExistsService,
+          useValue: mockAssertSagaStepNotExistsService,
         },
       ],
     }).compile();
@@ -117,7 +117,7 @@ describe('SagaStepCreateCommandHandler', () => {
 
       const markAsPendingSpy = jest.spyOn(mockSagaStep, 'markAsPending');
 
-      mockAssertSagaStepNotExsistsService.execute.mockResolvedValue(undefined);
+      mockAssertSagaStepNotExistsService.execute.mockResolvedValue(undefined);
       mockSagaStepAggregateFactory.create.mockReturnValue(mockSagaStep);
       mockSagaStepWriteRepository.save.mockResolvedValue(undefined);
       mockEventBus.publishAll.mockResolvedValue(undefined);
@@ -125,10 +125,10 @@ describe('SagaStepCreateCommandHandler', () => {
       const result = await handler.execute(command);
 
       expect(result).toBe(mockSagaStep.id.value);
-      expect(mockAssertSagaStepNotExsistsService.execute).toHaveBeenCalledWith(
+      expect(mockAssertSagaStepNotExistsService.execute).toHaveBeenCalledWith(
         command.id.value,
       );
-      expect(mockAssertSagaStepNotExsistsService.execute).toHaveBeenCalledTimes(
+      expect(mockAssertSagaStepNotExistsService.execute).toHaveBeenCalledTimes(
         1,
       );
       expect(mockSagaStepAggregateFactory.create).toHaveBeenCalledWith(
@@ -166,10 +166,10 @@ describe('SagaStepCreateCommandHandler', () => {
       const command = new SagaStepCreateCommand(commandDto);
       const error = new Error('Saga step already exists');
 
-      mockAssertSagaStepNotExsistsService.execute.mockRejectedValue(error);
+      mockAssertSagaStepNotExistsService.execute.mockRejectedValue(error);
 
       await expect(handler.execute(command)).rejects.toThrow(error);
-      expect(mockAssertSagaStepNotExsistsService.execute).toHaveBeenCalledWith(
+      expect(mockAssertSagaStepNotExistsService.execute).toHaveBeenCalledWith(
         command.id.value,
       );
       expect(mockSagaStepAggregateFactory.create).not.toHaveBeenCalled();
@@ -211,7 +211,7 @@ describe('SagaStepCreateCommandHandler', () => {
       // Spy on markAsPending
       const markAsPendingSpy = jest.spyOn(mockSagaStep, 'markAsPending');
 
-      mockAssertSagaStepNotExsistsService.execute.mockResolvedValue(undefined);
+      mockAssertSagaStepNotExistsService.execute.mockResolvedValue(undefined);
       mockSagaStepAggregateFactory.create.mockReturnValue(mockSagaStep);
       mockSagaStepWriteRepository.save.mockResolvedValue(undefined);
       mockEventBus.publishAll.mockResolvedValue(undefined);
@@ -252,7 +252,7 @@ describe('SagaStepCreateCommandHandler', () => {
         true,
       );
 
-      mockAssertSagaStepNotExsistsService.execute.mockResolvedValue(undefined);
+      mockAssertSagaStepNotExistsService.execute.mockResolvedValue(undefined);
       mockSagaStepAggregateFactory.create.mockReturnValue(mockSagaStep);
       mockSagaStepWriteRepository.save.mockResolvedValue(undefined);
       mockEventBus.publishAll.mockResolvedValue(undefined);
@@ -303,7 +303,7 @@ describe('SagaStepCreateCommandHandler', () => {
 
       const commitSpy = jest.spyOn(mockSagaStep, 'commit');
 
-      mockAssertSagaStepNotExsistsService.execute.mockResolvedValue(undefined);
+      mockAssertSagaStepNotExistsService.execute.mockResolvedValue(undefined);
       mockSagaStepAggregateFactory.create.mockReturnValue(mockSagaStep);
       mockSagaStepWriteRepository.save.mockResolvedValue(undefined);
       mockEventBus.publishAll.mockResolvedValue(undefined);

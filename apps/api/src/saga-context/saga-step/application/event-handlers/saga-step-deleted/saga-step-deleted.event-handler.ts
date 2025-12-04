@@ -1,4 +1,4 @@
-import { AssertSagaStepViewModelExsistsService } from '@/saga-context/saga-step/application/services/assert-saga-step-view-model-exsits/assert-saga-step-view-model-exsits.service';
+import { AssertSagaStepViewModelExistsService } from '@/saga-context/saga-step/application/services/assert-saga-step-view-model-exists/assert-saga-step-view-model-exists.service';
 import {
   SAGA_STEP_READ_REPOSITORY_TOKEN,
   SagaStepReadRepository,
@@ -16,7 +16,7 @@ export class SagaStepDeletedEventHandler
   constructor(
     @Inject(SAGA_STEP_READ_REPOSITORY_TOKEN)
     private readonly sagaStepReadRepository: SagaStepReadRepository,
-    private readonly assertSagaStepViewModelExsistsService: AssertSagaStepViewModelExsistsService,
+    private readonly assertSagaStepViewModelExistsService: AssertSagaStepViewModelExistsService,
   ) {}
 
   /**
@@ -29,7 +29,7 @@ export class SagaStepDeletedEventHandler
 
     // 01: Assert the saga step view model exists
     const existingSagaStepViewModel =
-      await this.assertSagaStepViewModelExsistsService.execute(
+      await this.assertSagaStepViewModelExistsService.execute(
         event.aggregateId,
       );
 

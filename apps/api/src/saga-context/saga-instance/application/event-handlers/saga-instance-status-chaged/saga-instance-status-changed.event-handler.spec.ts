@@ -1,5 +1,5 @@
 import { SagaInstanceStatusChangedEventHandler } from '@/saga-context/saga-instance/application/event-handlers/saga-instance-status-chaged/saga-instance-status-changed.event-handler';
-import { AssertSagaInstanceViewModelExsistsService } from '@/saga-context/saga-instance/application/services/assert-saga-instance-view-model-exsits/assert-saga-instance-view-model-exsits.service';
+import { AssertSagaInstanceViewModelExistsService } from '@/saga-context/saga-instance/application/services/assert-saga-instance-view-model-exists/assert-saga-instance-view-model-exists.service';
 import {
   SAGA_INSTANCE_READ_REPOSITORY_TOKEN,
   SagaInstanceReadRepository,
@@ -13,7 +13,7 @@ import { Test } from '@nestjs/testing';
 describe('SagaInstanceStatusChangedEventHandler', () => {
   let handler: SagaInstanceStatusChangedEventHandler;
   let mockSagaInstanceReadRepository: jest.Mocked<SagaInstanceReadRepository>;
-  let mockAssertSagaInstanceViewModelExsistsService: jest.Mocked<AssertSagaInstanceViewModelExsistsService>;
+  let mockAssertSagaInstanceViewModelExistsService: jest.Mocked<AssertSagaInstanceViewModelExistsService>;
   let mockSagaInstanceViewModelFactory: jest.Mocked<SagaInstanceViewModelFactory>;
 
   beforeEach(async () => {
@@ -24,9 +24,9 @@ describe('SagaInstanceStatusChangedEventHandler', () => {
       delete: jest.fn(),
     } as unknown as jest.Mocked<SagaInstanceReadRepository>;
 
-    mockAssertSagaInstanceViewModelExsistsService = {
+    mockAssertSagaInstanceViewModelExistsService = {
       execute: jest.fn(),
-    } as unknown as jest.Mocked<AssertSagaInstanceViewModelExsistsService>;
+    } as unknown as jest.Mocked<AssertSagaInstanceViewModelExistsService>;
 
     mockSagaInstanceViewModelFactory = {
       create: jest.fn(),
@@ -42,8 +42,8 @@ describe('SagaInstanceStatusChangedEventHandler', () => {
           useValue: mockSagaInstanceReadRepository,
         },
         {
-          provide: AssertSagaInstanceViewModelExsistsService,
-          useValue: mockAssertSagaInstanceViewModelExsistsService,
+          provide: AssertSagaInstanceViewModelExistsService,
+          useValue: mockAssertSagaInstanceViewModelExistsService,
         },
         {
           provide: SagaInstanceViewModelFactory,
@@ -95,7 +95,7 @@ describe('SagaInstanceStatusChangedEventHandler', () => {
 
       const updateSpy = jest.spyOn(existingViewModel, 'update');
 
-      mockAssertSagaInstanceViewModelExsistsService.execute.mockResolvedValue(
+      mockAssertSagaInstanceViewModelExistsService.execute.mockResolvedValue(
         existingViewModel,
       );
       mockSagaInstanceReadRepository.save.mockResolvedValue(undefined);
@@ -103,7 +103,7 @@ describe('SagaInstanceStatusChangedEventHandler', () => {
       await handler.handle(event);
 
       expect(
-        mockAssertSagaInstanceViewModelExsistsService.execute,
+        mockAssertSagaInstanceViewModelExistsService.execute,
       ).toHaveBeenCalledWith(aggregateId);
       expect(updateSpy).toHaveBeenCalledWith({
         status: eventData.status,

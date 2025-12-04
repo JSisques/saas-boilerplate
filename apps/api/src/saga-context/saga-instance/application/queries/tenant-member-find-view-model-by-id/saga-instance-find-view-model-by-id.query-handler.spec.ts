@@ -1,24 +1,24 @@
 import { FindSagaInstanceViewModelByIdQuery } from '@/saga-context/saga-instance/application/queries/tenant-member-find-view-model-by-id/saga-instance-find-view-model-by-id.query';
 import { FindSagaInstanceViewModelByIdQueryHandler } from '@/saga-context/saga-instance/application/queries/tenant-member-find-view-model-by-id/saga-instance-find-view-model-by-id.query-handler';
-import { AssertSagaInstanceViewModelExsistsService } from '@/saga-context/saga-instance/application/services/assert-saga-instance-view-model-exsits/assert-saga-instance-view-model-exsits.service';
+import { AssertSagaInstanceViewModelExistsService } from '@/saga-context/saga-instance/application/services/assert-saga-instance-view-model-exists/assert-saga-instance-view-model-exists.service';
 import { SagaInstanceViewModel } from '@/saga-context/saga-instance/domain/view-models/saga-instance/saga-instance.view-model';
 import { Test } from '@nestjs/testing';
 
 describe('FindSagaInstanceViewModelByIdQueryHandler', () => {
   let handler: FindSagaInstanceViewModelByIdQueryHandler;
-  let mockAssertSagaInstanceViewModelExsistsService: jest.Mocked<AssertSagaInstanceViewModelExsistsService>;
+  let mockAssertSagaInstanceViewModelExistsService: jest.Mocked<AssertSagaInstanceViewModelExistsService>;
 
   beforeEach(async () => {
-    mockAssertSagaInstanceViewModelExsistsService = {
+    mockAssertSagaInstanceViewModelExistsService = {
       execute: jest.fn(),
-    } as unknown as jest.Mocked<AssertSagaInstanceViewModelExsistsService>;
+    } as unknown as jest.Mocked<AssertSagaInstanceViewModelExistsService>;
 
     const module = await Test.createTestingModule({
       providers: [
         FindSagaInstanceViewModelByIdQueryHandler,
         {
-          provide: AssertSagaInstanceViewModelExsistsService,
-          useValue: mockAssertSagaInstanceViewModelExsistsService,
+          provide: AssertSagaInstanceViewModelExistsService,
+          useValue: mockAssertSagaInstanceViewModelExistsService,
         },
       ],
     }).compile();
@@ -48,7 +48,7 @@ describe('FindSagaInstanceViewModelByIdQueryHandler', () => {
         updatedAt: new Date(),
       });
 
-      mockAssertSagaInstanceViewModelExsistsService.execute.mockResolvedValue(
+      mockAssertSagaInstanceViewModelExistsService.execute.mockResolvedValue(
         mockViewModel,
       );
 
@@ -57,7 +57,7 @@ describe('FindSagaInstanceViewModelByIdQueryHandler', () => {
       expect(result).toBe(mockViewModel);
       expect(result.id).toBe(sagaInstanceId);
       expect(
-        mockAssertSagaInstanceViewModelExsistsService.execute,
+        mockAssertSagaInstanceViewModelExistsService.execute,
       ).toHaveBeenCalledWith(sagaInstanceId);
     });
   });

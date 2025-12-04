@@ -11,9 +11,9 @@ import { FindSagaStepByIdQueryHandler } from '@/saga-context/saga-step/applicati
 import { FindSagaStepsBySagaInstanceIdQueryHandler } from '@/saga-context/saga-step/application/queries/saga-step-find-by-saga-instance-id/saga-step-find-by-saga-instance-id.query-handler';
 import { FindSagaStepViewModelByIdQueryHandler } from '@/saga-context/saga-step/application/queries/saga-step-find-view-model-by-id/saga-step-find-view-model-by-id.query-handler';
 import { FindSagaStepViewModelsBySagaInstanceIdQueryHandler } from '@/saga-context/saga-step/application/queries/saga-step-find-view-model-by-saga-instance-id/saga-step-find-view-model-by-saga-instance-id.query-handler';
-import { AssertSagaStepExsistsService } from '@/saga-context/saga-step/application/services/assert-saga-step-exsits/assert-saga-step-exsits.service';
-import { AssertSagaStepNotExsistsService } from '@/saga-context/saga-step/application/services/assert-saga-step-not-exsits/assert-saga-step-not-exsits.service';
-import { AssertSagaStepViewModelExsistsService } from '@/saga-context/saga-step/application/services/assert-saga-step-view-model-exsits/assert-saga-step-view-model-exsits.service';
+import { AssertSagaStepExistsService } from '@/saga-context/saga-step/application/services/assert-saga-step-exists/assert-saga-step-exists.service';
+import { AssertSagaStepNotExistsService } from '@/saga-context/saga-step/application/services/assert-saga-step-not-exists/assert-saga-step-not-exists.service';
+import { AssertSagaStepViewModelExistsService } from '@/saga-context/saga-step/application/services/assert-saga-step-view-model-exists/assert-saga-step-view-model-exists.service';
 import { SagaStepAggregateFactory } from '@/saga-context/saga-step/domain/factories/saga-step-aggregate/saga-step-aggregate.factory';
 import { SagaStepViewModelFactory } from '@/saga-context/saga-step/domain/factories/saga-step-view-model/saga-step-view-model.factory';
 import { SAGA_STEP_READ_REPOSITORY_TOKEN } from '@/saga-context/saga-step/domain/repositories/saga-step-read.repository';
@@ -31,9 +31,9 @@ import { Module } from '@nestjs/common';
 const RESOLVERS = [SagaStepQueryResolver, SagaStepMutationsResolver];
 
 const SERVICES = [
-  AssertSagaStepExsistsService,
-  AssertSagaStepNotExsistsService,
-  AssertSagaStepViewModelExsistsService,
+  AssertSagaStepExistsService,
+  AssertSagaStepNotExistsService,
+  AssertSagaStepViewModelExistsService,
 ];
 
 const QUERY_HANDLERS = [
