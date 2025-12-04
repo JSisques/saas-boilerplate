@@ -1,5 +1,5 @@
 import { FindSagaStepsByCriteriaQuery } from '@/saga-context/saga-step/application/queries/saga-step-find-by-criteria/saga-step-find-by-criteria.query';
-import { FindSagaStepByIdQuery } from '@/saga-context/saga-step/application/queries/saga-step-find-by-id/saga-step-find-by-id.query';
+import { FindSagaStepViewModelByIdQuery } from '@/saga-context/saga-step/application/queries/saga-step-find-view-model-by-id/saga-step-find-view-model-by-id.query';
 import { FindSagaStepViewModelsBySagaInstanceIdQuery } from '@/saga-context/saga-step/application/queries/saga-step-find-view-model-by-saga-instance-id/saga-step-find-view-model-by-saga-instance-id.query';
 import { SagaStepFindByCriteriaRequestDto } from '@/saga-context/saga-step/transport/graphql/dtos/requests/saga-step-find-by-criteria.request.dto';
 import { SagaStepFindByIdRequestDto } from '@/saga-context/saga-step/transport/graphql/dtos/requests/saga-step-find-by-id.request.dto';
@@ -31,7 +31,7 @@ export class SagaStepQueryResolver {
     this.logger.log(`Finding saga step by id: ${input.id}`);
 
     const sagaStep = await this.queryBus.execute(
-      new FindSagaStepByIdQuery({ id: input.id }),
+      new FindSagaStepViewModelByIdQuery({ id: input.id }),
     );
 
     return sagaStep ? this.sagaStepGraphQLMapper.toResponseDto(sagaStep) : null;

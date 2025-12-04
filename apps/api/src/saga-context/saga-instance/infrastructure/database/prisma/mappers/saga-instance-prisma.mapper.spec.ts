@@ -2,12 +2,12 @@ import { SagaStatusEnum } from '@/prisma/master/client';
 import { SagaInstanceAggregate } from '@/saga-context/saga-instance/domain/aggregates/saga-instance.aggregate';
 import { SagaInstanceStatusEnum } from '@/saga-context/saga-instance/domain/enums/saga-instance-status/saga-instance-status.enum';
 import { SagaInstanceAggregateFactory } from '@/saga-context/saga-instance/domain/factories/saga-instance-aggregate/saga-instance-aggregate.factory';
+import { SagaInstanceNameValueObject } from '@/saga-context/saga-instance/domain/value-objects/saga-instance-name/saga-instance-name.vo';
+import { SagaInstanceStatusValueObject } from '@/saga-context/saga-instance/domain/value-objects/saga-instance-status/saga-instance-status.vo';
 import { SagaInstancePrismaDto } from '@/saga-context/saga-instance/infrastructure/database/prisma/dtos/saga-instance-prisma.dto';
 import { SagaInstancePrismaMapper } from '@/saga-context/saga-instance/infrastructure/database/prisma/mappers/saga-instance-prisma.mapper';
 import { DateValueObject } from '@/shared/domain/value-objects/date/date.vo';
 import { SagaInstanceUuidValueObject } from '@/shared/domain/value-objects/identifiers/saga-instance-uuid/saga-instance-uuid.vo';
-import { SagaInstanceNameValueObject } from '@/saga-context/saga-instance/domain/value-objects/saga-instance-name/saga-instance-name.vo';
-import { SagaInstanceStatusValueObject } from '@/saga-context/saga-instance/domain/value-objects/saga-instance-status/saga-instance-status.vo';
 import { Test } from '@nestjs/testing';
 
 describe('SagaInstancePrismaMapper', () => {
@@ -153,7 +153,6 @@ describe('SagaInstancePrismaMapper', () => {
 
     it('should convert domain entity to Prisma data with null optional fields', () => {
       const sagaInstance = createSagaInstanceAggregate();
-      const primitives = sagaInstance.toPrimitives();
 
       const result = mapper.toPrismaData(sagaInstance);
 

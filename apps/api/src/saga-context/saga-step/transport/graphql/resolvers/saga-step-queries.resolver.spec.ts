@@ -1,8 +1,8 @@
-import { QueryBus } from '@nestjs/cqrs';
 import { FindSagaStepsByCriteriaQuery } from '@/saga-context/saga-step/application/queries/saga-step-find-by-criteria/saga-step-find-by-criteria.query';
-import { FindSagaStepByIdQuery } from '@/saga-context/saga-step/application/queries/saga-step-find-by-id/saga-step-find-by-id.query';
+import { FindSagaStepViewModelByIdQuery } from '@/saga-context/saga-step/application/queries/saga-step-find-view-model-by-id/saga-step-find-view-model-by-id.query';
 import { FindSagaStepViewModelsBySagaInstanceIdQuery } from '@/saga-context/saga-step/application/queries/saga-step-find-view-model-by-saga-instance-id/saga-step-find-view-model-by-saga-instance-id.query';
-import { SagaStepQueryResolver } from '@/saga-context/saga-step/transport/graphql/resolvers/saga-step-queries.resolver';
+import { SagaStepStatusEnum } from '@/saga-context/saga-step/domain/enums/saga-step-status/saga-step-status.enum';
+import { SagaStepViewModel } from '@/saga-context/saga-step/domain/view-models/saga-step/saga-step.view-model';
 import { SagaStepFindByCriteriaRequestDto } from '@/saga-context/saga-step/transport/graphql/dtos/requests/saga-step-find-by-criteria.request.dto';
 import { SagaStepFindByIdRequestDto } from '@/saga-context/saga-step/transport/graphql/dtos/requests/saga-step-find-by-id.request.dto';
 import { SagaStepFindBySagaInstanceIdRequestDto } from '@/saga-context/saga-step/transport/graphql/dtos/requests/saga-step-find-by-saga-instance-id.request.dto';
@@ -11,10 +11,10 @@ import {
   SagaStepResponseDto,
 } from '@/saga-context/saga-step/transport/graphql/dtos/responses/saga-step.response.dto';
 import { SagaStepGraphQLMapper } from '@/saga-context/saga-step/transport/graphql/mappers/saga-step.mapper';
+import { SagaStepQueryResolver } from '@/saga-context/saga-step/transport/graphql/resolvers/saga-step-queries.resolver';
 import { Criteria } from '@/shared/domain/entities/criteria';
 import { PaginatedResult } from '@/shared/domain/entities/paginated-result.entity';
-import { SagaStepViewModel } from '@/saga-context/saga-step/domain/view-models/saga-step/saga-step.view-model';
-import { SagaStepStatusEnum } from '@/saga-context/saga-step/domain/enums/saga-step-status/saga-step-status.enum';
+import { QueryBus } from '@nestjs/cqrs';
 
 describe('SagaStepQueryResolver', () => {
   let resolver: SagaStepQueryResolver;
@@ -91,10 +91,10 @@ describe('SagaStepQueryResolver', () => {
 
       expect(result).toBe(responseDto);
       expect(mockQueryBus.execute).toHaveBeenCalledWith(
-        expect.any(FindSagaStepByIdQuery),
+        expect.any(FindSagaStepViewModelByIdQuery),
       );
       const query = (mockQueryBus.execute as jest.Mock).mock.calls[0][0];
-      expect(query).toBeInstanceOf(FindSagaStepByIdQuery);
+      expect(query).toBeInstanceOf(FindSagaStepViewModelByIdQuery);
       expect(query.id.value).toBe(sagaStepId);
       expect(mockSagaStepGraphQLMapper.toResponseDto).toHaveBeenCalledWith(
         viewModel,
@@ -113,7 +113,7 @@ describe('SagaStepQueryResolver', () => {
 
       expect(result).toBeNull();
       expect(mockQueryBus.execute).toHaveBeenCalledWith(
-        expect.any(FindSagaStepByIdQuery),
+        expect.any(FindSagaStepViewModelByIdQuery),
       );
       expect(mockSagaStepGraphQLMapper.toResponseDto).not.toHaveBeenCalled();
     });

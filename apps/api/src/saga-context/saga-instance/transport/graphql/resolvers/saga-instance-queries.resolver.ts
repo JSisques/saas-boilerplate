@@ -1,5 +1,5 @@
 import { FindSagaInstancesByCriteriaQuery } from '@/saga-context/saga-instance/application/queries/saga-instance-find-by-criteria/saga-instance-find-by-criteria.query';
-import { FindSagaInstanceByIdQuery } from '@/saga-context/saga-instance/application/queries/saga-instance-find-by-id/saga-instance-find-by-id.query';
+import { FindSagaInstanceViewModelByIdQuery } from '@/saga-context/saga-instance/application/queries/tenant-member-find-view-model-by-id/saga-instance-find-view-model-by-id.query';
 import { SagaInstanceFindByCriteriaRequestDto } from '@/saga-context/saga-instance/transport/graphql/dtos/requests/saga-instance-find-by-criteria.request.dto';
 import { SagaInstanceFindByIdRequestDto } from '@/saga-context/saga-instance/transport/graphql/dtos/requests/saga-instance-find-by-id.request.dto';
 import {
@@ -29,7 +29,7 @@ export class SagaInstanceQueryResolver {
     this.logger.log(`Finding saga instance by id: ${input.id}`);
 
     const sagaInstance = await this.queryBus.execute(
-      new FindSagaInstanceByIdQuery({ id: input.id }),
+      new FindSagaInstanceViewModelByIdQuery({ id: input.id }),
     );
 
     return sagaInstance
