@@ -4,4 +4,8 @@ import { StringValueObject } from '@/shared/domain/value-objects/string/string.v
  * SagaLogMessageValueObject represents the message of a saga log.
  * It extends the StringValueObject to leverage common string functionalities.
  */
-export class SagaLogMessageValueObject extends StringValueObject {}
+export class SagaLogMessageValueObject extends StringValueObject {
+  constructor(value: string) {
+    super(value, { allowEmpty: false });
+  }
+}
