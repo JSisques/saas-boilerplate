@@ -10,7 +10,7 @@ import { ISagaInstanceCreateCommandDto } from '@/saga-context/saga-instance/appl
 export interface ISagaInstanceUpdateCommandDto
   extends Partial<Omit<ISagaInstanceCreateCommandDto, 'id'>> {
   id: string;
-  status: string;
-  startDate: Date | null;
-  endDate: Date | null;
+  status?: string;
+  startDate?: Date | null;
+  endDate?: Date | null;
 }

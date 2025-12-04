@@ -22,10 +22,14 @@ export class SagaInstanceUpdateCommand {
       this.status = new SagaInstanceStatusValueObject(props.status);
     }
     if (props.startDate !== undefined) {
-      this.startDate = new SagaInstanceStartDateValueObject(props.startDate);
+      this.startDate = props.startDate
+        ? new SagaInstanceStartDateValueObject(props.startDate)
+        : null;
     }
     if (props.endDate !== undefined) {
-      this.endDate = new SagaInstanceEndDateValueObject(props.endDate);
+      this.endDate = props.endDate
+        ? new SagaInstanceEndDateValueObject(props.endDate)
+        : null;
     }
   }
 }
