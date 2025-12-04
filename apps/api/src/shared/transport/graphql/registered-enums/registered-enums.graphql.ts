@@ -2,6 +2,7 @@ import {
   CurrencyEnum,
   PromptStatusEnum,
   RenewalMethodEnum,
+  SagaLogTypeEnum,
   SagaStatusEnum,
   SagaStepStatusEnum,
   StatusEnum,
@@ -91,6 +92,11 @@ const registeredEnums = [
     enum: SagaStepStatusEnum,
     name: 'SagaStepStatusEnum',
     description: 'The status of the saga step',
+  },
+  {
+    enum: SagaLogTypeEnum,
+    name: 'SagaLogTypeEnum',
+    description: 'The type of the saga log',
   },
 ];
 

@@ -370,6 +370,54 @@ type PaginatedSagaInstanceResultDto {
   items: [SagaInstanceResponseDto!]!
 }
 
+type SagaLogResponseDto {
+  """The saga log ID"""
+  id: String!
+
+  """The saga instance ID"""
+  sagaInstanceId: String!
+
+  """The saga step ID"""
+  sagaStepId: String!
+
+  """The saga log type"""
+  type: SagaLogTypeEnum!
+
+  """The saga log message"""
+  message: String!
+
+  """The saga log creation date"""
+  createdAt: DateTime!
+
+  """The saga log update date"""
+  updatedAt: DateTime!
+}
+
+"""The type of the saga log"""
+enum SagaLogTypeEnum {
+  INFO
+  WARNING
+  ERROR
+  DEBUG
+}
+
+type PaginatedSagaLogResultDto {
+  """The total number of items"""
+  total: Int!
+
+  """The page number"""
+  page: Int!
+
+  """The number of items per page"""
+  perPage: Int!
+
+  """The total number of pages"""
+  totalPages: Int!
+
+  """The saga log items"""
+  items: [SagaLogResponseDto!]!
+}
+
 type SagaStepResponseDto {
   """The saga step ID"""
   id: String!
@@ -773,6 +821,10 @@ type Query {
   sagaStepFindById(input: SagaStepFindByIdRequestDto!): SagaStepResponseDto
   sagaStepFindBySagaInstanceId(input: SagaStepFindBySagaInstanceIdRequestDto!): [SagaStepResponseDto!]!
   sagaStepFindByCriteria(input: SagaStepFindByCriteriaRequestDto): PaginatedSagaStepResultDto!
+  sagaLogFindById(input: SagaLogFindByIdRequestDto!): SagaLogResponseDto
+  sagaLogFindBySagaInstanceId(input: SagaLogFindBySagaInstanceIdRequestDto!): [SagaLogResponseDto!]!
+  sagaLogFindBySagaStepId(input: SagaLogFindBySagaStepIdRequestDto!): [SagaLogResponseDto!]!
+  sagaLogFindByCriteria(input: SagaLogFindByCriteriaRequestDto): PaginatedSagaLogResultDto!
 }
 
 input EventFindByCriteriaRequestDto {
@@ -1002,6 +1054,32 @@ input SagaStepFindByCriteriaRequestDto {
   pagination: BasePaginationInput = {page: 1, perPage: 10}
 }
 
+input SagaLogFindByIdRequestDto {
+  """The id of the saga log"""
+  id: String!
+}
+
+input SagaLogFindBySagaInstanceIdRequestDto {
+  """The saga instance id"""
+  sagaInstanceId: String!
+}
+
+input SagaLogFindBySagaStepIdRequestDto {
+  """The saga step id"""
+  sagaStepId: String!
+}
+
+input SagaLogFindByCriteriaRequestDto {
+  """The filters to find by"""
+  filters: [BaseFilterInput!] = []
+
+  """The sorts to find by"""
+  sorts: [BaseSortInput!] = []
+
+  """The pagination to find by"""
+  pagination: BasePaginationInput = {page: 1, perPage: 10}
+}
+
 type Mutation {
   eventReplay(input: EventReplayRequestDto!): MutationResponseDto!
   loginByEmail(input: AuthLoginByEmailRequestDto!): LoginResponseDto!
@@ -1048,6 +1126,9 @@ type Mutation {
   sagaStepUpdate(input: SagaStepUpdateRequestDto!): MutationResponseDto!
   sagaStepChangeStatus(input: SagaStepChangeStatusRequestDto!): MutationResponseDto!
   sagaStepDelete(input: SagaStepDeleteRequestDto!): MutationResponseDto!
+  sagaLogCreate(input: SagaLogCreateRequestDto!): MutationResponseDto!
+  sagaLogUpdate(input: SagaLogUpdateRequestDto!): MutationResponseDto!
+  sagaLogDelete(input: SagaLogDeleteRequestDto!): MutationResponseDto!
 }
 
 input EventReplayRequestDto {
@@ -1707,5 +1788,35 @@ input SagaStepChangeStatusRequestDto {
 
 input SagaStepDeleteRequestDto {
   """The id of the saga step"""
+  id: String!
+}
+
+input SagaLogCreateRequestDto {
+  """The saga instance ID"""
+  sagaInstanceId: String!
+
+  """The saga step ID"""
+  sagaStepId: String!
+
+  """The type of the saga log"""
+  type: SagaLogTypeEnum!
+
+  """The message of the saga log"""
+  message: String!
+}
+
+input SagaLogUpdateRequestDto {
+  """The id of the saga log"""
+  id: String!
+
+  """The type of the saga log"""
+  type: SagaLogTypeEnum
+
+  """The message of the saga log"""
+  message: String
+}
+
+input SagaLogDeleteRequestDto {
+  """The id of the saga log"""
   id: String!
 }
