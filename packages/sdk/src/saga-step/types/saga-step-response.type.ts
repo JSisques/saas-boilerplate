@@ -11,8 +11,8 @@ export type SagaStepResponse = {
   errorMessage: string | null;
   retryCount: number;
   maxRetries: number;
-  payload: any;
-  result: any;
+  payload: Record<string, unknown>;
+  result: Record<string, unknown>;
   createdAt: Date;
   updatedAt: Date;
 };
