@@ -1,5 +1,5 @@
 import { BasePaginatedResultDto } from '@/shared/transport/graphql/dtos/responses/base-paginated-result/base-paginated-result.dto';
-import { TenantMemberResponseDto } from '@/tenant-context/tenant-members/transport/graphql/dtos/responses/tenant-member.response.dto';
+import { TenantTenantMemberResponseDto } from '@/tenant-context/tenants/transport/graphql/dtos/responses/tenant-member/tenant-member.response.dto';
 import { Field, ObjectType } from '@nestjs/graphql';
 
 @ObjectType('TenantResponseDto')
@@ -139,11 +139,11 @@ export class TenantResponseDto {
   })
   maxApiCalls?: number;
 
-  @Field(() => [TenantMemberResponseDto], {
+  @Field(() => [TenantTenantMemberResponseDto], {
     nullable: true,
     description: 'The tenant members of the tenant',
   })
-  tenantMembers?: TenantMemberResponseDto[];
+  tenantMembers?: TenantTenantMemberResponseDto[];
 
   @Field(() => Date, {
     nullable: true,

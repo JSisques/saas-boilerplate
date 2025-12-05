@@ -1,3 +1,4 @@
+import { AuthCreateCommandHandler } from '@/auth-context/auth/application/commands/auth-create/auth-create.command-handler';
 import { AuthLoginByEmailCommandHandler } from '@/auth-context/auth/application/commands/auth-login-by-email/auth-login-by-email.command-handler';
 import { AuthRefreshTokenCommandHandler } from '@/auth-context/auth/application/commands/auth-refresh-token/auth-refresh-token.command-handler';
 import { AuthRegisterByEmailCommandHandler } from '@/auth-context/auth/application/commands/auth-register-by-email/auth-register-by-email.command-handler';
@@ -6,6 +7,7 @@ import { AuthLoggedInByEmailEventHandler } from '@/auth-context/auth/application
 import { AuthRegisteredByEmailEventHandler } from '@/auth-context/auth/application/event-handlers/auth-registered-by-email/auth-registered-by-email.event-handler';
 import { AuthUpdatedEventHandler } from '@/auth-context/auth/application/event-handlers/auth-updated/auth-updated.event-handler';
 import { FindAuthsByCriteriaQueryHandler } from '@/auth-context/auth/application/queries/find-auths-by-criteria/find-auths-by-criteria.query-handler';
+import { AuthRegistrationSaga } from '@/auth-context/auth/application/sagas/auth-registration/auth-registration.saga';
 import { AssertAuthEmailExistsService } from '@/auth-context/auth/application/services/assert-auth-email-exists/assert-auth-email-exists.service';
 import { AssertAuthEmailNotExistsService } from '@/auth-context/auth/application/services/assert-auth-email-not-exists/assert-auth-email-not-exists.service';
 import { AssertAuthExistsService } from '@/auth-context/auth/application/services/assert-auth-exsists/assert-auth-exsists.service';
@@ -47,6 +49,7 @@ const SERVICES = [
 const QUERY_HANDLERS = [FindAuthsByCriteriaQueryHandler];
 
 const COMMAND_HANDLERS = [
+  AuthCreateCommandHandler,
   AuthLoginByEmailCommandHandler,
   AuthRefreshTokenCommandHandler,
   AuthRegisterByEmailCommandHandler,
@@ -58,6 +61,8 @@ const EVENT_HANDLERS = [
   AuthRegisteredByEmailEventHandler,
   AuthUpdatedEventHandler,
 ];
+
+const SAGAS = [AuthRegistrationSaga];
 
 const FACTORIES = [AuthAggregateFactory, AuthViewModelFactory];
 
@@ -109,6 +114,7 @@ const REPOSITORIES = [
     ...QUERY_HANDLERS,
     ...COMMAND_HANDLERS,
     ...EVENT_HANDLERS,
+    ...SAGAS,
     ...REPOSITORIES,
     ...FACTORIES,
     ...MAPPERS,

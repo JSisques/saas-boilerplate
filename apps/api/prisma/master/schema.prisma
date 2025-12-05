@@ -164,7 +164,7 @@ model Auth {
   id               String           @id @default(uuid())
   provider         AuthProviderEnum // Provider of the auth
   providerId       String? // Provider ID
-  email            String?          @unique // Email of the auth
+  email            String? // Email of the auth
   phoneNumber      String? // Phone number of the auth
   password         String? // Password of the auth
   emailVerified    Boolean          @default(false) // Email verified

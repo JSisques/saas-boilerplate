@@ -1,26 +1,13 @@
+import { AuthRegistrationSaga } from '@/auth-context/auth/application/sagas/auth-registration/auth-registration.saga';
 import { AssertAuthEmailNotExistsService } from '@/auth-context/auth/application/services/assert-auth-email-not-exists/assert-auth-email-not-exists.service';
-import { PasswordHashingService } from '@/auth-context/auth/application/services/password-hashing/password-hashing.service';
-import { AuthAggregateFactory } from '@/auth-context/auth/domain/factories/auth-aggregate/auth-aggregate.factory';
-import {
-  AUTH_WRITE_REPOSITORY_TOKEN,
-  AuthWriteRepository,
-} from '@/auth-context/auth/domain/repositories/auth-write.repository';
-import { AuthEmailVerifiedValueObject } from '@/auth-context/auth/domain/value-objects/auth-email-verified/auth-email-verified.vo';
-import { AuthPasswordValueObject } from '@/auth-context/auth/domain/value-objects/auth-password/auth-password.vo';
-import { AuthProviderValueObject } from '@/auth-context/auth/domain/value-objects/auth-provider/auth-provider.vo';
-import { AuthTwoFactorEnabledValueObject } from '@/auth-context/auth/domain/value-objects/auth-two-factor-enabled/auth-two-factor-enabled.vo';
+import { AuthAggregate } from '@/auth-context/auth/domain/aggregate/auth.aggregate';
 import { AuthProviderEnum } from '@/prisma/master/client';
-import { DateValueObject } from '@/shared/domain/value-objects/date/date.vo';
+import { AuthRegistrationRequestedEvent } from '@/shared/domain/events/auth/auth-registration-requested/auth-registration-requested.event';
+import { IAuthEventData } from '@/shared/domain/events/auth/interfaces/auth-event-data.interface';
 import { AuthUuidValueObject } from '@/shared/domain/value-objects/identifiers/auth-uuid/auth-uuid.vo';
 import { UserUuidValueObject } from '@/shared/domain/value-objects/identifiers/user-uuid/user-uuid.vo';
-import { UserCreateCommand } from '@/user-context/users/application/commands/user-create/user-create.command';
-import { Inject, Logger } from '@nestjs/common';
-import {
-  CommandBus,
-  CommandHandler,
-  EventBus,
-  ICommandHandler,
-} from '@nestjs/cqrs';
+import { Logger } from '@nestjs/common';
+import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { AuthRegisterByEmailCommand } from './auth-register-by-email.command';
 
 @CommandHandler(AuthRegisterByEmailCommand)
@@ -30,13 +17,8 @@ export class AuthRegisterByEmailCommandHandler
   private readonly logger = new Logger(AuthRegisterByEmailCommandHandler.name);
 
   constructor(
-    @Inject(AUTH_WRITE_REPOSITORY_TOKEN)
-    private readonly authWriteRepository: AuthWriteRepository,
-    private readonly authAggregateFactory: AuthAggregateFactory,
-    private readonly passwordHashingService: PasswordHashingService,
     private readonly assertAuthEmailNotExistsService: AssertAuthEmailNotExistsService,
-    private readonly eventBus: EventBus,
-    private readonly commandBus: CommandBus,
+    private readonly authRegistrationSaga: AuthRegistrationSaga,
   ) {}
 
   /**
@@ -52,45 +34,38 @@ export class AuthRegisterByEmailCommandHandler
     // 01: Assert the auth email not exists
     await this.assertAuthEmailNotExistsService.execute(command.email.value);
 
-    // 02: Create the user
-    const newUserId = await this.commandBus.execute(
-      new UserCreateCommand({
-        avatarUrl: null,
-        bio: null,
-        lastName: null,
-        name: null,
-        userName: null,
-      }),
-    );
-
-    const hashedPassword = await this.passwordHashingService.hashPassword(
-      command.password,
-    );
-
-    // 01: Create the auth entity
-    const auth = this.authAggregateFactory.create({
-      id: new AuthUuidValueObject(),
-      userId: new UserUuidValueObject(newUserId),
-      email: command.email,
-      emailVerified: new AuthEmailVerifiedValueObject(false),
-      lastLoginAt: null,
-      password: new AuthPasswordValueObject(hashedPassword),
+    const now = new Date();
+    const eventData: IAuthEventData = {
+      id: new AuthUuidValueObject().value,
+      userId: new UserUuidValueObject().value,
+      email: command.email.value,
+      emailVerified: false,
       phoneNumber: null,
-      provider: new AuthProviderValueObject(AuthProviderEnum.LOCAL),
+      lastLoginAt: null,
+      password: null,
+      provider: AuthProviderEnum.LOCAL,
       providerId: null,
-      twoFactorEnabled: new AuthTwoFactorEnabledValueObject(false),
-      createdAt: new DateValueObject(new Date()),
-      updatedAt: new DateValueObject(new Date()),
-    });
+      twoFactorEnabled: false,
+      tenantName: command.tenantName?.value,
+      createdAt: now,
+      updatedAt: now,
+    };
 
-    // 02: Save the auth entity
-    await this.authWriteRepository.save(auth);
+    const registrationEvent = new AuthRegistrationRequestedEvent(
+      {
+        aggregateId: eventData.id,
+        aggregateType: AuthAggregate.name,
+        eventType: AuthRegistrationRequestedEvent.name,
+      },
+      eventData,
+    );
 
-    // 03: Publish all events
-    await this.eventBus.publishAll(auth.getUncommittedEvents());
-    await auth.commit();
+    // 03: Execute the saga synchronously to wait for completion
+    // This ensures the client gets immediate feedback on success/failure
+    // The saga will handle all the registration steps (create user, auth, tenant, etc.)
+    await this.authRegistrationSaga.handle(registrationEvent);
 
-    // 04: Return the auth id
-    return auth.id.value;
+    // 05: Return the auth id
+    return eventData.id;
   }
 }

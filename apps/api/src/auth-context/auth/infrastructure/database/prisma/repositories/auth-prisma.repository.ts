@@ -25,7 +25,7 @@ export class AuthPrismaRepository
    * @returns The auth if found, null otherwise
    */
   async findById(id: string): Promise<AuthAggregate | null> {
-    const authData = await this.prismaMasterService.client.auth.findUnique({
+    const authData = await this.prismaMasterService.client.auth.findFirst({
       where: { id },
     });
 
