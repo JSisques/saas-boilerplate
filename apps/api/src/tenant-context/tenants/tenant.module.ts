@@ -9,6 +9,7 @@ import { TenantUpdatedEventHandler } from '@/tenant-context/tenants/application/
 import { FindTenantByIdQueryHandler } from '@/tenant-context/tenants/application/queries/find-tenant-by-id/find-tenant-by-id.query-handler';
 import { FindTenantsByCriteriaQueryHandler } from '@/tenant-context/tenants/application/queries/find-tenants-by-criteria/find-tenants-by-criteria.query-handler';
 import { TenantCreatedProvisionDatabaseSaga } from '@/tenant-context/tenants/application/sagas/tenant-created-provision-database/tenant-created-provision-database.saga';
+import { TenantDeletedCleanupDatabaseSaga } from '@/tenant-context/tenants/application/sagas/tenant-deleted-cleanup-database/tenant-deleted-cleanup-database.saga';
 import { AssertTenantExsistsService } from '@/tenant-context/tenants/application/services/assert-tenant-exsits/assert-tenant-exsits.service';
 import { AssertTenantSlugIsUniqueService } from '@/tenant-context/tenants/application/services/assert-tenant-slug-is-unique/assert-tenant-slug-is-unique.service';
 import { AssertTenantViewModelExsistsService } from '@/tenant-context/tenants/application/services/assert-tenant-view-model-exsits/assert-tenant-view-model-exsits.service';
@@ -51,7 +52,10 @@ const EVENT_HANDLERS = [
   TenantMemberAddedEventHandler,
 ];
 
-const SAGAS = [TenantCreatedProvisionDatabaseSaga];
+const SAGAS = [
+  TenantCreatedProvisionDatabaseSaga,
+  TenantDeletedCleanupDatabaseSaga,
+];
 
 const FACTORIES = [TenantAggregateFactory, TenantViewModelFactory];
 

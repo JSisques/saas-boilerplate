@@ -1,5 +1,5 @@
 import { Field, InputType } from '@nestjs/graphql';
-import { IsEmail, IsNotEmpty, IsString } from 'class-validator';
+import { IsEmail, IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
 @InputType('AuthRegisterByEmailRequestDto')
 export class AuthRegisterByEmailRequestDto {
@@ -18,4 +18,12 @@ export class AuthRegisterByEmailRequestDto {
   @IsString()
   @IsNotEmpty()
   password: string;
+
+  @Field(() => String, {
+    description: 'Optional tenant name to create during registration',
+    nullable: true,
+  })
+  @IsString()
+  @IsOptional()
+  tenantName?: string;
 }

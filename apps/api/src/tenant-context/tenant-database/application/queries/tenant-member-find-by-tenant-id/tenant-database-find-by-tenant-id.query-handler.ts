@@ -24,16 +24,16 @@ export class FindTenantDatabaseByTenantIdQueryHandler
    * Executes the FindTenantDatabaseByTenantIdQuery query.
    *
    * @param query - The FindTenantDatabaseByTenantIdQuery query to execute.
-   * @returns The TenantDatabaseViewModels if found, null otherwise.
+   * @returns The TenantDatabaseAggregate if found, null otherwise.
    */
   async execute(
     query: FindTenantDatabaseByTenantIdQuery,
-  ): Promise<TenantDatabaseAggregate[] | null> {
+  ): Promise<TenantDatabaseAggregate | null> {
     this.logger.log(
       `Executing find tenant database by tenant id query: ${query.tenantId.value}`,
     );
 
-    // 01: Find the tenant databases by tenant id
+    // 01: Find the tenant database by tenant id (unique relationship)
     return this.tenantDatabaseWriteRepository.findByTenantId(
       query.tenantId.value,
     );

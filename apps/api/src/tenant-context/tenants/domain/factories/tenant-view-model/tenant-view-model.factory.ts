@@ -38,7 +38,7 @@ export class TenantViewModelFactory
    */
   fromPrimitives(tenantPrimitives: TenantPrimitives): TenantViewModel {
     this.logger.log(
-      `Creating tenant view model from primitives: ${tenantPrimitives}`,
+      `Creating tenant view model from primitives: ${JSON.stringify(tenantPrimitives)}`,
     );
 
     return new TenantViewModel({

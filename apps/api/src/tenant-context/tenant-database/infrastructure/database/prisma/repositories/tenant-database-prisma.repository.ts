@@ -40,20 +40,22 @@ export class TenantDatabasePrismaRepository
   /**
    * Finds a tenant database by their tenant id
    *
-   * @param tenantId - The id of the tenant to find tenant databases by
-   * @returns The tenant databases if found, null otherwise
+   * @param tenantId - The id of the tenant to find tenant database by
+   * @returns The tenant database if found, null otherwise
    */
   async findByTenantId(
     tenantId: string,
-  ): Promise<TenantDatabaseAggregate[] | null> {
-    const tenantDatabasesData =
-      await this.prismaMasterService.client.tenantDatabase.findMany({
+  ): Promise<TenantDatabaseAggregate | null> {
+    const tenantDatabaseData =
+      await this.prismaMasterService.client.tenantDatabase.findUnique({
         where: { tenantId },
       });
 
-    return tenantDatabasesData.map((tenantDatabaseData) =>
-      this.tenantDatabasePrismaMapper.toDomainEntity(tenantDatabaseData),
-    );
+    if (!tenantDatabaseData) {
+      return null;
+    }
+
+    return this.tenantDatabasePrismaMapper.toDomainEntity(tenantDatabaseData);
   }
 
   /**

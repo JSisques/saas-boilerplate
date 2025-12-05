@@ -6,7 +6,7 @@ export const TENANT_DATABASE_WRITE_REPOSITORY_TOKEN = Symbol(
 
 export interface TenantDatabaseWriteRepository {
   findById(id: string): Promise<TenantDatabaseAggregate | null>;
-  findByTenantId(tenantId: string): Promise<TenantDatabaseAggregate[] | null>;
+  findByTenantId(tenantId: string): Promise<TenantDatabaseAggregate | null>;
   save(
     tenantDatabase: TenantDatabaseAggregate,
   ): Promise<TenantDatabaseAggregate>;

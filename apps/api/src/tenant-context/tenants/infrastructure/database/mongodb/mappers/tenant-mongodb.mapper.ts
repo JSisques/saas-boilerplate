@@ -1,5 +1,7 @@
 import { TenantViewModelFactory } from '@/tenant-context/tenants/domain/factories/tenant-view-model/tenant-view-model.factory';
+import { TenantMemberViewModel } from '@/tenant-context/tenants/domain/view-models/tenant-member/tenant-member.view-model';
 import { TenantViewModel } from '@/tenant-context/tenants/domain/view-models/tenant/tenant.view-model';
+import { TenantMemberMongoDbDto } from '@/tenant-context/tenants/infrastructure/database/mongodb/dtos/tenant-member/tenant-member-mongodb.dto';
 import { TenantMongoDbDto } from '@/tenant-context/tenants/infrastructure/database/mongodb/dtos/tenant/tenant-mongodb.dto';
 import { Injectable, Logger } from '@nestjs/common';
 
@@ -45,10 +47,32 @@ export class TenantMongoDBMapper {
       maxUsers: doc.maxUsers,
       maxStorage: doc.maxStorage,
       maxApiCalls: doc.maxApiCalls,
-      tenantMembers: doc.tenantMembers,
+      tenantMembers: this.mapTenantMembers(doc.tenantMembers),
       createdAt: new Date(doc.createdAt),
       updatedAt: new Date(doc.updatedAt),
     });
+  }
+
+  /**
+   * Maps tenant members from MongoDB format to ViewModel format
+   */
+  private mapTenantMembers(
+    members: TenantMemberMongoDbDto[] | undefined,
+  ): TenantMemberViewModel[] {
+    if (!members || !Array.isArray(members)) {
+      return [];
+    }
+
+    return members.map(
+      (member) =>
+        new TenantMemberViewModel({
+          id: member.id,
+          userId: member.userId,
+          role: member.role,
+          createdAt: new Date(member.createdAt),
+          updatedAt: new Date(member.updatedAt),
+        }),
+    );
   }
 
   /**
@@ -88,9 +112,30 @@ export class TenantMongoDBMapper {
       maxUsers: tenantViewModel.maxUsers,
       maxStorage: tenantViewModel.maxStorage,
       maxApiCalls: tenantViewModel.maxApiCalls,
-      tenantMembers: tenantViewModel.tenantMembers,
+      tenantMembers: this.mapTenantMembersToMongo(
+        tenantViewModel.tenantMembers,
+      ),
       createdAt: tenantViewModel.createdAt,
       updatedAt: tenantViewModel.updatedAt,
     };
+  }
+
+  /**
+   * Maps tenant members from ViewModel to MongoDB format (plain objects)
+   */
+  private mapTenantMembersToMongo(
+    members: TenantMemberViewModel[] | undefined,
+  ): TenantMemberMongoDbDto[] {
+    if (!members || !Array.isArray(members)) {
+      return [];
+    }
+
+    return members.map((member) => ({
+      id: member.id,
+      userId: member.userId,
+      role: member.role,
+      createdAt: member.createdAt,
+      updatedAt: member.updatedAt,
+    }));
   }
 }

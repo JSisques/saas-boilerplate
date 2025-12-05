@@ -649,6 +649,23 @@ type PaginatedTenantMemberResultDto {
   items: [TenantMemberResponseDto!]!
 }
 
+type TenantTenantMemberResponseDto {
+  """The id of the tenant member"""
+  id: String!
+
+  """The user id of the tenant member"""
+  userId: String!
+
+  """The role of the tenant member"""
+  role: String!
+
+  """The creation timestamp of the tenant member"""
+  createdAt: DateTime
+
+  """The last update timestamp of the tenant member"""
+  updatedAt: DateTime
+}
+
 type TenantResponseDto {
   """The id of the tenant"""
   id: String!
@@ -720,7 +737,7 @@ type TenantResponseDto {
   maxApiCalls: Float
 
   """The tenant members of the tenant"""
-  tenantMembers: [TenantMemberResponseDto!]
+  tenantMembers: [TenantTenantMemberResponseDto!]
 
   """The created at of the tenant"""
   createdAt: DateTime
@@ -1170,6 +1187,9 @@ input AuthRegisterByEmailRequestDto {
 
   """The password of the auth"""
   password: String!
+
+  """Optional tenant name to create during registration"""
+  tenantName: String
 }
 
 input AuthRefreshTokenRequestDto {
