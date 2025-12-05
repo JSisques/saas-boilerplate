@@ -1,8 +1,9 @@
+import { BaseSaga } from '@/shared/application/sagas/base-saga/base-saga';
 import { TenantCreatedEvent } from '@/shared/domain/events/tenant-context/tenants/tenant-created/tenant-created.event';
 import { TenantDatabaseMigrationService } from '@/shared/infrastructure/database/prisma/services/tenant-database-migration/tenant-database-migration.service';
 import { TenantDatabaseProvisioningService } from '@/shared/infrastructure/database/prisma/services/tenant-database-provisioning/tenant-database-provisioning.service';
-import { Logger } from '@nestjs/common';
-import { EventsHandler, IEventHandler } from '@nestjs/cqrs';
+import { TenantMigrationFailedException } from '@/tenant-context/tenants/application/exceptions/tenant-migration-failed/tenant-migration-failed.exception';
+import { CommandBus, EventsHandler, IEventHandler } from '@nestjs/cqrs';
 
 /**
  * SAGA: Tenant Created - Provision Database
@@ -15,14 +16,16 @@ import { EventsHandler, IEventHandler } from '@nestjs/cqrs';
  */
 @EventsHandler(TenantCreatedEvent)
 export class TenantCreatedProvisionDatabaseSaga
+  extends BaseSaga<TenantCreatedEvent>
   implements IEventHandler<TenantCreatedEvent>
 {
-  private readonly logger = new Logger(TenantCreatedProvisionDatabaseSaga.name);
-
   constructor(
+    commandBus: CommandBus,
     private readonly provisioningService: TenantDatabaseProvisioningService,
     private readonly migrationService: TenantDatabaseMigrationService,
-  ) {}
+  ) {
+    super(commandBus);
+  }
 
   /**
    * Handles the TenantCreatedEvent by automatically provisioning the tenant database
@@ -36,48 +39,38 @@ export class TenantCreatedProvisionDatabaseSaga
       `🚀 Starting database provisioning SAGA for tenant: ${tenantId}`,
     );
 
+    // 01: Create and initialize saga instance
+    const sagaInstanceId = await this.createSagaInstance(
+      `Provision Database for Tenant ${tenantId}`,
+    );
+
     try {
-      // Step 1: Provision the tenant database
-      this.logger.log(
-        `📦 Step 1: Provisioning database for tenant: ${tenantId}`,
-      );
-      const databaseInfo = await this.provisioningService.createTenantDatabase({
-        tenantId,
+      // 02: Step 1 - Provision the tenant database
+      await this.executeStep(sagaInstanceId, {
+        name: 'Provision Database',
+        order: 1,
+        payload: { tenantId },
+        action: () => this.provisionDatabaseStep(tenantId),
       });
 
-      this.logger.log(
-        `✅ Database provisioned successfully for tenant: ${tenantId}`,
-      );
-      this.logger.debug(`Database details: ${JSON.stringify(databaseInfo)}`);
+      // 03: Step 2 - Run initial migrations
+      await this.executeStep(sagaInstanceId, {
+        name: 'Run Initial Migrations',
+        order: 2,
+        payload: { tenantId },
+        action: () => this.runMigrationsStep(tenantId),
+      });
 
-      // Step 2: Run initial migrations
-      this.logger.log(
-        `🔄 Step 2: Running initial migrations for tenant: ${tenantId}`,
-      );
-      const migrationResult =
-        await this.migrationService.migrateTenantDatabase(tenantId);
-
-      if (migrationResult.success) {
-        this.logger.log(
-          `✅ Migrations completed successfully for tenant: ${tenantId}`,
-        );
-        this.logger.log(
-          `🎉 SAGA completed successfully for tenant: ${tenantId}`,
-        );
-      } else {
-        this.logger.error(
-          `❌ Migration failed for tenant: ${tenantId}. Error: ${migrationResult.error}`,
-        );
-        // Note: The database is already created, but migrations failed
-        // In a production system, you might want to:
-        // - Mark the tenant as needing attention
-        // - Send an alert
-        // - Or rollback the database creation
-      }
+      // 04: Mark saga as completed
+      await this.completeSagaInstance(sagaInstanceId);
+      this.logger.log(`🎉 SAGA completed successfully for tenant: ${tenantId}`);
     } catch (error) {
       this.logger.error(
         `❌ SAGA failed for tenant: ${tenantId}. Error: ${error}`,
       );
+
+      // 05: Mark saga as failed
+      await this.failSagaInstance(sagaInstanceId);
 
       // Compensation: If provisioning fails, we could:
       // 1. Mark the tenant as needing manual intervention
@@ -92,5 +85,51 @@ export class TenantCreatedProvisionDatabaseSaga
       // In production, you might want to handle this differently
       throw error;
     }
+  }
+
+  /**
+   * Step 1: Provisions the tenant database
+   *
+   * @param tenantId - The tenant ID
+   * @returns Database information
+   */
+  private async provisionDatabaseStep(tenantId: string): Promise<{
+    databaseInfo: unknown;
+  }> {
+    const databaseInfo = await this.provisioningService.createTenantDatabase({
+      tenantId,
+    });
+
+    this.logger.log(
+      `✅ Database provisioned successfully for tenant: ${tenantId}`,
+    );
+    this.logger.debug(`Database details: ${JSON.stringify(databaseInfo)}`);
+
+    return { databaseInfo };
+  }
+
+  /**
+   * Step 2: Runs initial migrations for the tenant database
+   *
+   * @param tenantId - The tenant ID
+   * @returns Migration result
+   */
+  private async runMigrationsStep(tenantId: string): Promise<{
+    success: boolean;
+  }> {
+    const migrationResult =
+      await this.migrationService.migrateTenantDatabase(tenantId);
+
+    if (!migrationResult.success) {
+      throw new TenantMigrationFailedException(
+        migrationResult.error || 'Unknown error',
+      );
+    }
+
+    this.logger.log(
+      `✅ Migrations completed successfully for tenant: ${tenantId}`,
+    );
+
+    return { success: true };
   }
 }
