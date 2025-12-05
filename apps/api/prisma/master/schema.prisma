@@ -78,7 +78,7 @@ enum TenantStatusEnum {
 model Tenant {
   id             String           @id @default(uuid())
   name           String // Name of the tenant
-  slug           String           @unique // Slug of the tenant
+  slug           String // Slug of the tenant
   description    String? // Description of the tenant
   websiteUrl     String? // Website URL of the tenant
   logoUrl        String? // Logo URL of the tenant
@@ -164,7 +164,7 @@ model Auth {
   id               String           @id @default(uuid())
   provider         AuthProviderEnum // Provider of the auth
   providerId       String? // Provider ID
-  email            String?          @unique // Email of the auth
+  email            String? // Email of the auth
   phoneNumber      String? // Phone number of the auth
   password         String? // Password of the auth
   emailVerified    Boolean          @default(false) // Email verified

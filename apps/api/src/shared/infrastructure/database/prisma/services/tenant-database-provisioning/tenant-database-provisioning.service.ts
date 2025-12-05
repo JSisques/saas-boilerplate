@@ -1,4 +1,4 @@
-import { TenantDatabaseStatusEnum } from '@/prisma/master/client';
+import { PrismaClient, TenantDatabaseStatusEnum } from '@/prisma/master/client';
 import { PrismaTenantFactory } from '@/shared/infrastructure/database/prisma/factories/prisma-tenant-factory/prisma-tenant-factory.service';
 import { PrismaMasterService } from '@/shared/infrastructure/database/prisma/services/prisma-master/prisma-master.service';
 import { TenantDatabaseUrlBuilderService } from '@/shared/infrastructure/database/prisma/services/tenant-database-url-builder/tenant-database-url-builder.service';
@@ -71,7 +71,7 @@ export class TenantDatabaseProvisioningService {
       }),
     );
 
-    if (existingDatabase && existingDatabase.deletedAt === null) {
+    if (existingDatabase) {
       throw new BadRequestException(
         `Tenant database already exists for tenant: ${tenantId}`,
       );
@@ -178,6 +178,14 @@ export class TenantDatabaseProvisioningService {
       }),
     );
 
+    // If no database exists for this tenant, nothing to delete
+    if (!tenantDatabase) {
+      this.logger.warn(
+        `No tenant database found for tenant: ${tenantId}. Skipping deletion.`,
+      );
+      return;
+    }
+
     try {
       // 01: Remove tenant client from cache
       await this.prismaTenantFactory.removeTenantClient(tenantId);
@@ -221,6 +229,12 @@ export class TenantDatabaseProvisioningService {
       }),
     );
 
+    if (!tenantDatabase) {
+      throw new BadRequestException(
+        `Tenant database not found for tenant: ${tenantId}`,
+      );
+    }
+
     // 01: Remove old client from cache
     await this.prismaTenantFactory.removeTenantClient(tenantId);
 
@@ -254,7 +268,6 @@ export class TenantDatabaseProvisioningService {
     // 01: Connect to the default 'postgres' database to create the new database
     const postgresUrl = this.getPostgresConnectionUrl();
 
-    const { PrismaClient } = await import('@/prisma/master/client');
     const adminClient = new PrismaClient({
       datasources: {
         db: {
@@ -292,7 +305,6 @@ export class TenantDatabaseProvisioningService {
   private async dropPostgresDatabase(databaseName: string): Promise<void> {
     const postgresUrl = this.getPostgresConnectionUrl();
 
-    const { PrismaClient } = await import('@/prisma/master/client');
     const adminClient = new PrismaClient({
       datasources: {
         db: {
