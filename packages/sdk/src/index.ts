@@ -2,9 +2,13 @@ import { AuthClient } from './auth/client/auth-client.js';
 import type { AuthLogoutInput } from './auth/index.js';
 import { EventClient } from './event/client/event-client.js';
 import { HealthClient } from './health/client/health-client.js';
+import { SagaInstanceClient } from './saga-instance/client/saga-instance-client.js';
+import { SagaLogClient } from './saga-log/client/saga-log-client.js';
+import { SagaStepClient } from './saga-step/client/saga-step-client.js';
 import { GraphQLClient } from './shared/client/graphql-client.js';
 import type { GraphQLClientConfig } from './shared/types/index.js';
 import { SubscriptionPlanClient } from './subscription-plan/client/subscription-plan-client.js';
+import { TenantDatabaseClient } from './tenant-database/client/tenant-database-client.js';
 import { TenantMemberClient } from './tenant-member/client/tenant-member-client.js';
 import { TenantClient } from './tenant/client/tenant-client.js';
 import { UserClient } from './users/client/user-client.js';
@@ -29,7 +33,11 @@ export { WebStorage } from './shared/storage/web-storage.js';
 export * from './auth/index.js';
 export * from './event/index.js';
 export * from './health/index.js';
+export * from './saga-instance/index.js';
+export * from './saga-log/index.js';
+export * from './saga-step/index.js';
 export * from './subscription-plan/index.js';
+export * from './tenant-database/index.js';
 export * from './tenant-member/index.js';
 export * from './tenant/index.js';
 export * from './users/index.js';
@@ -40,9 +48,13 @@ export class SDK {
   private userClient: UserClient;
   private tenantClient: TenantClient;
   private tenantMemberClient: TenantMemberClient;
+  private tenantDatabaseClient: TenantDatabaseClient;
   private subscriptionPlanClient: SubscriptionPlanClient;
   private healthClient: HealthClient;
   private eventClient: EventClient;
+  private sagaInstanceClient: SagaInstanceClient;
+  private sagaStepClient: SagaStepClient;
+  private sagaLogClient: SagaLogClient;
 
   constructor(config: GraphQLClientConfig) {
     this.client = new GraphQLClient(config);
@@ -50,9 +62,13 @@ export class SDK {
     this.userClient = new UserClient(this.client);
     this.tenantClient = new TenantClient(this.client);
     this.tenantMemberClient = new TenantMemberClient(this.client);
+    this.tenantDatabaseClient = new TenantDatabaseClient(this.client);
     this.subscriptionPlanClient = new SubscriptionPlanClient(this.client);
     this.healthClient = new HealthClient(this.client);
     this.eventClient = new EventClient(this.client);
+    this.sagaInstanceClient = new SagaInstanceClient(this.client);
+    this.sagaStepClient = new SagaStepClient(this.client);
+    this.sagaLogClient = new SagaLogClient(this.client);
   }
 
   /**
@@ -270,6 +286,155 @@ export class SDK {
        * Check the health status of the API
        */
       check: this.healthClient.check.bind(this.healthClient),
+    };
+  }
+
+  /**
+   * Tenant Databases module
+   */
+  get tenantDatabases() {
+    return {
+      /**
+       * Find tenant databases by criteria with pagination, filters, and sorting
+       */
+      findByCriteria: this.tenantDatabaseClient.findByCriteria.bind(
+        this.tenantDatabaseClient,
+      ),
+      /**
+       * Find a tenant database by ID
+       */
+      findById: this.tenantDatabaseClient.findById.bind(
+        this.tenantDatabaseClient,
+      ),
+      /**
+       * Create a new tenant database
+       */
+      create: this.tenantDatabaseClient.create.bind(this.tenantDatabaseClient),
+      /**
+       * Update an existing tenant database
+       */
+      update: this.tenantDatabaseClient.update.bind(this.tenantDatabaseClient),
+      /**
+       * Delete a tenant database
+       */
+      delete: this.tenantDatabaseClient.delete.bind(this.tenantDatabaseClient),
+    };
+  }
+  /**
+   * Saga Instances module
+   */
+  get sagaInstances() {
+    return {
+      /**
+       * Find saga instances by criteria with pagination, filters, and sorting
+       */
+      findByCriteria: this.sagaInstanceClient.findByCriteria.bind(
+        this.sagaInstanceClient,
+      ),
+      /**
+       * Find a saga instance by ID
+       */
+      findById: this.sagaInstanceClient.findById.bind(this.sagaInstanceClient),
+      /**
+       * Create a new saga instance
+       */
+      create: this.sagaInstanceClient.create.bind(this.sagaInstanceClient),
+      /**
+       * Update an existing saga instance
+       */
+      update: this.sagaInstanceClient.update.bind(this.sagaInstanceClient),
+      /**
+       * Change the status of a saga instance
+       */
+      changeStatus: this.sagaInstanceClient.changeStatus.bind(
+        this.sagaInstanceClient,
+      ),
+      /**
+       * Delete a saga instance
+       */
+      delete: this.sagaInstanceClient.delete.bind(this.sagaInstanceClient),
+    };
+  }
+
+  /**
+   * Saga Steps module
+   */
+  get sagaSteps() {
+    return {
+      /**
+       * Find saga steps by criteria with pagination, filters, and sorting
+       */
+      findByCriteria: this.sagaStepClient.findByCriteria.bind(
+        this.sagaStepClient,
+      ),
+      /**
+       * Find a saga step by ID
+       */
+      findById: this.sagaStepClient.findById.bind(this.sagaStepClient),
+      /**
+       * Find saga steps by saga instance ID
+       */
+      findBySagaInstanceId: this.sagaStepClient.findBySagaInstanceId.bind(
+        this.sagaStepClient,
+      ),
+      /**
+       * Create a new saga step
+       */
+      create: this.sagaStepClient.create.bind(this.sagaStepClient),
+      /**
+       * Update an existing saga step
+       */
+      update: this.sagaStepClient.update.bind(this.sagaStepClient),
+      /**
+       * Change the status of a saga step
+       */
+      changeStatus: this.sagaStepClient.changeStatus.bind(this.sagaStepClient),
+      /**
+       * Delete a saga step
+       */
+      delete: this.sagaStepClient.delete.bind(this.sagaStepClient),
+    };
+  }
+
+  /**
+   * Saga Logs module
+   */
+  get sagaLogs() {
+    return {
+      /**
+       * Find saga logs by criteria with pagination, filters, and sorting
+       */
+      findByCriteria: this.sagaLogClient.findByCriteria.bind(
+        this.sagaLogClient,
+      ),
+      /**
+       * Find a saga log by ID
+       */
+      findById: this.sagaLogClient.findById.bind(this.sagaLogClient),
+      /**
+       * Find saga logs by saga instance ID
+       */
+      findBySagaInstanceId: this.sagaLogClient.findBySagaInstanceId.bind(
+        this.sagaLogClient,
+      ),
+      /**
+       * Find saga logs by saga step ID
+       */
+      findBySagaStepId: this.sagaLogClient.findBySagaStepId.bind(
+        this.sagaLogClient,
+      ),
+      /**
+       * Create a new saga log
+       */
+      create: this.sagaLogClient.create.bind(this.sagaLogClient),
+      /**
+       * Update an existing saga log
+       */
+      update: this.sagaLogClient.update.bind(this.sagaLogClient),
+      /**
+       * Delete a saga log
+       */
+      delete: this.sagaLogClient.delete.bind(this.sagaLogClient),
     };
   }
 }
