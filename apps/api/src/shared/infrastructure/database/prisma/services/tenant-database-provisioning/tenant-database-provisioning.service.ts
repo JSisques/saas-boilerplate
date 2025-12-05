@@ -71,7 +71,7 @@ export class TenantDatabaseProvisioningService {
       }),
     );
 
-    if (existingDatabase && existingDatabase.deletedAt === null) {
+    if (existingDatabase) {
       throw new BadRequestException(
         `Tenant database already exists for tenant: ${tenantId}`,
       );
@@ -178,6 +178,14 @@ export class TenantDatabaseProvisioningService {
       }),
     );
 
+    // If no database exists for this tenant, nothing to delete
+    if (!tenantDatabase) {
+      this.logger.warn(
+        `No tenant database found for tenant: ${tenantId}. Skipping deletion.`,
+      );
+      return;
+    }
+
     try {
       // 01: Remove tenant client from cache
       await this.prismaTenantFactory.removeTenantClient(tenantId);
@@ -220,6 +228,12 @@ export class TenantDatabaseProvisioningService {
         tenantId,
       }),
     );
+
+    if (!tenantDatabase) {
+      throw new BadRequestException(
+        `Tenant database not found for tenant: ${tenantId}`,
+      );
+    }
 
     // 01: Remove old client from cache
     await this.prismaTenantFactory.removeTenantClient(tenantId);

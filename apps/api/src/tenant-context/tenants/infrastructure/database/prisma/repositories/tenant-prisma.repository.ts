@@ -25,7 +25,7 @@ export class TenantPrismaRepository
    * @returns The tenant if found, null otherwise
    */
   async findById(id: string): Promise<TenantAggregate | null> {
-    const tenantData = await this.prismaMasterService.client.tenant.findUnique({
+    const tenantData = await this.prismaMasterService.client.tenant.findFirst({
       where: { id },
     });
 
@@ -43,7 +43,7 @@ export class TenantPrismaRepository
    * @returns The tenant if found, null otherwise
    */
   async findBySlug(slug: string): Promise<TenantAggregate | null> {
-    const tenantData = await this.prismaMasterService.client.tenant.findUnique({
+    const tenantData = await this.prismaMasterService.client.tenant.findFirst({
       where: { slug },
     });
 
