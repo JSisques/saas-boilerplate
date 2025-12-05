@@ -24,9 +24,8 @@ export interface ISagaStepConfig<T = unknown> {
  * and steps, including state tracking, error handling, and result storage.
  *
  * @abstract
- * @template TEvent - The event type that triggers the saga
  */
-export abstract class BaseSaga<TEvent = any> {
+export abstract class BaseSaga {
   protected readonly logger: Logger;
 
   constructor(protected readonly commandBus: CommandBus) {

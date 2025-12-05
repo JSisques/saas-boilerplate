@@ -31,7 +31,7 @@ import { CommandBus } from '@nestjs/cqrs';
  * to avoid duplicate execution.
  */
 @Injectable()
-export class AuthRegistrationSaga extends BaseSaga<AuthRegistrationRequestedEvent> {
+export class AuthRegistrationSaga extends BaseSaga {
   private compensationActions: Array<() => Promise<void>> = [];
 
   constructor(commandBus: CommandBus) {

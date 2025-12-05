@@ -31,7 +31,6 @@ describe('AuthRegisterByEmailCommandHandler', () => {
     it('should register auth successfully', async () => {
       const email = 'test@example.com';
       const password = 'SecurePass123!';
-      const authId = '123e4567-e89b-12d3-a456-426614174000';
 
       const command = new AuthRegisterByEmailCommand({ email, password });
 

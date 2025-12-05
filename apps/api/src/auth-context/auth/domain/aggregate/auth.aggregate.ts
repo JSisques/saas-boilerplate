@@ -165,19 +165,21 @@ export class AuthAggregate extends BaseAggregate {
    * @param generateEvent - Whether to generate the auth registered by email event. Default is true.
    */
   public registerByEmail(tenantName: string, generateEvent: boolean = true) {
-    this.apply(
-      new AuthRegisteredByEmailEvent(
-        {
-          aggregateId: this._id.value,
-          aggregateType: AuthAggregate.name,
-          eventType: AuthRegisteredByEmailEvent.name,
-        },
-        {
-          ...this.toPrimitives(),
-          tenantName,
-        },
-      ),
-    );
+    if (generateEvent) {
+      this.apply(
+        new AuthRegisteredByEmailEvent(
+          {
+            aggregateId: this._id.value,
+            aggregateType: AuthAggregate.name,
+            eventType: AuthRegisteredByEmailEvent.name,
+          },
+          {
+            ...this.toPrimitives(),
+            tenantName,
+          },
+        ),
+      );
+    }
   }
 
   public get id(): AuthUuidValueObject {
