@@ -8,6 +8,7 @@ import { SagaStepClient } from './saga-step/client/saga-step-client.js';
 import { GraphQLClient } from './shared/client/graphql-client.js';
 import type { GraphQLClientConfig } from './shared/types/index.js';
 import { SubscriptionPlanClient } from './subscription-plan/client/subscription-plan-client.js';
+import { TenantDatabaseClient } from './tenant-database/client/tenant-database-client.js';
 import { TenantMemberClient } from './tenant-member/client/tenant-member-client.js';
 import { TenantClient } from './tenant/client/tenant-client.js';
 import { UserClient } from './users/client/user-client.js';
@@ -36,6 +37,7 @@ export * from './saga-instance/index.js';
 export * from './saga-log/index.js';
 export * from './saga-step/index.js';
 export * from './subscription-plan/index.js';
+export * from './tenant-database/index.js';
 export * from './tenant-member/index.js';
 export * from './tenant/index.js';
 export * from './users/index.js';
@@ -46,6 +48,7 @@ export class SDK {
   private userClient: UserClient;
   private tenantClient: TenantClient;
   private tenantMemberClient: TenantMemberClient;
+  private tenantDatabaseClient: TenantDatabaseClient;
   private subscriptionPlanClient: SubscriptionPlanClient;
   private healthClient: HealthClient;
   private eventClient: EventClient;
@@ -59,6 +62,7 @@ export class SDK {
     this.userClient = new UserClient(this.client);
     this.tenantClient = new TenantClient(this.client);
     this.tenantMemberClient = new TenantMemberClient(this.client);
+    this.tenantDatabaseClient = new TenantDatabaseClient(this.client);
     this.subscriptionPlanClient = new SubscriptionPlanClient(this.client);
     this.healthClient = new HealthClient(this.client);
     this.eventClient = new EventClient(this.client);
@@ -285,6 +289,37 @@ export class SDK {
     };
   }
 
+  /**
+   * Tenant Databases module
+   */
+  get tenantDatabases() {
+    return {
+      /**
+       * Find tenant databases by criteria with pagination, filters, and sorting
+       */
+      findByCriteria: this.tenantDatabaseClient.findByCriteria.bind(
+        this.tenantDatabaseClient,
+      ),
+      /**
+       * Find a tenant database by ID
+       */
+      findById: this.tenantDatabaseClient.findById.bind(
+        this.tenantDatabaseClient,
+      ),
+      /**
+       * Create a new tenant database
+       */
+      create: this.tenantDatabaseClient.create.bind(this.tenantDatabaseClient),
+      /**
+       * Update an existing tenant database
+       */
+      update: this.tenantDatabaseClient.update.bind(this.tenantDatabaseClient),
+      /**
+       * Delete a tenant database
+       */
+      delete: this.tenantDatabaseClient.delete.bind(this.tenantDatabaseClient),
+    };
+  }
   /**
    * Saga Instances module
    */
