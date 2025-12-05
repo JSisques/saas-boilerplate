@@ -1,11 +1,14 @@
 import { AuthCreateCommand } from '@/auth-context/auth/application/commands/auth-create/auth-create.command';
+import { AuthDeleteCommand } from '@/auth-context/auth/application/commands/auth-delete/auth-delete.command';
 import { IAuthCreateCommandDto } from '@/auth-context/auth/application/dtos/commands/auth-create/auth-create-command.dto';
 import { BaseSaga } from '@/shared/application/sagas/base-saga/base-saga';
 import { AuthRegistrationRequestedEvent } from '@/shared/domain/events/auth/auth-registration-requested/auth-registration-requested.event';
 import { TenantMemberAddCommand } from '@/tenant-context/tenant-members/application/commands/tenant-member-add/tenant-member-add.command';
+import { TenantMemberRemoveCommand } from '@/tenant-context/tenant-members/application/commands/tenant-member-remove/tenant-member-remove.command';
 import { TenantMemberRoleEnum } from '@/tenant-context/tenant-members/domain/enums/tenant-member-role/tenant-member-role.enum';
 import { TenantCreateCommand } from '@/tenant-context/tenants/application/commands/tenant-create/tenant-create.command';
 import { TenantDeleteCommand } from '@/tenant-context/tenants/application/commands/tenant-delete/tenant-delete.command';
+import { UserDeleteCommand } from '@/user-context/users/application/commands/delete-user/delete-user.command';
 import { UserCreateCommand } from '@/user-context/users/application/commands/user-create/user-create.command';
 import { Injectable } from '@nestjs/common';
 import { CommandBus } from '@nestjs/cqrs';
@@ -39,7 +42,6 @@ export class AuthRegistrationSaga extends BaseSaga<AuthRegistrationRequestedEven
     const authId = event.aggregateId;
     const userId = event.data.userId;
     const tenantName = event.data.tenantName;
-    const tenantId = event.data.tenantId;
 
     this.logger.log(
       `🚀 Starting complete user registration SAGA for auth: ${authId}, user: ${userId}${tenantName ? `, tenant: ${tenantName}` : ''}`,
@@ -59,8 +61,21 @@ export class AuthRegistrationSaga extends BaseSaga<AuthRegistrationRequestedEven
       });
       const userId = userResult.userId;
 
+      // Register compensation: delete user
+      this.compensationActions.push(async () => {
+        this.logger.log(`🔄 Compensating: Deleting user ${userId}`);
+        try {
+          await this.commandBus.execute(new UserDeleteCommand({ id: userId }));
+        } catch (compensationError) {
+          this.logger.error(
+            `❌ Failed to delete user ${userId} during compensation: ${compensationError}`,
+          );
+          // Continue with other compensations even if this fails
+        }
+      });
+
       // Step 2: Create auth
-      await this.executeStep(sagaInstanceId, {
+      const authResult = await this.executeStep(sagaInstanceId, {
         name: 'Create Auth',
         order: 2,
         payload: { userId, ...(event.data as IAuthCreateCommandDto) },
@@ -78,6 +93,21 @@ export class AuthRegistrationSaga extends BaseSaga<AuthRegistrationRequestedEven
             lastLoginAt: event.data.lastLoginAt,
           }),
       });
+      const createdAuthId = authResult.authId;
+
+      // Register compensation: delete auth
+      this.compensationActions.push(async () => {
+        this.logger.log(`🔄 Compensating: Deleting auth ${createdAuthId}`);
+        try {
+          await this.commandBus.execute(
+            new AuthDeleteCommand({ id: createdAuthId }),
+          );
+        } catch (compensationError) {
+          this.logger.error(
+            `❌ Failed to delete auth ${createdAuthId} during compensation: ${compensationError}`,
+          );
+        }
+      });
 
       // Step 3: Create tenant (if tenantName is provided)
       if (tenantName) {
@@ -94,13 +124,20 @@ export class AuthRegistrationSaga extends BaseSaga<AuthRegistrationRequestedEven
           this.logger.log(
             `🔄 Compensating: Deleting tenant ${createdTenantId}`,
           );
-          await this.commandBus.execute(
-            new TenantDeleteCommand({ id: createdTenantId }),
-          );
+          try {
+            await this.commandBus.execute(
+              new TenantDeleteCommand({ id: createdTenantId }),
+            );
+          } catch (compensationError) {
+            this.logger.error(
+              `❌ Failed to delete tenant ${createdTenantId} during compensation: ${compensationError}`,
+            );
+            // Continue with other compensations even if this fails
+          }
         });
 
         // Step 4: Associate user as tenant member (if tenant was created)
-        await this.executeStep(sagaInstanceId, {
+        const tenantMemberResult = await this.executeStep(sagaInstanceId, {
           name: 'Add User as Tenant Member',
           order: 4,
           payload: {
@@ -115,12 +152,23 @@ export class AuthRegistrationSaga extends BaseSaga<AuthRegistrationRequestedEven
               TenantMemberRoleEnum.OWNER,
             ),
         });
+        const createdTenantMemberId = tenantMemberResult.tenantMemberId;
 
         // Register compensation: delete tenant member
         this.compensationActions.push(async () => {
           this.logger.log(
-            `🔄 Compensating: Removing tenant member ${userId} from tenant ${createdTenantId}`,
+            `🔄 Compensating: Removing tenant member ${createdTenantMemberId} (user ${userId} from tenant ${createdTenantId})`,
           );
+          try {
+            await this.commandBus.execute(
+              new TenantMemberRemoveCommand({ id: createdTenantMemberId }),
+            );
+          } catch (compensationError) {
+            this.logger.error(
+              `❌ Failed to remove tenant member ${createdTenantMemberId} during compensation: ${compensationError}`,
+            );
+            // Continue with other compensations even if this fails
+          }
         });
       }
 
