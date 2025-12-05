@@ -16,7 +16,7 @@ import { CommandBus, EventsHandler, IEventHandler } from '@nestjs/cqrs';
  */
 @EventsHandler(TenantCreatedEvent)
 export class TenantCreatedProvisionDatabaseSaga
-  extends BaseSaga<TenantCreatedEvent>
+  extends BaseSaga
   implements IEventHandler<TenantCreatedEvent>
 {
   constructor(

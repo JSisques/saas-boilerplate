@@ -15,7 +15,7 @@ import { CommandBus, EventsHandler, IEventHandler } from '@nestjs/cqrs';
  */
 @EventsHandler(TenantDeletedEvent)
 export class TenantDeletedCleanupDatabaseSaga
-  extends BaseSaga<TenantDeletedEvent>
+  extends BaseSaga
   implements IEventHandler<TenantDeletedEvent>
 {
   constructor(
