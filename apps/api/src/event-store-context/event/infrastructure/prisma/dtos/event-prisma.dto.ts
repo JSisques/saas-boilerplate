@@ -1,8 +1,10 @@
-export type EventPrismaDto = {
+import { BaseMongoDto } from '@/shared/infrastructure/database/mongodb/dtos/base-mongo.dto';
+
+export type EventPrismaDto = BaseMongoDto & {
   id: string;
   eventType: string;
   aggregateType: string;
   aggregateId: string;
-  payload: any | null;
+  payload: Record<string, unknown> | null;
   timestamp: Date;
 };

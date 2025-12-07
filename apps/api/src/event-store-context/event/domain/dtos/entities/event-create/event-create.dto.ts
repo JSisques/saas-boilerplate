@@ -3,6 +3,7 @@ import { EventAggregateTypeValueObject } from '@/event-store-context/event/domai
 import { EventPayloadValueObject } from '@/event-store-context/event/domain/value-objects/event-payload/event-payload.vo';
 import { EventTimestampValueObject } from '@/event-store-context/event/domain/value-objects/event-timestamp/event-timestamp.vo';
 import { EventTypeValueObject } from '@/event-store-context/event/domain/value-objects/event-type/event-type.vo';
+import { IBaseAggregateDto } from '@/shared/domain/interfaces/base-aggregate-dto.interface';
 import { EventUuidValueObject } from '@/shared/domain/value-objects/identifiers/event-uuid/event-uuid.vo';
 
 /**
@@ -16,7 +17,7 @@ import { EventUuidValueObject } from '@/shared/domain/value-objects/identifiers/
  * @property {EventPayloadValueObject} payload - The payload of the event.
  * @property {EventTimestampValueObject} timestamp - The timestamp of the event.
  */
-export interface IEventCreateDto {
+export interface IEventCreateDto extends IBaseAggregateDto {
   id: EventUuidValueObject;
   eventType: EventTypeValueObject;
   aggregateType: EventAggregateTypeValueObject;

@@ -7,6 +7,7 @@ import { EventPayloadValueObject } from '@/event-store-context/event/domain/valu
 import { EventTimestampValueObject } from '@/event-store-context/event/domain/value-objects/event-timestamp/event-timestamp.vo';
 import { EventTypeValueObject } from '@/event-store-context/event/domain/value-objects/event-type/event-type.vo';
 import { IWriteFactory } from '@/shared/domain/interfaces/write-factory.interface';
+import { DateValueObject } from '@/shared/domain/value-objects/date/date.vo';
 import { EventUuidValueObject } from '@/shared/domain/value-objects/identifiers/event-uuid/event-uuid.vo';
 import { Injectable } from '@nestjs/common';
 
@@ -57,6 +58,8 @@ export class EventAggregateFactory
       aggregateId: new EventAggregateIdValueObject(primitives.aggregateId),
       payload: new EventPayloadValueObject(primitives.payload),
       timestamp: new EventTimestampValueObject(primitives.timestamp),
+      createdAt: new DateValueObject(primitives.createdAt),
+      updatedAt: new DateValueObject(primitives.updatedAt),
     });
   }
 }
