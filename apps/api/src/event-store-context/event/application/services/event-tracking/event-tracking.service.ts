@@ -55,6 +55,8 @@ export class EventTrackingService
       aggregateId: event.aggregateId,
       payload: event.data,
       timestamp: event.ocurredAt,
+      createdAt: event.data.createdAt,
+      updatedAt: event.data.updatedAt,
     });
 
     // 02: Save the event entity

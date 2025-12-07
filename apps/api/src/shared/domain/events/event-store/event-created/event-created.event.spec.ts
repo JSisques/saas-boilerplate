@@ -1,6 +1,6 @@
+import { BaseEvent } from '@/shared/domain/events/base-event.interface';
 import { EventCreatedEvent } from '@/shared/domain/events/event-store/event-created/event-created.event';
 import { IEventEventData } from '@/shared/domain/events/event-store/interfaces/event-event-data.interface';
-import { BaseEvent } from '@/shared/domain/events/base-event.interface';
 import { IEventMetadata } from '@/shared/domain/interfaces/event-metadata.interface';
 
 describe('EventCreatedEvent', () => {
@@ -18,6 +18,8 @@ describe('EventCreatedEvent', () => {
     aggregateId: '123e4567-e89b-12d3-a456-426614174001',
     payload: { name: 'John Doe', email: 'john@example.com' },
     timestamp: new Date('2024-01-01T10:00:00Z'),
+    createdAt: new Date('2024-01-02T12:00:00Z'),
+    updatedAt: new Date('2024-01-02T12:00:00Z'),
   });
 
   it('should be an instance of BaseEvent', () => {
@@ -53,6 +55,8 @@ describe('EventCreatedEvent', () => {
     expect(event.data.aggregateId).toBe(data.aggregateId);
     expect(event.data.payload).toEqual(data.payload);
     expect(event.data.timestamp).toEqual(data.timestamp);
+    expect(event.data.createdAt).toEqual(data.createdAt);
+    expect(event.data.updatedAt).toEqual(data.updatedAt);
   });
 
   it('should generate a unique eventId', () => {

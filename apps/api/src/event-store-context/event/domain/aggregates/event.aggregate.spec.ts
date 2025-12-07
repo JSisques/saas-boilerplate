@@ -6,6 +6,7 @@ import { EventPayloadValueObject } from '@/event-store-context/event/domain/valu
 import { EventTimestampValueObject } from '@/event-store-context/event/domain/value-objects/event-timestamp/event-timestamp.vo';
 import { EventTypeValueObject } from '@/event-store-context/event/domain/value-objects/event-type/event-type.vo';
 import { EventCreatedEvent } from '@/shared/domain/events/event-store/event-created/event-created.event';
+import { DateValueObject } from '@/shared/domain/value-objects/date/date.vo';
 import { EventUuidValueObject } from '@/shared/domain/value-objects/identifiers/event-uuid/event-uuid.vo';
 
 describe('EventAggregate', () => {
@@ -21,6 +22,8 @@ describe('EventAggregate', () => {
       timestamp: new EventTimestampValueObject(
         new Date('2024-01-01T10:00:00Z'),
       ),
+      createdAt: new DateValueObject(new Date('2024-01-02T12:00:00Z')),
+      updatedAt: new DateValueObject(new Date('2024-01-02T12:00:00Z')),
     };
   };
 
@@ -60,6 +63,8 @@ describe('EventAggregate', () => {
     expect(aggregate.aggregateId).toBeInstanceOf(EventAggregateIdValueObject);
     expect(aggregate.payload).toBeInstanceOf(EventPayloadValueObject);
     expect(aggregate.timestamp).toBeInstanceOf(EventTimestampValueObject);
+    expect(aggregate.createdAt).toBeInstanceOf(DateValueObject);
+    expect(aggregate.updatedAt).toBeInstanceOf(DateValueObject);
   });
 
   it('should convert to primitives correctly', () => {
@@ -75,6 +80,8 @@ describe('EventAggregate', () => {
       aggregateId: props.aggregateId.value,
       payload: props.payload.value,
       timestamp: props.timestamp.value,
+      createdAt: props.createdAt.value,
+      updatedAt: props.updatedAt.value,
     });
   });
 

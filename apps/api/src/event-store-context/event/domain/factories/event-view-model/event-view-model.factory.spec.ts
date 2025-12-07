@@ -6,6 +6,7 @@ import { EventPayloadValueObject } from '@/event-store-context/event/domain/valu
 import { EventTimestampValueObject } from '@/event-store-context/event/domain/value-objects/event-timestamp/event-timestamp.vo';
 import { EventTypeValueObject } from '@/event-store-context/event/domain/value-objects/event-type/event-type.vo';
 import { EventViewModel } from '@/event-store-context/event/domain/view-models/event-store.view-model';
+import { DateValueObject } from '@/shared/domain/value-objects/date/date.vo';
 import { EventUuidValueObject } from '@/shared/domain/value-objects/identifiers/event-uuid/event-uuid.vo';
 
 describe('EventViewModelFactory', () => {
@@ -33,6 +34,8 @@ describe('EventViewModelFactory', () => {
         timestamp: new EventTimestampValueObject(
           new Date('2024-01-01T10:00:00Z'),
         ),
+        createdAt: new DateValueObject(new Date('2024-01-02T12:00:00Z')),
+        updatedAt: new DateValueObject(new Date('2024-01-02T12:00:00Z')),
       },
       false,
     );
@@ -44,13 +47,13 @@ describe('EventViewModelFactory', () => {
     aggregateId: '123e4567-e89b-12d3-a456-426614174001',
     payload: { foo: 'bar' },
     timestamp: new Date('2024-01-01T10:00:00Z'),
+    createdAt: new Date('2024-01-02T12:00:00Z'),
+    updatedAt: new Date('2024-01-02T12:00:00Z'),
   });
 
   it('should create view model from DTO', () => {
     const dto = {
       ...createPrimitives(),
-      createdAt: new Date('2024-01-02T12:00:00Z'),
-      updatedAt: new Date('2024-01-02T12:30:00Z'),
     };
 
     const viewModel = factory.create(dto);
@@ -77,8 +80,8 @@ describe('EventViewModelFactory', () => {
     expect(viewModel.aggregateId).toBe(primitives.aggregateId);
     expect(viewModel.payload).toEqual(primitives.payload);
     expect(viewModel.timestamp).toEqual(primitives.timestamp);
-    expect(viewModel.createdAt).toEqual(new Date('2024-01-02T12:00:00Z'));
-    expect(viewModel.updatedAt).toEqual(new Date('2024-01-02T12:00:00Z'));
+    expect(viewModel.createdAt).toEqual(primitives.createdAt);
+    expect(viewModel.updatedAt).toEqual(primitives.updatedAt);
   });
 
   it('should create view model from aggregate using current timestamp for metadata fields', () => {
@@ -92,7 +95,7 @@ describe('EventViewModelFactory', () => {
     expect(viewModel.aggregateId).toBe(aggregate.aggregateId.value);
     expect(viewModel.payload).toEqual(aggregate.payload?.value);
     expect(viewModel.timestamp).toEqual(aggregate.timestamp.value);
-    expect(viewModel.createdAt).toEqual(new Date('2024-01-02T12:00:00Z'));
-    expect(viewModel.updatedAt).toEqual(new Date('2024-01-02T12:00:00Z'));
+    expect(viewModel.createdAt).toEqual(aggregate.createdAt.value);
+    expect(viewModel.updatedAt).toEqual(aggregate.updatedAt.value);
   });
 });

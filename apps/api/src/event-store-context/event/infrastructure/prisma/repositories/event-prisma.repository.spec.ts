@@ -7,6 +7,7 @@ import { EventTypeValueObject } from '@/event-store-context/event/domain/value-o
 import { EventPrismaDto } from '@/event-store-context/event/infrastructure/prisma/dtos/event-prisma.dto';
 import { EventPrismaMapper } from '@/event-store-context/event/infrastructure/prisma/mappers/event-prisma.mapper';
 import { EventPrismaRepository } from '@/event-store-context/event/infrastructure/prisma/repositories/event-prisma.repository';
+import { DateValueObject } from '@/shared/domain/value-objects/date/date.vo';
 import { EventUuidValueObject } from '@/shared/domain/value-objects/identifiers/event-uuid/event-uuid.vo';
 
 describe('EventPrismaRepository', () => {
@@ -25,6 +26,8 @@ describe('EventPrismaRepository', () => {
     aggregateId: '123e4567-e89b-12d3-a456-426614174001',
     payload: { foo: 'bar' },
     timestamp: new Date('2024-01-01T10:00:00Z'),
+    createdAt: new Date('2024-01-02T12:00:00Z'),
+    updatedAt: new Date('2024-01-02T12:00:00Z'),
   };
 
   const eventAggregate = new EventAggregate(
@@ -37,6 +40,8 @@ describe('EventPrismaRepository', () => {
       eventType: new EventTypeValueObject(prismaEvent.eventType),
       payload: new EventPayloadValueObject(prismaEvent.payload),
       timestamp: new EventTimestampValueObject(prismaEvent.timestamp),
+      createdAt: new DateValueObject(prismaEvent.createdAt),
+      updatedAt: new DateValueObject(prismaEvent.updatedAt),
     },
     false,
   );

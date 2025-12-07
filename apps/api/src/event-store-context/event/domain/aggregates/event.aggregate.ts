@@ -5,11 +5,11 @@ import { EventAggregateTypeValueObject } from '@/event-store-context/event/domai
 import { EventPayloadValueObject } from '@/event-store-context/event/domain/value-objects/event-payload/event-payload.vo';
 import { EventTimestampValueObject } from '@/event-store-context/event/domain/value-objects/event-timestamp/event-timestamp.vo';
 import { EventTypeValueObject } from '@/event-store-context/event/domain/value-objects/event-type/event-type.vo';
+import { BaseAggregate } from '@/shared/domain/aggregates/base-aggregate/base.aggregate';
 import { EventCreatedEvent } from '@/shared/domain/events/event-store/event-created/event-created.event';
 import { EventUuidValueObject } from '@/shared/domain/value-objects/identifiers/event-uuid/event-uuid.vo';
-import { AggregateRoot } from '@nestjs/cqrs';
 
-export class EventAggregate extends AggregateRoot {
+export class EventAggregate extends BaseAggregate {
   private readonly _id: EventUuidValueObject;
   private readonly _aggregateId: EventAggregateIdValueObject;
   private readonly _aggregateType: EventAggregateTypeValueObject;
@@ -18,7 +18,7 @@ export class EventAggregate extends AggregateRoot {
   private readonly _timestamp: EventTimestampValueObject;
 
   constructor(props: IEventCreateDto, generateEvent: boolean = true) {
-    super();
+    super(props.createdAt, props.updatedAt);
 
     this._id = props.id;
     this._aggregateId = props.aggregateId;
@@ -73,6 +73,8 @@ export class EventAggregate extends AggregateRoot {
       aggregateId: this._aggregateId.value,
       payload: this._payload?.value ?? null,
       timestamp: this._timestamp.value,
+      createdAt: this.createdAt.value,
+      updatedAt: this.updatedAt.value,
     };
   }
 }

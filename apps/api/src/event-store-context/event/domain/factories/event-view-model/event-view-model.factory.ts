@@ -37,8 +37,6 @@ export class EventViewModelFactory
    * @returns The event store view model.
    */
   fromPrimitives(primitives: EventPrimitives): EventViewModel {
-    const now = new Date();
-
     return new EventViewModel({
       id: primitives.id,
       eventType: primitives.eventType,
@@ -46,8 +44,8 @@ export class EventViewModelFactory
       aggregateId: primitives.aggregateId,
       payload: primitives.payload,
       timestamp: primitives.timestamp,
-      createdAt: now,
-      updatedAt: now,
+      createdAt: primitives.createdAt,
+      updatedAt: primitives.updatedAt,
     });
   }
   /**
@@ -57,8 +55,6 @@ export class EventViewModelFactory
    * @returns The event store view model.
    */
   fromAggregate(aggregate: EventAggregate): EventViewModel {
-    const now = new Date();
-
     return new EventViewModel({
       id: aggregate.id.value,
       eventType: aggregate.eventType.value,
@@ -66,8 +62,8 @@ export class EventViewModelFactory
       aggregateId: aggregate.aggregateId.value,
       payload: aggregate.payload?.value,
       timestamp: aggregate.timestamp.value,
-      createdAt: now,
-      updatedAt: now,
+      createdAt: aggregate.createdAt.value,
+      updatedAt: aggregate.updatedAt.value,
     });
   }
 }

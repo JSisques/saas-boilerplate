@@ -5,6 +5,7 @@ import { EventAggregateTypeValueObject } from '@/event-store-context/event/domai
 import { EventPayloadValueObject } from '@/event-store-context/event/domain/value-objects/event-payload/event-payload.vo';
 import { EventTimestampValueObject } from '@/event-store-context/event/domain/value-objects/event-timestamp/event-timestamp.vo';
 import { EventTypeValueObject } from '@/event-store-context/event/domain/value-objects/event-type/event-type.vo';
+import { DateValueObject } from '@/shared/domain/value-objects/date/date.vo';
 import { EventUuidValueObject } from '@/shared/domain/value-objects/identifiers/event-uuid/event-uuid.vo';
 
 describe('EventAggregateFactory', () => {
@@ -23,6 +24,8 @@ describe('EventAggregateFactory', () => {
     eventType: new EventTypeValueObject('UserCreatedEvent'),
     payload: new EventPayloadValueObject({ foo: 'bar' }),
     timestamp: new EventTimestampValueObject(new Date('2024-01-01T10:00:00Z')),
+    createdAt: new DateValueObject(new Date('2024-01-02T12:00:00Z')),
+    updatedAt: new DateValueObject(new Date('2024-01-02T12:00:00Z')),
   });
 
   const createPrimitives = () => ({
@@ -32,6 +35,8 @@ describe('EventAggregateFactory', () => {
     eventType: 'UserCreatedEvent',
     payload: { foo: 'bar' },
     timestamp: new Date('2024-01-01T10:00:00Z'),
+    createdAt: new Date('2024-01-02T12:00:00Z'),
+    updatedAt: new Date('2024-01-02T12:00:00Z'),
   });
 
   it('should create an EventAggregate from domain props', () => {
@@ -46,6 +51,8 @@ describe('EventAggregateFactory', () => {
     expect(aggregate.eventType.value).toBe(props.eventType.value);
     expect(aggregate.payload?.value).toEqual(props.payload.value);
     expect(aggregate.timestamp.value).toEqual(props.timestamp.value);
+    expect(aggregate.createdAt.value).toEqual(props.createdAt.value);
+    expect(aggregate.updatedAt.value).toEqual(props.updatedAt.value);
   });
 
   it('should create an EventAggregate from primitives', () => {
@@ -60,6 +67,8 @@ describe('EventAggregateFactory', () => {
     expect(aggregate.eventType.value).toBe(primitives.eventType);
     expect(aggregate.payload?.value).toEqual(primitives.payload);
     expect(aggregate.timestamp.value).toEqual(primitives.timestamp);
+    expect(aggregate.createdAt.value).toEqual(primitives.createdAt);
+    expect(aggregate.updatedAt.value).toEqual(primitives.updatedAt);
   });
 
   it('should emit creation event when rebuilding from primitives', () => {
