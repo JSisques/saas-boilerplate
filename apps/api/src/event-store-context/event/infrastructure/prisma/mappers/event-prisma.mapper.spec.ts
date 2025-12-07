@@ -7,6 +7,7 @@ import { EventTimestampValueObject } from '@/event-store-context/event/domain/va
 import { EventTypeValueObject } from '@/event-store-context/event/domain/value-objects/event-type/event-type.vo';
 import { EventPrismaDto } from '@/event-store-context/event/infrastructure/prisma/dtos/event-prisma.dto';
 import { EventPrismaMapper } from '@/event-store-context/event/infrastructure/prisma/mappers/event-prisma.mapper';
+import { DateValueObject } from '@/shared/domain/value-objects/date/date.vo';
 import { EventUuidValueObject } from '@/shared/domain/value-objects/identifiers/event-uuid/event-uuid.vo';
 
 describe('EventPrismaMapper', () => {
@@ -20,6 +21,8 @@ describe('EventPrismaMapper', () => {
     aggregateId: '123e4567-e89b-12d3-a456-426614174001',
     payload: { foo: 'bar' },
     timestamp: new Date('2024-01-01T10:00:00Z'),
+    createdAt: new Date('2024-01-02T12:00:00Z'),
+    updatedAt: new Date('2024-01-02T12:00:00Z'),
   };
 
   const aggregate = new EventAggregate(
@@ -32,6 +35,8 @@ describe('EventPrismaMapper', () => {
       eventType: new EventTypeValueObject(prismaData.eventType),
       payload: new EventPayloadValueObject(prismaData.payload),
       timestamp: new EventTimestampValueObject(prismaData.timestamp),
+      createdAt: new DateValueObject(prismaData.createdAt),
+      updatedAt: new DateValueObject(prismaData.updatedAt),
     },
     false,
   );
@@ -61,6 +66,8 @@ describe('EventPrismaMapper', () => {
       aggregateId: prismaData.aggregateId,
       payload: prismaData.payload,
       timestamp: prismaData.timestamp,
+      createdAt: prismaData.createdAt,
+      updatedAt: prismaData.updatedAt,
     });
   });
 
@@ -74,6 +81,8 @@ describe('EventPrismaMapper', () => {
       aggregateId: aggregate.aggregateId.value,
       payload: aggregate.payload?.value ?? null,
       timestamp: aggregate.timestamp.value,
+      createdAt: aggregate.createdAt.value,
+      updatedAt: aggregate.updatedAt.value,
     });
   });
 });

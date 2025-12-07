@@ -40,6 +40,8 @@ describe('EventCreatedEventHandler', () => {
       aggregateId: '123e4567-e89b-12d3-a456-426614174001',
       payload: { foo: 'bar' },
       timestamp: new Date('2024-01-01T10:00:00Z'),
+      createdAt: new Date('2024-01-02T12:00:00Z'),
+      updatedAt: new Date('2024-01-02T12:00:00Z'),
     };
     const event = new EventCreatedEvent(
       {

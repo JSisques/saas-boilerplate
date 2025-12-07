@@ -6,6 +6,7 @@ import { EventAggregateTypeValueObject } from '@/event-store-context/event/domai
 import { EventPayloadValueObject } from '@/event-store-context/event/domain/value-objects/event-payload/event-payload.vo';
 import { EventTimestampValueObject } from '@/event-store-context/event/domain/value-objects/event-timestamp/event-timestamp.vo';
 import { EventTypeValueObject } from '@/event-store-context/event/domain/value-objects/event-type/event-type.vo';
+import { DateValueObject } from '@/shared/domain/value-objects/date/date.vo';
 import { EventUuidValueObject } from '@/shared/domain/value-objects/identifiers/event-uuid/event-uuid.vo';
 import { EventBus } from '@nestjs/cqrs';
 
@@ -44,6 +45,8 @@ describe('EventPublishService', () => {
         timestamp: new EventTimestampValueObject(
           new Date('2024-01-01T10:00:00Z'),
         ),
+        createdAt: new DateValueObject(new Date('2024-01-02T12:00:00Z')),
+        updatedAt: new DateValueObject(new Date('2024-01-02T12:00:00Z')),
       },
       false,
     );
@@ -82,6 +85,8 @@ describe('EventPublishService', () => {
         timestamp: new EventTimestampValueObject(
           new Date('2024-02-01T10:00:00Z'),
         ),
+        createdAt: new DateValueObject(new Date('2024-01-02T12:00:00Z')),
+        updatedAt: new DateValueObject(new Date('2024-01-02T12:00:00Z')),
       },
       false,
     );
