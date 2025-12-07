@@ -12,6 +12,7 @@ import { AuthTwoFactorEnabledValueObject } from '@/auth-context/auth/domain/valu
 import { BaseAggregate } from '@/shared/domain/aggregates/base-aggregate/base.aggregate';
 import { AuthCreatedEvent } from '@/shared/domain/events/auth/auth-created/auth-created.event';
 import { AuthDeletedEvent } from '@/shared/domain/events/auth/auth-deleted/auth-deleted.event';
+import { AuthRegisteredByEmailEvent } from '@/shared/domain/events/auth/auth-registered-by-email/auth-registered-by-email.event';
 import { AuthUpdatedLastLoginAtEvent } from '@/shared/domain/events/auth/auth-updated-last-login-at/auth-updated-last-login-at.event';
 import { AuthUpdatedEvent } from '@/shared/domain/events/auth/auth-updated/auth-updated.event';
 import { DateValueObject } from '@/shared/domain/value-objects/date/date.vo';
@@ -110,6 +111,12 @@ export class AuthAggregate extends BaseAggregate {
     }
   }
 
+  /**
+   * Update the last login at of the auth.
+   *
+   * @param lastLoginAt - The last login at of the auth.
+   * @param generateEvent - Whether to generate the auth updated last login at event. Default is true.
+   */
   public updateLastLoginAt(
     lastLoginAt: AuthLastLoginAtValueObject,
     generateEvent: boolean = true,
@@ -145,6 +152,31 @@ export class AuthAggregate extends BaseAggregate {
             eventType: AuthDeletedEvent.name,
           },
           this.toPrimitives(),
+        ),
+      );
+    }
+  }
+
+  /**
+   * Register the auth by email.
+   *
+   * @param email - The email of the auth.
+   * @param password - The password of the auth.
+   * @param generateEvent - Whether to generate the auth registered by email event. Default is true.
+   */
+  public registerByEmail(tenantName: string, generateEvent: boolean = true) {
+    if (generateEvent) {
+      this.apply(
+        new AuthRegisteredByEmailEvent(
+          {
+            aggregateId: this._id.value,
+            aggregateType: AuthAggregate.name,
+            eventType: AuthRegisteredByEmailEvent.name,
+          },
+          {
+            ...this.toPrimitives(),
+            tenantName,
+          },
         ),
       );
     }

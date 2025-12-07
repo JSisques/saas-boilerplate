@@ -12,21 +12,23 @@ export class EventPrismaMapper {
   /**
    * Converts a Prisma data to a event aggregate
    *
-   * @param EventData - The Prisma data to convert
+   * @param eventData - The Prisma data to convert
    * @returns The event aggregate
    */
-  toDomainEntity(EventData: EventPrismaDto): EventAggregate {
+  toDomainEntity(eventData: EventPrismaDto): EventAggregate {
     this.logger.log(
-      `Converting Prisma data to domain entity with id ${EventData.id}`,
+      `Converting Prisma data to domain entity with id ${eventData.id}`,
     );
 
     return this.eventAggregateFactory.fromPrimitives({
-      id: EventData.id,
-      eventType: EventData.eventType,
-      aggregateType: EventData.aggregateType,
-      aggregateId: EventData.aggregateId,
-      payload: EventData.payload,
-      timestamp: EventData.timestamp,
+      id: eventData.id,
+      eventType: eventData.eventType,
+      aggregateType: eventData.aggregateType,
+      aggregateId: eventData.aggregateId,
+      payload: eventData.payload,
+      timestamp: eventData.timestamp,
+      createdAt: eventData.createdAt,
+      updatedAt: eventData.updatedAt,
     });
   }
 
@@ -48,6 +50,8 @@ export class EventPrismaMapper {
       aggregateId: event.aggregateId.value,
       payload: event.payload?.value ?? null,
       timestamp: event.timestamp.value,
+      createdAt: event.createdAt.value,
+      updatedAt: event.updatedAt.value,
     };
   }
 }

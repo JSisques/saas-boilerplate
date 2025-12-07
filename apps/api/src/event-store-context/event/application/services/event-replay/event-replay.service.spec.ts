@@ -11,6 +11,7 @@ import { EventPayloadValueObject } from '@/event-store-context/event/domain/valu
 import { EventTimestampValueObject } from '@/event-store-context/event/domain/value-objects/event-timestamp/event-timestamp.vo';
 import { EventTypeValueObject } from '@/event-store-context/event/domain/value-objects/event-type/event-type.vo';
 import { EventViewModel } from '@/event-store-context/event/domain/view-models/event-store.view-model';
+import { DateValueObject } from '@/shared/domain/value-objects/date/date.vo';
 import { EventUuidValueObject } from '@/shared/domain/value-objects/identifiers/event-uuid/event-uuid.vo';
 
 describe('EventReplayService', () => {
@@ -38,6 +39,8 @@ describe('EventReplayService', () => {
         timestamp: new EventTimestampValueObject(
           new Date(`2024-01-0${idSuffix}T10:00:00Z`),
         ),
+        createdAt: new DateValueObject(new Date('2024-01-02T12:00:00Z')),
+        updatedAt: new DateValueObject(new Date('2024-01-02T12:00:00Z')),
       },
       false,
     );
@@ -106,8 +109,8 @@ describe('EventReplayService', () => {
       aggregateId: aggregate1.aggregateId.value,
       payload: aggregate1.payload?.value ?? {},
       timestamp: aggregate1.timestamp.value,
-      createdAt: new Date('2024-01-02T12:00:00Z'),
-      updatedAt: new Date('2024-01-02T12:00:00Z'),
+      createdAt: aggregate1.createdAt.value,
+      updatedAt: aggregate1.updatedAt.value,
     });
     const viewModel2 = new EventViewModel({
       id: aggregate2.id.value,
@@ -116,8 +119,8 @@ describe('EventReplayService', () => {
       aggregateId: aggregate2.aggregateId.value,
       payload: aggregate2.payload?.value ?? {},
       timestamp: aggregate2.timestamp.value,
-      createdAt: new Date('2024-01-03T12:00:00Z'),
-      updatedAt: new Date('2024-01-03T12:00:00Z'),
+      createdAt: aggregate2.createdAt.value,
+      updatedAt: aggregate2.updatedAt.value,
     });
     const viewModel3 = new EventViewModel({
       id: aggregate3.id.value,
@@ -126,8 +129,8 @@ describe('EventReplayService', () => {
       aggregateId: aggregate3.aggregateId.value,
       payload: aggregate3.payload?.value ?? {},
       timestamp: aggregate3.timestamp.value,
-      createdAt: new Date('2024-01-04T12:00:00Z'),
-      updatedAt: new Date('2024-01-04T12:00:00Z'),
+      createdAt: aggregate3.createdAt.value,
+      updatedAt: aggregate3.updatedAt.value,
     });
 
     mockEventWriteRepository.findByCriteria
@@ -195,8 +198,8 @@ describe('EventReplayService', () => {
       aggregateId: aggregate.aggregateId.value,
       payload: aggregate.payload?.value ?? {},
       timestamp: aggregate.timestamp.value,
-      createdAt: new Date('2024-01-05T12:00:00Z'),
-      updatedAt: new Date('2024-01-05T12:00:00Z'),
+      createdAt: aggregate.createdAt.value,
+      updatedAt: aggregate.updatedAt.value,
     });
 
     mockEventWriteRepository.findByCriteria

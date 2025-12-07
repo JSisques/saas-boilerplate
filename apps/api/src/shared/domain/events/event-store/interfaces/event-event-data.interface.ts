@@ -1,4 +1,6 @@
-export interface IEventEventData {
+import { IBaseEventData } from '@/shared/domain/interfaces/base-event-data.interface';
+
+export interface IEventEventData extends IBaseEventData {
   id: string;
   eventType: string;
   aggregateType: string;

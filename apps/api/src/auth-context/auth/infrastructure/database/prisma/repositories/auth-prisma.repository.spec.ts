@@ -86,13 +86,13 @@ describe('AuthPrismaRepository', () => {
         false,
       );
 
-      mockFindUnique.mockResolvedValue(prismaData);
+      mockFindFirst.mockResolvedValue(prismaData);
       mockAuthPrismaMapper.toDomainEntity.mockReturnValue(authAggregate);
 
       const result = await repository.findById(authId);
 
       expect(result).toBe(authAggregate);
-      expect(mockFindUnique).toHaveBeenCalledWith({
+      expect(mockFindFirst).toHaveBeenCalledWith({
         where: { id: authId },
       });
       expect(mockAuthPrismaMapper.toDomainEntity).toHaveBeenCalledWith(
@@ -104,12 +104,12 @@ describe('AuthPrismaRepository', () => {
     it('should return null when auth does not exist', async () => {
       const authId = '123e4567-e89b-12d3-a456-426614174000';
 
-      mockFindUnique.mockResolvedValue(null);
+      mockFindFirst.mockResolvedValue(null);
 
       const result = await repository.findById(authId);
 
       expect(result).toBeNull();
-      expect(mockFindUnique).toHaveBeenCalledWith({
+      expect(mockFindFirst).toHaveBeenCalledWith({
         where: { id: authId },
       });
       expect(mockAuthPrismaMapper.toDomainEntity).not.toHaveBeenCalled();

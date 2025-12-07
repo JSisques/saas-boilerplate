@@ -1,9 +1,16 @@
 import { BasePaginatedResultDto } from '@/shared/transport/graphql/dtos/responses/base-paginated-result/base-paginated-result.dto';
 import { Field, ObjectType } from '@nestjs/graphql';
 
-@ObjectType('TenantMemberResponseDto')
-export class TenantMemberResponseDto {
-  @Field(() => String, { description: 'The id of the tenant member' })
+/**
+ * Tenant Member Response DTO for the Tenants context.
+ * This DTO represents a tenant member as seen from the Tenants bounded context.
+ * It's independent from the TenantMembers context to maintain bounded context autonomy.
+ */
+@ObjectType('TenantTenantMemberResponseDto')
+export class TenantTenantMemberResponseDto {
+  @Field(() => String, {
+    description: 'The id of the tenant member',
+  })
   id: string;
 
   @Field(() => String, {
@@ -15,12 +22,24 @@ export class TenantMemberResponseDto {
     description: 'The role of the tenant member',
   })
   role: string;
+
+  @Field(() => Date, {
+    nullable: true,
+    description: 'The creation timestamp of the tenant member',
+  })
+  createdAt?: Date;
+
+  @Field(() => Date, {
+    nullable: true,
+    description: 'The last update timestamp of the tenant member',
+  })
+  updatedAt?: Date;
 }
 
-@ObjectType('PaginatedTenantMemberResultDto')
-export class PaginatedTenantMemberResultDto extends BasePaginatedResultDto {
-  @Field(() => [TenantMemberResponseDto], {
+@ObjectType('PaginatedTenantTenantMemberResultDto')
+export class PaginatedTenantTenantMemberResultDto extends BasePaginatedResultDto {
+  @Field(() => [TenantTenantMemberResponseDto], {
     description: 'The tenant members in the current page',
   })
-  items: TenantMemberResponseDto[];
+  items: TenantTenantMemberResponseDto[];
 }

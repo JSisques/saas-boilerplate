@@ -23,31 +23,31 @@ export class EventMongoMapper {
       aggregateId: doc.aggregateId,
       payload: doc.payload,
       timestamp: doc.timestamp,
-      createdAt: doc.createdAt,
-      updatedAt: doc.updatedAt,
+      createdAt: new Date(doc.createdAt),
+      updatedAt: new Date(doc.updatedAt),
     });
   }
 
   /**
    * Converts a event view model to a MongoDB document
    *
-   * @param EventViewModel - The event view model to convert
+   * @param eventViewModel - The event view model to convert
    * @returns The MongoDB document
    */
-  toMongoData(EventViewModel: EventViewModel): EventMongoDto {
+  toMongoData(eventViewModel: EventViewModel): EventMongoDto {
     this.logger.log(
-      `Converting event view model with id ${EventViewModel.id} to MongoDB document`,
+      `Converting event view model with id ${eventViewModel.id} to MongoDB document`,
     );
 
     return {
-      id: EventViewModel.id,
-      eventType: EventViewModel.eventType,
-      aggregateType: EventViewModel.aggregateType,
-      aggregateId: EventViewModel.aggregateId,
-      payload: EventViewModel.payload,
-      timestamp: EventViewModel.timestamp,
-      createdAt: EventViewModel.createdAt,
-      updatedAt: EventViewModel.updatedAt,
+      id: eventViewModel.id,
+      eventType: eventViewModel.eventType,
+      aggregateType: eventViewModel.aggregateType,
+      aggregateId: eventViewModel.aggregateId,
+      payload: eventViewModel.payload,
+      timestamp: eventViewModel.timestamp,
+      createdAt: eventViewModel.createdAt,
+      updatedAt: eventViewModel.updatedAt,
     };
   }
 }
