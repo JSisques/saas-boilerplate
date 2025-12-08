@@ -1,9 +1,6 @@
-import { PromptActivateCommandHandler } from '@/llm-context/prompt/application/commands/prompt-activate/prompt-activate.command-handler';
-import { PromptArchiveCommandHandler } from '@/llm-context/prompt/application/commands/prompt-archive/prompt-archive.command-handler';
+import { PromptChangeStatusCommandHandler } from '@/llm-context/prompt/application/commands/prompt-change-status/prompt-change-status.command-handler';
 import { PromptCreateCommandHandler } from '@/llm-context/prompt/application/commands/prompt-create/prompt-create.command-handler';
 import { PromptDeleteCommandHandler } from '@/llm-context/prompt/application/commands/prompt-delete/prompt-delete.command-handler';
-import { PromptDeprecateCommandHandler } from '@/llm-context/prompt/application/commands/prompt-deprecate/prompt-deprecate.command-handler';
-import { PromptDraftCommandHandler } from '@/llm-context/prompt/application/commands/prompt-draft/prompt-draft.command-handler';
 import { PromptUpdateCommandHandler } from '@/llm-context/prompt/application/commands/prompt-update/prompt-update.command-handler';
 import { PromptActivatedEventHandler } from '@/llm-context/prompt/application/event-handlers/prompt-activated/prompt-activated.event-handler';
 import { PromptArchivedEventHandler } from '@/llm-context/prompt/application/event-handlers/prompt-archived/prompt-archived.event-handler';
@@ -47,10 +44,7 @@ const COMMAND_HANDLERS = [
   PromptCreateCommandHandler,
   PromptUpdateCommandHandler,
   PromptDeleteCommandHandler,
-  PromptActivateCommandHandler,
-  PromptDraftCommandHandler,
-  PromptArchiveCommandHandler,
-  PromptDeprecateCommandHandler,
+  PromptChangeStatusCommandHandler,
 ];
 
 const EVENT_HANDLERS = [
