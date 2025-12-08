@@ -1,6 +1,7 @@
 import { PromptStatusEnum } from '@/prisma/master/client';
+import { BasePrismaDto } from '@/shared/infrastructure/database/prisma/dtos/base-prisma.dto';
 
-export type PromptPrismaDto = {
+export type PromptPrismaDto = BasePrismaDto & {
   id: string;
   slug: string;
   version: number;
