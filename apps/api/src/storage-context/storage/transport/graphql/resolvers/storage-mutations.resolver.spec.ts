@@ -4,11 +4,11 @@ jest.mock('graphql-upload/GraphQLUpload.mjs', () => ({
   default: jest.fn(),
 }));
 
+import { DateValueObject } from '@/shared/domain/value-objects/date/date.vo';
+import { StorageUuidValueObject } from '@/shared/domain/value-objects/identifiers/storage-uuid/storage-uuid.vo';
 import { MutationResponseDto } from '@/shared/transport/graphql/dtos/responses/success-response/success-response.dto';
 import { MutationResponseArrayDto } from '@/shared/transport/graphql/dtos/success-response-array.dto';
 import { MutationResponseGraphQLMapper } from '@/shared/transport/graphql/mappers/mutation-response/mutation-response.mapper';
-import { DateValueObject } from '@/shared/domain/value-objects/date/date.vo';
-import { StorageUuidValueObject } from '@/shared/domain/value-objects/identifiers/storage-uuid/storage-uuid.vo';
 import { StorageDeleteFileCommand } from '@/storage-context/storage/application/commands/storage-delete-file/storage-delete-file.command';
 import { StorageDownloadFileCommand } from '@/storage-context/storage/application/commands/storage-download-file/storage-download-file.command';
 import { StorageUploadFileCommand } from '@/storage-context/storage/application/commands/storage-upload-file/storage-upload-file.command';
@@ -23,7 +23,6 @@ import { StorageProviderValueObject } from '@/storage-context/storage/domain/val
 import { StorageUrlValueObject } from '@/storage-context/storage/domain/value-objects/storage-url/storage-url.vo';
 import { StorageDeleteFileRequestDto } from '@/storage-context/storage/transport/graphql/dtos/requests/storage-delete-file.request.dto';
 import { StorageDownloadFileRequestDto } from '@/storage-context/storage/transport/graphql/dtos/requests/storage-download-file.request.dto';
-import { StorageDownloadFileResponseDto } from '@/storage-context/storage/transport/graphql/dtos/responses/storage-download-file.response.dto';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import type { FileUpload } from 'graphql-upload/processRequest.mjs';
 import { StorageMutationsResolver } from './storage-mutations.resolver';
