@@ -75,7 +75,7 @@ export class PromptAggregateFactory
         createdAt: new DateValueObject(data.createdAt),
         updatedAt: new DateValueObject(data.updatedAt),
       },
-      false, // Don't generate events when recreating from primitives
+      false,
     );
   }
 }
