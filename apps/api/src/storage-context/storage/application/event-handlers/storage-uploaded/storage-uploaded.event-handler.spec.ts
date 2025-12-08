@@ -1,12 +1,12 @@
-import { StorageUploadedEventHandler } from '@/storage-context/storage/application/event-handlers/storage-uploaded/storage-uploaded.event-handler';
 import { StorageFileUploadedEvent } from '@/shared/domain/events/storage-context/storage/storage-file-uploaded/storage-file-uploaded.event';
+import { IEventMetadata } from '@/shared/domain/interfaces/event-metadata.interface';
+import { StorageUploadedEventHandler } from '@/storage-context/storage/application/event-handlers/storage-uploaded/storage-uploaded.event-handler';
+import { StorageViewModelFactory } from '@/storage-context/storage/domain/factories/storage-view-model.factory';
 import {
   STORAGE_READ_REPOSITORY_TOKEN,
   StorageReadRepository,
 } from '@/storage-context/storage/domain/repositories/storage-read.repository';
-import { StorageViewModelFactory } from '@/storage-context/storage/domain/factories/storage-view-model.factory';
 import { StorageViewModel } from '@/storage-context/storage/domain/view-models/storage.view-model';
-import { IEventMetadata } from '@/shared/domain/interfaces/event-metadata.interface';
 import { Test } from '@nestjs/testing';
 
 describe('StorageUploadedEventHandler', () => {
@@ -111,7 +111,6 @@ describe('StorageUploadedEventHandler', () => {
 
     it('should use event occurredAt for createdAt and updatedAt', async () => {
       const storageId = '123e4567-e89b-12d3-a456-426614174000';
-      const occurredAt = new Date('2024-01-01T10:00:00Z');
       const eventData = {
         id: storageId,
         fileName: 'test-file.pdf',
