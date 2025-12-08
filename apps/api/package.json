@@ -74,7 +74,7 @@
     "@nestjs/cli": "^10.0.0",
     "@nestjs/schematics": "^10.0.0",
     "@nestjs/testing": "^10.0.0",
-    "@types/express": "^5.0.0",
+    "@types/express": "^5.0.6",
     "@types/form-data": "^2.5.2",
     "@types/graphql-upload": "^17.0.0",
     "@types/jest": "^29.5.2",
