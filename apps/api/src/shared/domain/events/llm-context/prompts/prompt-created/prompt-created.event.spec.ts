@@ -20,6 +20,8 @@ describe('PromptCreatedEvent', () => {
     content: 'This is a new prompt content',
     status: 'draft',
     isActive: false,
+    createdAt: new Date('2024-01-01T10:00:00Z'),
+    updatedAt: new Date('2024-01-01T10:00:00Z'),
   });
 
   it('should be an instance of BaseEvent', () => {

@@ -9,6 +9,7 @@ import { PromptSlugValueObject } from '@/llm-context/prompt/domain/value-objects
 import { PromptStatusValueObject } from '@/llm-context/prompt/domain/value-objects/prompt-status/prompt-status.vo';
 import { PromptTitleValueObject } from '@/llm-context/prompt/domain/value-objects/prompt-title/prompt-title.vo';
 import { PromptVersionValueObject } from '@/llm-context/prompt/domain/value-objects/prompt-version/prompt-version.vo';
+import { BaseAggregate } from '@/shared/domain/aggregates/base-aggregate/base.aggregate';
 import { PromptActivatedEvent } from '@/shared/domain/events/llm-context/prompts/prompt-activated/prompt-activated.event';
 import { PromptArchivedEvent } from '@/shared/domain/events/llm-context/prompts/prompt-archived/prompt-activated.event';
 import { PromptCreatedEvent } from '@/shared/domain/events/llm-context/prompts/prompt-created/prompt-created.event';
@@ -17,10 +18,10 @@ import { PromptDeprecatedEvent } from '@/shared/domain/events/llm-context/prompt
 import { PromptDraftedEvent } from '@/shared/domain/events/llm-context/prompts/prompt-drafted/prompt-drafted.event';
 import { PromptUpdatedEvent } from '@/shared/domain/events/llm-context/prompts/prompt-updated/prompt-updated.event';
 import { PromptVersionIncrementedEvent } from '@/shared/domain/events/llm-context/prompts/prompt-version-incremented/prompt-version-incremented.event';
+import { DateValueObject } from '@/shared/domain/value-objects/date/date.vo';
 import { PromptUuidValueObject } from '@/shared/domain/value-objects/identifiers/prompt-uuid/prompt-uuid.vo';
-import { AggregateRoot } from '@nestjs/cqrs';
 
-export class PromptAggregate extends AggregateRoot {
+export class PromptAggregate extends BaseAggregate {
   private readonly _id: PromptUuidValueObject;
   private _slug: PromptSlugValueObject;
   private _version: PromptVersionValueObject;
@@ -31,7 +32,7 @@ export class PromptAggregate extends AggregateRoot {
   private _isActive: PromptIsActiveValueObject;
 
   constructor(props: IPromptCreateDto, generateEvent: boolean = true) {
-    super();
+    super(props.createdAt, props.updatedAt);
 
     this._id = props.id;
     this._slug = props.slug;
@@ -72,6 +73,8 @@ export class PromptAggregate extends AggregateRoot {
     this._status = props.status !== undefined ? props.status : this._status;
     this._isActive =
       props.isActive !== undefined ? props.isActive : this._isActive;
+
+    this._updatedAt = new DateValueObject(new Date());
 
     if (generateEvent) {
       this.apply(
@@ -290,6 +293,8 @@ export class PromptAggregate extends AggregateRoot {
       content: this._content.value,
       status: this._status.value,
       isActive: this._isActive.value,
+      createdAt: this._createdAt.value,
+      updatedAt: this._updatedAt.value,
     };
   }
 }

@@ -1,4 +1,6 @@
-export type PromptPrimitives = {
+import { BasePrimitives } from '@/shared/domain/primitives/base-primitives/base.primitives';
+
+export type PromptPrimitives = BasePrimitives & {
   id: string;
   slug: string;
   version: number;

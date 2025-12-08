@@ -5,6 +5,7 @@ import { PromptSlugValueObject } from '@/llm-context/prompt/domain/value-objects
 import { PromptStatusValueObject } from '@/llm-context/prompt/domain/value-objects/prompt-status/prompt-status.vo';
 import { PromptTitleValueObject } from '@/llm-context/prompt/domain/value-objects/prompt-title/prompt-title.vo';
 import { PromptVersionValueObject } from '@/llm-context/prompt/domain/value-objects/prompt-version/prompt-version.vo';
+import { IBaseAggregateDto } from '@/shared/domain/interfaces/base-aggregate-dto.interface';
 import { PromptUuidValueObject } from '@/shared/domain/value-objects/identifiers/prompt-uuid/prompt-uuid.vo';
 
 /**
@@ -20,7 +21,7 @@ import { PromptUuidValueObject } from '@/shared/domain/value-objects/identifiers
  * @property {PromptStatusValueObject} status - The status of the prompt.
  * @property {PromptIsActiveValueObject} isActive - The is active of the prompt.
  */
-export interface IPromptCreateDto {
+export interface IPromptCreateDto extends IBaseAggregateDto {
   id: PromptUuidValueObject;
   slug: PromptSlugValueObject;
   version: PromptVersionValueObject;

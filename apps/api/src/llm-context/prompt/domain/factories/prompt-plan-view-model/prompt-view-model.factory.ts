@@ -43,8 +43,6 @@ export class PromptViewModelFactory
       `Creating prompt view model from primitives: ${promptPrimitives}`,
     );
 
-    const now = new Date();
-
     return new PromptViewModel({
       id: promptPrimitives.id,
       slug: promptPrimitives.slug,
@@ -54,8 +52,8 @@ export class PromptViewModelFactory
       content: promptPrimitives.content,
       status: promptPrimitives.status,
       isActive: promptPrimitives.isActive,
-      createdAt: now,
-      updatedAt: now,
+      createdAt: promptPrimitives.createdAt,
+      updatedAt: promptPrimitives.updatedAt,
     });
   }
 
@@ -70,8 +68,6 @@ export class PromptViewModelFactory
       `Creating prompt view model from aggregate: ${promptAggregate}`,
     );
 
-    const now = new Date();
-
     return new PromptViewModel({
       id: promptAggregate.id.value,
       slug: promptAggregate.slug.value,
@@ -81,8 +77,8 @@ export class PromptViewModelFactory
       content: promptAggregate.content.value,
       status: promptAggregate.status.value,
       isActive: promptAggregate.isActive.value,
-      createdAt: now,
-      updatedAt: now,
+      createdAt: promptAggregate.createdAt.value,
+      updatedAt: promptAggregate.updatedAt.value,
     });
   }
 }
