@@ -1,19 +1,12 @@
-import { PromptCreateCommandHandler } from '@/llm-context/prompt/application/commands/prompt-create/prompt-create.command-handler';
 import { PromptCreateCommand } from '@/llm-context/prompt/application/commands/prompt-create/prompt-create.command';
-import { PromptAggregateFactory } from '@/llm-context/prompt/domain/factories/prompt-aggregate/prompt-aggregate.factory';
+import { PromptCreateCommandHandler } from '@/llm-context/prompt/application/commands/prompt-create/prompt-create.command-handler';
 import { PromptAggregate } from '@/llm-context/prompt/domain/aggregates/prompt.aggregate';
+import { PromptStatusEnum } from '@/llm-context/prompt/domain/enum/prompt-status.enum';
+import { PromptAggregateFactory } from '@/llm-context/prompt/domain/factories/prompt-aggregate/prompt-aggregate.factory';
 import {
   PROMPT_WRITE_REPOSITORY_TOKEN,
   PromptWriteRepository,
 } from '@/llm-context/prompt/domain/repositories/prompt-write/prompt-write.repository';
-import { PromptStatusEnum } from '@/llm-context/prompt/domain/enum/prompt-status.enum';
-import { PromptContentValueObject } from '@/llm-context/prompt/domain/value-objects/prompt-content/prompt-content.vo';
-import { PromptDescriptionValueObject } from '@/llm-context/prompt/domain/value-objects/prompt-description/prompt-description.vo';
-import { PromptIsActiveValueObject } from '@/llm-context/prompt/domain/value-objects/prompt-is-active/prompt-is-active.vo';
-import { PromptSlugValueObject } from '@/llm-context/prompt/domain/value-objects/prompt-slug/prompt-slug.vo';
-import { PromptStatusValueObject } from '@/llm-context/prompt/domain/value-objects/prompt-status/prompt-status.vo';
-import { PromptTitleValueObject } from '@/llm-context/prompt/domain/value-objects/prompt-title/prompt-title.vo';
-import { PromptVersionValueObject } from '@/llm-context/prompt/domain/value-objects/prompt-version/prompt-version.vo';
 import { PromptCreatedEvent } from '@/shared/domain/events/llm-context/prompts/prompt-created/prompt-created.event';
 import { EventBus } from '@nestjs/cqrs';
 import { Test } from '@nestjs/testing';

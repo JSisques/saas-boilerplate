@@ -1,14 +1,14 @@
-import { Criteria } from '@/shared/domain/entities/criteria';
-import { PaginatedResult } from '@/shared/domain/entities/paginated-result.entity';
-import { SortDirection } from '@/shared/domain/enums/sort-direction.enum';
 import { FindPromptsByCriteriaQuery } from '@/llm-context/prompt/application/queries/prompt-find-by-criteria/prompt-find-by-criteria.query';
 import { FindPromptViewModelByIdQuery } from '@/llm-context/prompt/application/queries/prompt-find-view-model-by-id/prompt-find-view-model-by-id.query';
+import { PromptStatusEnum } from '@/llm-context/prompt/domain/enum/prompt-status.enum';
 import { PromptViewModel } from '@/llm-context/prompt/domain/view-models/prompt.view-model';
 import { PromptFindByCriteriaRequestDto } from '@/llm-context/prompt/transport/graphql/dtos/requests/prompt-find-by-criteria.request.dto';
 import { PromptFindByIdRequestDto } from '@/llm-context/prompt/transport/graphql/dtos/requests/prompt-find-by-id.request.dto';
 import { PromptGraphQLMapper } from '@/llm-context/prompt/transport/graphql/mappers/prompt.mapper';
 import { PromptQueryResolver } from '@/llm-context/prompt/transport/graphql/resolvers/prompt-queries.resolver';
-import { PromptStatusEnum } from '@/llm-context/prompt/domain/enum/prompt-status.enum';
+import { Criteria } from '@/shared/domain/entities/criteria';
+import { PaginatedResult } from '@/shared/domain/entities/paginated-result.entity';
+import { SortDirection } from '@/shared/domain/enums/sort-direction.enum';
 import { QueryBus } from '@nestjs/cqrs';
 
 describe('PromptQueryResolver', () => {
@@ -154,8 +154,6 @@ describe('PromptQueryResolver', () => {
     });
 
     it('should handle null input and create default criteria', async () => {
-      const createdAt = new Date('2024-01-01T10:00:00.000Z');
-      const updatedAt = new Date('2024-01-02T12:00:00.000Z');
       const viewModels: PromptViewModel[] = [];
 
       const paginatedResult = new PaginatedResult(viewModels, 0, 1, 10);
