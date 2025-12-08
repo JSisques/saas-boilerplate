@@ -4,6 +4,7 @@ import {
   PROMPT_WRITE_REPOSITORY_TOKEN,
   PromptWriteRepository,
 } from '@/llm-context/prompt/domain/repositories/prompt-write/prompt-write.repository';
+import { DateValueObject } from '@/shared/domain/value-objects/date/date.vo';
 import { Inject } from '@nestjs/common';
 import { CommandHandler, EventBus, ICommandHandler } from '@nestjs/cqrs';
 
@@ -28,6 +29,8 @@ export class PromptCreateCommandHandler
     // 01: Create the prompt entity
     const prompt = this.promptAggregateFactory.create({
       ...command,
+      createdAt: new DateValueObject(new Date()),
+      updatedAt: new DateValueObject(new Date()),
     });
 
     // 02: Save the prompt entity

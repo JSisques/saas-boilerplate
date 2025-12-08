@@ -32,6 +32,8 @@ export class PromptPrismaMapper {
       content: promptData.content,
       status: promptData.status,
       isActive: promptData.isActive,
+      createdAt: promptData.createdAt,
+      updatedAt: promptData.updatedAt,
     });
   }
 
@@ -58,6 +60,8 @@ export class PromptPrismaMapper {
       content: primitives.content,
       status: primitives.status as PromptStatusEnum,
       isActive: primitives.isActive,
+      createdAt: primitives.createdAt,
+      updatedAt: primitives.updatedAt,
     };
   }
 }

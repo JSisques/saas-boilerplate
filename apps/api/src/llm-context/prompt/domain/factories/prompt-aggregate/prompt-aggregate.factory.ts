@@ -9,6 +9,7 @@ import { PromptStatusValueObject } from '@/llm-context/prompt/domain/value-objec
 import { PromptTitleValueObject } from '@/llm-context/prompt/domain/value-objects/prompt-title/prompt-title.vo';
 import { PromptVersionValueObject } from '@/llm-context/prompt/domain/value-objects/prompt-version/prompt-version.vo';
 import { IWriteFactory } from '@/shared/domain/interfaces/write-factory.interface';
+import { DateValueObject } from '@/shared/domain/value-objects/date/date.vo';
 import { PromptUuidValueObject } from '@/shared/domain/value-objects/identifiers/prompt-uuid/prompt-uuid.vo';
 import { Injectable } from '@nestjs/common';
 
@@ -59,15 +60,22 @@ export class PromptAggregateFactory
    * @returns The created prompt aggregate entity.
    */
   public fromPrimitives(data: PromptPrimitives): PromptAggregate {
-    return new PromptAggregate({
-      id: new PromptUuidValueObject(data.id),
-      slug: new PromptSlugValueObject(data.slug),
-      version: new PromptVersionValueObject(data.version),
-      title: new PromptTitleValueObject(data.title),
-      description: new PromptDescriptionValueObject(data.description),
-      content: new PromptContentValueObject(data.content),
-      status: new PromptStatusValueObject(data.status),
-      isActive: new PromptIsActiveValueObject(data.isActive),
-    });
+    return new PromptAggregate(
+      {
+        id: new PromptUuidValueObject(data.id),
+        slug: new PromptSlugValueObject(data.slug),
+        version: new PromptVersionValueObject(data.version),
+        title: new PromptTitleValueObject(data.title),
+        description: data.description
+          ? new PromptDescriptionValueObject(data.description)
+          : null,
+        content: new PromptContentValueObject(data.content),
+        status: new PromptStatusValueObject(data.status),
+        isActive: new PromptIsActiveValueObject(data.isActive),
+        createdAt: new DateValueObject(data.createdAt),
+        updatedAt: new DateValueObject(data.updatedAt),
+      },
+      false,
+    );
   }
 }

@@ -42,6 +42,8 @@ export class PromptPrismaRepository
       content: promptData.content,
       status: promptData.status,
       isActive: promptData.isActive,
+      createdAt: promptData.createdAt,
+      updatedAt: promptData.updatedAt,
     });
   }
 
@@ -69,6 +71,8 @@ export class PromptPrismaRepository
       content: result.content,
       status: result.status,
       isActive: result.isActive,
+      createdAt: result.createdAt,
+      updatedAt: result.updatedAt,
     });
   }
 

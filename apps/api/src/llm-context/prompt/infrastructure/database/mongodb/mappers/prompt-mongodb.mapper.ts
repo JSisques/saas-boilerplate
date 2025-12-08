@@ -21,7 +21,18 @@ export class PromptMongoDBMapper {
       `Converting MongoDB document to prompt view model with id ${doc.id}`,
     );
 
-    return this.promptViewModelFactory.create(doc);
+    return this.promptViewModelFactory.create({
+      id: doc.id,
+      slug: doc.slug,
+      version: doc.version,
+      title: doc.title,
+      description: doc.description,
+      content: doc.content,
+      status: doc.status,
+      isActive: doc.isActive,
+      createdAt: new Date(doc.createdAt),
+      updatedAt: new Date(doc.updatedAt),
+    });
   }
 
   /**

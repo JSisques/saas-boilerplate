@@ -1128,10 +1128,7 @@ type Mutation {
   promptCreate(input: PromptCreateRequestDto!): MutationResponseDto!
   promptUpdate(input: PromptUpdateRequestDto!): MutationResponseDto!
   promptDelete(input: PromptDeleteRequestDto!): MutationResponseDto!
-  promptActivate(input: PromptActivateRequestDto!): MutationResponseDto!
-  promptDraft(input: PromptDraftRequestDto!): MutationResponseDto!
-  promptArchive(input: PromptArchiveRequestDto!): MutationResponseDto!
-  promptDeprecate(input: PromptDeprecateRequestDto!): MutationResponseDto!
+  promptChangeStatus(input: PromptChangeStatusRequestDto!): MutationResponseDto!
   storageUploadFile(file: Upload!): MutationResponseDto!
   storageDownloadFiles(input: StorageDownloadFileRequestDto!): [StorageDownloadFileResponseDto!]!
   storageDeleteFile(input: StorageDeleteFileRequestDto!): MutationResponseArrayDto!
@@ -1681,24 +1678,12 @@ input PromptDeleteRequestDto {
   id: String!
 }
 
-input PromptActivateRequestDto {
-  """The unique identifier of the prompt"""
+input PromptChangeStatusRequestDto {
+  """The id of the prompt to change status"""
   id: String!
-}
 
-input PromptDraftRequestDto {
-  """The unique identifier of the prompt"""
-  id: String!
-}
-
-input PromptArchiveRequestDto {
-  """The unique identifier of the prompt"""
-  id: String!
-}
-
-input PromptDeprecateRequestDto {
-  """The unique identifier of the prompt"""
-  id: String!
+  """The new status to set"""
+  status: PromptStatusEnum!
 }
 
 """The `Upload` scalar type represents a file upload."""

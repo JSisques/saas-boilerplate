@@ -1,19 +1,13 @@
 import { JwtAuthGuard } from '@/auth-context/auth/infrastructure/auth/jwt-auth.guard';
 import { Roles } from '@/auth-context/auth/infrastructure/decorators/roles/roles.decorator';
 import { RolesGuard } from '@/auth-context/auth/infrastructure/guards/roles/roles.guard';
-import { PromptActivateCommand } from '@/llm-context/prompt/application/commands/prompt-activate/prompt-activate.command';
-import { PromptArchiveCommand } from '@/llm-context/prompt/application/commands/prompt-archive/prompt-archive.command';
+import { PromptChangeStatusCommand } from '@/llm-context/prompt/application/commands/prompt-change-status/prompt-change-status.command';
 import { PromptCreateCommand } from '@/llm-context/prompt/application/commands/prompt-create/prompt-create.command';
 import { PromptDeleteCommand } from '@/llm-context/prompt/application/commands/prompt-delete/prompt-delete.command';
-import { PromptDeprecateCommand } from '@/llm-context/prompt/application/commands/prompt-deprecate/prompt-deprecate.command';
-import { PromptDraftCommand } from '@/llm-context/prompt/application/commands/prompt-draft/prompt-draft.command';
 import { PromptUpdateCommand } from '@/llm-context/prompt/application/commands/prompt-update/prompt-update.command';
-import { PromptActivateRequestDto } from '@/llm-context/prompt/transport/graphql/dtos/requests/prompt-activate.request.dto';
-import { PromptArchiveRequestDto } from '@/llm-context/prompt/transport/graphql/dtos/requests/prompt-archive.request.dto';
+import { PromptChangeStatusRequestDto } from '@/llm-context/prompt/transport/graphql/dtos/requests/prompt-change-status.request.dto';
 import { PromptCreateRequestDto } from '@/llm-context/prompt/transport/graphql/dtos/requests/prompt-create.request.dto';
 import { PromptDeleteRequestDto } from '@/llm-context/prompt/transport/graphql/dtos/requests/prompt-delete.request.dto';
-import { PromptDeprecateRequestDto } from '@/llm-context/prompt/transport/graphql/dtos/requests/prompt-deprecate.request.dto';
-import { PromptDraftRequestDto } from '@/llm-context/prompt/transport/graphql/dtos/requests/prompt-draft.request.dto';
 import { PromptUpdateRequestDto } from '@/llm-context/prompt/transport/graphql/dtos/requests/prompt-update.request.dto';
 import { UserRoleEnum } from '@/prisma/master/client';
 import { MutationResponseDto } from '@/shared/transport/graphql/dtos/responses/success-response/success-response.dto';
@@ -112,92 +106,31 @@ export class PromptMutationsResolver {
   }
 
   /**
-   * Activates an existing prompt based on the provided prompt ID.
+   * Changes the status of an existing prompt based on the provided prompt ID and status.
    *
-   * @param {PromptActivateRequestDto} input - The information containing the ID of the prompt to be activated.
-   * @returns {Promise<MutationResponseDto>} The result indicating whether the activation was successful, a message, and the ID of the activated prompt.
+   * @param {PromptChangeStatusRequestDto} input - The information containing the ID of the prompt and the new status to set.
+   * @returns {Promise<MutationResponseDto>} The result indicating whether the status change was successful, a message, and the ID of the prompt.
    */
   @Mutation(() => MutationResponseDto)
-  async promptActivate(
-    @Args('input') input: PromptActivateRequestDto,
+  async promptChangeStatus(
+    @Args('input') input: PromptChangeStatusRequestDto,
   ): Promise<MutationResponseDto> {
-    this.logger.log(`Activating prompt with input: ${JSON.stringify(input)}`);
+    this.logger.log(
+      `Changing prompt status with input: ${JSON.stringify(input)}`,
+    );
 
     // 01: Send the command to the command bus
-    await this.commandBus.execute(new PromptActivateCommand({ id: input.id }));
+    await this.commandBus.execute(
+      new PromptChangeStatusCommand({
+        id: input.id,
+        status: input.status,
+      }),
+    );
 
     // 02: Return success response
     return this.mutationResponseGraphQLMapper.toResponseDto({
       success: true,
-      message: 'Prompt activated successfully',
-      id: input.id,
-    });
-  }
-
-  /**
-   * Drafts an existing prompt based on the provided prompt ID.
-   *
-   * @param {PromptDraftRequestDto} input - The information containing the ID of the prompt to be drafted.
-   * @returns {Promise<MutationResponseDto>} The result indicating whether the drafting was successful, a message, and the ID of the drafted prompt.
-   */
-  @Mutation(() => MutationResponseDto)
-  async promptDraft(
-    @Args('input') input: PromptDraftRequestDto,
-  ): Promise<MutationResponseDto> {
-    this.logger.log(`Drafting prompt with input: ${JSON.stringify(input)}`);
-
-    // 01: Send the command to the command bus
-    await this.commandBus.execute(new PromptDraftCommand({ id: input.id }));
-
-    // 02: Return success response
-    return this.mutationResponseGraphQLMapper.toResponseDto({
-      success: true,
-      message: 'Prompt drafted successfully',
-      id: input.id,
-    });
-  }
-
-  /**
-   * Archives an existing prompt based on the provided prompt ID.
-   *
-   * @param {PromptArchiveRequestDto} input - The information containing the ID of the prompt to be archived.
-   * @returns {Promise<MutationResponseDto>} The result indicating whether the archiving was successful, a message, and the ID of the archived prompt.
-   */
-  @Mutation(() => MutationResponseDto)
-  async promptArchive(
-    @Args('input') input: PromptArchiveRequestDto,
-  ): Promise<MutationResponseDto> {
-    this.logger.log(`Archiving prompt with input: ${JSON.stringify(input)}`);
-
-    // 01: Send the command to the command bus
-    await this.commandBus.execute(new PromptArchiveCommand({ id: input.id }));
-    // 02: Return success response
-    return this.mutationResponseGraphQLMapper.toResponseDto({
-      success: true,
-      message: 'Prompt archived successfully',
-      id: input.id,
-    });
-  }
-
-  /**
-   * Deprecates an existing prompt based on the provided prompt ID.
-   *
-   * @param {PromptDeprecateRequestDto} input - The information containing the ID of the prompt to be deprecated.
-   * @returns {Promise<MutationResponseDto>} The result indicating whether the deprecation was successful, a message, and the ID of the deprecated prompt.
-   */
-  @Mutation(() => MutationResponseDto)
-  async promptDeprecate(
-    @Args('input') input: PromptDeprecateRequestDto,
-  ): Promise<MutationResponseDto> {
-    this.logger.log(`Deprecating prompt with input: ${JSON.stringify(input)}`);
-
-    // 01: Send the command to the command bus
-    await this.commandBus.execute(new PromptDeprecateCommand({ id: input.id }));
-
-    // 02: Return success response
-    return this.mutationResponseGraphQLMapper.toResponseDto({
-      success: true,
-      message: 'Prompt deprecated successfully',
+      message: 'Prompt status changed successfully',
       id: input.id,
     });
   }
