@@ -55,7 +55,9 @@ describe('PromptViewModel', () => {
       expect(viewModel.description).toBeNull();
     });
 
-    it('should use current date for createdAt and updatedAt', () => {
+    it('should use provided dates for createdAt and updatedAt', () => {
+      const createdAt = new Date('2024-01-01T10:00:00Z');
+      const updatedAt = new Date('2024-01-01T10:00:00Z');
       const dto: IPromptCreateViewModelDto = {
         id: '123e4567-e89b-12d3-a456-426614174000',
         slug: 'test-prompt',
@@ -65,20 +67,14 @@ describe('PromptViewModel', () => {
         content: 'Test content',
         status: PromptStatusEnum.DRAFT,
         isActive: true,
-        createdAt: new Date('2024-01-01T10:00:00Z'),
-        updatedAt: new Date('2024-01-01T10:00:00Z'),
+        createdAt,
+        updatedAt,
       };
 
-      const beforeCreation = new Date();
       const viewModel = new PromptViewModel(dto);
-      const afterCreation = new Date();
 
-      expect(viewModel.createdAt.getTime()).toBeGreaterThanOrEqual(
-        beforeCreation.getTime(),
-      );
-      expect(viewModel.createdAt.getTime()).toBeLessThanOrEqual(
-        afterCreation.getTime(),
-      );
+      expect(viewModel.createdAt).toEqual(createdAt);
+      expect(viewModel.updatedAt).toEqual(updatedAt);
     });
   });
 

@@ -62,9 +62,8 @@ describe('PromptAggregate', () => {
       const events = aggregate.getUncommittedEvents();
       expect(events).toHaveLength(1);
       expect(events[0]).toBeInstanceOf(PromptCreatedEvent);
-      expect(events[0].aggregateId).toBe(
-        '123e4567-e89b-12d3-a456-426614174000',
-      );
+      const event = events[0] as PromptCreatedEvent;
+      expect(event.aggregateId).toBe('123e4567-e89b-12d3-a456-426614174000');
     });
 
     it('should not emit event when generateEvent is false', () => {
