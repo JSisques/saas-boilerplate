@@ -10,7 +10,7 @@
     "git:clean": "git branch --merged | grep -vE '^*|main|dev' | xargs -n 1 git branch -d"
   },
   "dependencies": {
-    "react": "19.2.1",
+    "react": "19.2.3",
     "react-dom": "19.2.1",
     "next": "16.0.0"
   },
