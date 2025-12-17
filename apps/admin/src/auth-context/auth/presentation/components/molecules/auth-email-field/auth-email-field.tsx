@@ -9,27 +9,29 @@ import {
 } from '@repo/shared/presentation/components/ui/form';
 import { Input } from '@repo/shared/presentation/components/ui/input';
 import { useTranslations } from 'next-intl';
-import type { Control, FieldPath, FieldValues } from 'react-hook-form';
+import type { ControllerProps, FieldPath, FieldValues } from 'react-hook-form';
 
-interface AuthEmailFieldProps<T extends FieldValues> {
-  control: Control<T>;
-  name: FieldPath<T>;
+interface AuthEmailFieldProps<
+  TFieldValues extends FieldValues = FieldValues,
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
+> extends Omit<ControllerProps<TFieldValues, TName>, 'render'> {
   disabled?: boolean;
   onEmailChange?: (value: string) => void;
 }
 
-export function AuthEmailField<T extends FieldValues>({
-  control,
-  name,
+export function AuthEmailField<
+  TFieldValues extends FieldValues = FieldValues,
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
+>({
   disabled = false,
   onEmailChange,
-}: AuthEmailFieldProps<T>) {
+  ...props
+}: AuthEmailFieldProps<TFieldValues, TName>) {
   const t = useTranslations();
 
   return (
-    <FormField
-      control={control}
-      name={name}
+    <FormField<TFieldValues, TName>
+      {...props}
       render={({ field }) => (
         <FormItem>
           <FormLabel>{t('authPage.fields.email.label')}</FormLabel>

@@ -9,27 +9,29 @@ import {
 } from '@repo/shared/presentation/components/ui/form';
 import { Input } from '@repo/shared/presentation/components/ui/input';
 import { useTranslations } from 'next-intl';
-import type { Control, FieldPath, FieldValues } from 'react-hook-form';
+import type { ControllerProps, FieldPath, FieldValues } from 'react-hook-form';
 
-interface AuthPasswordFieldProps<T extends FieldValues> {
-  control: Control<T>;
-  name: FieldPath<T>;
+interface AuthPasswordFieldProps<
+  TFieldValues extends FieldValues = FieldValues,
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
+> extends Omit<ControllerProps<TFieldValues, TName>, 'render'> {
   disabled?: boolean;
   onPasswordChange?: (value: string) => void;
 }
 
-export function AuthPasswordField<T extends FieldValues>({
-  control,
-  name,
+export function AuthPasswordField<
+  TFieldValues extends FieldValues = FieldValues,
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
+>({
   disabled = false,
   onPasswordChange,
-}: AuthPasswordFieldProps<T>) {
+  ...props
+}: AuthPasswordFieldProps<TFieldValues, TName>) {
   const t = useTranslations();
 
   return (
-    <FormField
-      control={control}
-      name={name}
+    <FormField<TFieldValues, TName>
+      {...props}
       render={({ field }) => (
         <FormItem>
           <FormLabel>{t('authPage.fields.password.label')}</FormLabel>
