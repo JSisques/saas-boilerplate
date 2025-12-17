@@ -157,6 +157,30 @@
       }
     }
   },
+  "featuresPage": {
+    "title": "Features",
+    "description": "Manage and view all feature flags in the system",
+    "actions": {
+      "addFeature": "Add Feature",
+      "exportFeatures": "Export Features",
+      "importFeatures": "Import Features",
+      "deleteFeatures": "Delete Features"
+    },
+    "organisms": {
+      "featuresTable": {
+        "searchPlaceholder": "Search features by name...",
+        "emptyMessage": "No features found"
+      },
+      "featuresTableColumns": {
+        "key": "Key",
+        "name": "Name",
+        "description": "Description",
+        "status": "Status",
+        "createdAt": "Created At",
+        "updatedAt": "Updated At"
+      }
+    }
+  },
   "authPage": {
     "title": {
       "login": "Welcome back",

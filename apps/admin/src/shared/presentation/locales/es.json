@@ -34,6 +34,30 @@
       "description": "Contacto"
     }
   },
+  "featuresPage": {
+    "title": "Features",
+    "description": "Gestiona y visualiza todas las feature flags del sistema",
+    "actions": {
+      "addFeature": "Añadir Feature",
+      "exportFeatures": "Exportar Features",
+      "importFeatures": "Importar Features",
+      "deleteFeatures": "Eliminar Features"
+    },
+    "organisms": {
+      "featuresTable": {
+        "searchPlaceholder": "Buscar features por nombre...",
+        "emptyMessage": "No se encontraron features"
+      },
+      "featuresTableColumns": {
+        "key": "Clave",
+        "name": "Nombre",
+        "description": "Descripción",
+        "status": "Estado",
+        "createdAt": "Fecha de Creación",
+        "updatedAt": "Fecha de Actualización"
+      }
+    }
+  },
   "authPage": {
     "title": {
       "login": "Bienvenido de nuevo",

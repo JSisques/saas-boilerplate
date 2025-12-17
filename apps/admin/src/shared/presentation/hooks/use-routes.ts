@@ -28,6 +28,7 @@ export const useRoutes = () => {
     // System & Monitoring
     events: '/events',
     health: '/health',
+    features: '/features',
 
     // Test routes (can be removed in production)
     sdkTest: '/sdk-test',
@@ -133,6 +134,11 @@ export const useRoutes = () => {
               title: 'Health',
               url: routes.health,
               isActive: pathname === routes.health,
+            },
+            {
+              title: 'Features',
+              url: routes.features,
+              isActive: pathname === routes.features,
             },
           ],
         },
