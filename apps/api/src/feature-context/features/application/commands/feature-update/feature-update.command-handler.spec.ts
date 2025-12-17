@@ -1,6 +1,3 @@
-import { FeatureUpdatedEvent } from '@/shared/domain/events/feature-context/features/feature-updated/feature-updated.event';
-import { DateValueObject } from '@/shared/domain/value-objects/date/date.vo';
-import { FeatureUuidValueObject } from '@/shared/domain/value-objects/identifiers/feature/feature-uuid.vo';
 import { IFeatureUpdateCommandDto } from '@/feature-context/features/application/dtos/commands/feature-update/feature-update-command.dto';
 import { FeatureNotFoundException } from '@/feature-context/features/application/exceptions/feature-not-found/feature-not-found.exception';
 import { AssertFeatureExistsService } from '@/feature-context/features/application/services/assert-feature-exists/assert-feature-exists.service';
@@ -10,10 +7,12 @@ import {
   FEATURE_WRITE_REPOSITORY_TOKEN,
   IFeatureWriteRepository,
 } from '@/feature-context/features/domain/repositories/feature-write.repository';
-import { FeatureDescriptionValueObject } from '@/feature-context/features/domain/value-objects/feature-description/feature-description.vo';
 import { FeatureKeyValueObject } from '@/feature-context/features/domain/value-objects/feature-key/feature-key.vo';
 import { FeatureNameValueObject } from '@/feature-context/features/domain/value-objects/feature-name/feature-name.vo';
 import { FeatureStatusValueObject } from '@/feature-context/features/domain/value-objects/feature-status/feature-status.vo';
+import { FeatureUpdatedEvent } from '@/shared/domain/events/feature-context/features/feature-updated/feature-updated.event';
+import { DateValueObject } from '@/shared/domain/value-objects/date/date.vo';
+import { FeatureUuidValueObject } from '@/shared/domain/value-objects/identifiers/feature/feature-uuid.vo';
 import { EventBus } from '@nestjs/cqrs';
 import { Test } from '@nestjs/testing';
 import { FeatureUpdateCommand } from './feature-update.command';

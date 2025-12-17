@@ -1,11 +1,7 @@
-import { PaginatedResult } from '@/shared/domain/entities/paginated-result.entity';
 import { FeatureStatusEnum } from '@/feature-context/features/domain/enums/feature-status/feature-status.enum';
 import { FeatureViewModel } from '@/feature-context/features/domain/view-models/feature/feature.view-model';
-import {
-  FeatureResponseDto,
-  PaginatedFeatureResultDto,
-} from '@/feature-context/features/transport/graphql/dtos/responses/feature.response.dto';
 import { FeatureGraphQLMapper } from '@/feature-context/features/transport/graphql/mappers/feature.mapper';
+import { PaginatedResult } from '@/shared/domain/entities/paginated-result.entity';
 
 describe('FeatureGraphQLMapper', () => {
   let mapper: FeatureGraphQLMapper;

@@ -4,11 +4,9 @@ import { IBaseReadRepository } from '@/shared/domain/interfaces/base-read-reposi
 export const FEATURE_READ_REPOSITORY_TOKEN = Symbol('FeatureReadRepository');
 
 /**
- * Interface for the feature read repository.
+ * Type alias for the feature read repository.
  * This repository handles read operations (queries) for features.
  *
- * @interface IFeatureReadRepository
- * @extends IBaseReadRepository<FeatureViewModel>
+ * @type IFeatureReadRepository
  */
-export interface IFeatureReadRepository
-  extends IBaseReadRepository<FeatureViewModel> {}
+export type IFeatureReadRepository = IBaseReadRepository<FeatureViewModel>;
