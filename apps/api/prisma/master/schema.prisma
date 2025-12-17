@@ -447,7 +447,7 @@ enum FeatureStatusEnum {
 
 model Feature {
   id          String            @id @default(uuid())
-  key         String            @unique // Unique key identifier (e.g., "advanced-analytics")
+  key         String           // Key identifier (e.g., "advanced-analytics")
   name        String // Name of the feature
   description String? // Description of the feature
   status      FeatureStatusEnum @default(ACTIVE) // Status of the feature
