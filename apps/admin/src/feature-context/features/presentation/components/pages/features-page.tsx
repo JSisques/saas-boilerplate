@@ -1,8 +1,8 @@
 'use client';
 
-import { FeatureFiltersEnum } from '@/feature-context/features/presentation/enums/feature-filters.enum';
 import { FeatureCreateModal } from '@/feature-context/features/presentation/components/organisms/feature-create-modal/feature-create-modal';
 import { FeaturesTable } from '@/feature-context/features/presentation/components/organisms/features-table/features-table';
+import { FeatureFiltersEnum } from '@/feature-context/features/presentation/enums/feature-filters.enum';
 import { useFeatureFilterFields } from '@/feature-context/features/presentation/hooks/use-feature-filter-fields/use-feature-filter-fields';
 import { useFeaturePageStore } from '@/feature-context/features/presentation/stores/feature-page-store';
 import { useDefaultTenantName } from '@/shared/presentation/hooks/use-default-tenant-name';
@@ -31,7 +31,7 @@ import { useDebouncedFilters } from '@repo/shared/presentation/hooks/use-debounc
 import { useFilterOperators } from '@repo/shared/presentation/hooks/use-filter-operators';
 import { dynamicFiltersToApiFiltersMapper } from '@repo/shared/presentation/mappers/convert-filters.mapper';
 import { dynamicSortsToApiSortsMapper } from '@repo/shared/presentation/mappers/convert-sorts.mapper';
-import { DownloadIcon, PlusIcon, TrashIcon, UploadIcon } from 'lucide-react';
+import { PlusIcon, TrashIcon } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { useCallback, useMemo, useState } from 'react';
 
@@ -138,14 +138,6 @@ const FeaturesPage = () => {
           <Button key="add-feature" onClick={() => setIsAddModalOpen(true)}>
             <PlusIcon className="size-4" />
             {t('actions.addFeature')}
-          </Button>,
-          <Button key="export-features" variant="outline">
-            <DownloadIcon className="size-4" />
-            {t('actions.exportFeatures')}
-          </Button>,
-          <Button key="import-features" variant="outline">
-            <UploadIcon className="size-4" />
-            {t('actions.importFeatures')}
           </Button>,
           <Button
             key="delete-features"
