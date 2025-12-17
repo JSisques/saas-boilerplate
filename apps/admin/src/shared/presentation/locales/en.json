@@ -4,7 +4,9 @@
     "error": "Error",
     "success": "Success",
     "noData": "No data found",
-    "unknown": "Unknown"
+    "unknown": "Unknown",
+    "cancel": "Cancel",
+    "delete": "Delete"
   },
   "healthPage": {
     "title": "Health Status",
@@ -164,7 +166,9 @@
       "addFeature": "Add Feature",
       "exportFeatures": "Export Features",
       "importFeatures": "Import Features",
-      "deleteFeatures": "Delete Features"
+      "deleteFeatures": "Delete Features",
+      "deleteFeaturesConfirmation": "Delete selected features?",
+      "deleteFeaturesDescription": "You are about to delete {count} feature(s). This action cannot be undone."
     },
     "organisms": {
       "featuresTable": {

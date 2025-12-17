@@ -4,7 +4,9 @@
     "error": "Error",
     "success": "Éxito",
     "noData": "No se encontraron datos",
-    "unknown": "Desconocido"
+    "unknown": "Desconocido",
+    "cancel": "Cancelar",
+    "delete": "Eliminar"
   },
   "LandingPage": {
     "HeroSection": {
@@ -41,7 +43,9 @@
       "addFeature": "Añadir Feature",
       "exportFeatures": "Exportar Features",
       "importFeatures": "Importar Features",
-      "deleteFeatures": "Eliminar Features"
+      "deleteFeatures": "Eliminar Features",
+      "deleteFeaturesConfirmation": "¿Eliminar features seleccionadas?",
+      "deleteFeaturesDescription": "Estás a punto de eliminar {count} feature(s). Esta acción no se puede deshacer."
     },
     "organisms": {
       "featuresTable": {

@@ -7,7 +7,7 @@ import { useFeatureFilterFields } from '@/feature-context/features/presentation/
 import { useFeaturePageStore } from '@/feature-context/features/presentation/stores/feature-page-store';
 import { useDefaultTenantName } from '@/shared/presentation/hooks/use-default-tenant-name';
 import { useRoutes } from '@/shared/presentation/hooks/use-routes';
-import { BaseFilter, useFeaturesList } from '@repo/sdk';
+import { BaseFilter, useFeatures, useFeaturesList } from '@repo/sdk';
 import { FilterOperator } from '@repo/shared/domain/enums/filter-operator.enum';
 import { PageHeader } from '@repo/shared/presentation/components/organisms/page-header';
 import {
@@ -15,6 +15,16 @@ import {
   type DynamicFilter,
 } from '@repo/shared/presentation/components/organisms/table-layout';
 import PageWithSidebarTemplate from '@repo/shared/presentation/components/templates/page-with-sidebar-template';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '@repo/shared/presentation/components/ui/alert-dialog';
 import { Button } from '@repo/shared/presentation/components/ui/button';
 import type { Sort } from '@repo/shared/presentation/components/ui/data-table';
 import { useDebouncedFilters } from '@repo/shared/presentation/hooks/use-debounced-filters';
@@ -23,7 +33,7 @@ import { dynamicFiltersToApiFiltersMapper } from '@repo/shared/presentation/mapp
 import { dynamicSortsToApiSortsMapper } from '@repo/shared/presentation/mappers/convert-sorts.mapper';
 import { DownloadIcon, PlusIcon, TrashIcon, UploadIcon } from 'lucide-react';
 import { useTranslations } from 'next-intl';
-import { useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 
 const FeaturesPage = () => {
   const tCommon = useTranslations('common');
@@ -34,6 +44,10 @@ const FeaturesPage = () => {
   const [sorts, setSorts] = useState<Sort[]>([]);
   const [page, setPage] = useState(1);
   const [perPage, setPerPage] = useState(10);
+  const [selectedFeatureIds, setSelectedFeatureIds] = useState<Set<string>>(
+    new Set(),
+  );
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
 
   const { defaultTenantName, defaultTenantSubtitle } = useDefaultTenantName();
   const { setIsAddModalOpen } = useFeaturePageStore();
@@ -76,6 +90,29 @@ const FeaturesPage = () => {
     enabled: true,
   });
 
+  const { delete: deleteFeature } = useFeatures();
+
+  const handleDeleteSelected = useCallback(async () => {
+    if (selectedFeatureIds.size === 0) return;
+
+    try {
+      // Delete all selected features
+      await Promise.all(
+        Array.from(selectedFeatureIds).map((id) =>
+          deleteFeature.mutate({ id }),
+        ),
+      );
+
+      // Clear selection and refresh the list
+      setSelectedFeatureIds(new Set());
+      setIsDeleteDialogOpen(false);
+      await featuresList.refetch();
+    } catch (error) {
+      console.error('Error deleting features:', error);
+      // Error handling could be improved with toast notifications
+    }
+  }, [selectedFeatureIds, deleteFeature, featuresList]);
+
   if (featuresList.error) {
     return (
       <div className="p-4">
@@ -110,9 +147,15 @@ const FeaturesPage = () => {
             <UploadIcon className="size-4" />
             {t('actions.importFeatures')}
           </Button>,
-          <Button key="delete-features" variant="destructive">
+          <Button
+            key="delete-features"
+            variant="destructive"
+            disabled={selectedFeatureIds.size === 0}
+            onClick={() => setIsDeleteDialogOpen(true)}
+          >
             <TrashIcon className="size-4" />
             {t('actions.deleteFeatures')}
+            {selectedFeatureIds.size > 0 && ` (${selectedFeatureIds.size})`}
           </Button>,
         ]}
       />
@@ -144,10 +187,40 @@ const FeaturesPage = () => {
             sorts={sorts}
             onSortChange={setSorts}
             onCellEdit={() => {}}
+            selectedFeatureIds={selectedFeatureIds}
+            onSelectionChange={setSelectedFeatureIds}
           />
         )}
       </TableLayout>
       <FeatureCreateModal onCreated={() => featuresList.refetch()} />
+
+      {/* Delete Confirmation Dialog */}
+      <AlertDialog
+        open={isDeleteDialogOpen}
+        onOpenChange={setIsDeleteDialogOpen}
+      >
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>
+              {t('actions.deleteFeaturesConfirmation')}
+            </AlertDialogTitle>
+            <AlertDialogDescription>
+              {t('actions.deleteFeaturesDescription', {
+                count: selectedFeatureIds.size,
+              })}
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>{tCommon('cancel')}</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={handleDeleteSelected}
+              disabled={deleteFeature.loading}
+            >
+              {deleteFeature.loading ? tCommon('loading') : tCommon('delete')}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </PageWithSidebarTemplate>
   );
 };
