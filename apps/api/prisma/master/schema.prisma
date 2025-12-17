@@ -434,3 +434,28 @@ model SagaLog {
   updatedAt DateTime @updatedAt
   deletedAt DateTime?
 }
+
+// ============================================
+// Feature Flags System Models
+// ============================================
+
+enum FeatureStatusEnum {
+  ACTIVE
+  INACTIVE
+  DEPRECATED
+}
+
+model Feature {
+  id          String            @id @default(uuid())
+  key         String            @unique // Unique key identifier (e.g., "advanced-analytics")
+  name        String // Name of the feature
+  description String? // Description of the feature
+  status      FeatureStatusEnum @default(ACTIVE) // Status of the feature
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  @@index([key])
+  @@index([status])
+}
