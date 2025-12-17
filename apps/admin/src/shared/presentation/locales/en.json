@@ -178,6 +178,23 @@
         "status": "Status",
         "createdAt": "Created At",
         "updatedAt": "Updated At"
+      },
+      "featureCreateModal": {
+        "title": "Create Feature",
+        "description": "Create a new feature flag",
+        "actions": {
+          "create": "Create",
+          "cancel": "Cancel"
+        },
+        "keyLabel": "Key",
+        "keyPlaceholder": "e.g., advanced-analytics",
+        "keyHint": "Must be unique and in slug format (lowercase, alphanumeric, hyphens)",
+        "nameLabel": "Name",
+        "namePlaceholder": "Enter feature name",
+        "descriptionLabel": "Description",
+        "descriptionPlaceholder": "Enter feature description (optional)",
+        "statusLabel": "Status",
+        "statusPlaceholder": "Select status"
       }
     }
   },

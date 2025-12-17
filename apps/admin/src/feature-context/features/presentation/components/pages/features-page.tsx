@@ -1,8 +1,10 @@
 'use client';
 
 import { FeatureFiltersEnum } from '@/feature-context/features/presentation/enums/feature-filters.enum';
+import { FeatureCreateModal } from '@/feature-context/features/presentation/components/organisms/feature-create-modal/feature-create-modal';
 import { FeaturesTable } from '@/feature-context/features/presentation/components/organisms/features-table/features-table';
 import { useFeatureFilterFields } from '@/feature-context/features/presentation/hooks/use-feature-filter-fields/use-feature-filter-fields';
+import { useFeaturePageStore } from '@/feature-context/features/presentation/stores/feature-page-store';
 import { useDefaultTenantName } from '@/shared/presentation/hooks/use-default-tenant-name';
 import { useRoutes } from '@/shared/presentation/hooks/use-routes';
 import { BaseFilter, useFeaturesList } from '@repo/sdk';
@@ -34,6 +36,7 @@ const FeaturesPage = () => {
   const [perPage, setPerPage] = useState(10);
 
   const { defaultTenantName, defaultTenantSubtitle } = useDefaultTenantName();
+  const { setIsAddModalOpen } = useFeaturePageStore();
 
   const { getSidebarData } = useRoutes();
   const filterFields = useFeatureFilterFields();
@@ -95,7 +98,7 @@ const FeaturesPage = () => {
         title={t('title')}
         description={t('description')}
         actions={[
-          <Button key="add-feature" onClick={() => {}}>
+          <Button key="add-feature" onClick={() => setIsAddModalOpen(true)}>
             <PlusIcon className="size-4" />
             {t('actions.addFeature')}
           </Button>,
@@ -144,6 +147,7 @@ const FeaturesPage = () => {
           />
         )}
       </TableLayout>
+      <FeatureCreateModal onCreated={() => featuresList.refetch()} />
     </PageWithSidebarTemplate>
   );
 };

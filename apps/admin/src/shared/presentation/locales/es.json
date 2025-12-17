@@ -55,6 +55,23 @@
         "status": "Estado",
         "createdAt": "Fecha de Creación",
         "updatedAt": "Fecha de Actualización"
+      },
+      "featureCreateModal": {
+        "title": "Crear Feature",
+        "description": "Crear una nueva feature flag",
+        "actions": {
+          "create": "Crear",
+          "cancel": "Cancelar"
+        },
+        "keyLabel": "Clave",
+        "keyPlaceholder": "ej., advanced-analytics",
+        "keyHint": "Debe ser única y en formato slug (minúsculas, alfanumérico, guiones)",
+        "nameLabel": "Nombre",
+        "namePlaceholder": "Ingresa el nombre de la feature",
+        "descriptionLabel": "Descripción",
+        "descriptionPlaceholder": "Ingresa la descripción de la feature (opcional)",
+        "statusLabel": "Estado",
+        "statusPlaceholder": "Selecciona el estado"
       }
     }
   },
