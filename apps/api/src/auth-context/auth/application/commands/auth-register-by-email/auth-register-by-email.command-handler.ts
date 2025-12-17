@@ -42,7 +42,7 @@ export class AuthRegisterByEmailCommandHandler
       emailVerified: false,
       phoneNumber: null,
       lastLoginAt: null,
-      password: null,
+      password: command.password.value,
       provider: AuthProviderEnum.LOCAL,
       providerId: null,
       twoFactorEnabled: false,
