@@ -66,6 +66,8 @@ export class FeatureAggregate extends BaseAggregate {
     this._updatedAt = new DateValueObject(new Date());
 
     if (generateEvent) {
+      const primitives = this.toPrimitives();
+      const { id, ...eventData } = primitives;
       this.apply(
         new FeatureUpdatedEvent(
           {
@@ -73,7 +75,7 @@ export class FeatureAggregate extends BaseAggregate {
             aggregateType: FeatureAggregate.name,
             eventType: FeatureUpdatedEvent.name,
           },
-          this.toPrimitives(),
+          eventData,
         ),
       );
     }
