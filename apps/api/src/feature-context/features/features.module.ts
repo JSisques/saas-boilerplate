@@ -17,13 +17,15 @@ import { FEATURE_READ_REPOSITORY_TOKEN } from '@/feature-context/features/domain
 import { FEATURE_WRITE_REPOSITORY_TOKEN } from '@/feature-context/features/domain/repositories/feature-write.repository';
 import { FeatureMongoDBMapper } from '@/feature-context/features/infrastructure/database/mongodb/mappers/feature-mongodb.mapper';
 import { FeatureMongoRepository } from '@/feature-context/features/infrastructure/database/mongodb/repositories/feature-mongodb.repository';
-import { FeaturePrismaMapper } from '@/feature-context/features/infrastructure/database/prisma/mappers/feature-prisma.mapper';
-import { FeaturePrismaRepository } from '@/feature-context/features/infrastructure/database/prisma/repositories/feature-prisma.repository';
+import { FeatureTypeormEntity } from '@/feature-context/features/infrastructure/database/typeorm/entities/feature-typeorm.entity';
+import { FeatureTypeormMapper } from '@/feature-context/features/infrastructure/database/typeorm/mappers/feature-typeorm.mapper';
+import { FeatureTypeormRepository } from '@/feature-context/features/infrastructure/database/typeorm/repositories/feature-typeorm.repository';
 import { FeatureGraphQLMapper } from '@/feature-context/features/transport/graphql/mappers/feature.mapper';
 import { FeatureMutationsResolver } from '@/feature-context/features/transport/graphql/resolvers/feature-mutations.resolver';
 import { FeatureQueriesResolver } from '@/feature-context/features/transport/graphql/resolvers/feature-queries.resolver';
 import { SharedModule } from '@/shared/shared.module';
 import { Module } from '@nestjs/common';
+import { TypeOrmModule } from '@nestjs/typeorm';
 
 const RESOLVERS = [FeatureQueriesResolver, FeatureMutationsResolver];
 
@@ -55,7 +57,7 @@ const EVENT_HANDLERS = [
 const FACTORIES = [FeatureAggregateFactory, FeatureViewModelFactory];
 
 const MAPPERS = [
-  FeaturePrismaMapper,
+  FeatureTypeormMapper,
   FeatureMongoDBMapper,
   FeatureGraphQLMapper,
 ];
@@ -63,7 +65,7 @@ const MAPPERS = [
 const REPOSITORIES = [
   {
     provide: FEATURE_WRITE_REPOSITORY_TOKEN,
-    useClass: FeaturePrismaRepository,
+    useClass: FeatureTypeormRepository,
   },
   {
     provide: FEATURE_READ_REPOSITORY_TOKEN,
@@ -71,8 +73,9 @@ const REPOSITORIES = [
   },
 ];
 
+const ENTITIES = [FeatureTypeormEntity];
 @Module({
-  imports: [SharedModule],
+  imports: [SharedModule, TypeOrmModule.forFeature(ENTITIES)],
   controllers: [],
   providers: [
     ...RESOLVERS,
