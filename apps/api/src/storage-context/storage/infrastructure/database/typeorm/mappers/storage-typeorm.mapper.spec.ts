@@ -147,7 +147,7 @@ describe('StorageTypeormMapper', () => {
       typeormEntity.fileSize = 4096;
       typeormEntity.mimeType = 'image/png';
       typeormEntity.provider = StorageProviderEnum.SERVER_ROUTE;
-      typeormEntity.url = '/api/files/test-file.png';
+      typeormEntity.url = 'https://example.com/api/files/test-file.png';
       typeormEntity.path = '/uploads/test-file.png';
       typeormEntity.createdAt = now;
       typeormEntity.updatedAt = now;
@@ -162,7 +162,9 @@ describe('StorageTypeormMapper', () => {
           provider: new StorageProviderValueObject(
             StorageProviderEnum.SERVER_ROUTE,
           ),
-          url: new StorageUrlValueObject('/api/files/test-file.png'),
+          url: new StorageUrlValueObject(
+            'https://example.com/api/files/test-file.png',
+          ),
           path: new StoragePathValueObject('/uploads/test-file.png'),
           createdAt: new DateValueObject(now),
           updatedAt: new DateValueObject(now),

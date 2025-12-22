@@ -352,8 +352,8 @@ describe('SubscriptionPlanTypeormRepository', () => {
 
       const result = await repository.delete(subscriptionPlanId);
 
-      expect(result).toBe(true);
       expect(mockSoftDelete).toHaveBeenCalledWith(subscriptionPlanId);
+      expect(result).toBeUndefined();
     });
 
     it('should return false when subscription plan does not exist', async () => {
@@ -367,7 +367,8 @@ describe('SubscriptionPlanTypeormRepository', () => {
 
       const result = await repository.delete(subscriptionPlanId);
 
-      expect(result).toBe(false);
+      expect(mockSoftDelete).toHaveBeenCalledWith(subscriptionPlanId);
+      expect(result).toBeUndefined();
     });
   });
 });
