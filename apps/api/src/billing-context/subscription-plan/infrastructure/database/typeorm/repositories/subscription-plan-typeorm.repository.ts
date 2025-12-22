@@ -106,8 +106,6 @@ export class SubscriptionPlanTypeormRepository
   async delete(id: string): Promise<void> {
     this.logger.log(`Soft deleting subscription plan by id: ${id}`);
 
-    const result = await this.repository.softDelete(id);
-
     await this.repository.softDelete(id);
   }
 }

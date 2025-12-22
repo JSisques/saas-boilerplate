@@ -1,7 +1,6 @@
 import { StorageAggregate } from '@/storage-context/storage/domain/aggregate/storage.aggregate';
 import { StorageProviderEnum } from '@/storage-context/storage/domain/enums/storage-provider.enum';
 import { StorageAggregateFactory } from '@/storage-context/storage/domain/factories/storage-aggregate.factory';
-import { StorageTypeormDto } from '@/storage-context/storage/infrastructure/database/typeorm/dtos/storage-typeorm.dto';
 import { StorageTypeormEntity } from '@/storage-context/storage/infrastructure/database/typeorm/entities/storage-typeorm.entity';
 import { Injectable, Logger } from '@nestjs/common';
 
