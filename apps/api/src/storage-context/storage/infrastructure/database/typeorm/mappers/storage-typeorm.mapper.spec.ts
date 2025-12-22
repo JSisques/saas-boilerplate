@@ -185,7 +185,7 @@ describe('StorageTypeormMapper', () => {
         fileSize: 4096,
         mimeType: 'image/png',
         provider: StorageProviderEnum.SERVER_ROUTE,
-        url: '/api/files/test-file.png',
+        url: 'https://example.com/api/files/test-file.png',
         path: '/uploads/test-file.png',
         createdAt: now,
         updatedAt: now,
