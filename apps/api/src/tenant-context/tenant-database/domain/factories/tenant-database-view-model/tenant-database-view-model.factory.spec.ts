@@ -241,8 +241,10 @@ describe('TenantDatabaseViewModelFactory', () => {
           status: new TenantDatabaseStatusValueObject(
             TenantDatabaseStatusEnum.FAILED,
           ),
-          schemaVersion: null,
-          lastMigrationAt: null,
+          schemaVersion: new TenantDatabaseSchemaVersionValueObject('1.0.0'),
+          lastMigrationAt: new TenantDatabaseLastMigrationAtValueObject(
+            new Date('2024-01-01T09:00:00Z'),
+          ),
           errorMessage: new TenantDatabaseErrorMessageValueObject(
             'Connection timeout',
           ),

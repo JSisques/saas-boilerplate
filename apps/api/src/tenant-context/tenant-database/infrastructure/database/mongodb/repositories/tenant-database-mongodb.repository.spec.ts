@@ -1,13 +1,12 @@
-import { TenantDatabaseMongoRepository } from '@/tenant-context/tenant-database/infrastructure/database/mongodb/repositories/tenant-database-mongodb.repository';
-import { TenantDatabaseMongoDBMapper } from '@/tenant-context/tenant-database/infrastructure/database/mongodb/mappers/tenant-database-mongodb.mapper';
-import { TenantDatabaseViewModel } from '@/tenant-context/tenant-database/domain/view-models/tenant-database/tenant-database.view-model';
-import { TenantDatabaseMongoDbDto } from '@/tenant-context/tenant-database/infrastructure/database/mongodb/dtos/tenant-database-mongodb.dto';
-import { TenantDatabaseStatusEnum } from '@/tenant-context/tenant-database/domain/enums/tenant-database-status/tenant-database-status.enum';
 import { Criteria } from '@/shared/domain/entities/criteria';
 import { PaginatedResult } from '@/shared/domain/entities/paginated-result.entity';
 import { FilterOperator } from '@/shared/domain/enums/filter-operator.enum';
-import { SortDirection } from '@/shared/domain/enums/sort-direction.enum';
 import { MongoMasterService } from '@/shared/infrastructure/database/mongodb/services/mongo-master/mongo-master.service';
+import { TenantDatabaseStatusEnum } from '@/tenant-context/tenant-database/domain/enums/tenant-database-status/tenant-database-status.enum';
+import { TenantDatabaseViewModel } from '@/tenant-context/tenant-database/domain/view-models/tenant-database/tenant-database.view-model';
+import { TenantDatabaseMongoDbDto } from '@/tenant-context/tenant-database/infrastructure/database/mongodb/dtos/tenant-database-mongodb.dto';
+import { TenantDatabaseMongoDBMapper } from '@/tenant-context/tenant-database/infrastructure/database/mongodb/mappers/tenant-database-mongodb.mapper';
+import { TenantDatabaseMongoRepository } from '@/tenant-context/tenant-database/infrastructure/database/mongodb/repositories/tenant-database-mongodb.repository';
 import { Collection } from 'mongodb';
 
 describe('TenantDatabaseMongoRepository', () => {
@@ -554,8 +553,8 @@ describe('TenantDatabaseMongoRepository', () => {
         matchedCount: 0,
         modifiedCount: 0,
         upsertedCount: 1,
-        upsertedId: { _id: tenantDatabaseId },
-      });
+        upsertedId: null,
+      } as any);
 
       await repository.save(viewModel);
 

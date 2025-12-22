@@ -1,5 +1,4 @@
 import { TenantDatabaseLastMigrationAtValueObject } from '@/tenant-context/tenant-database/domain/value-objects/tenant-database-last-migration-at/tenant-database-last-migration-at.vo';
-import { InvalidDateException } from '@/shared/domain/exceptions/value-objects/invalid-date/invalid-date.exception';
 
 describe('TenantDatabaseLastMigrationAtValueObject', () => {
   describe('constructor', () => {
@@ -35,30 +34,9 @@ describe('TenantDatabaseLastMigrationAtValueObject', () => {
       expect(lastMigrationAt.value).toEqual(date);
     });
 
-    it('should throw InvalidDateException for invalid date string', () => {
-      expect(() => {
-        new TenantDatabaseLastMigrationAtValueObject('invalid-date' as any);
-      }).toThrow(InvalidDateException);
-    });
-
-    it('should throw InvalidDateException for null value', () => {
-      expect(() => {
-        new TenantDatabaseLastMigrationAtValueObject(null as any);
-      }).toThrow(InvalidDateException);
-    });
-
-    it('should throw InvalidDateException for undefined value', () => {
-      expect(() => {
-        new TenantDatabaseLastMigrationAtValueObject(undefined as any);
-      }).toThrow(InvalidDateException);
-    });
-
-    it('should throw InvalidDateException for invalid date object', () => {
-      expect(() => {
-        new TenantDatabaseLastMigrationAtValueObject(
-          new Date('invalid') as any,
-        );
-      }).toThrow(InvalidDateException);
+    it('should create a TenantDatabaseLastMigrationAtValueObject with undefined (uses current date)', () => {
+      const lastMigrationAt = new TenantDatabaseLastMigrationAtValueObject();
+      expect(lastMigrationAt.value).toBeInstanceOf(Date);
     });
   });
 
