@@ -18,13 +18,15 @@ import { SAGA_INSTANCE_READ_REPOSITORY_TOKEN } from '@/saga-context/saga-instanc
 import { SAGA_INSTANCE_WRITE_REPOSITORY_TOKEN } from '@/saga-context/saga-instance/domain/repositories/saga-instance-write.repository';
 import { SagaInstanceMongoDBMapper } from '@/saga-context/saga-instance/infrastructure/database/mongodb/mappers/saga-instance-mongodb.mapper';
 import { SagaInstanceMongoRepository } from '@/saga-context/saga-instance/infrastructure/database/mongodb/repositories/saga-instance-mongodb.repository';
-import { SagaInstancePrismaMapper } from '@/saga-context/saga-instance/infrastructure/database/prisma/mappers/saga-instance-prisma.mapper';
-import { SagaInstancePrismaRepository } from '@/saga-context/saga-instance/infrastructure/database/prisma/repositories/saga-instance-prisma.repository';
+import { SagaInstanceTypeormEntity } from '@/saga-context/saga-instance/infrastructure/database/typeorm/entities/saga-instance-typeorm.entity';
+import { SagaInstanceTypeormMapper } from '@/saga-context/saga-instance/infrastructure/database/typeorm/mappers/saga-instance-typeorm.mapper';
+import { SagaInstanceTypeormRepository } from '@/saga-context/saga-instance/infrastructure/database/typeorm/repositories/saga-instance-typeorm.repository';
 import { SagaInstanceGraphQLMapper } from '@/saga-context/saga-instance/transport/graphql/mappers/saga-instance.mapper';
 import { SagaInstanceMutationsResolver } from '@/saga-context/saga-instance/transport/graphql/resolvers/saga-instance-mutations.resolver';
 import { SagaInstanceQueryResolver } from '@/saga-context/saga-instance/transport/graphql/resolvers/saga-instance-queries.resolver';
 import { SharedModule } from '@/shared/shared.module';
 import { Module } from '@nestjs/common';
+import { TypeOrmModule } from '@nestjs/typeorm';
 
 const RESOLVERS = [SagaInstanceQueryResolver, SagaInstanceMutationsResolver];
 
@@ -59,7 +61,7 @@ const EVENT_HANDLERS = [
 const FACTORIES = [SagaInstanceAggregateFactory, SagaInstanceViewModelFactory];
 
 const MAPPERS = [
-  SagaInstancePrismaMapper,
+  SagaInstanceTypeormMapper,
   SagaInstanceMongoDBMapper,
   SagaInstanceGraphQLMapper,
 ];
@@ -67,7 +69,7 @@ const MAPPERS = [
 const REPOSITORIES = [
   {
     provide: SAGA_INSTANCE_WRITE_REPOSITORY_TOKEN,
-    useClass: SagaInstancePrismaRepository,
+    useClass: SagaInstanceTypeormRepository,
   },
   {
     provide: SAGA_INSTANCE_READ_REPOSITORY_TOKEN,
@@ -75,8 +77,9 @@ const REPOSITORIES = [
   },
 ];
 
+const ENTITIES = [SagaInstanceTypeormEntity];
 @Module({
-  imports: [SharedModule],
+  imports: [SharedModule, TypeOrmModule.forFeature(ENTITIES)],
   controllers: [],
   providers: [
     ...RESOLVERS,
