@@ -241,7 +241,6 @@ describe('AuthTypeormRepository', () => {
     it('should save auth aggregate and return saved aggregate', async () => {
       const authId = '123e4567-e89b-12d3-a456-426614174000';
       const userId = '123e4567-e89b-12d3-a456-426614174001';
-      const now = new Date();
 
       const authAggregate = new AuthAggregate(
         {
