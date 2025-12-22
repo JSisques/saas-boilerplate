@@ -4,10 +4,8 @@ import { ITenantCreateCommandDto } from '@/tenant-context/tenants/application/dt
 import { TenantSlugIsNotUniqueException } from '@/tenant-context/tenants/application/exceptions/tenant-slug-is-not-unique/tenant-slug-is-not-unique.exception';
 import { AssertTenantSlugIsUniqueService } from '@/tenant-context/tenants/application/services/assert-tenant-slug-is-unique/assert-tenant-slug-is-unique.service';
 import { TenantAggregate } from '@/tenant-context/tenants/domain/aggregates/tenant.aggregate';
-import { TenantStatusEnum } from '@/tenant-context/tenants/domain/enums/tenant-status/tenant-status.enum';
 import { TenantAggregateFactory } from '@/tenant-context/tenants/domain/factories/tenant-aggregate/tenant-aggregate.factory';
 import { TenantWriteRepository } from '@/tenant-context/tenants/domain/repositories/tenant-write.repository';
-import { TenantCreatedEvent } from '@/shared/domain/events/tenant-context/tenants/tenant-created/tenant-created.event';
 import { EventBus } from '@nestjs/cqrs';
 
 describe('TenantCreateCommandHandler', () => {

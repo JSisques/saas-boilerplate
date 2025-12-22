@@ -11,7 +11,6 @@ import { TenantWriteRepository } from '@/tenant-context/tenants/domain/repositor
 import { TenantNameValueObject } from '@/tenant-context/tenants/domain/value-objects/tenant-name/tenant-name.vo';
 import { TenantSlugValueObject } from '@/tenant-context/tenants/domain/value-objects/tenant-slug/tenant-slug.vo';
 import { TenantStatusValueObject } from '@/tenant-context/tenants/domain/value-objects/tenant-status/tenant-status.vo';
-import { TenantDeletedEvent } from '@/shared/domain/events/tenant-context/tenants/tenant-deleted/tenant-deleted.event';
 import { EventBus } from '@nestjs/cqrs';
 
 describe('TenantDeleteCommandHandler', () => {
