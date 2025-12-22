@@ -273,7 +273,12 @@ export class StringValueObject {
   }
 
   private checkPattern(): void {
-    if (this.options.pattern && !this.options.pattern.test(this._value)) {
+    // Skip pattern validation if allowEmpty is true and value is empty
+    if (
+      this.options.pattern &&
+      !this.options.pattern.test(this._value) &&
+      !(this.options.allowEmpty === true && this._value.length === 0)
+    ) {
       throw new InvalidStringException(
         'String does not match required pattern',
       );
