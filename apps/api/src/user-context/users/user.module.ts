@@ -67,8 +67,10 @@ const REPOSITORIES = [
   },
 ];
 
+const ENTITIES = [UserTypeormEntity];
+
 @Module({
-  imports: [SharedModule, TypeOrmModule.forFeature([UserTypeormEntity])],
+  imports: [SharedModule, TypeOrmModule.forFeature(ENTITIES)],
   controllers: [],
   providers: [
     ...RESOLVERS,

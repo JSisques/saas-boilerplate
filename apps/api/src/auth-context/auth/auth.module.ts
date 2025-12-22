@@ -21,8 +21,9 @@ import { AUTH_WRITE_REPOSITORY_TOKEN } from '@/auth-context/auth/domain/reposito
 import { JwtAuthGuard } from '@/auth-context/auth/infrastructure/auth/jwt-auth.guard';
 import { AuthMongoDBMapper } from '@/auth-context/auth/infrastructure/database/mongodb/mappers/auth-mongodb.mapper';
 import { AuthMongoRepository } from '@/auth-context/auth/infrastructure/database/mongodb/repositories/auth-mongodb.repository';
-import { AuthPrismaMapper } from '@/auth-context/auth/infrastructure/database/prisma/mappers/auth-prisma.mapper';
-import { AuthPrismaRepository } from '@/auth-context/auth/infrastructure/database/prisma/repositories/auth-prisma.repository';
+import { AuthTypeormEntity } from '@/auth-context/auth/infrastructure/database/typeorm/entities/auth-typeorm.entity';
+import { AuthTypeormMapper } from '@/auth-context/auth/infrastructure/database/typeorm/mappers/auth-typeorm.mapper';
+import { AuthTypeormRepository } from '@/auth-context/auth/infrastructure/database/typeorm/repositories/auth-typeorm.repository';
 import { OwnerGuard } from '@/auth-context/auth/infrastructure/guards/owner/owner.guard';
 import { RolesGuard } from '@/auth-context/auth/infrastructure/guards/roles/roles.guard';
 import { TenantRolesGuard } from '@/auth-context/auth/infrastructure/guards/tenant-roles/tenant-roles.guard';
@@ -36,6 +37,7 @@ import { Global, Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
+import { TypeOrmModule } from '@nestjs/typeorm';
 
 const RESOLVERS = [AuthQueryResolver, AuthMutationsResolver];
 
@@ -68,7 +70,7 @@ const SAGAS = [AuthRegistrationSaga];
 
 const FACTORIES = [AuthAggregateFactory, AuthViewModelFactory];
 
-const MAPPERS = [AuthPrismaMapper, AuthMongoDBMapper, AuthGraphQLMapper];
+const MAPPERS = [AuthTypeormMapper, AuthMongoDBMapper, AuthGraphQLMapper];
 
 const STRATEGIES = [JwtStrategy];
 
@@ -83,7 +85,7 @@ const GUARDS = [
 const REPOSITORIES = [
   {
     provide: AUTH_WRITE_REPOSITORY_TOKEN,
-    useClass: AuthPrismaRepository,
+    useClass: AuthTypeormRepository,
   },
   {
     provide: AUTH_READ_REPOSITORY_TOKEN,
@@ -91,10 +93,13 @@ const REPOSITORIES = [
   },
 ];
 
+const ENTITIES = [AuthTypeormEntity];
+
 @Global()
 @Module({
   imports: [
     SharedModule,
+    TypeOrmModule.forFeature(ENTITIES),
     PassportModule.register({ defaultStrategy: 'jwt' }),
     JwtModule.registerAsync({
       imports: [ConfigModule],

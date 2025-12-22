@@ -173,7 +173,7 @@ describe('UserTypeormRepository', () => {
   });
 
   describe('save', () => {
-    it('should create new user when user does not exist', async () => {
+    it('should save user aggregate and return saved aggregate', async () => {
       const userId = '123e4567-e89b-12d3-a456-426614174000';
       const now = new Date();
 
@@ -216,7 +216,6 @@ describe('UserTypeormRepository', () => {
       );
 
       mockUserTypeormMapper.toTypeormEntity.mockReturnValue(typeormEntity);
-      mockFindOne.mockResolvedValue(null); // User does not exist
       mockSave.mockResolvedValue(savedTypeormEntity);
       mockUserTypeormMapper.toDomainEntity.mockReturnValue(savedUserAggregate);
 
@@ -226,76 +225,11 @@ describe('UserTypeormRepository', () => {
       expect(mockUserTypeormMapper.toTypeormEntity).toHaveBeenCalledWith(
         userAggregate,
       );
-      expect(mockFindOne).toHaveBeenCalledWith({
-        where: { id: userId },
-      });
       expect(mockSave).toHaveBeenCalledWith(typeormEntity);
       expect(mockUserTypeormMapper.toDomainEntity).toHaveBeenCalledWith(
         savedTypeormEntity,
       );
-    });
-
-    it('should update existing user when user exists', async () => {
-      const userId = '123e4567-e89b-12d3-a456-426614174000';
-      const now = new Date();
-
-      const userAggregate = new UserAggregate(
-        {
-          id: new UserUuidValueObject(userId),
-          userName: new UserUserNameValueObject('johndoe'),
-          role: new UserRoleValueObject(UserRoleEnum.ADMIN),
-          status: new UserStatusValueObject(UserStatusEnum.INACTIVE),
-          createdAt: new DateValueObject(now),
-          updatedAt: new DateValueObject(now),
-        },
-        false,
-      );
-
-      const existingTypeormEntity = new UserTypeormEntity();
-      existingTypeormEntity.id = userId;
-      existingTypeormEntity.userName = 'johndoe';
-      existingTypeormEntity.role = UserRoleEnum.USER;
-      existingTypeormEntity.status = UserStatusEnum.ACTIVE;
-
-      const updatedTypeormEntity = new UserTypeormEntity();
-      updatedTypeormEntity.id = userId;
-      updatedTypeormEntity.userName = 'johndoe';
-      updatedTypeormEntity.role = UserRoleEnum.ADMIN;
-      updatedTypeormEntity.status = UserStatusEnum.INACTIVE;
-
-      const newTypeormEntity = new UserTypeormEntity();
-      newTypeormEntity.id = userId;
-      newTypeormEntity.userName = 'johndoe';
-      newTypeormEntity.role = UserRoleEnum.ADMIN;
-      newTypeormEntity.status = UserStatusEnum.INACTIVE;
-
-      const savedUserAggregate = new UserAggregate(
-        {
-          id: new UserUuidValueObject(userId),
-          userName: new UserUserNameValueObject('johndoe'),
-          role: new UserRoleValueObject(UserRoleEnum.ADMIN),
-          status: new UserStatusValueObject(UserStatusEnum.INACTIVE),
-          createdAt: new DateValueObject(now),
-          updatedAt: new DateValueObject(now),
-        },
-        false,
-      );
-
-      mockUserTypeormMapper.toTypeormEntity.mockReturnValue(newTypeormEntity);
-      mockFindOne.mockResolvedValue(existingTypeormEntity);
-      mockSave.mockResolvedValue(updatedTypeormEntity);
-      mockUserTypeormMapper.toDomainEntity.mockReturnValue(savedUserAggregate);
-
-      const result = await repository.save(userAggregate);
-
-      expect(result).toBe(savedUserAggregate);
-      expect(mockFindOne).toHaveBeenCalledWith({
-        where: { id: userId },
-      });
-      expect(mockSave).toHaveBeenCalledWith(existingTypeormEntity);
-      expect(mockUserTypeormMapper.toDomainEntity).toHaveBeenCalledWith(
-        updatedTypeormEntity,
-      );
+      expect(mockFindOne).not.toHaveBeenCalled();
     });
   });
 

@@ -67,21 +67,7 @@ export class UserTypeormRepository
     this.logger.log(`Saving user: ${user.id.value}`);
     const userEntity = this.userTypeormMapper.toTypeormEntity(user);
 
-    // Check if user exists
-    const existingUser = await this.repository.findOne({
-      where: { id: user.id.value },
-    });
-
-    let savedEntity: UserTypeormEntity;
-
-    if (existingUser) {
-      // Update existing user
-      Object.assign(existingUser, userEntity);
-      savedEntity = await this.repository.save(existingUser);
-    } else {
-      // Create new user
-      savedEntity = await this.repository.save(userEntity);
-    }
+    const savedEntity = await this.repository.save(userEntity);
 
     return this.userTypeormMapper.toDomainEntity(savedEntity);
   }
