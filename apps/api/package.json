@@ -120,6 +120,14 @@
       "!**/*.primitives.ts"
     ],
     "coverageDirectory": "../coverage",
+    "coverageThreshold": {
+      "global": {
+        "branches": 80,
+        "functions": 80,
+        "lines": 80,
+        "statements": 80
+      }
+    },
     "testEnvironment": "node",
     "moduleNameMapper": {
       "^@/prisma/master/client$": "<rootDir>/../prisma/master/client/index.js",
