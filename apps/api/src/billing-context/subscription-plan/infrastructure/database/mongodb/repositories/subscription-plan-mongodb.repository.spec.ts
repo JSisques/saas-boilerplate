@@ -6,8 +6,8 @@ import { SubscriptionPlanMongoDBMapper } from '@/billing-context/subscription-pl
 import { SubscriptionPlanMongoRepository } from '@/billing-context/subscription-plan/infrastructure/database/mongodb/repositories/subscription-plan-mongodb.repository';
 import { Criteria } from '@/shared/domain/entities/criteria';
 import { PaginatedResult } from '@/shared/domain/entities/paginated-result.entity';
-import { SubscriptionPlanIntervalEnum } from '@/shared/domain/enums/billing-context/subscription-plans/subscription-plan-interval/subscription-plan-interval.enum';
-import { SubscriptionPlanTypeEnum } from '@/shared/domain/enums/billing-context/subscription-plans/subscription-plan-type/subscription-plan-type.enum';
+import { SubscriptionPlanIntervalEnum } from '@/billing-context/subscription-plan/domain/enum/subscription-plan-interval/subscription-plan-interval.enum';
+import { SubscriptionPlanTypeEnum } from '@/billing-context/subscription-plan/domain/enum/subscription-plan-type/subscription-plan-type.enum';
 import { FilterOperator } from '@/shared/domain/enums/filter-operator.enum';
 import { SortDirection } from '@/shared/domain/enums/sort-direction.enum';
 import { MongoMasterService } from '@/shared/infrastructure/database/mongodb/services/mongo-master/mongo-master.service';

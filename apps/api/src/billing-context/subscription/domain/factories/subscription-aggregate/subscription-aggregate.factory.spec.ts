@@ -1,5 +1,6 @@
 import { SubscriptionAggregate } from '@/billing-context/subscription/domain/aggregates/subscription.aggregate';
 import { ISubscriptionCreateDto } from '@/billing-context/subscription/domain/dtos/entities/subscription-create/subscription-create.dto';
+import { SubscriptionRenewalMethodEnum } from '@/billing-context/subscription/domain/enum/subscription-renewal-method.enum';
 import { SubscriptionStatusEnum } from '@/billing-context/subscription/domain/enum/subscription-status.enum';
 import { SubscriptionAggregateFactory } from '@/billing-context/subscription/domain/factories/subscription-aggregate/subscription-aggregate.factory';
 import { SubscriptionPrimitives } from '@/billing-context/subscription/domain/primitives/subscription.primitives';
@@ -10,7 +11,6 @@ import { SubscriptionStatusValueObject } from '@/billing-context/subscription/do
 import { SubscriptionStripeCustomerIdValueObject } from '@/billing-context/subscription/domain/value-objects/subscription-stripe-customer-id/subscription-stripe-customer-id.vo';
 import { SubscriptionStripeSubscriptionIdValueObject } from '@/billing-context/subscription/domain/value-objects/subscription-stripe-id/subscription-stripe-id.vo';
 import { SubscriptionTrialEndDateValueObject } from '@/billing-context/subscription/domain/value-objects/subscription-trial-end-date/subscription-trial-end-date.vo';
-import { RenewalMethodEnum } from '@/prisma/master/client';
 import { SubscriptionCreatedEvent } from '@/shared/domain/events/billing-context/subscription/subscription-created/subscription-created.event';
 import { DateValueObject } from '@/shared/domain/value-objects/date/date.vo';
 import { SubscriptionPlanUuidValueObject } from '@/shared/domain/value-objects/identifiers/subscription-plan/subscription-plan-uuid.vo';
@@ -49,7 +49,7 @@ describe('SubscriptionAggregateFactory', () => {
           'cus_1234567890',
         ),
         renewalMethod: new SubscriptionRenewalMethodValueObject(
-          RenewalMethodEnum.AUTOMATIC,
+          SubscriptionRenewalMethodEnum.AUTOMATIC,
         ),
         createdAt: new DateValueObject(new Date()),
         updatedAt: new DateValueObject(new Date()),
@@ -103,7 +103,7 @@ describe('SubscriptionAggregateFactory', () => {
           'cus_1234567890',
         ),
         renewalMethod: new SubscriptionRenewalMethodValueObject(
-          RenewalMethodEnum.AUTOMATIC,
+          SubscriptionRenewalMethodEnum.AUTOMATIC,
         ),
         createdAt: new DateValueObject(new Date()),
         updatedAt: new DateValueObject(new Date()),
@@ -141,7 +141,7 @@ describe('SubscriptionAggregateFactory', () => {
         stripeSubscriptionId: null,
         stripeCustomerId: null,
         renewalMethod: new SubscriptionRenewalMethodValueObject(
-          RenewalMethodEnum.MANUAL,
+          SubscriptionRenewalMethodEnum.MANUAL,
         ),
         createdAt: new DateValueObject(new Date()),
         updatedAt: new DateValueObject(new Date()),
@@ -173,7 +173,7 @@ describe('SubscriptionAggregateFactory', () => {
         status: SubscriptionStatusEnum.ACTIVE,
         stripeSubscriptionId: 'sub_1234567890',
         stripeCustomerId: 'cus_1234567890',
-        renewalMethod: RenewalMethodEnum.AUTOMATIC,
+        renewalMethod: SubscriptionRenewalMethodEnum.AUTOMATIC,
         createdAt: new Date(),
         updatedAt: new Date(),
       };
@@ -210,7 +210,7 @@ describe('SubscriptionAggregateFactory', () => {
         status: SubscriptionStatusEnum.INACTIVE,
         stripeSubscriptionId: null,
         stripeCustomerId: null,
-        renewalMethod: RenewalMethodEnum.MANUAL,
+        renewalMethod: SubscriptionRenewalMethodEnum.MANUAL,
         createdAt: new Date(),
         updatedAt: new Date(),
       };
@@ -239,7 +239,7 @@ describe('SubscriptionAggregateFactory', () => {
         status: SubscriptionStatusEnum.ACTIVE,
         stripeSubscriptionId: 'sub_1234567890',
         stripeCustomerId: 'cus_1234567890',
-        renewalMethod: RenewalMethodEnum.AUTOMATIC,
+        renewalMethod: SubscriptionRenewalMethodEnum.AUTOMATIC,
         createdAt: new Date(),
         updatedAt: new Date(),
       };
@@ -281,7 +281,7 @@ describe('SubscriptionAggregateFactory', () => {
         status: SubscriptionStatusEnum.ACTIVE,
         stripeSubscriptionId: 'sub_1234567890',
         stripeCustomerId: 'cus_1234567890',
-        renewalMethod: RenewalMethodEnum.AUTOMATIC,
+        renewalMethod: SubscriptionRenewalMethodEnum.AUTOMATIC,
         createdAt: new Date(),
         updatedAt: new Date(),
       };

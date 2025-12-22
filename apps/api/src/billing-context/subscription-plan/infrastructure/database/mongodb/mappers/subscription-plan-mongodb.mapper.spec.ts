@@ -4,8 +4,8 @@ import { SubscriptionPlanViewModelFactory } from '@/billing-context/subscription
 import { SubscriptionPlanViewModel } from '@/billing-context/subscription-plan/domain/view-models/subscription-plan.view-model';
 import { SubscriptionPlanMongoDbDto } from '@/billing-context/subscription-plan/infrastructure/database/mongodb/dtos/subscription-plan-mongodb.dto';
 import { SubscriptionPlanMongoDBMapper } from '@/billing-context/subscription-plan/infrastructure/database/mongodb/mappers/subscription-plan-mongodb.mapper';
-import { SubscriptionPlanIntervalEnum } from '@/shared/domain/enums/billing-context/subscription-plans/subscription-plan-interval/subscription-plan-interval.enum';
-import { SubscriptionPlanTypeEnum } from '@/shared/domain/enums/billing-context/subscription-plans/subscription-plan-type/subscription-plan-type.enum';
+import { SubscriptionPlanIntervalEnum } from '@/billing-context/subscription-plan/domain/enum/subscription-plan-interval/subscription-plan-interval.enum';
+import { SubscriptionPlanTypeEnum } from '@/billing-context/subscription-plan/domain/enum/subscription-plan-type/subscription-plan-type.enum';
 
 describe('SubscriptionPlanMongoDBMapper', () => {
   let mapper: SubscriptionPlanMongoDBMapper;

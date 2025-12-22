@@ -1,6 +1,6 @@
 import { TENANT_ROLES_KEY } from '@/auth-context/auth/infrastructure/decorators/tenant-roles/tenant-roles.decorator';
 import { TenantRolesGuard } from '@/auth-context/auth/infrastructure/guards/tenant-roles/tenant-roles.guard';
-import { TenantMemberRoleEnum } from '@/prisma/master/client';
+import { TenantMemberRoleEnum } from '@/shared/domain/enums/tenant-context/tenant-members/tenant-member-role/tenant-member-role.enum';
 import { FindTenantMemberByTenantIdAndUserIdQuery } from '@/tenant-context/tenant-members/application/queries/tenant-member-find-by-tenant-id-and-user-id/tenant-member-find-by-tenant-id-and-user-id.query';
 import { TenantMemberAggregate } from '@/tenant-context/tenant-members/domain/aggregates/tenant-member.aggregate';
 import { ExecutionContext, ForbiddenException } from '@nestjs/common';

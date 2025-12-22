@@ -6,8 +6,8 @@ import { SubscriptionPlanReadRepository } from '@/billing-context/subscription-p
 import { SubscriptionPlanViewModel } from '@/billing-context/subscription-plan/domain/view-models/subscription-plan.view-model';
 import { Criteria } from '@/shared/domain/entities/criteria';
 import { PaginatedResult } from '@/shared/domain/entities/paginated-result.entity';
-import { SubscriptionPlanIntervalEnum } from '@/shared/domain/enums/billing-context/subscription-plans/subscription-plan-interval/subscription-plan-interval.enum';
-import { SubscriptionPlanTypeEnum } from '@/shared/domain/enums/billing-context/subscription-plans/subscription-plan-type/subscription-plan-type.enum';
+import { SubscriptionPlanIntervalEnum } from '@/billing-context/subscription-plan/domain/enum/subscription-plan-interval/subscription-plan-interval.enum';
+import { SubscriptionPlanTypeEnum } from '@/billing-context/subscription-plan/domain/enum/subscription-plan-type/subscription-plan-type.enum';
 
 describe('FindSubscriptionPlansByCriteriaQueryHandler', () => {
   let handler: FindSubscriptionPlansByCriteriaQueryHandler;

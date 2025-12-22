@@ -13,8 +13,8 @@ import { SubscriptionPlanGraphQLMapper } from '@/billing-context/subscription-pl
 import { SubscriptionPlanQueryResolver } from '@/billing-context/subscription-plan/transport/graphql/resolvers/subscription-plan-queries.resolver';
 import { Criteria } from '@/shared/domain/entities/criteria';
 import { PaginatedResult } from '@/shared/domain/entities/paginated-result.entity';
-import { SubscriptionPlanIntervalEnum } from '@/shared/domain/enums/billing-context/subscription-plans/subscription-plan-interval/subscription-plan-interval.enum';
-import { SubscriptionPlanTypeEnum } from '@/shared/domain/enums/billing-context/subscription-plans/subscription-plan-type/subscription-plan-type.enum';
+import { SubscriptionPlanIntervalEnum } from '@/billing-context/subscription-plan/domain/enum/subscription-plan-interval/subscription-plan-interval.enum';
+import { SubscriptionPlanTypeEnum } from '@/billing-context/subscription-plan/domain/enum/subscription-plan-type/subscription-plan-type.enum';
 import { QueryBus } from '@nestjs/cqrs';
 
 describe('SubscriptionPlanQueryResolver', () => {

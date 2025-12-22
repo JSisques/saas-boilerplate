@@ -2,7 +2,7 @@ import {
   TenantRoles,
   TENANT_ROLES_KEY,
 } from '@/auth-context/auth/infrastructure/decorators/tenant-roles/tenant-roles.decorator';
-import { TenantMemberRoleEnum } from '@/prisma/master/client';
+import { TenantMemberRoleEnum } from '@/shared/domain/enums/tenant-context/tenant-members/tenant-member-role/tenant-member-role.enum';
 import { SetMetadata } from '@nestjs/common';
 
 jest.mock('@nestjs/common', () => ({

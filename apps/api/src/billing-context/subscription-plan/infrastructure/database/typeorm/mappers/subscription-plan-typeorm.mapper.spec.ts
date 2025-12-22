@@ -17,8 +17,8 @@ import { SubscriptionPlanTrialPeriodDaysValueObject } from '@/billing-context/su
 import { SubscriptionPlanTypeValueObject } from '@/billing-context/subscription-plan/domain/value-objects/subscription-plan-type/subscription-plan-type.vo';
 import { SubscriptionPlanTypeormEntity } from '@/billing-context/subscription-plan/infrastructure/database/typeorm/entities/subscription-plan-typeorm.entity';
 import { SubscriptionPlanTypeormMapper } from '@/billing-context/subscription-plan/infrastructure/database/typeorm/mappers/subscription-plan-typeorm.mapper';
-import { SubscriptionPlanIntervalEnum } from '@/shared/domain/enums/billing-context/subscription-plans/subscription-plan-interval/subscription-plan-interval.enum';
-import { SubscriptionPlanTypeEnum } from '@/shared/domain/enums/billing-context/subscription-plans/subscription-plan-type/subscription-plan-type.enum';
+import { SubscriptionPlanIntervalEnum } from '@/billing-context/subscription-plan/domain/enum/subscription-plan-interval/subscription-plan-interval.enum';
+import { SubscriptionPlanTypeEnum } from '@/billing-context/subscription-plan/domain/enum/subscription-plan-type/subscription-plan-type.enum';
 import { DateValueObject } from '@/shared/domain/value-objects/date/date.vo';
 import { SubscriptionPlanUuidValueObject } from '@/shared/domain/value-objects/identifiers/subscription-plan/subscription-plan-uuid.vo';
 
