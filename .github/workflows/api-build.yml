@@ -8,45 +8,12 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '24'
-
-      - name: Install pnpm
-        uses: pnpm/action-setup@v2
-        with:
-          version: latest
-
-      - name: Install dependencies
-        run: |
-          if [[ "${{ github.actor }}" == "dependabot[bot]" ]]; then
-            pnpm install --no-frozen-lockfile --filter=./apps/api...
-          else
-            pnpm install --frozen-lockfile --filter=./apps/api...
-          fi
-
-      - name: Generate Prisma master client
-        env:
-          DATABASE_URL: postgresql://user:password@localhost:5432/dummy
-        run: pnpm --filter=./apps/api... run prisma:generate:master
-
-      - name: Generate Prisma tenant client
-        env:
-          DATABASE_TENANT_URL: postgresql://user:password@localhost:5432/dummy
-        run: pnpm --filter=./apps/api... run prisma:generate:tenant
-
-      - name: Lint code
-        run: pnpm lint --filter=./apps/api...
-
-      - name: Run unit tests
-        run: pnpm test --filter=./apps/api...
-
-      - name: Build the app
-        run: pnpm build --filter=./apps/api...
+    uses: sisques-labs/workflows/.github/workflows/api-build.yml@main
+    with:
+      app_path: 'apps/api'
+      app_name: 'API'
+      node_version: '24'
+      run_lint: true
+      run_test: true
+      build_command: 'build'
+    secrets: inherit
