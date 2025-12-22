@@ -18,6 +18,11 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
+    "migration:tenant:generate": "ts-node -r tsconfig-paths/register src/shared/infrastructure/database/typeorm/scripts/generate-tenant-migration/generate-tenant-migration.ts",
+    "migration:tenant:create": "ts-node -r tsconfig-paths/register src/shared/infrastructure/database/typeorm/scripts/create-tenant-migration/create-tenant-migration.ts",
+    "migrate:tenant:typeorm": "ts-node -r tsconfig-paths/register src/shared/infrastructure/database/typeorm/scripts/migrate-tenant/migrate-tenant.ts",
+    "migrate:tenant:typeorm:all": "ts-node -r tsconfig-paths/register src/shared/infrastructure/database/typeorm/scripts/migrate-tenant/migrate-tenant.ts --all",
+    "provision:tenant:typeorm": "ts-node -r tsconfig-paths/register src/shared/infrastructure/database/typeorm/scripts/provision-tenant/provision-tenant.ts",
     "git:clean": "git branch --merged | grep -vE '^*|main|dev' | xargs -n 1 git branch -d"
   },
   "dependencies": {

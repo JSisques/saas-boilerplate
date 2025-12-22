@@ -1,3 +1,4 @@
+import { StorageTypeormEntity } from '@/storage-context/storage/infrastructure/database/typeorm/entities/storage-typeorm.entity';
 import { Injectable, Logger, OnModuleDestroy } from '@nestjs/common';
 import { DataSource, DataSourceOptions } from 'typeorm';
 
@@ -50,7 +51,16 @@ export class TypeormTenantFactory implements OnModuleDestroy {
     const dataSourceOptions: DataSourceOptions = {
       type: 'postgres',
       url: databaseUrl,
-      synchronize: process.env.NODE_ENV === 'development',
+      entities: [
+        // Add all tenant-specific entities here
+        StorageTypeormEntity,
+        // Add more tenant entities as they are migrated
+      ],
+      migrations: [
+        'src/shared/infrastructure/database/typeorm/migrations/tenant/*.ts',
+      ],
+      migrationsTableName: 'tenant_migrations',
+      synchronize: false, // Never use synchronize in production - use migrations instead
       logging: process.env.NODE_ENV === 'development',
     };
 
