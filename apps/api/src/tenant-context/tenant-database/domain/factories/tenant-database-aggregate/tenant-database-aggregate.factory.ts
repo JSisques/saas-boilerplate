@@ -1,6 +1,6 @@
 import { IWriteFactory } from '@/shared/domain/interfaces/write-factory.interface';
 import { DateValueObject } from '@/shared/domain/value-objects/date/date.vo';
-import { TenantMemberUuidValueObject } from '@/shared/domain/value-objects/identifiers/tenant-member-uuid/tenant-member-uuid.vo';
+import { TenantDatabaseUuidValueObject } from '@/shared/domain/value-objects/identifiers/tenant-database-uuid/tenant-database-uuid.vo';
 import { TenantUuidValueObject } from '@/shared/domain/value-objects/identifiers/tenant-uuid/tenant-uuid.vo';
 import { TenantDatabaseAggregate } from '@/tenant-context/tenant-database/domain/aggregates/tenant-database.aggregate';
 import { ITenantDatabaseCreateDto } from '@/tenant-context/tenant-database/domain/dtos/entities/tenant-database-create/tenant-database-create.dto';
@@ -66,7 +66,7 @@ export class TenantDatabaseAggregateFactory
     data: TenantDatabasePrimitives,
   ): TenantDatabaseAggregate {
     return new TenantDatabaseAggregate({
-      id: new TenantMemberUuidValueObject(data.id),
+      id: new TenantDatabaseUuidValueObject(data.id),
       tenantId: new TenantUuidValueObject(data.tenantId),
       databaseName: new TenantDatabaseNameValueObject(data.databaseName),
       readDatabaseName: new TenantDatabaseNameValueObject(

@@ -18,12 +18,14 @@ import { TENANT_DATABASE_READ_REPOSITORY_TOKEN } from '@/tenant-context/tenant-d
 import { TENANT_DATABASE_WRITE_REPOSITORY_TOKEN } from '@/tenant-context/tenant-database/domain/repositories/tenant-database-write.repository';
 import { TenantDatabaseMongoDBMapper } from '@/tenant-context/tenant-database/infrastructure/database/mongodb/mappers/tenant-database-mongodb.mapper';
 import { TenantDatabaseMongoRepository } from '@/tenant-context/tenant-database/infrastructure/database/mongodb/repositories/tenant-database-mongodb.repository';
-import { TenantDatabasePrismaMapper } from '@/tenant-context/tenant-database/infrastructure/database/prisma/mappers/tenant-database-prisma.mapper';
-import { TenantDatabasePrismaRepository } from '@/tenant-context/tenant-database/infrastructure/database/prisma/repositories/tenant-database-prisma.repository';
+import { TenantDatabaseTypeormEntity } from '@/tenant-context/tenant-database/infrastructure/database/typeorm/entities/tenant-database-typeorm.entity';
+import { TenantDatabaseTypeormMapper } from '@/tenant-context/tenant-database/infrastructure/database/typeorm/mappers/tenant-database-typeorm.mapper';
+import { TenantDatabaseTypeormRepository } from '@/tenant-context/tenant-database/infrastructure/database/typeorm/repositories/tenant-database-typeorm.repository';
 import { TenantDatabaseGraphQLMapper } from '@/tenant-context/tenant-database/transport/graphql/mappers/tenant-database.mapper';
 import { TenantDatabaseMutationsResolver } from '@/tenant-context/tenant-database/transport/graphql/resolvers/tenant-database-mutations.resolver';
 import { TenantDatabaseQueryResolver } from '@/tenant-context/tenant-database/transport/graphql/resolvers/tenant-database-queries.resolver';
 import { Module } from '@nestjs/common';
+import { TypeOrmModule } from '@nestjs/typeorm';
 
 const RESOLVERS = [
   TenantDatabaseQueryResolver,
@@ -61,7 +63,7 @@ const FACTORIES = [
 ];
 
 const MAPPERS = [
-  TenantDatabasePrismaMapper,
+  TenantDatabaseTypeormMapper,
   TenantDatabaseMongoDBMapper,
   TenantDatabaseGraphQLMapper,
 ];
@@ -69,7 +71,7 @@ const MAPPERS = [
 const REPOSITORIES = [
   {
     provide: TENANT_DATABASE_WRITE_REPOSITORY_TOKEN,
-    useClass: TenantDatabasePrismaRepository,
+    useClass: TenantDatabaseTypeormRepository,
   },
   {
     provide: TENANT_DATABASE_READ_REPOSITORY_TOKEN,
@@ -77,8 +79,10 @@ const REPOSITORIES = [
   },
 ];
 
+const ENTITIES = [TenantDatabaseTypeormEntity];
+
 @Module({
-  imports: [SharedModule],
+  imports: [SharedModule, TypeOrmModule.forFeature(ENTITIES)],
   controllers: [],
   providers: [
     ...RESOLVERS,
