@@ -17,13 +17,15 @@ import { SUBSCRIPTION_PLAN_READ_REPOSITORY_TOKEN } from '@/billing-context/subsc
 import { SUBSCRIPTION_PLAN_WRITE_REPOSITORY_TOKEN } from '@/billing-context/subscription-plan/domain/repositories/subscription-plan-write/subscription-plan-write.repository';
 import { SubscriptionPlanMongoDBMapper } from '@/billing-context/subscription-plan/infrastructure/database/mongodb/mappers/subscription-plan-mongodb.mapper';
 import { SubscriptionPlanMongoRepository } from '@/billing-context/subscription-plan/infrastructure/database/mongodb/repositories/subscription-plan-mongodb.repository';
-import { SubscriptionPlanPrismaMapper } from '@/billing-context/subscription-plan/infrastructure/database/prisma/mappers/subscription-plan-prisma.mapper';
-import { SubscriptionPlanPrismaRepository } from '@/billing-context/subscription-plan/infrastructure/database/prisma/repositories/subscription-plan-prisma.repository';
+import { SubscriptionPlanTypeormEntity } from '@/billing-context/subscription-plan/infrastructure/database/typeorm/entities/subscription-plan-typeorm.entity';
+import { SubscriptionPlanTypeormMapper } from '@/billing-context/subscription-plan/infrastructure/database/typeorm/mappers/subscription-plan-typeorm.mapper';
+import { SubscriptionPlanTypeormRepository } from '@/billing-context/subscription-plan/infrastructure/database/typeorm/repositories/subscription-plan-typeorm.repository';
 import { SubscriptionPlanGraphQLMapper } from '@/billing-context/subscription-plan/transport/graphql/mappers/subscription-plan.mapper';
 import { SubscriptionPlanMutationsResolver } from '@/billing-context/subscription-plan/transport/graphql/resolvers/subscription-plan-mutations.resolver';
 import { SubscriptionPlanQueryResolver } from '@/billing-context/subscription-plan/transport/graphql/resolvers/subscription-plan-queries.resolver';
 import { SharedModule } from '@/shared/shared.module';
 import { Module } from '@nestjs/common';
+import { TypeOrmModule } from '@nestjs/typeorm';
 
 const RESOLVERS = [
   SubscriptionPlanQueryResolver,
@@ -61,7 +63,7 @@ const FACTORIES = [
 ];
 
 const MAPPERS = [
-  SubscriptionPlanPrismaMapper,
+  SubscriptionPlanTypeormMapper,
   SubscriptionPlanMongoDBMapper,
   SubscriptionPlanGraphQLMapper,
 ];
@@ -69,7 +71,7 @@ const MAPPERS = [
 const REPOSITORIES = [
   {
     provide: SUBSCRIPTION_PLAN_WRITE_REPOSITORY_TOKEN,
-    useClass: SubscriptionPlanPrismaRepository,
+    useClass: SubscriptionPlanTypeormRepository,
   },
   {
     provide: SUBSCRIPTION_PLAN_READ_REPOSITORY_TOKEN,
@@ -77,8 +79,10 @@ const REPOSITORIES = [
   },
 ];
 
+const ENTITIES = [SubscriptionPlanTypeormEntity];
+
 @Module({
-  imports: [SharedModule],
+  imports: [SharedModule, TypeOrmModule.forFeature(ENTITIES)],
   controllers: [],
   providers: [
     ...RESOLVERS,

@@ -24,13 +24,15 @@ import { SUBSCRIPTION_READ_REPOSITORY_TOKEN } from '@/billing-context/subscripti
 import { SUBSCRIPTION_WRITE_REPOSITORY_TOKEN } from '@/billing-context/subscription/domain/repositories/subscription-write/subscription-write.repository';
 import { SubscriptionMongoDBMapper } from '@/billing-context/subscription/infrastructure/database/mongodb/mappers/subscription-mongodb.mapper';
 import { SubscriptionMongoRepository } from '@/billing-context/subscription/infrastructure/database/mongodb/repositories/subscription-mongodb.repository';
-import { SubscriptionPrismaMapper } from '@/billing-context/subscription/infrastructure/database/prisma/mappers/subscription-prisma.mapper';
-import { SubscriptionPrismaRepository } from '@/billing-context/subscription/infrastructure/database/prisma/repositories/subscription-prisma.repository';
+import { SubscriptionTypeormEntity } from '@/billing-context/subscription/infrastructure/database/typeorm/entities/subscription-typeorm.entity';
+import { SubscriptionTypeormMapper } from '@/billing-context/subscription/infrastructure/database/typeorm/mappers/subscription-typeorm.mapper';
+import { SubscriptionTypeormRepository } from '@/billing-context/subscription/infrastructure/database/typeorm/repositories/subscription-typeorm.repository';
 import { SubscriptionGraphQLMapper } from '@/billing-context/subscription/transport/graphql/mappers/subscription.mapper';
 import { SubscriptionMutationsResolver } from '@/billing-context/subscription/transport/graphql/resolvers/subscription-mutations.resolver';
 import { SubscriptionQueryResolver } from '@/billing-context/subscription/transport/graphql/resolvers/subscription-queries.resolver';
 import { SharedModule } from '@/shared/shared.module';
 import { Module } from '@nestjs/common';
+import { TypeOrmModule } from '@nestjs/typeorm';
 
 const RESOLVERS = [SubscriptionQueryResolver, SubscriptionMutationsResolver];
 
@@ -69,7 +71,7 @@ const EVENT_HANDLERS = [
 const FACTORIES = [SubscriptionAggregateFactory, SubscriptionViewModelFactory];
 
 const MAPPERS = [
-  SubscriptionPrismaMapper,
+  SubscriptionTypeormMapper,
   SubscriptionMongoDBMapper,
   SubscriptionGraphQLMapper,
 ];
@@ -77,7 +79,7 @@ const MAPPERS = [
 const REPOSITORIES = [
   {
     provide: SUBSCRIPTION_WRITE_REPOSITORY_TOKEN,
-    useClass: SubscriptionPrismaRepository,
+    useClass: SubscriptionTypeormRepository,
   },
   {
     provide: SUBSCRIPTION_READ_REPOSITORY_TOKEN,
@@ -85,8 +87,10 @@ const REPOSITORIES = [
   },
 ];
 
+const ENTITIES = [SubscriptionTypeormEntity];
+
 @Module({
-  imports: [SharedModule],
+  imports: [SharedModule, TypeOrmModule.forFeature(ENTITIES)],
   controllers: [],
   providers: [
     ...RESOLVERS,

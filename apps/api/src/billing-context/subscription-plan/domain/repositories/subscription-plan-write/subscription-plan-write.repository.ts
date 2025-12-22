@@ -1,5 +1,5 @@
 import { SubscriptionPlanAggregate } from '@/billing-context/subscription-plan/domain/aggregates/subscription-plan.aggregate';
-import { SubscriptionPlanTypeEnum } from '@/prisma/master/client';
+import { SubscriptionPlanTypeEnum } from '@/billing-context/subscription-plan/domain/enum/subscription-plan-type.enum';
 
 export const SUBSCRIPTION_PLAN_WRITE_REPOSITORY_TOKEN = Symbol(
   'SubscriptionPlanWriteRepository',
