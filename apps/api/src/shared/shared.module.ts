@@ -1,4 +1,5 @@
 import { PasswordHashingService } from '@/auth-context/auth/application/services/password-hashing/password-hashing.service';
+import { TypeOrmModule } from '@/shared/infrastructure/database/typeorm/typeorm.module';
 import { TenantContextService } from '@/shared/infrastructure/services/tenant-context/tenant-context.service';
 import { MutationResponseGraphQLMapper } from '@/shared/transport/graphql/mappers/mutation-response/mutation-response.mapper';
 import { Global, Module } from '@nestjs/common';
@@ -23,7 +24,7 @@ const REPOSITORIES = [];
 
 @Global()
 @Module({
-  imports: [PrismaModule, MongoModule],
+  imports: [PrismaModule, MongoModule, TypeOrmModule],
   controllers: [],
   providers: [
     ...RESOLVERS,
@@ -38,6 +39,7 @@ const REPOSITORIES = [];
   exports: [
     PrismaModule,
     MongoModule,
+    TypeOrmModule,
     ...RESOLVERS,
     ...SERVICES,
     ...QUERY_HANDLERS,

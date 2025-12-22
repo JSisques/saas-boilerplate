@@ -17,12 +17,14 @@ import { USER_READ_REPOSITORY_TOKEN } from '@/user-context/users/domain/reposito
 import { USER_WRITE_REPOSITORY_TOKEN } from '@/user-context/users/domain/repositories/user-write.repository';
 import { UserMongoDBMapper } from '@/user-context/users/infrastructure/database/mongodb/mappers/user-mongodb.mapper';
 import { UserMongoRepository } from '@/user-context/users/infrastructure/database/mongodb/repositories/user-mongodb.repository';
-import { UserPrismaMapper } from '@/user-context/users/infrastructure/database/prisma/mappers/user-prisma.mapper';
-import { UserPrismaRepository } from '@/user-context/users/infrastructure/database/prisma/repositories/user-prisma.repository';
+import { UserTypeormEntity } from '@/user-context/users/infrastructure/database/typeorm/entities/user-typeorm.entity';
+import { UserTypeOrmMapper } from '@/user-context/users/infrastructure/database/typeorm/mappers/user-typeorm.mapper';
+import { UserTypeormRepository } from '@/user-context/users/infrastructure/database/typeorm/repositories/user-typeorm.repository';
 import { UserGraphQLMapper } from '@/user-context/users/transport/graphql/mappers/user.mapper';
 import { UserMutationsResolver } from '@/user-context/users/transport/graphql/resolvers/user-mutations.resolver';
 import { UserQueryResolver } from '@/user-context/users/transport/graphql/resolvers/user-queries.resolver';
 import { Module } from '@nestjs/common';
+import { TypeOrmModule } from '@nestjs/typeorm';
 
 const RESOLVERS = [UserQueryResolver, UserMutationsResolver];
 
@@ -52,12 +54,12 @@ const EVENT_HANDLERS = [
 
 const FACTORIES = [UserAggregateFactory, UserViewModelFactory];
 
-const MAPPERS = [UserPrismaMapper, UserMongoDBMapper, UserGraphQLMapper];
+const MAPPERS = [UserTypeOrmMapper, UserMongoDBMapper, UserGraphQLMapper];
 
 const REPOSITORIES = [
   {
     provide: USER_WRITE_REPOSITORY_TOKEN,
-    useClass: UserPrismaRepository,
+    useClass: UserTypeormRepository,
   },
   {
     provide: USER_READ_REPOSITORY_TOKEN,
@@ -66,7 +68,7 @@ const REPOSITORIES = [
 ];
 
 @Module({
-  imports: [SharedModule],
+  imports: [SharedModule, TypeOrmModule.forFeature([UserTypeormEntity])],
   controllers: [],
   providers: [
     ...RESOLVERS,
