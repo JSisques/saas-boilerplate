@@ -1,15 +1,15 @@
 import { HealthStatusEnum } from '@/health-context/health/domain/enum/health-status.enum';
-import { PrismaMasterService } from '@/shared/infrastructure/database/prisma/services/prisma-master/prisma-master.service';
+import { TypeormMasterService } from '@/shared/infrastructure/database/typeorm/services/typeorm-master/typeorm-master.service';
 import { Injectable, Logger } from '@nestjs/common';
 
 @Injectable()
 export class HealthWriteDatabaseCheckService {
   private readonly logger = new Logger(HealthWriteDatabaseCheckService.name);
 
-  constructor(private readonly prismaMasterService: PrismaMasterService) {}
+  constructor(private readonly typeormMasterService: TypeormMasterService) {}
 
   /**
-   * Checks if the write database (Prisma/PostgreSQL) is connected and accessible.
+   * Checks if the write database (TypeORM/PostgreSQL) is connected and accessible.
    *
    * Executes a simple query to verify the database connection.
    * Returns OK if the connection is successful, ERROR otherwise.
@@ -21,8 +21,8 @@ export class HealthWriteDatabaseCheckService {
 
     try {
       // Execute a simple query to verify the database connection
-      // Using $queryRaw with SELECT 1 is a lightweight way to check connectivity
-      await this.prismaMasterService.client.$queryRaw`SELECT 1`;
+      // Using query with SELECT 1 is a lightweight way to check connectivity
+      await this.typeormMasterService.getDataSource().query('SELECT 1');
 
       this.logger.log('Write database connection is healthy');
       return HealthStatusEnum.OK;
