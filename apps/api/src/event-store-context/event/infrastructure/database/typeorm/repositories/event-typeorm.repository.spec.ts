@@ -58,6 +58,7 @@ describe('EventTypeormRepository', () => {
   describe('findById', () => {
     it('should return event aggregate when event exists', async () => {
       const eventId = '123e4567-e89b-12d3-a456-426614174000';
+      const aggregateId = '876e4567-e89b-12d3-a456-426614174001';
       const now = new Date();
       const timestamp = new Date();
 
@@ -65,7 +66,7 @@ describe('EventTypeormRepository', () => {
       typeormEntity.id = eventId;
       typeormEntity.eventType = 'EventCreated';
       typeormEntity.aggregateType = 'UserAggregate';
-      typeormEntity.aggregateId = 'user-123';
+      typeormEntity.aggregateId = aggregateId;
       typeormEntity.payload = { key: 'value' };
       typeormEntity.timestamp = timestamp;
       typeormEntity.createdAt = now;
@@ -76,7 +77,7 @@ describe('EventTypeormRepository', () => {
           id: new EventUuidValueObject(eventId),
           eventType: new EventTypeValueObject('EventCreated'),
           aggregateType: new EventAggregateTypeValueObject('UserAggregate'),
-          aggregateId: new EventAggregateIdValueObject('user-123'),
+          aggregateId: new EventAggregateIdValueObject(aggregateId),
           payload: new EventPayloadValueObject({ key: 'value' }),
           timestamp: new EventTimestampValueObject(timestamp),
           createdAt: new DateValueObject(now),
@@ -117,6 +118,7 @@ describe('EventTypeormRepository', () => {
 
   describe('findByCriteria', () => {
     it('should return event aggregates when events match criteria', async () => {
+      const aggregateId = '876e4567-e89b-12d3-a456-426614174001';
       const now = new Date();
       const timestamp = new Date();
       const from = new Date(timestamp.getTime() - 1000);
@@ -124,7 +126,7 @@ describe('EventTypeormRepository', () => {
 
       const filters: IEventFilterDto = {
         eventType: 'EventCreated',
-        aggregateId: 'user-123',
+        aggregateId: aggregateId,
         aggregateType: 'UserAggregate',
         from,
         to,
@@ -138,7 +140,7 @@ describe('EventTypeormRepository', () => {
       typeormEntity.id = '123e4567-e89b-12d3-a456-426614174000';
       typeormEntity.eventType = 'EventCreated';
       typeormEntity.aggregateType = 'UserAggregate';
-      typeormEntity.aggregateId = 'user-123';
+      typeormEntity.aggregateId = aggregateId;
       typeormEntity.payload = { key: 'value' };
       typeormEntity.timestamp = timestamp;
       typeormEntity.createdAt = now;
@@ -149,7 +151,7 @@ describe('EventTypeormRepository', () => {
           id: new EventUuidValueObject('123e4567-e89b-12d3-a456-426614174000'),
           eventType: new EventTypeValueObject('EventCreated'),
           aggregateType: new EventAggregateTypeValueObject('UserAggregate'),
-          aggregateId: new EventAggregateIdValueObject('user-123'),
+          aggregateId: new EventAggregateIdValueObject(aggregateId),
           payload: new EventPayloadValueObject({ key: 'value' }),
           timestamp: new EventTimestampValueObject(timestamp),
           createdAt: new DateValueObject(now),
@@ -190,6 +192,7 @@ describe('EventTypeormRepository', () => {
   describe('save', () => {
     it('should save event aggregate and return saved aggregate', async () => {
       const eventId = '123e4567-e89b-12d3-a456-426614174000';
+      const aggregateId = '876e4567-e89b-12d3-a456-426614174001';
       const now = new Date();
       const timestamp = new Date();
 
@@ -198,7 +201,7 @@ describe('EventTypeormRepository', () => {
           id: new EventUuidValueObject(eventId),
           eventType: new EventTypeValueObject('EventCreated'),
           aggregateType: new EventAggregateTypeValueObject('UserAggregate'),
-          aggregateId: new EventAggregateIdValueObject('user-123'),
+          aggregateId: new EventAggregateIdValueObject(aggregateId),
           payload: new EventPayloadValueObject({ key: 'value' }),
           timestamp: new EventTimestampValueObject(timestamp),
           createdAt: new DateValueObject(now),
@@ -211,7 +214,7 @@ describe('EventTypeormRepository', () => {
       typeormEntity.id = eventId;
       typeormEntity.eventType = 'EventCreated';
       typeormEntity.aggregateType = 'UserAggregate';
-      typeormEntity.aggregateId = 'user-123';
+      typeormEntity.aggregateId = aggregateId;
       typeormEntity.payload = { key: 'value' };
       typeormEntity.timestamp = timestamp;
 
@@ -219,7 +222,7 @@ describe('EventTypeormRepository', () => {
       savedTypeormEntity.id = eventId;
       savedTypeormEntity.eventType = 'EventCreated';
       savedTypeormEntity.aggregateType = 'UserAggregate';
-      savedTypeormEntity.aggregateId = 'user-123';
+      savedTypeormEntity.aggregateId = aggregateId;
       savedTypeormEntity.payload = { key: 'value' };
       savedTypeormEntity.timestamp = timestamp;
 
@@ -228,7 +231,7 @@ describe('EventTypeormRepository', () => {
           id: new EventUuidValueObject(eventId),
           eventType: new EventTypeValueObject('EventCreated'),
           aggregateType: new EventAggregateTypeValueObject('UserAggregate'),
-          aggregateId: new EventAggregateIdValueObject('user-123'),
+          aggregateId: new EventAggregateIdValueObject(aggregateId),
           payload: new EventPayloadValueObject({ key: 'value' }),
           timestamp: new EventTimestampValueObject(timestamp),
           createdAt: new DateValueObject(now),

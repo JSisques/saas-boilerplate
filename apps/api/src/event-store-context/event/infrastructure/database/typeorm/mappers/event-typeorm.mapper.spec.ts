@@ -1,5 +1,3 @@
-import { DateValueObject } from '@/shared/domain/value-objects/date/date.vo';
-import { EventUuidValueObject } from '@/shared/domain/value-objects/identifiers/event-uuid/event-uuid.vo';
 import { EventAggregate } from '@/event-store-context/event/domain/aggregates/event.aggregate';
 import { EventAggregateFactory } from '@/event-store-context/event/domain/factories/event-aggregate/event-aggregate.factory';
 import { EventAggregateIdValueObject } from '@/event-store-context/event/domain/value-objects/event-aggregate-id/event-aggregate-id.vo';
@@ -9,6 +7,8 @@ import { EventTimestampValueObject } from '@/event-store-context/event/domain/va
 import { EventTypeValueObject } from '@/event-store-context/event/domain/value-objects/event-type/event-type.vo';
 import { EventTypeormEntity } from '@/event-store-context/event/infrastructure/database/typeorm/entities/event-typeorm.entity';
 import { EventTypeormMapper } from '@/event-store-context/event/infrastructure/database/typeorm/mappers/event-typeorm.mapper';
+import { DateValueObject } from '@/shared/domain/value-objects/date/date.vo';
+import { EventUuidValueObject } from '@/shared/domain/value-objects/identifiers/event-uuid/event-uuid.vo';
 
 describe('EventTypeormMapper', () => {
   let mapper: EventTypeormMapper;
@@ -33,11 +33,12 @@ describe('EventTypeormMapper', () => {
       const now = new Date();
       const timestamp = new Date();
 
+      const aggregateId = '876e4567-e89b-12d3-a456-426614174001';
       const typeormEntity = new EventTypeormEntity();
       typeormEntity.id = eventId;
       typeormEntity.eventType = 'EventCreated';
       typeormEntity.aggregateType = 'UserAggregate';
-      typeormEntity.aggregateId = 'user-123';
+      typeormEntity.aggregateId = aggregateId;
       typeormEntity.payload = { key: 'value' };
       typeormEntity.timestamp = timestamp;
       typeormEntity.createdAt = now;
@@ -49,7 +50,7 @@ describe('EventTypeormMapper', () => {
           id: new EventUuidValueObject(eventId),
           eventType: new EventTypeValueObject('EventCreated'),
           aggregateType: new EventAggregateTypeValueObject('UserAggregate'),
-          aggregateId: new EventAggregateIdValueObject('user-123'),
+          aggregateId: new EventAggregateIdValueObject(aggregateId),
           payload: new EventPayloadValueObject({ key: 'value' }),
           timestamp: new EventTimestampValueObject(timestamp),
           createdAt: new DateValueObject(now),
@@ -69,7 +70,7 @@ describe('EventTypeormMapper', () => {
         id: eventId,
         eventType: 'EventCreated',
         aggregateType: 'UserAggregate',
-        aggregateId: 'user-123',
+        aggregateId: aggregateId,
         payload: { key: 'value' },
         timestamp: timestamp,
         createdAt: now,
@@ -80,6 +81,7 @@ describe('EventTypeormMapper', () => {
 
     it('should convert TypeORM entity with null payload', () => {
       const eventId = '123e4567-e89b-12d3-a456-426614174000';
+      const aggregateId = '876e4567-e89b-12d3-a456-426614174001';
       const now = new Date();
       const timestamp = new Date();
 
@@ -87,7 +89,7 @@ describe('EventTypeormMapper', () => {
       typeormEntity.id = eventId;
       typeormEntity.eventType = 'EventCreated';
       typeormEntity.aggregateType = 'UserAggregate';
-      typeormEntity.aggregateId = 'user-123';
+      typeormEntity.aggregateId = aggregateId;
       typeormEntity.payload = null;
       typeormEntity.timestamp = timestamp;
       typeormEntity.createdAt = now;
@@ -99,7 +101,7 @@ describe('EventTypeormMapper', () => {
           id: new EventUuidValueObject(eventId),
           eventType: new EventTypeValueObject('EventCreated'),
           aggregateType: new EventAggregateTypeValueObject('UserAggregate'),
-          aggregateId: new EventAggregateIdValueObject('user-123'),
+          aggregateId: new EventAggregateIdValueObject(aggregateId),
           payload: new EventPayloadValueObject({}),
           timestamp: new EventTimestampValueObject(timestamp),
           createdAt: new DateValueObject(now),
@@ -119,7 +121,7 @@ describe('EventTypeormMapper', () => {
         id: eventId,
         eventType: 'EventCreated',
         aggregateType: 'UserAggregate',
-        aggregateId: 'user-123',
+        aggregateId: aggregateId,
         payload: {},
         timestamp: timestamp,
         createdAt: now,
@@ -131,6 +133,7 @@ describe('EventTypeormMapper', () => {
   describe('toTypeormEntity', () => {
     it('should convert domain entity to TypeORM entity with all properties', () => {
       const eventId = '123e4567-e89b-12d3-a456-426614174000';
+      const aggregateId = '876e4567-e89b-12d3-a456-426614174001';
       const now = new Date();
       const timestamp = new Date();
 
@@ -139,7 +142,7 @@ describe('EventTypeormMapper', () => {
           id: new EventUuidValueObject(eventId),
           eventType: new EventTypeValueObject('EventCreated'),
           aggregateType: new EventAggregateTypeValueObject('UserAggregate'),
-          aggregateId: new EventAggregateIdValueObject('user-123'),
+          aggregateId: new EventAggregateIdValueObject(aggregateId),
           payload: new EventPayloadValueObject({ key: 'value' }),
           timestamp: new EventTimestampValueObject(timestamp),
           createdAt: new DateValueObject(now),
@@ -154,7 +157,7 @@ describe('EventTypeormMapper', () => {
           id: eventId,
           eventType: 'EventCreated',
           aggregateType: 'UserAggregate',
-          aggregateId: 'user-123',
+          aggregateId: aggregateId,
           payload: { key: 'value' },
           timestamp: timestamp,
           createdAt: now,
@@ -167,7 +170,7 @@ describe('EventTypeormMapper', () => {
       expect(result.id).toBe(eventId);
       expect(result.eventType).toBe('EventCreated');
       expect(result.aggregateType).toBe('UserAggregate');
-      expect(result.aggregateId).toBe('user-123');
+      expect(result.aggregateId).toBe(aggregateId);
       expect(result.payload).toEqual({ key: 'value' });
       expect(result.timestamp).toEqual(timestamp);
       expect(result.createdAt).toEqual(now);
@@ -180,6 +183,7 @@ describe('EventTypeormMapper', () => {
 
     it('should convert domain entity with null payload', () => {
       const eventId = '123e4567-e89b-12d3-a456-426614174000';
+      const aggregateId = '876e4567-e89b-12d3-a456-426614174001';
       const now = new Date();
       const timestamp = new Date();
 
@@ -188,7 +192,7 @@ describe('EventTypeormMapper', () => {
           id: new EventUuidValueObject(eventId),
           eventType: new EventTypeValueObject('EventCreated'),
           aggregateType: new EventAggregateTypeValueObject('UserAggregate'),
-          aggregateId: new EventAggregateIdValueObject('user-123'),
+          aggregateId: new EventAggregateIdValueObject(aggregateId),
           payload: new EventPayloadValueObject({}),
           timestamp: new EventTimestampValueObject(timestamp),
           createdAt: new DateValueObject(now),
@@ -203,7 +207,7 @@ describe('EventTypeormMapper', () => {
           id: eventId,
           eventType: 'EventCreated',
           aggregateType: 'UserAggregate',
-          aggregateId: 'user-123',
+          aggregateId: aggregateId,
           payload: null,
           timestamp: timestamp,
           createdAt: now,
@@ -216,7 +220,7 @@ describe('EventTypeormMapper', () => {
       expect(result.id).toBe(eventId);
       expect(result.eventType).toBe('EventCreated');
       expect(result.aggregateType).toBe('UserAggregate');
-      expect(result.aggregateId).toBe('user-123');
+      expect(result.aggregateId).toBe(aggregateId);
       expect(result.payload).toBeNull();
       expect(result.timestamp).toEqual(timestamp);
       expect(result.deletedAt).toBeNull();
