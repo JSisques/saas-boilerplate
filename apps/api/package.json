@@ -34,7 +34,7 @@
     "git:clean": "git branch --merged | grep -vE '^*|main|dev' | xargs -n 1 git branch -d"
   },
   "dependencies": {
-    "@apollo/server": "^5.0.0",
+    "@apollo/server": "^5.2.0",
     "@as-integrations/express5": "^1.1.2",
     "@aws-sdk/client-s3": "^3.929.0",
     "@aws-sdk/s3-request-presigner": "^3.929.0",
