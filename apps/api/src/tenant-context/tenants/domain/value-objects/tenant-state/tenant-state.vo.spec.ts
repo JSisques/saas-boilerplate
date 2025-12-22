@@ -10,8 +10,8 @@ describe('TenantStateValueObject', () => {
       expect(state.value).toBe('NY');
     });
 
-    it('should create a TenantStateValueObject with empty string', () => {
-      const state = new TenantStateValueObject('');
+    it('should create a TenantStateValueObject with empty string when allowEmpty is true', () => {
+      const state = new TenantStateValueObject('', { allowEmpty: true });
       expect(state.value).toBe('');
     });
   });

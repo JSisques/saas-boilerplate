@@ -10,8 +10,8 @@ describe('TenantCountryValueObject', () => {
       expect(country.value).toBe('USA');
     });
 
-    it('should create a TenantCountryValueObject with empty string', () => {
-      const country = new TenantCountryValueObject('');
+    it('should create a TenantCountryValueObject with empty string when allowEmpty is true', () => {
+      const country = new TenantCountryValueObject('', { allowEmpty: true });
       expect(country.value).toBe('');
     });
   });

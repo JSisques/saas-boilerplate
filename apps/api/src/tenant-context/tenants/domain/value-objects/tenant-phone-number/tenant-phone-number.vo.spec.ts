@@ -7,7 +7,7 @@ describe('TenantPhoneNumberValueObject', () => {
       const phoneNumber = new TenantPhoneNumberValueObject('1234567890');
       expect(phoneNumber).toBeInstanceOf(TenantPhoneNumberValueObject);
       expect(phoneNumber).toBeInstanceOf(PhoneValueObject);
-      expect(phoneNumber.value).toBe('1234567890');
+      expect(phoneNumber.value).toBe('+1234567890');
     });
   });
 

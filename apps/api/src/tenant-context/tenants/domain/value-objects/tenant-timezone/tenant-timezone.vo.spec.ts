@@ -10,8 +10,11 @@ describe('TenantTimezoneValueObject', () => {
       expect(timezone.value).toBe('America/New_York');
     });
 
-    it('should create a TenantTimezoneValueObject with empty string', () => {
-      const timezone = new TenantTimezoneValueObject('');
+    it('should create a TenantTimezoneValueObject with empty string when allowEmpty is true', () => {
+      const timezone = new TenantTimezoneValueObject('', {
+        allowEmpty: true,
+        validateExistence: false,
+      });
       expect(timezone.value).toBe('');
     });
   });

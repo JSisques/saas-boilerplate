@@ -10,8 +10,11 @@ describe('TenantPhoneCodeValueObject', () => {
       expect(phoneCode.value).toBe('+1');
     });
 
-    it('should create a TenantPhoneCodeValueObject with empty string', () => {
-      const phoneCode = new TenantPhoneCodeValueObject('');
+    it('should create a TenantPhoneCodeValueObject with empty string when allowEmpty is true', () => {
+      const phoneCode = new TenantPhoneCodeValueObject('', {
+        allowEmpty: true,
+        validateExistence: false,
+      });
       expect(phoneCode.value).toBe('');
     });
   });

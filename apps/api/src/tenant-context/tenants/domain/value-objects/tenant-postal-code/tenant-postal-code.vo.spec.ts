@@ -10,8 +10,10 @@ describe('TenantPostalCodeValueObject', () => {
       expect(postalCode.value).toBe('10001');
     });
 
-    it('should create a TenantPostalCodeValueObject with empty string', () => {
-      const postalCode = new TenantPostalCodeValueObject('');
+    it('should create a TenantPostalCodeValueObject with empty string when allowEmpty is true', () => {
+      const postalCode = new TenantPostalCodeValueObject('', {
+        allowEmpty: true,
+      });
       expect(postalCode.value).toBe('');
     });
   });

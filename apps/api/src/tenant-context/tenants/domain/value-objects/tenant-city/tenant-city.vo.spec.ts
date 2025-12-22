@@ -10,8 +10,8 @@ describe('TenantCityValueObject', () => {
       expect(city.value).toBe('New York');
     });
 
-    it('should create a TenantCityValueObject with empty string', () => {
-      const city = new TenantCityValueObject('');
+    it('should create a TenantCityValueObject with empty string when allowEmpty is true', () => {
+      const city = new TenantCityValueObject('', { allowEmpty: true });
       expect(city.value).toBe('');
     });
   });
