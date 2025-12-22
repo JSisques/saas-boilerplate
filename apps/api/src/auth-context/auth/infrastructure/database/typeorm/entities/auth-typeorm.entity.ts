@@ -2,7 +2,7 @@ import { AuthProviderEnum } from '@/auth-context/auth/domain/enums/auth-provider
 import { BaseTypeormEntity } from '@/shared/infrastructure/database/typeorm/entities/base-typeorm.entity';
 import { Column, Entity, Index } from 'typeorm';
 
-@Entity('auth')
+@Entity('auths')
 @Index(['email'])
 @Index(['userId'])
 export class AuthTypeormEntity extends BaseTypeormEntity {
