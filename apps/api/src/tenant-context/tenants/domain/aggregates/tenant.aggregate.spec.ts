@@ -1,12 +1,11 @@
-import { TenantAggregate } from '@/tenant-context/tenants/domain/aggregates/tenant.aggregate';
-import { ITenantCreateDto } from '@/tenant-context/tenants/domain/dtos/entities/tenant-create/tenant-create.dto';
-import { ITenantUpdateDto } from '@/tenant-context/tenants/domain/dtos/entities/tenant-update/tenant-update.dto';
-import { TenantStatusEnum } from '@/tenant-context/tenants/domain/enums/tenant-status/tenant-status.enum';
 import { TenantCreatedEvent } from '@/shared/domain/events/tenant-context/tenants/tenant-created/tenant-created.event';
 import { TenantDeletedEvent } from '@/shared/domain/events/tenant-context/tenants/tenant-deleted/tenant-deleted.event';
 import { TenantUpdatedEvent } from '@/shared/domain/events/tenant-context/tenants/tenant-updated/tenant-updated.event';
 import { DateValueObject } from '@/shared/domain/value-objects/date/date.vo';
 import { TenantUuidValueObject } from '@/shared/domain/value-objects/identifiers/tenant-uuid/tenant-uuid.vo';
+import { TenantAggregate } from '@/tenant-context/tenants/domain/aggregates/tenant.aggregate';
+import { ITenantCreateDto } from '@/tenant-context/tenants/domain/dtos/entities/tenant-create/tenant-create.dto';
+import { TenantStatusEnum } from '@/tenant-context/tenants/domain/enums/tenant-status/tenant-status.enum';
 import { TenantAddressValueObject } from '@/tenant-context/tenants/domain/value-objects/tenant-address/tenant-address.vo';
 import { TenantCityValueObject } from '@/tenant-context/tenants/domain/value-objects/tenant-city/tenant-city.vo';
 import { TenantCountryValueObject } from '@/tenant-context/tenants/domain/value-objects/tenant-country/tenant-country.vo';
@@ -197,7 +196,7 @@ describe('TenantAggregate', () => {
 
     it('should generate TenantUpdatedEvent by default', () => {
       const aggregate = createBaseAggregate(false);
-      aggregate.clearUncommittedEvents();
+      aggregate.commit();
 
       aggregate.update({ name: new TenantNameValueObject('Updated') }, true);
 
@@ -208,7 +207,7 @@ describe('TenantAggregate', () => {
 
     it('should not generate TenantUpdatedEvent when generateEvent is false', () => {
       const aggregate = createBaseAggregate(false);
-      aggregate.clearUncommittedEvents();
+      aggregate.commit();
 
       aggregate.update({ name: new TenantNameValueObject('Updated') }, false);
 
@@ -220,7 +219,7 @@ describe('TenantAggregate', () => {
   describe('delete', () => {
     it('should generate TenantDeletedEvent by default', () => {
       const aggregate = createBaseAggregate(false);
-      aggregate.clearUncommittedEvents();
+      aggregate.commit();
 
       aggregate.delete(true);
 
@@ -234,7 +233,7 @@ describe('TenantAggregate', () => {
 
     it('should not generate TenantDeletedEvent when generateEvent is false', () => {
       const aggregate = createBaseAggregate(false);
-      aggregate.clearUncommittedEvents();
+      aggregate.commit();
 
       aggregate.delete(false);
 
