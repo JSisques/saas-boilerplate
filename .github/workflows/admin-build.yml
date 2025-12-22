@@ -8,12 +8,35 @@ on:
 
 jobs:
   build:
-    uses: sisques-labs/workflows/.github/workflows/web-build.yml@main
-    with:
-      app_path: 'apps/admin'
-      app_name: 'Admin App'
-      node_version: '24'
-      run_lint: true
-      run_test: true
-      build_command: 'build'
-    secrets: inherit
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: latest
+
+      - name: Install dependencies
+        run: |
+          if [[ "${{ github.actor }}" == "dependabot[bot]" ]]; then
+            pnpm install --no-frozen-lockfile --filter=./apps/admin...
+          else
+            pnpm install --frozen-lockfile --filter=./apps/admin...
+          fi
+
+      - name: Lint code
+        run: pnpm lint --filter=./apps/admin...
+
+      - name: Run unit tests
+        run: pnpm test --filter=./apps/admin...
+
+      - name: Build the app
+        run: pnpm build --filter=./apps/admin...
