@@ -50,7 +50,7 @@ describe('TenantNameValueObject', () => {
 
     it('should return correct length', () => {
       const name = new TenantNameValueObject('Test Tenant');
-      expect(name.value.length).toBe(12);
+      expect(name.value.length).toBe(11);
     });
   });
 });

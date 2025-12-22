@@ -117,6 +117,7 @@ describe('TenantUpdateCommandHandler', () => {
       const commandDto: ITenantUpdateCommandDto = {
         id: tenantId,
         name: 'Updated Tenant',
+        status: TenantStatusEnum.ACTIVE,
       };
 
       const command = new TenantUpdateCommand(commandDto);
@@ -141,6 +142,7 @@ describe('TenantUpdateCommandHandler', () => {
       const commandDto: ITenantUpdateCommandDto = {
         id: tenantId,
         name: 'Partially Updated Tenant',
+        status: TenantStatusEnum.ACTIVE,
       };
 
       const command = new TenantUpdateCommand(commandDto);

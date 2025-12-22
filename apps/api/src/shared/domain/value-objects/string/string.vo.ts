@@ -251,9 +251,11 @@ export class StringValueObject {
   }
 
   private checkLength(): void {
+    // Skip minLength validation if allowEmpty is true and value is empty
     if (
       this.options.minLength !== undefined &&
-      this._value.length < this.options.minLength
+      this._value.length < this.options.minLength &&
+      !(this.options.allowEmpty === true && this._value.length === 0)
     ) {
       throw new InvalidStringException(
         `String must be at least ${this.options.minLength} characters long`,

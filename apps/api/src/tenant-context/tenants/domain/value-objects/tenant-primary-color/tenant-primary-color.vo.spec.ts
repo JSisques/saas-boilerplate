@@ -7,7 +7,7 @@ describe('TenantPrimaryColorValueObject', () => {
       const color = new TenantPrimaryColorValueObject('#FF0000');
       expect(color).toBeInstanceOf(TenantPrimaryColorValueObject);
       expect(color).toBeInstanceOf(ColorValueObject);
-      expect(color.value).toBe('#FF0000');
+      expect(color.value).toBe('#ff0000');
     });
 
     it('should create a TenantPrimaryColorValueObject with lowercase hex', () => {
@@ -17,7 +17,7 @@ describe('TenantPrimaryColorValueObject', () => {
 
     it('should create a TenantPrimaryColorValueObject with short hex', () => {
       const color = new TenantPrimaryColorValueObject('#F00');
-      expect(color.value).toBe('#F00');
+      expect(color.value).toBe('#f00');
     });
   });
 

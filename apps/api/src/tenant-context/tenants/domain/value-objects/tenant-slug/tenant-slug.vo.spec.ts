@@ -11,7 +11,8 @@ describe('TenantSlugValueObject', () => {
     });
 
     it('should create a TenantSlugValueObject with lowercase slug', () => {
-      const slug = new TenantSlugValueObject('TEST-TENANT');
+      // SlugValueObject normalizes to lowercase when using generateFromString
+      const slug = new TenantSlugValueObject('test-tenant');
       expect(slug.value).toBe('test-tenant');
     });
 

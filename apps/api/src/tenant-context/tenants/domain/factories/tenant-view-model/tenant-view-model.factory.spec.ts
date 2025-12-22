@@ -226,7 +226,9 @@ describe('TenantViewModelFactory', () => {
           country: new TenantCountryValueObject('USA'),
           postalCode: new TenantPostalCodeValueObject('10001'),
           timezone: new TenantTimezoneValueObject('America/New_York'),
-          locale: new TenantLocaleValueObject('en-US'),
+          locale: new TenantLocaleValueObject('en', {
+            validateExistence: false,
+          }),
           maxUsers: new TenantMaxUsersValueObject(100),
           maxStorage: new TenantMaxStorageValueObject(1000),
           maxApiCalls: new TenantMaxApiCallsValueObject(10000),

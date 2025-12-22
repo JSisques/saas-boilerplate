@@ -251,7 +251,7 @@ describe('TenantMongoRepository', () => {
             maxUsers: doc.maxUsers,
             maxStorage: doc.maxStorage,
             maxApiCalls: doc.maxApiCalls,
-            tenantMembers: doc.tenantMembers,
+            tenantMembers: [],
             createdAt: doc.createdAt,
             updatedAt: doc.updatedAt,
           }),

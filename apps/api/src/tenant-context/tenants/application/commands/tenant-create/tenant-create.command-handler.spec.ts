@@ -1,3 +1,4 @@
+import { DateValueObject } from '@/shared/domain/value-objects/date/date.vo';
 import { TenantCreateCommand } from '@/tenant-context/tenants/application/commands/tenant-create/tenant-create.command';
 import { TenantCreateCommandHandler } from '@/tenant-context/tenants/application/commands/tenant-create/tenant-create.command-handler';
 import { ITenantCreateCommandDto } from '@/tenant-context/tenants/application/dtos/commands/tenant-create/tenant-create-command.dto';
@@ -100,8 +101,8 @@ describe('TenantCreateCommandHandler', () => {
           maxUsers: command.maxUsers,
           maxStorage: command.maxStorage,
           maxApiCalls: command.maxApiCalls,
-          createdAt: command.createdAt || ({} as any),
-          updatedAt: command.updatedAt || ({} as any),
+          createdAt: new DateValueObject(new Date()),
+          updatedAt: new DateValueObject(new Date()),
         },
         true,
       );
