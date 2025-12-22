@@ -1,13 +1,10 @@
+import { TenantDatabaseUpdatedEvent } from '@/shared/domain/events/tenant-context/tenant-database/tenant-database-updated/tenant-database-updated.event';
 import { TenantDatabaseUpdatedEventHandler } from '@/tenant-context/tenant-database/application/event-handlers/tenant-database-updated/tenant-database-updated.event-handler';
 import { AssertTenantDatabaseViewModelExsistsService } from '@/tenant-context/tenant-database/application/services/assert-database-view-model-exsits/assert-tenant-member-view-model-exsits.service';
-import {
-  TENANT_DATABASE_READ_REPOSITORY_TOKEN,
-  TenantDatabaseReadRepository,
-} from '@/tenant-context/tenant-database/domain/repositories/tenant-database-read.repository';
-import { TenantDatabaseViewModel } from '@/tenant-context/tenant-database/domain/view-models/tenant-database/tenant-database.view-model';
-import { TenantDatabasePrimitives } from '@/tenant-context/tenant-database/domain/primitives/tenant-database.primitives';
 import { TenantDatabaseStatusEnum } from '@/tenant-context/tenant-database/domain/enums/tenant-database-status/tenant-database-status.enum';
-import { TenantDatabaseUpdatedEvent } from '@/shared/domain/events/tenant-context/tenant-database/tenant-database-updated/tenant-database-updated.event';
+import { TenantDatabasePrimitives } from '@/tenant-context/tenant-database/domain/primitives/tenant-database.primitives';
+import { TenantDatabaseReadRepository } from '@/tenant-context/tenant-database/domain/repositories/tenant-database-read.repository';
+import { TenantDatabaseViewModel } from '@/tenant-context/tenant-database/domain/view-models/tenant-database/tenant-database.view-model';
 
 describe('TenantDatabaseUpdatedEventHandler', () => {
   let handler: TenantDatabaseUpdatedEventHandler;

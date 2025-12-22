@@ -1,11 +1,8 @@
-import { AssertTenantDatabaseViewModelExsistsService } from '@/tenant-context/tenant-database/application/services/assert-database-view-model-exsits/assert-tenant-member-view-model-exsits.service';
 import { TenantDatabaseAlreadyExistsException } from '@/tenant-context/tenant-database/application/exceptions/tenant-database-already-exists/tenant-database-already-exists.exception';
-import {
-  TENANT_DATABASE_READ_REPOSITORY_TOKEN,
-  TenantDatabaseReadRepository,
-} from '@/tenant-context/tenant-database/domain/repositories/tenant-database-read.repository';
-import { TenantDatabaseViewModel } from '@/tenant-context/tenant-database/domain/view-models/tenant-database/tenant-database.view-model';
+import { AssertTenantDatabaseViewModelExsistsService } from '@/tenant-context/tenant-database/application/services/assert-database-view-model-exsits/assert-tenant-member-view-model-exsits.service';
 import { TenantDatabaseStatusEnum } from '@/tenant-context/tenant-database/domain/enums/tenant-database-status/tenant-database-status.enum';
+import { TenantDatabaseReadRepository } from '@/tenant-context/tenant-database/domain/repositories/tenant-database-read.repository';
+import { TenantDatabaseViewModel } from '@/tenant-context/tenant-database/domain/view-models/tenant-database/tenant-database.view-model';
 
 describe('AssertTenantDatabaseViewModelExsistsService', () => {
   let service: AssertTenantDatabaseViewModelExsistsService;

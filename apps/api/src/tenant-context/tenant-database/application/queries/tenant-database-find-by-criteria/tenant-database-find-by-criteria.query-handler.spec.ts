@@ -1,14 +1,11 @@
-import { FindTenantDatabasesByCriteriaQuery } from '@/tenant-context/tenant-database/application/queries/tenant-database-find-by-criteria/tenant-database-find-by-criteria.query';
-import { FindTenantDatabasesByCriteriaQueryHandler } from '@/tenant-context/tenant-database/application/queries/tenant-database-find-by-criteria/tenant-database-find-by-criteria.query-handler';
-import { ITenantDatabaseFindByCriteriaQueryDto } from '@/tenant-context/tenant-database/application/dtos/queries/tenant-database-find-by-criteria/tenant-database-find-by-criteria.dto';
-import {
-  TENANT_DATABASE_READ_REPOSITORY_TOKEN,
-  TenantDatabaseReadRepository,
-} from '@/tenant-context/tenant-database/domain/repositories/tenant-database-read.repository';
-import { TenantDatabaseViewModel } from '@/tenant-context/tenant-database/domain/view-models/tenant-database/tenant-database.view-model';
-import { TenantDatabaseStatusEnum } from '@/tenant-context/tenant-database/domain/enums/tenant-database-status/tenant-database-status.enum';
 import { Criteria } from '@/shared/domain/entities/criteria';
 import { PaginatedResult } from '@/shared/domain/entities/paginated-result.entity';
+import { ITenantDatabaseFindByCriteriaQueryDto } from '@/tenant-context/tenant-database/application/dtos/queries/tenant-database-find-by-criteria/tenant-database-find-by-criteria.dto';
+import { FindTenantDatabasesByCriteriaQuery } from '@/tenant-context/tenant-database/application/queries/tenant-database-find-by-criteria/tenant-database-find-by-criteria.query';
+import { FindTenantDatabasesByCriteriaQueryHandler } from '@/tenant-context/tenant-database/application/queries/tenant-database-find-by-criteria/tenant-database-find-by-criteria.query-handler';
+import { TenantDatabaseStatusEnum } from '@/tenant-context/tenant-database/domain/enums/tenant-database-status/tenant-database-status.enum';
+import { TenantDatabaseReadRepository } from '@/tenant-context/tenant-database/domain/repositories/tenant-database-read.repository';
+import { TenantDatabaseViewModel } from '@/tenant-context/tenant-database/domain/view-models/tenant-database/tenant-database.view-model';
 
 describe('FindTenantDatabasesByCriteriaQueryHandler', () => {
   let handler: FindTenantDatabasesByCriteriaQueryHandler;

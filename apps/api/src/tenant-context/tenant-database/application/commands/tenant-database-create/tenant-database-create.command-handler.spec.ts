@@ -1,3 +1,4 @@
+import { DateValueObject } from '@/shared/domain/value-objects/date/date.vo';
 import { TenantDatabaseCreateCommand } from '@/tenant-context/tenant-database/application/commands/tenant-database-create/tenant-database-create.command';
 import { TenantDatabaseCreateCommandHandler } from '@/tenant-context/tenant-database/application/commands/tenant-database-create/tenant-database-create.command-handler';
 import { ITenantDatabaseCreateCommandDto } from '@/tenant-context/tenant-database/application/dtos/commands/tenant-database-create/tenant-database-create-command.dto';
@@ -6,17 +7,9 @@ import { AssertTenantDatabaseNotExsistsService } from '@/tenant-context/tenant-d
 import { TenantDatabaseAggregate } from '@/tenant-context/tenant-database/domain/aggregates/tenant-database.aggregate';
 import { TenantDatabaseStatusEnum } from '@/tenant-context/tenant-database/domain/enums/tenant-database-status/tenant-database-status.enum';
 import { TenantDatabaseAggregateFactory } from '@/tenant-context/tenant-database/domain/factories/tenant-database-aggregate/tenant-database-aggregate.factory';
-import {
-  TENANT_DATABASE_WRITE_REPOSITORY_TOKEN,
-  TenantDatabaseWriteRepository,
-} from '@/tenant-context/tenant-database/domain/repositories/tenant-database-write.repository';
-import { FindTenantByIdQuery } from '@/tenant-context/tenants/application/queries/find-tenant-by-id/find-tenant-by-id.query';
+import { TenantDatabaseWriteRepository } from '@/tenant-context/tenant-database/domain/repositories/tenant-database-write.repository';
 import { TenantNotFoundException } from '@/tenant-context/tenants/application/exceptions/tenant-not-found/tenant-not-found.exception';
-import { DateValueObject } from '@/shared/domain/value-objects/date/date.vo';
-import { TenantDatabaseUuidValueObject } from '@/shared/domain/value-objects/identifiers/tenant-database-uuid/tenant-database-uuid.vo';
-import { TenantUuidValueObject } from '@/shared/domain/value-objects/identifiers/tenant-uuid/tenant-uuid.vo';
-import { TenantDatabaseNameValueObject } from '@/tenant-context/tenant-database/domain/value-objects/tenant-database-name/tenant-database-name.vo';
-import { TenantDatabaseStatusValueObject } from '@/tenant-context/tenant-database/domain/value-objects/tenant-database-status/tenant-database-status.vo';
+import { FindTenantByIdQuery } from '@/tenant-context/tenants/application/queries/find-tenant-by-id/find-tenant-by-id.query';
 import { EventBus, QueryBus } from '@nestjs/cqrs';
 
 describe('TenantDatabaseCreateCommandHandler', () => {

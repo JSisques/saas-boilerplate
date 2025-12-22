@@ -171,7 +171,7 @@ describe('TenantDatabaseViewModelFactory', () => {
           lastMigrationAt: new TenantDatabaseLastMigrationAtValueObject(
             new Date('2024-01-01T09:00:00Z'),
           ),
-          errorMessage: null,
+          errorMessage: new TenantDatabaseErrorMessageValueObject(''),
           createdAt: new DateValueObject(new Date('2024-01-01T00:00:00Z')),
           updatedAt: new DateValueObject(new Date('2024-01-01T00:00:00Z')),
         },
@@ -186,11 +186,11 @@ describe('TenantDatabaseViewModelFactory', () => {
       expect(viewModel.databaseName).toBe(aggregate.databaseName.value);
       expect(viewModel.readDatabaseName).toBe(aggregate.readDatabaseName.value);
       expect(viewModel.status).toBe(aggregate.status.value);
-      expect(viewModel.schemaVersion).toBe(aggregate.schemaVersion?.value);
+      expect(viewModel.schemaVersion).toBe(aggregate.schemaVersion.value);
       expect(viewModel.lastMigrationAt).toEqual(
-        aggregate.lastMigrationAt?.value,
+        aggregate.lastMigrationAt.value,
       );
-      expect(viewModel.errorMessage).toBeNull();
+      expect(viewModel.errorMessage).toBe('');
       expect(viewModel.createdAt).toEqual(aggregate.createdAt.value);
       expect(viewModel.updatedAt).toEqual(aggregate.updatedAt.value);
     });

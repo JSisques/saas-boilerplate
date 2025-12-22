@@ -1,12 +1,9 @@
+import { TenantDatabaseDeletedEvent } from '@/shared/domain/events/tenant-context/tenant-database/tenant-database-deleted/tenant-database-deleted.event';
 import { TenantDatabaseDeletedEventHandler } from '@/tenant-context/tenant-database/application/event-handlers/tenant-database-deleted/tenant-database-deleted.event-handler';
 import { AssertTenantDatabaseViewModelExsistsService } from '@/tenant-context/tenant-database/application/services/assert-database-view-model-exsits/assert-tenant-member-view-model-exsits.service';
-import {
-  TENANT_DATABASE_READ_REPOSITORY_TOKEN,
-  TenantDatabaseReadRepository,
-} from '@/tenant-context/tenant-database/domain/repositories/tenant-database-read.repository';
-import { TenantDatabaseViewModel } from '@/tenant-context/tenant-database/domain/view-models/tenant-database/tenant-database.view-model';
 import { TenantDatabaseStatusEnum } from '@/tenant-context/tenant-database/domain/enums/tenant-database-status/tenant-database-status.enum';
-import { TenantDatabaseDeletedEvent } from '@/shared/domain/events/tenant-context/tenant-database/tenant-database-deleted/tenant-database-deleted.event';
+import { TenantDatabaseReadRepository } from '@/tenant-context/tenant-database/domain/repositories/tenant-database-read.repository';
+import { TenantDatabaseViewModel } from '@/tenant-context/tenant-database/domain/view-models/tenant-database/tenant-database.view-model';
 
 describe('TenantDatabaseDeletedEventHandler', () => {
   let handler: TenantDatabaseDeletedEventHandler;

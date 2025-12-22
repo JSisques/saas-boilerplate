@@ -1,11 +1,7 @@
-import { TenantDatabaseGraphQLMapper } from '@/tenant-context/tenant-database/transport/graphql/mappers/tenant-database.mapper';
-import { TenantDatabaseViewModel } from '@/tenant-context/tenant-database/domain/view-models/tenant-database/tenant-database.view-model';
-import { TenantDatabaseStatusEnum } from '@/tenant-context/tenant-database/domain/enums/tenant-database-status/tenant-database-status.enum';
 import { PaginatedResult } from '@/shared/domain/entities/paginated-result.entity';
-import {
-  PaginatedTenantDatabaseResultDto,
-  TenantDatabaseResponseDto,
-} from '@/tenant-context/tenant-database/transport/graphql/dtos/responses/tenant-database.response.dto';
+import { TenantDatabaseStatusEnum } from '@/tenant-context/tenant-database/domain/enums/tenant-database-status/tenant-database-status.enum';
+import { TenantDatabaseViewModel } from '@/tenant-context/tenant-database/domain/view-models/tenant-database/tenant-database.view-model';
+import { TenantDatabaseGraphQLMapper } from '@/tenant-context/tenant-database/transport/graphql/mappers/tenant-database.mapper';
 
 describe('TenantDatabaseGraphQLMapper', () => {
   let mapper: TenantDatabaseGraphQLMapper;

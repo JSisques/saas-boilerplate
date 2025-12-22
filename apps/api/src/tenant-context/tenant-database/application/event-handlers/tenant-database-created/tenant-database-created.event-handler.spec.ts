@@ -1,13 +1,10 @@
-import { TenantDatabaseCreatedEventHandler } from '@/tenant-context/tenant-database/application/event-handlers/tenant-database-created/tenant-database-created.event-handler';
-import { TenantDatabaseViewModelFactory } from '@/tenant-context/tenant-database/domain/factories/tenant-database-view-model/tenant-database-view-model.factory';
-import {
-  TENANT_DATABASE_READ_REPOSITORY_TOKEN,
-  TenantDatabaseReadRepository,
-} from '@/tenant-context/tenant-database/domain/repositories/tenant-database-read.repository';
-import { TenantDatabaseViewModel } from '@/tenant-context/tenant-database/domain/view-models/tenant-database/tenant-database.view-model';
-import { TenantDatabasePrimitives } from '@/tenant-context/tenant-database/domain/primitives/tenant-database.primitives';
-import { TenantDatabaseStatusEnum } from '@/tenant-context/tenant-database/domain/enums/tenant-database-status/tenant-database-status.enum';
 import { TenantDatabaseCreatedEvent } from '@/shared/domain/events/tenant-context/tenant-database/tenant-database-created/tenant-database-created.event';
+import { TenantDatabaseCreatedEventHandler } from '@/tenant-context/tenant-database/application/event-handlers/tenant-database-created/tenant-database-created.event-handler';
+import { TenantDatabaseStatusEnum } from '@/tenant-context/tenant-database/domain/enums/tenant-database-status/tenant-database-status.enum';
+import { TenantDatabaseViewModelFactory } from '@/tenant-context/tenant-database/domain/factories/tenant-database-view-model/tenant-database-view-model.factory';
+import { TenantDatabasePrimitives } from '@/tenant-context/tenant-database/domain/primitives/tenant-database.primitives';
+import { TenantDatabaseReadRepository } from '@/tenant-context/tenant-database/domain/repositories/tenant-database-read.repository';
+import { TenantDatabaseViewModel } from '@/tenant-context/tenant-database/domain/view-models/tenant-database/tenant-database.view-model';
 
 describe('TenantDatabaseCreatedEventHandler', () => {
   let handler: TenantDatabaseCreatedEventHandler;
