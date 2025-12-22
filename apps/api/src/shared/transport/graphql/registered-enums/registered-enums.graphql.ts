@@ -16,6 +16,8 @@ import { UserStatusEnum } from '@/shared/domain/enums/user-context/user/user-sta
 import { TenantDatabaseStatusEnum } from '@/tenant-context/tenant-database/domain/enums/tenant-database-status/tenant-database-status.enum';
 import { TenantStatusEnum } from '@/tenant-context/tenants/domain/enums/tenant-status/tenant-status.enum';
 import { registerEnumType } from '@nestjs/graphql';
+
+// TODO: Move this, each module should register its own enums
 const registeredEnums = [
   {
     enum: FilterOperator,
