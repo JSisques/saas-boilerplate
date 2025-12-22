@@ -1,6 +1,6 @@
 import { TypeormMasterService } from '@/shared/infrastructure/database/typeorm/services/typeorm-master/typeorm-master.service';
 import { TypeormTenantFactory } from '@/shared/infrastructure/database/typeorm/factories/typeorm-tenant-factory/typeorm-tenant-factory.service';
-import { TenantDatabaseUrlBuilderService } from '@/shared/infrastructure/database/prisma/services/tenant-database-url-builder/tenant-database-url-builder.service';
+import { TenantDatabaseUrlBuilderService } from '@/shared/infrastructure/database/typeorm/services/tenant-database-url-builder/tenant-database-url-builder.service';
 import { TenantDatabaseTypeormEntity } from '@/tenant-context/tenant-database/infrastructure/database/typeorm/entities/tenant-database-typeorm.entity';
 import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { DataSource } from 'typeorm';

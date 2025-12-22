@@ -4,7 +4,6 @@ import { TenantContextService } from '@/shared/infrastructure/services/tenant-co
 import { MutationResponseGraphQLMapper } from '@/shared/transport/graphql/mappers/mutation-response/mutation-response.mapper';
 import { Global, Module } from '@nestjs/common';
 import { MongoModule } from './infrastructure/database/mongodb/mongodb.module';
-import { PrismaModule } from './infrastructure/database/prisma/prisma.module';
 
 const RESOLVERS = [];
 
@@ -24,7 +23,7 @@ const REPOSITORIES = [];
 
 @Global()
 @Module({
-  imports: [PrismaModule, MongoModule, TypeOrmModule],
+  imports: [MongoModule, TypeOrmModule],
   controllers: [],
   providers: [
     ...RESOLVERS,
@@ -37,7 +36,6 @@ const REPOSITORIES = [];
     ...REPOSITORIES,
   ],
   exports: [
-    PrismaModule,
     MongoModule,
     TypeOrmModule,
     ...RESOLVERS,

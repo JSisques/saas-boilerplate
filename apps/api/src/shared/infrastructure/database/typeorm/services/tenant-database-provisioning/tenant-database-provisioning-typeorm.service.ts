@@ -1,5 +1,5 @@
-import { TenantDatabaseUrlBuilderService } from '@/shared/infrastructure/database/prisma/services/tenant-database-url-builder/tenant-database-url-builder.service';
 import { TypeormTenantFactory } from '@/shared/infrastructure/database/typeorm/factories/typeorm-tenant-factory/typeorm-tenant-factory.service';
+import { TenantDatabaseUrlBuilderService } from '@/shared/infrastructure/database/typeorm/services/tenant-database-url-builder/tenant-database-url-builder.service';
 import { TypeormMasterService } from '@/shared/infrastructure/database/typeorm/services/typeorm-master/typeorm-master.service';
 import { TenantDatabaseCreateCommand } from '@/tenant-context/tenant-database/application/commands/tenant-database-create/tenant-database-create.command';
 import { TenantDatabaseDeleteCommand } from '@/tenant-context/tenant-database/application/commands/tenant-database-delete/tenant-database-delete.command';
