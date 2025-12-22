@@ -19,12 +19,14 @@ import { TENANT_READ_REPOSITORY_TOKEN } from '@/tenant-context/tenants/domain/re
 import { TENANT_WRITE_REPOSITORY_TOKEN } from '@/tenant-context/tenants/domain/repositories/tenant-write.repository';
 import { TenantMongoDBMapper } from '@/tenant-context/tenants/infrastructure/database/mongodb/mappers/tenant-mongodb.mapper';
 import { TenantMongoRepository } from '@/tenant-context/tenants/infrastructure/database/mongodb/repositories/tenant-mongodb.repository';
-import { TenantPrismaMapper } from '@/tenant-context/tenants/infrastructure/database/prisma/mappers/tenant-prisma.mapper';
-import { TenantPrismaRepository } from '@/tenant-context/tenants/infrastructure/database/prisma/repositories/tenant-prisma.repository';
+import { TenantTypeormEntity } from '@/tenant-context/tenants/infrastructure/database/typeorm/entities/tenant-typeorm.entity';
+import { TenantTypeormMapper } from '@/tenant-context/tenants/infrastructure/database/typeorm/mappers/tenant-typeorm.mapper';
+import { TenantTypeormRepository } from '@/tenant-context/tenants/infrastructure/database/typeorm/repositories/tenant-typeorm.repository';
 import { TenantGraphQLMapper } from '@/tenant-context/tenants/transport/graphql/mappers/tenant.mapper';
 import { TenantMutationsResolver } from '@/tenant-context/tenants/transport/graphql/resolvers/tenant-mutations.resolver';
 import { TenantQueryResolver } from '@/tenant-context/tenants/transport/graphql/resolvers/tenant-queries.resolver';
 import { Module } from '@nestjs/common';
+import { TypeOrmModule } from '@nestjs/typeorm';
 
 const RESOLVERS = [TenantQueryResolver, TenantMutationsResolver];
 
@@ -59,12 +61,12 @@ const SAGAS = [
 
 const FACTORIES = [TenantAggregateFactory, TenantViewModelFactory];
 
-const MAPPERS = [TenantPrismaMapper, TenantMongoDBMapper, TenantGraphQLMapper];
+const MAPPERS = [TenantTypeormMapper, TenantMongoDBMapper, TenantGraphQLMapper];
 
 const REPOSITORIES = [
   {
     provide: TENANT_WRITE_REPOSITORY_TOKEN,
-    useClass: TenantPrismaRepository,
+    useClass: TenantTypeormRepository,
   },
   {
     provide: TENANT_READ_REPOSITORY_TOKEN,
@@ -72,8 +74,10 @@ const REPOSITORIES = [
   },
 ];
 
+const ENTITIES = [TenantTypeormEntity];
+
 @Module({
-  imports: [SharedModule],
+  imports: [SharedModule, TypeOrmModule.forFeature(ENTITIES)],
   controllers: [],
   providers: [
     ...RESOLVERS,
