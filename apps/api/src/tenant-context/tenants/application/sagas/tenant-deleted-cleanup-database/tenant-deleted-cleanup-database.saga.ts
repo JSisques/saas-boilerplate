@@ -1,6 +1,6 @@
 import { BaseSaga } from '@/shared/application/sagas/base-saga/base-saga';
 import { TenantDeletedEvent } from '@/shared/domain/events/tenant-context/tenants/tenant-deleted/tenant-deleted.event';
-import { TenantDatabaseProvisioningService } from '@/shared/infrastructure/database/prisma/services/tenant-database-provisioning/tenant-database-provisioning.service';
+import { TenantDatabaseProvisioningTypeormService } from '@/shared/infrastructure/database/typeorm/services/tenant-database-provisioning/tenant-database-provisioning-typeorm.service';
 import { CommandBus, EventsHandler, IEventHandler } from '@nestjs/cqrs';
 
 /**
@@ -20,7 +20,7 @@ export class TenantDeletedCleanupDatabaseSaga
 {
   constructor(
     commandBus: CommandBus,
-    private readonly provisioningService: TenantDatabaseProvisioningService,
+    private readonly provisioningService: TenantDatabaseProvisioningTypeormService,
   ) {
     super(commandBus);
   }

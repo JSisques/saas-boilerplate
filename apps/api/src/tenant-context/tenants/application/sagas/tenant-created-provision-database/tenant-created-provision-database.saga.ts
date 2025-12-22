@@ -1,7 +1,7 @@
 import { BaseSaga } from '@/shared/application/sagas/base-saga/base-saga';
 import { TenantCreatedEvent } from '@/shared/domain/events/tenant-context/tenants/tenant-created/tenant-created.event';
-import { TenantDatabaseMigrationService } from '@/shared/infrastructure/database/prisma/services/tenant-database-migration/tenant-database-migration.service';
-import { TenantDatabaseProvisioningService } from '@/shared/infrastructure/database/prisma/services/tenant-database-provisioning/tenant-database-provisioning.service';
+import { TenantDatabaseMigrationTypeormService } from '@/shared/infrastructure/database/typeorm/services/tenant-database-migration/tenant-database-migration-typeorm.service';
+import { TenantDatabaseProvisioningTypeormService } from '@/shared/infrastructure/database/typeorm/services/tenant-database-provisioning/tenant-database-provisioning-typeorm.service';
 import { TenantMigrationFailedException } from '@/tenant-context/tenants/application/exceptions/tenant-migration-failed/tenant-migration-failed.exception';
 import { CommandBus, EventsHandler, IEventHandler } from '@nestjs/cqrs';
 
@@ -21,8 +21,8 @@ export class TenantCreatedProvisionDatabaseSaga
 {
   constructor(
     commandBus: CommandBus,
-    private readonly provisioningService: TenantDatabaseProvisioningService,
-    private readonly migrationService: TenantDatabaseMigrationService,
+    private readonly provisioningService: TenantDatabaseProvisioningTypeormService,
+    private readonly migrationService: TenantDatabaseMigrationTypeormService,
   ) {
     super(commandBus);
   }

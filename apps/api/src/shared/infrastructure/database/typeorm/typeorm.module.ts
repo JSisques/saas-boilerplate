@@ -1,4 +1,5 @@
 import { TypeormTenantFactory } from '@/shared/infrastructure/database/typeorm/factories/typeorm-tenant-factory/typeorm-tenant-factory.service';
+import { TenantDatabaseMigrationTypeormService } from '@/shared/infrastructure/database/typeorm/services/tenant-database-migration/tenant-database-migration-typeorm.service';
 import { TenantDatabaseProvisioningTypeormService } from '@/shared/infrastructure/database/typeorm/services/tenant-database-provisioning/tenant-database-provisioning-typeorm.service';
 import { TypeormMasterService } from '@/shared/infrastructure/database/typeorm/services/typeorm-master/typeorm-master.service';
 import { TypeormTenantService } from '@/shared/infrastructure/database/typeorm/services/typeorm-tenant/typeorm-tenant.service';
@@ -11,6 +12,7 @@ const SERVICES = [
   TypeormTenantService,
   TypeormTenantFactory,
   TenantDatabaseProvisioningTypeormService,
+  TenantDatabaseMigrationTypeormService,
 ];
 
 @Global()
