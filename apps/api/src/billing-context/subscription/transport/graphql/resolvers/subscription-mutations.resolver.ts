@@ -15,7 +15,7 @@ import { SubscriptionDeactivateRequestDto } from '@/billing-context/subscription
 import { SubscriptionDeleteRequestDto } from '@/billing-context/subscription/transport/graphql/dtos/requests/subscription-delete.request.dto';
 import { SubscriptionRefundRequestDto } from '@/billing-context/subscription/transport/graphql/dtos/requests/subscription-refund.request.dto';
 import { SubscriptionUpdateRequestDto } from '@/billing-context/subscription/transport/graphql/dtos/requests/subscription-update.request.dto';
-import { UserRoleEnum } from '@/prisma/master/client';
+import { UserRoleEnum } from '@/shared/domain/enums/user-context/user/user-role/user-role.enum';
 import { MutationResponseDto } from '@/shared/transport/graphql/dtos/responses/success-response/success-response.dto';
 import { MutationResponseGraphQLMapper } from '@/shared/transport/graphql/mappers/mutation-response/mutation-response.mapper';
 import { Logger, UseGuards } from '@nestjs/common';

@@ -1,3 +1,5 @@
+import { UserRoleEnum } from '@/shared/domain/enums/user-context/user/user-role/user-role.enum';
+import { UserStatusEnum } from '@/shared/domain/enums/user-context/user/user-status/user-status.enum';
 import { UserUpdatedEvent } from '@/shared/domain/events/users/user-updated/user-updated.event';
 import { DateValueObject } from '@/shared/domain/value-objects/date/date.vo';
 import { UserUuidValueObject } from '@/shared/domain/value-objects/identifiers/user-uuid/user-uuid.vo';
@@ -5,8 +7,6 @@ import { IUserUpdateCommandDto } from '@/user-context/users/application/dtos/com
 import { UserNotFoundException } from '@/user-context/users/application/exceptions/user-not-found/user-not-found.exception';
 import { AssertUserExsistsService } from '@/user-context/users/application/services/assert-user-exsits/assert-user-exsits.service';
 import { UserAggregate } from '@/user-context/users/domain/aggregates/user.aggregate';
-import { UserRoleEnum } from '@/user-context/users/domain/enums/user-role/user-role.enum';
-import { UserStatusEnum } from '@/user-context/users/domain/enums/user-status/user-status.enum';
 import { UserWriteRepository } from '@/user-context/users/domain/repositories/user-write.repository';
 import { UserNameValueObject } from '@/user-context/users/domain/value-objects/user-name/user-name.vo';
 import { UserRoleValueObject } from '@/user-context/users/domain/value-objects/user-role/user-role.vo';

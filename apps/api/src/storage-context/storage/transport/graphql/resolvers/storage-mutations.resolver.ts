@@ -3,7 +3,7 @@ import { Roles } from '@/auth-context/auth/infrastructure/decorators/roles/roles
 import { TenantRoles } from '@/auth-context/auth/infrastructure/decorators/tenant-roles/tenant-roles.decorator';
 import { RolesGuard } from '@/auth-context/auth/infrastructure/guards/roles/roles.guard';
 import { TenantGuard } from '@/auth-context/auth/infrastructure/guards/tenant/tenant.guard';
-import { TenantMemberRoleEnum } from '@/prisma/master/client';
+import { UserRoleEnum } from '@/shared/domain/enums/user-context/user/user-role/user-role.enum';
 import { MutationResponseDto } from '@/shared/transport/graphql/dtos/responses/success-response/success-response.dto';
 import { MutationResponseArrayDto } from '@/shared/transport/graphql/dtos/success-response-array.dto';
 import { MutationResponseGraphQLMapper } from '@/shared/transport/graphql/mappers/mutation-response/mutation-response.mapper';
@@ -14,7 +14,7 @@ import { StorageFindByIdQuery } from '@/storage-context/storage/application/quer
 import { StorageDeleteFileRequestDto } from '@/storage-context/storage/transport/graphql/dtos/requests/storage-delete-file.request.dto';
 import { StorageDownloadFileRequestDto } from '@/storage-context/storage/transport/graphql/dtos/requests/storage-download-file.request.dto';
 import { StorageDownloadFileResponseDto } from '@/storage-context/storage/transport/graphql/dtos/responses/storage-download-file.response.dto';
-import { UserRoleEnum } from '@/user-context/users/domain/enums/user-role/user-role.enum';
+import { TenantMemberRoleEnum } from '@/tenant-context/tenant-members/domain/enums/tenant-member-role/tenant-member-role.enum';
 import { Logger, UseGuards } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { Args, Mutation, Resolver } from '@nestjs/graphql';

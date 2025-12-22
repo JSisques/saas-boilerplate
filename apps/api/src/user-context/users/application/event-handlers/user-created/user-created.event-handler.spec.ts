@@ -1,6 +1,6 @@
+import { UserRoleEnum } from '@/shared/domain/enums/user-context/user/user-role/user-role.enum';
+import { UserStatusEnum } from '@/shared/domain/enums/user-context/user/user-status/user-status.enum';
 import { UserCreatedEvent } from '@/shared/domain/events/users/user-created/user-created.event';
-import { UserRoleEnum } from '@/user-context/users/domain/enums/user-role/user-role.enum';
-import { UserStatusEnum } from '@/user-context/users/domain/enums/user-status/user-status.enum';
 import { UserViewModelFactory } from '@/user-context/users/domain/factories/user-view-model/user-view-model.factory';
 import { UserPrimitives } from '@/user-context/users/domain/primitives/user.primitives';
 import { UserReadRepository } from '@/user-context/users/domain/repositories/user-read.repository';

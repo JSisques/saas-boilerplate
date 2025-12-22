@@ -174,7 +174,7 @@ type SubscriptionResponseDto {
   stripeCustomerId: String
 
   """The renewal method of the subscription"""
-  renewalMethod: RenewalMethodEnum!
+  renewalMethod: SubscriptionRenewalMethodEnum!
 }
 
 """The status of the subscription"""
@@ -186,7 +186,7 @@ enum SubscriptionStatusEnum {
 }
 
 """The renewal method"""
-enum RenewalMethodEnum {
+enum SubscriptionRenewalMethodEnum {
   MANUAL
   AUTOMATIC
 }
@@ -336,8 +336,8 @@ type PromptResponseDto {
 
 """The status of the prompt"""
 enum PromptStatusEnum {
-  DRAFT
   ACTIVE
+  DRAFT
   ARCHIVED
   DEPRECATED
 }
@@ -367,7 +367,7 @@ type SagaInstanceResponseDto {
   name: String!
 
   """The saga instance status"""
-  status: SagaStatusEnum!
+  status: SagaInstanceStatusEnum!
 
   """The saga instance start date"""
   startDate: DateTime!
@@ -383,7 +383,7 @@ type SagaInstanceResponseDto {
 }
 
 """The status of the saga"""
-enum SagaStatusEnum {
+enum SagaInstanceStatusEnum {
   PENDING
   STARTED
   RUNNING
@@ -1279,7 +1279,7 @@ input UpdateUserRequestDto {
   role: UserRoleEnum
 
   """The status of the user"""
-  status: StatusEnum
+  status: UserStatusEnum
 }
 
 """The role of the user"""
@@ -1289,7 +1289,7 @@ enum UserRoleEnum {
 }
 
 """The status of the user"""
-enum StatusEnum {
+enum UserStatusEnum {
   ACTIVE
   INACTIVE
   BLOCKED
@@ -1521,7 +1521,7 @@ input CreateUserRequestDto {
   role: UserRoleEnum!
 
   """The status of the user"""
-  status: StatusEnum!
+  status: UserStatusEnum!
 }
 
 input DeleteUserRequestDto {
@@ -1575,7 +1575,16 @@ enum SubscriptionPlanTypeEnum {
 """The currency"""
 enum CurrencyEnum {
   USD
+  GBP
   EUR
+  JPY
+  KRW
+  CNY
+  INR
+  BRL
+  MXN
+  ARS
+  COP
 }
 
 """The interval of the subscription plan"""
@@ -1647,7 +1656,7 @@ input SubscriptionCreateRequestDto {
   stripeCustomerId: String
 
   """The renewal method of the subscription"""
-  renewalMethod: RenewalMethodEnum!
+  renewalMethod: SubscriptionRenewalMethodEnum!
 }
 
 input SubscriptionUpdateRequestDto {
@@ -1679,7 +1688,7 @@ input SubscriptionUpdateRequestDto {
   stripeCustomerId: String
 
   """The renewal method of the subscription"""
-  renewalMethod: RenewalMethodEnum
+  renewalMethod: SubscriptionRenewalMethodEnum
 }
 
 input SubscriptionDeleteRequestDto {
@@ -1774,7 +1783,7 @@ input SagaInstanceUpdateRequestDto {
   name: String
 
   """The status of the saga instance"""
-  status: SagaStatusEnum
+  status: SagaInstanceStatusEnum
 
   """The start date of the saga instance"""
   startDate: DateTime
@@ -1788,7 +1797,7 @@ input SagaInstanceChangeStatusRequestDto {
   id: String!
 
   """The status of the saga instance"""
-  status: SagaStatusEnum!
+  status: SagaInstanceStatusEnum!
 }
 
 input SagaInstanceDeleteRequestDto {

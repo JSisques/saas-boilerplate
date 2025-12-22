@@ -1,4 +1,4 @@
-import { FeatureStatusEnum } from '@/prisma/master/client';
+import { FeatureStatusEnum } from '@/feature-context/features/domain/enums/feature-status/feature-status.enum';
 import { Field, InputType } from '@nestjs/graphql';
 import { IsEnum, IsNotEmpty, IsUUID } from 'class-validator';
 

@@ -1,9 +1,9 @@
 import { SubscriptionPlanTypeIsAlreadyTakenException } from '@/billing-context/subscription-plan/application/exceptions/subscription-plan-type-is-not-unique copy/subscription-plan-type-is-not-unique.exception';
+import { SubscriptionPlanTypeEnum } from '@/billing-context/subscription-plan/domain/enum/subscription-plan-type/subscription-plan-type.enum';
 import {
   SUBSCRIPTION_PLAN_WRITE_REPOSITORY_TOKEN,
   SubscriptionPlanWriteRepository,
 } from '@/billing-context/subscription-plan/domain/repositories/subscription-plan-write/subscription-plan-write.repository';
-import { SubscriptionPlanTypeEnum } from '@/prisma/master/client';
 import { IBaseService } from '@/shared/application/services/base-service/base-service.interface';
 import { Inject, Injectable, Logger } from '@nestjs/common';
 

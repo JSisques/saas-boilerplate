@@ -10,8 +10,8 @@ import {
   PaginatedFeatureResultDto,
 } from '@/feature-context/features/transport/graphql/dtos/responses/feature.response.dto';
 import { FeatureGraphQLMapper } from '@/feature-context/features/transport/graphql/mappers/feature.mapper';
-import { UserRoleEnum } from '@/prisma/master/client';
 import { Criteria } from '@/shared/domain/entities/criteria';
+import { UserRoleEnum } from '@/shared/domain/enums/user-context/user/user-role/user-role.enum';
 import { Logger, UseGuards } from '@nestjs/common';
 import { QueryBus } from '@nestjs/cqrs';
 import { Args, Query, Resolver } from '@nestjs/graphql';

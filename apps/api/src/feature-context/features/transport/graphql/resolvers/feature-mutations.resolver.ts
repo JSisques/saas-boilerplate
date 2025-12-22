@@ -9,7 +9,7 @@ import { CreateFeatureRequestDto } from '@/feature-context/features/transport/gr
 import { DeleteFeatureRequestDto } from '@/feature-context/features/transport/graphql/dtos/requests/delete-feature.request.dto';
 import { FeatureChangeStatusRequestDto } from '@/feature-context/features/transport/graphql/dtos/requests/feature-change-status.request.dto';
 import { UpdateFeatureRequestDto } from '@/feature-context/features/transport/graphql/dtos/requests/update-feature.request.dto';
-import { UserRoleEnum } from '@/prisma/master/client';
+import { UserRoleEnum } from '@/shared/domain/enums/user-context/user/user-role/user-role.enum';
 import { MutationResponseDto } from '@/shared/transport/graphql/dtos/responses/success-response/success-response.dto';
 import { MutationResponseGraphQLMapper } from '@/shared/transport/graphql/mappers/mutation-response/mutation-response.mapper';
 import { Logger, UseGuards } from '@nestjs/common';

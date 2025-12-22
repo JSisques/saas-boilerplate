@@ -1,5 +1,5 @@
-import { TenantDatabaseStatusEnum } from '@/prisma/master/client';
 import { BasePaginatedResultDto } from '@/shared/transport/graphql/dtos/responses/base-paginated-result/base-paginated-result.dto';
+import { TenantDatabaseStatusEnum } from '@/tenant-context/tenant-database/domain/enums/tenant-database-status/tenant-database-status.enum';
 import { Field, ObjectType } from '@nestjs/graphql';
 
 @ObjectType('TenantDatabaseResponseDto')

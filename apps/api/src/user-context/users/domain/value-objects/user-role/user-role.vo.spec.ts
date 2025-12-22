@@ -1,5 +1,5 @@
+import { UserRoleEnum } from '@/shared/domain/enums/user-context/user/user-role/user-role.enum';
 import { InvalidEnumValueException } from '@/shared/domain/exceptions/value-objects/invalid-enum-value/invalid-enum-value.exception';
-import { UserRoleEnum } from '@/user-context/users/domain/enums/user-role/user-role.enum';
 import { UserRoleValueObject } from '@/user-context/users/domain/value-objects/user-role/user-role.vo';
 
 describe('UserRoleValueObject', () => {

@@ -1,7 +1,6 @@
 import { JwtAuthGuard } from '@/auth-context/auth/infrastructure/auth/jwt-auth.guard';
 import { Roles } from '@/auth-context/auth/infrastructure/decorators/roles/roles.decorator';
 import { RolesGuard } from '@/auth-context/auth/infrastructure/guards/roles/roles.guard';
-import { UserRoleEnum } from '@/prisma/master/client';
 import { FindSagaLogsByCriteriaQuery } from '@/saga-context/saga-log/application/queries/saga-log-find-by-criteria/saga-log-find-by-criteria.query';
 import { FindSagaLogViewModelByIdQuery } from '@/saga-context/saga-log/application/queries/saga-log-find-view-model-by-id/saga-log-find-view-model-by-id.query';
 import { FindSagaLogViewModelsBySagaInstanceIdQuery } from '@/saga-context/saga-log/application/queries/saga-log-find-view-model-by-saga-instance-id/saga-log-find-view-model-by-saga-instance-id.query';
@@ -16,6 +15,7 @@ import {
 } from '@/saga-context/saga-log/transport/graphql/dtos/responses/saga-log.response.dto';
 import { SagaLogGraphQLMapper } from '@/saga-context/saga-log/transport/graphql/mappers/saga-log.mapper';
 import { Criteria } from '@/shared/domain/entities/criteria';
+import { UserRoleEnum } from '@/shared/domain/enums/user-context/user/user-role/user-role.enum';
 import { Logger, UseGuards } from '@nestjs/common';
 import { QueryBus } from '@nestjs/cqrs';
 import { Args, Query, Resolver } from '@nestjs/graphql';

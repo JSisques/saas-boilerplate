@@ -1,12 +1,12 @@
-import { UserUpdatedEventHandler } from './user-updated.event-handler';
+import { UserRoleEnum } from '@/shared/domain/enums/user-context/user/user-role/user-role.enum';
+import { UserStatusEnum } from '@/shared/domain/enums/user-context/user/user-status/user-status.enum';
 import { UserUpdatedEvent } from '@/shared/domain/events/users/user-updated/user-updated.event';
-import { UserReadRepository } from '@/user-context/users/domain/repositories/user-read.repository';
-import { AssertUserViewModelExsistsService } from '@/user-context/users/application/services/assert-user-view-model-exsits/assert-user-view-model-exsits.service';
-import { UserViewModel } from '@/user-context/users/domain/view-models/user.view-model';
-import { UserRoleEnum } from '@/user-context/users/domain/enums/user-role/user-role.enum';
-import { UserStatusEnum } from '@/user-context/users/domain/enums/user-status/user-status.enum';
 import { UserNotFoundException } from '@/user-context/users/application/exceptions/user-not-found/user-not-found.exception';
+import { AssertUserViewModelExsistsService } from '@/user-context/users/application/services/assert-user-view-model-exsits/assert-user-view-model-exsits.service';
 import { IUserCreateViewModelDto } from '@/user-context/users/domain/dtos/view-models/user-create/user-create-view-model.dto';
+import { UserReadRepository } from '@/user-context/users/domain/repositories/user-read.repository';
+import { UserViewModel } from '@/user-context/users/domain/view-models/user.view-model';
+import { UserUpdatedEventHandler } from './user-updated.event-handler';
 
 describe('UserUpdatedEventHandler', () => {
   let handler: UserUpdatedEventHandler;

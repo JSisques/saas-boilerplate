@@ -3,7 +3,7 @@ import { AssertSubscriptionPlanExsistsService } from '@/billing-context/subscrip
 import { AssertSubscriptionPlanSlugIsUniqueService } from '@/billing-context/subscription-plan/application/services/assert-subscription-plan-slug-is-unique/assert-subscription-plan-slug-is-unique.service';
 import { AssertSubscriptionPlanTypeIsUniqueService } from '@/billing-context/subscription-plan/application/services/assert-subscription-plan-type-is-unique/assert-subscription-plan-type-is-unique.service';
 import { ISubscriptionPlanUpdateDto } from '@/billing-context/subscription-plan/domain/dtos/entities/subscription-plan-update/subscription-plan-update.dto';
-import { SubscriptionPlanTypeEnum } from '@/billing-context/subscription-plan/domain/enum/subscription-plan-type.enum';
+import { SubscriptionPlanTypeEnum } from '@/billing-context/subscription-plan/domain/enum/subscription-plan-type/subscription-plan-type.enum';
 import {
   SUBSCRIPTION_PLAN_WRITE_REPOSITORY_TOKEN,
   SubscriptionPlanWriteRepository,

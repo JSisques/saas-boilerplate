@@ -1,9 +1,9 @@
+import { PromptStatusEnum } from '@/llm-context/prompt/domain/enum/prompt-status.enum';
 import { PromptViewModel } from '@/llm-context/prompt/domain/view-models/prompt.view-model';
 import {
   PaginatedPromptResultDto,
   PromptResponseDto,
 } from '@/llm-context/prompt/transport/graphql/dtos/responses/prompt.response.dto';
-import { PromptStatusEnum } from '@/prisma/master/client';
 import { PaginatedResult } from '@/shared/domain/entities/paginated-result.entity';
 import { Injectable, Logger } from '@nestjs/common';
 

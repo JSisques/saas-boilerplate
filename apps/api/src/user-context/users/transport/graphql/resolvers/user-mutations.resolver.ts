@@ -2,7 +2,7 @@ import { JwtAuthGuard } from '@/auth-context/auth/infrastructure/auth/jwt-auth.g
 import { Roles } from '@/auth-context/auth/infrastructure/decorators/roles/roles.decorator';
 import { OwnerGuard } from '@/auth-context/auth/infrastructure/guards/owner/owner.guard';
 import { RolesGuard } from '@/auth-context/auth/infrastructure/guards/roles/roles.guard';
-import { UserRoleEnum } from '@/prisma/master/client';
+import { UserRoleEnum } from '@/shared/domain/enums/user-context/user/user-role/user-role.enum';
 import { MutationResponseDto } from '@/shared/transport/graphql/dtos/responses/success-response/success-response.dto';
 import { MutationResponseGraphQLMapper } from '@/shared/transport/graphql/mappers/mutation-response/mutation-response.mapper';
 import { UserDeleteCommand } from '@/user-context/users/application/commands/delete-user/delete-user.command';

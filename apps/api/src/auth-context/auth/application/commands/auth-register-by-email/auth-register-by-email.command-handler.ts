@@ -1,7 +1,7 @@
 import { AuthRegistrationSaga } from '@/auth-context/auth/application/sagas/auth-registration/auth-registration.saga';
 import { AssertAuthEmailNotExistsService } from '@/auth-context/auth/application/services/assert-auth-email-not-exists/assert-auth-email-not-exists.service';
 import { AuthAggregate } from '@/auth-context/auth/domain/aggregate/auth.aggregate';
-import { AuthProviderEnum } from '@/prisma/master/client';
+import { AuthProviderEnum } from '@/auth-context/auth/domain/enums/auth-provider.enum';
 import { AuthRegistrationRequestedEvent } from '@/shared/domain/events/auth/auth-registration-requested/auth-registration-requested.event';
 import { IAuthEventData } from '@/shared/domain/events/auth/interfaces/auth-event-data.interface';
 import { AuthUuidValueObject } from '@/shared/domain/value-objects/identifiers/auth-uuid/auth-uuid.vo';

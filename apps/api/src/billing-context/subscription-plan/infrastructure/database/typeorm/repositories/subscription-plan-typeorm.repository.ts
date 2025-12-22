@@ -1,10 +1,10 @@
-import { BaseTypeormMasterRepository } from '@/shared/infrastructure/database/typeorm/base-typeorm/base-typeorm-master/base-typeorm-master.repository';
-import { TypeormMasterService } from '@/shared/infrastructure/database/typeorm/services/typeorm-master/typeorm-master.service';
 import { SubscriptionPlanAggregate } from '@/billing-context/subscription-plan/domain/aggregates/subscription-plan.aggregate';
-import { SubscriptionPlanTypeEnum } from '@/billing-context/subscription-plan/domain/enum/subscription-plan-type.enum';
+import { SubscriptionPlanTypeEnum } from '@/billing-context/subscription-plan/domain/enum/subscription-plan-type/subscription-plan-type.enum';
 import { SubscriptionPlanWriteRepository } from '@/billing-context/subscription-plan/domain/repositories/subscription-plan-write/subscription-plan-write.repository';
 import { SubscriptionPlanTypeormEntity } from '@/billing-context/subscription-plan/infrastructure/database/typeorm/entities/subscription-plan-typeorm.entity';
 import { SubscriptionPlanTypeormMapper } from '@/billing-context/subscription-plan/infrastructure/database/typeorm/mappers/subscription-plan-typeorm.mapper';
+import { BaseTypeormMasterRepository } from '@/shared/infrastructure/database/typeorm/base-typeorm/base-typeorm-master/base-typeorm-master.repository';
+import { TypeormMasterService } from '@/shared/infrastructure/database/typeorm/services/typeorm-master/typeorm-master.service';
 import { Injectable, Logger } from '@nestjs/common';
 
 @Injectable()
@@ -101,13 +101,13 @@ export class SubscriptionPlanTypeormRepository
    * Deletes a subscription plan (soft delete)
    *
    * @param id - The id of the subscription plan to delete
-   * @returns True if the subscription plan was deleted, false otherwise
+   * @returns Promise that resolves when the subscription plan is deleted
    */
-  async delete(id: string): Promise<boolean> {
+  async delete(id: string): Promise<void> {
     this.logger.log(`Soft deleting subscription plan by id: ${id}`);
 
     const result = await this.repository.softDelete(id);
 
-    return result.affected !== undefined && result.affected > 0;
+    await this.repository.softDelete(id);
   }
 }

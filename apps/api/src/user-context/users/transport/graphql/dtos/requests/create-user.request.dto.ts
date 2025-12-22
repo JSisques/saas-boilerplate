@@ -1,4 +1,5 @@
-import { StatusEnum, UserRoleEnum } from '@/prisma/master/client';
+import { UserRoleEnum } from '@/shared/domain/enums/user-context/user/user-role/user-role.enum';
+import { UserStatusEnum } from '@/shared/domain/enums/user-context/user/user-status/user-status.enum';
 import { Field, InputType } from '@nestjs/graphql';
 import { IsEnum, IsOptional, IsString, IsUrl } from 'class-validator';
 
@@ -48,10 +49,10 @@ export class CreateUserRequestDto {
   @IsEnum(UserRoleEnum)
   role: UserRoleEnum;
 
-  @Field(() => StatusEnum, {
+  @Field(() => UserStatusEnum, {
     description: 'The status of the user',
     nullable: false,
   })
-  @IsEnum(StatusEnum)
-  status: StatusEnum;
+  @IsEnum(UserStatusEnum)
+  status: UserStatusEnum;
 }
