@@ -1,4 +1,5 @@
-import { StatusEnum, UserRoleEnum } from '@/prisma/master/client';
+import { UserRoleEnum } from '@/shared/domain/enums/user-context/user/user-role/user-role.enum';
+import { UserStatusEnum } from '@/shared/domain/enums/user-context/user/user-status/user-status.enum';
 import { MutationResponseDto } from '@/shared/transport/graphql/dtos/responses/success-response/success-response.dto';
 import { MutationResponseGraphQLMapper } from '@/shared/transport/graphql/mappers/mutation-response/mutation-response.mapper';
 import { UserDeleteCommand } from '@/user-context/users/application/commands/delete-user/delete-user.command';
@@ -44,7 +45,7 @@ describe('UserMutationsResolver', () => {
         avatarUrl: 'https://example.com/avatar.jpg',
         userName: 'johndoe',
         role: UserRoleEnum.USER,
-        status: StatusEnum.ACTIVE,
+        status: UserStatusEnum.ACTIVE,
       };
 
       const mutationResponse: MutationResponseDto = {
@@ -72,7 +73,7 @@ describe('UserMutationsResolver', () => {
       expect(command.avatarUrl?.value).toBe('https://example.com/avatar.jpg');
       expect(command.userName?.value).toBe('johndoe');
       expect(command.role?.value).toBe(UserRoleEnum.USER);
-      expect(command.status?.value).toBe(StatusEnum.ACTIVE);
+      expect(command.status?.value).toBe(UserStatusEnum.ACTIVE);
       expect(
         mockMutationResponseGraphQLMapper.toResponseDto,
       ).toHaveBeenCalledWith({
@@ -91,7 +92,7 @@ describe('UserMutationsResolver', () => {
         avatarUrl: '',
         userName: 'johndoe',
         role: UserRoleEnum.USER,
-        status: StatusEnum.ACTIVE,
+        status: UserStatusEnum.ACTIVE,
       };
 
       const mutationResponse: MutationResponseDto = {
@@ -121,7 +122,7 @@ describe('UserMutationsResolver', () => {
         avatarUrl: null,
         userName: 'johndoe',
         role: UserRoleEnum.USER,
-        status: StatusEnum.ACTIVE,
+        status: UserStatusEnum.ACTIVE,
       };
 
       const error = new Error('Username already exists');
@@ -148,7 +149,7 @@ describe('UserMutationsResolver', () => {
         avatarUrl: 'https://example.com/new-avatar.jpg',
         userName: 'janesmith',
         role: UserRoleEnum.ADMIN,
-        status: StatusEnum.INACTIVE,
+        status: UserStatusEnum.INACTIVE,
       };
 
       const mutationResponse: MutationResponseDto = {
@@ -179,7 +180,7 @@ describe('UserMutationsResolver', () => {
       );
       expect(command.userName?.value).toBe('janesmith');
       expect(command.role?.value).toBe(UserRoleEnum.ADMIN);
-      expect(command.status?.value).toBe(StatusEnum.INACTIVE);
+      expect(command.status?.value).toBe(UserStatusEnum.INACTIVE);
       expect(
         mockMutationResponseGraphQLMapper.toResponseDto,
       ).toHaveBeenCalledWith({

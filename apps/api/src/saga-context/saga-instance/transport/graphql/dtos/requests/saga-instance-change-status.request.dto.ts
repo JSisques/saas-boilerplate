@@ -1,4 +1,4 @@
-import { SagaStatusEnum } from '@/prisma/master/client';
+import { SagaInstanceStatusEnum } from '@/saga-context/saga-instance/domain/enums/saga-instance-status/saga-instance-status.enum';
 import { Field, InputType } from '@nestjs/graphql';
 import { IsEnum, IsNotEmpty, IsUUID } from 'class-validator';
 
@@ -12,11 +12,11 @@ export class SagaInstanceChangeStatusRequestDto {
   @IsNotEmpty()
   id: string;
 
-  @Field(() => SagaStatusEnum, {
+  @Field(() => SagaInstanceStatusEnum, {
     description: 'The status of the saga instance',
     nullable: false,
   })
-  @IsEnum(SagaStatusEnum)
+  @IsEnum(SagaInstanceStatusEnum)
   @IsNotEmpty()
-  status: SagaStatusEnum;
+  status: SagaInstanceStatusEnum;
 }

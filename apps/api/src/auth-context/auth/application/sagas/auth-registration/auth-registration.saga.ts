@@ -2,10 +2,10 @@ import { AuthCreateCommand } from '@/auth-context/auth/application/commands/auth
 import { AuthDeleteCommand } from '@/auth-context/auth/application/commands/auth-delete/auth-delete.command';
 import { IAuthCreateCommandDto } from '@/auth-context/auth/application/dtos/commands/auth-create/auth-create-command.dto';
 import { BaseSaga } from '@/shared/application/sagas/base-saga/base-saga';
+import { TenantMemberRoleEnum } from '@/shared/domain/enums/tenant-context/tenant-members/tenant-member-role/tenant-member-role.enum';
 import { AuthRegistrationRequestedEvent } from '@/shared/domain/events/auth/auth-registration-requested/auth-registration-requested.event';
 import { TenantMemberAddCommand } from '@/tenant-context/tenant-members/application/commands/tenant-member-add/tenant-member-add.command';
 import { TenantMemberRemoveCommand } from '@/tenant-context/tenant-members/application/commands/tenant-member-remove/tenant-member-remove.command';
-import { TenantMemberRoleEnum } from '@/tenant-context/tenant-members/domain/enums/tenant-member-role/tenant-member-role.enum';
 import { TenantCreateCommand } from '@/tenant-context/tenants/application/commands/tenant-create/tenant-create.command';
 import { TenantDeleteCommand } from '@/tenant-context/tenants/application/commands/tenant-delete/tenant-delete.command';
 import { UserDeleteCommand } from '@/user-context/users/application/commands/delete-user/delete-user.command';

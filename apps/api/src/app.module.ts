@@ -2,6 +2,7 @@ import { AppResolver } from '@/app.resolver';
 import { AuthContextModule } from '@/auth-context/auth-context.module';
 import { BillingContextModule } from '@/billing-context/billing-context.module';
 import { EventContextModule } from '@/event-store-context/event-store-context.module';
+import { FeatureContextModule } from '@/feature-context/feature-context.module';
 import { FeaturesModule } from '@/features/features.module';
 import { HealthContextModule } from '@/health-context/health-context.module';
 import { LLMContextModule } from '@/llm-context/llm-context.module';
@@ -30,6 +31,7 @@ const CONTEXT_MODULES = [
   LLMContextModule,
   StorageContextModule,
   SagaContextModule,
+  FeatureContextModule,
 ];
 
 const MODULES = [FeaturesModule, SharedModule];

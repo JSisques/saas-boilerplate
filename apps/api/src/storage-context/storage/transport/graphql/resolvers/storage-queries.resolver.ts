@@ -4,6 +4,7 @@ import { RolesGuard } from '@/auth-context/auth/infrastructure/guards/roles/role
 import { TenantRolesGuard } from '@/auth-context/auth/infrastructure/guards/tenant-roles/tenant-roles.guard';
 import { TenantGuard } from '@/auth-context/auth/infrastructure/guards/tenant/tenant.guard';
 import { Criteria } from '@/shared/domain/entities/criteria';
+import { UserRoleEnum } from '@/shared/domain/enums/user-context/user/user-role/user-role.enum';
 import { StorageFindByCriteriaQuery } from '@/storage-context/storage/application/queries/storage-find-by-criteria/storage-find-by-criteria.query';
 import { StorageFindByIdQuery } from '@/storage-context/storage/application/queries/storage-find-by-id/storage-find-by-id.query';
 import { StorageFindByCriteriaRequestDto } from '@/storage-context/storage/transport/graphql/dtos/requests/storage-find-by-criteria.request.dto';
@@ -13,7 +14,6 @@ import {
   StorageResponseDto,
 } from '@/storage-context/storage/transport/graphql/dtos/responses/storage.response.dto';
 import { StorageGraphQLMapper } from '@/storage-context/storage/transport/graphql/mappers/storage.mapper';
-import { UserRoleEnum } from '@/user-context/users/domain/enums/user-role/user-role.enum';
 import { Logger, UseGuards } from '@nestjs/common';
 import { QueryBus } from '@nestjs/cqrs';
 import { Args, Query, Resolver } from '@nestjs/graphql';

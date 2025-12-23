@@ -11,7 +11,7 @@ import { AuthAggregate } from '@/auth-context/auth/domain/aggregate/auth.aggrega
 import { AuthEmailVerifiedValueObject } from '@/auth-context/auth/domain/value-objects/auth-email-verified/auth-email-verified.vo';
 import { AuthProviderValueObject } from '@/auth-context/auth/domain/value-objects/auth-provider/auth-provider.vo';
 import { AuthTwoFactorEnabledValueObject } from '@/auth-context/auth/domain/value-objects/auth-two-factor-enabled/auth-two-factor-enabled.vo';
-import { AuthProviderEnum } from '@/prisma/master/client';
+import { AuthProviderEnum } from '@/auth-context/auth/domain/enums/auth-provider.enum';
 import { AuthWriteRepository } from '@/auth-context/auth/domain/repositories/auth-write.repository';
 import { EventBus } from '@nestjs/cqrs';
 

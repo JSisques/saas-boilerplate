@@ -1,4 +1,4 @@
-import { SagaLogTypeEnum } from '@/prisma/master/client';
+import { SagaLogTypeEnum } from '@/saga-context/saga-log/domain/enums/saga-log-type/saga-log-type.enum';
 import { Field, InputType } from '@nestjs/graphql';
 import { IsEnum, IsNotEmpty, IsString, IsUUID } from 'class-validator';
 

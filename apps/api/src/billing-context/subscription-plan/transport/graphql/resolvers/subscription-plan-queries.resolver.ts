@@ -10,8 +10,8 @@ import {
   SubscriptionPlanResponseDto,
 } from '@/billing-context/subscription-plan/transport/graphql/dtos/responses/subscription-plan.response.dto';
 import { SubscriptionPlanGraphQLMapper } from '@/billing-context/subscription-plan/transport/graphql/mappers/subscription-plan.mapper';
-import { UserRoleEnum } from '@/prisma/master/client';
 import { Criteria } from '@/shared/domain/entities/criteria';
+import { UserRoleEnum } from '@/shared/domain/enums/user-context/user/user-role/user-role.enum';
 import { Logger, UseGuards } from '@nestjs/common';
 import { QueryBus } from '@nestjs/cqrs';
 import { Args, Query, Resolver } from '@nestjs/graphql';

@@ -32,16 +32,6 @@ jobs:
             pnpm install --frozen-lockfile --filter=./apps/api...
           fi
 
-      - name: Generate Prisma master client
-        env:
-          DATABASE_URL: postgresql://user:password@localhost:5432/dummy
-        run: pnpm --filter=./apps/api... run prisma:generate:master
-
-      - name: Generate Prisma tenant client
-        env:
-          DATABASE_TENANT_URL: postgresql://user:password@localhost:5432/dummy
-        run: pnpm --filter=./apps/api... run prisma:generate:tenant
-
       - name: Lint code
         run: pnpm lint --filter=./apps/api...
 

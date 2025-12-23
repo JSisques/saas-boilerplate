@@ -174,7 +174,7 @@ type SubscriptionResponseDto {
   stripeCustomerId: String
 
   """The renewal method of the subscription"""
-  renewalMethod: RenewalMethodEnum!
+  renewalMethod: SubscriptionRenewalMethodEnum!
 }
 
 """The status of the subscription"""
@@ -186,7 +186,7 @@ enum SubscriptionStatusEnum {
 }
 
 """The renewal method"""
-enum RenewalMethodEnum {
+enum SubscriptionRenewalMethodEnum {
   MANUAL
   AUTOMATIC
 }
@@ -251,6 +251,46 @@ type PaginatedEventResultDto {
   items: [EventResponseDto!]!
 }
 
+type FeatureResponseDto {
+  """The id of the feature"""
+  id: String!
+
+  """The unique key of the feature"""
+  key: String!
+
+  """The name of the feature"""
+  name: String!
+
+  """The description of the feature"""
+  description: String
+
+  """The status of the feature"""
+  status: String!
+
+  """The created at timestamp of the feature"""
+  createdAt: DateTime!
+
+  """The updated at timestamp of the feature"""
+  updatedAt: DateTime!
+}
+
+type PaginatedFeatureResultDto {
+  """The total number of items"""
+  total: Int!
+
+  """The page number"""
+  page: Int!
+
+  """The number of items per page"""
+  perPage: Int!
+
+  """The total number of pages"""
+  totalPages: Int!
+
+  """The features in the current page"""
+  items: [FeatureResponseDto!]!
+}
+
 type HealthResponseDto {
   """The status of the check"""
   status: String!
@@ -296,8 +336,8 @@ type PromptResponseDto {
 
 """The status of the prompt"""
 enum PromptStatusEnum {
-  DRAFT
   ACTIVE
+  DRAFT
   ARCHIVED
   DEPRECATED
 }
@@ -327,7 +367,7 @@ type SagaInstanceResponseDto {
   name: String!
 
   """The saga instance status"""
-  status: SagaStatusEnum!
+  status: SagaInstanceStatusEnum!
 
   """The saga instance start date"""
   startDate: DateTime!
@@ -343,7 +383,7 @@ type SagaInstanceResponseDto {
 }
 
 """The status of the saga"""
-enum SagaStatusEnum {
+enum SagaInstanceStatusEnum {
   PENDING
   STARTED
   RUNNING
@@ -554,64 +594,6 @@ type PaginatedStorageResultDto {
   items: [StorageResponseDto!]!
 }
 
-type TenantDatabaseResponseDto {
-  """The id of the tenant database"""
-  id: String!
-
-  """The tenant id of the tenant database"""
-  tenantId: String
-
-  """The database name of the tenant database"""
-  databaseName: String
-
-  """The database URL of the tenant database"""
-  readDatabaseName: String
-
-  """The status of the tenant database"""
-  status: TenantDatabaseStatusEnum
-
-  """The schema version of the tenant database"""
-  schemaVersion: String
-
-  """The last migration at of the tenant database"""
-  lastMigrationAt: DateTime
-
-  """The error message of the tenant database"""
-  errorMessage: String
-
-  """The created at of the tenant database"""
-  createdAt: DateTime
-
-  """The updated at of the tenant database"""
-  updatedAt: DateTime
-}
-
-"""The status of the tenant database"""
-enum TenantDatabaseStatusEnum {
-  PROVISIONING
-  ACTIVE
-  MIGRATING
-  FAILED
-  SUSPENDED
-}
-
-type PaginatedTenantDatabaseResultDto {
-  """The total number of items"""
-  total: Int!
-
-  """The page number"""
-  page: Int!
-
-  """The number of items per page"""
-  perPage: Int!
-
-  """The total number of pages"""
-  totalPages: Int!
-
-  """The tenant databases in the current page"""
-  items: [TenantDatabaseResponseDto!]!
-}
-
 type TenantMemberResponseDto {
   """The id of the tenant member"""
   id: String!
@@ -819,8 +801,6 @@ type Query {
   findAuthsByCriteria(input: AuthFindByCriteriaRequestDto): PaginatedAuthResultDto!
   tenantFindByCriteria(input: TenantFindByCriteriaRequestDto): PaginatedTenantResultDto!
   tenantMemberFindByCriteria(input: TenantMemberFindByCriteriaRequestDto): PaginatedTenantMemberResultDto!
-  tenantDatabaseFindByCriteria(input: TenantDatabaseFindByCriteriaRequestDto): PaginatedTenantDatabaseResultDto!
-  tenantDatabaseFindById(input: TenantDatabaseFindByIdRequestDto!): TenantDatabaseResponseDto!
   usersFindByCriteria(input: UserFindByCriteriaRequestDto): PaginatedUserResultDto!
   userFindById(input: UserFindByIdRequestDto!): UserResponseDto!
   healthCheck: HealthResponseDto!
@@ -842,6 +822,8 @@ type Query {
   sagaLogFindBySagaInstanceId(input: SagaLogFindBySagaInstanceIdRequestDto!): [SagaLogResponseDto!]!
   sagaLogFindBySagaStepId(input: SagaLogFindBySagaStepIdRequestDto!): [SagaLogResponseDto!]!
   sagaLogFindByCriteria(input: SagaLogFindByCriteriaRequestDto): PaginatedSagaLogResultDto!
+  featuresFindByCriteria(input: FeatureFindByCriteriaRequestDto): PaginatedFeatureResultDto!
+  featureFindById(input: FeatureFindByIdRequestDto!): FeatureResponseDto!
 }
 
 input EventFindByCriteriaRequestDto {
@@ -931,22 +913,6 @@ input TenantMemberFindByCriteriaRequestDto {
 
   """The pagination to find by"""
   pagination: BasePaginationInput = {page: 1, perPage: 10}
-}
-
-input TenantDatabaseFindByCriteriaRequestDto {
-  """The filters to find by"""
-  filters: [BaseFilterInput!] = []
-
-  """The sorts to find by"""
-  sorts: [BaseSortInput!] = []
-
-  """The pagination to find by"""
-  pagination: BasePaginationInput = {page: 1, perPage: 10}
-}
-
-input TenantDatabaseFindByIdRequestDto {
-  """The id of the tenant database"""
-  id: String!
 }
 
 input UserFindByCriteriaRequestDto {
@@ -1097,6 +1063,22 @@ input SagaLogFindByCriteriaRequestDto {
   pagination: BasePaginationInput = {page: 1, perPage: 10}
 }
 
+input FeatureFindByCriteriaRequestDto {
+  """The filters to find by"""
+  filters: [BaseFilterInput!] = []
+
+  """The sorts to find by"""
+  sorts: [BaseSortInput!] = []
+
+  """The pagination to find by"""
+  pagination: BasePaginationInput = {page: 1, perPage: 10}
+}
+
+input FeatureFindByIdRequestDto {
+  """The id of the feature"""
+  id: String!
+}
+
 type Mutation {
   eventReplay(input: EventReplayRequestDto!): MutationResponseDto!
   loginByEmail(input: AuthLoginByEmailRequestDto!): LoginResponseDto!
@@ -1109,9 +1091,6 @@ type Mutation {
   tenantMemberAdd(input: TenantMemberAddRequestDto!): MutationResponseDto!
   tenantMemberUpdate(input: TenantMemberUpdateRequestDto!): MutationResponseDto!
   tenantMemberRemove(input: TenantMemberRemoveRequestDto!): MutationResponseDto!
-  tenantDatabaseCreate(input: TenantDatabaseCreateRequestDto!): MutationResponseDto!
-  tenantDatabaseUpdate(input: TenantDatabaseUpdateRequestDto!): MutationResponseDto!
-  tenantDatabaseDelete(input: TenantDatabaseDeleteRequestDto!): MutationResponseDto!
   createUser(input: CreateUserRequestDto!): MutationResponseDto!
   updateUser(input: UpdateUserRequestDto!): MutationResponseDto!
   deleteUser(input: DeleteUserRequestDto!): MutationResponseDto!
@@ -1143,6 +1122,10 @@ type Mutation {
   sagaLogCreate(input: SagaLogCreateRequestDto!): MutationResponseDto!
   sagaLogUpdate(input: SagaLogUpdateRequestDto!): MutationResponseDto!
   sagaLogDelete(input: SagaLogDeleteRequestDto!): MutationResponseDto!
+  createFeature(input: CreateFeatureRequestDto!): MutationResponseDto!
+  updateFeature(input: UpdateFeatureRequestDto!): MutationResponseDto!
+  deleteFeature(input: DeleteFeatureRequestDto!): MutationResponseDto!
+  changeFeatureStatus(input: FeatureChangeStatusRequestDto!): MutationResponseDto!
 }
 
 input EventReplayRequestDto {
@@ -1217,7 +1200,7 @@ input UpdateUserRequestDto {
   role: UserRoleEnum
 
   """The status of the user"""
-  status: StatusEnum
+  status: UserStatusEnum
 }
 
 """The role of the user"""
@@ -1227,7 +1210,7 @@ enum UserRoleEnum {
 }
 
 """The status of the user"""
-enum StatusEnum {
+enum UserStatusEnum {
   ACTIVE
   INACTIVE
   BLOCKED
@@ -1400,45 +1383,6 @@ input TenantMemberRemoveRequestDto {
   id: String!
 }
 
-input TenantDatabaseCreateRequestDto {
-  """The id of the tenant."""
-  tenantId: String!
-
-  """The name of the database."""
-  databaseName: String!
-
-  """The URL of the database."""
-  databaseUrl: String
-}
-
-input TenantDatabaseUpdateRequestDto {
-  """The unique identifier of the tenant database"""
-  id: String!
-
-  """The name of the database"""
-  databaseName: String
-
-  """The URL of the database"""
-  databaseUrl: String
-
-  """The status of the database"""
-  status: TenantDatabaseStatusEnum
-
-  """The schema version of the database"""
-  schemaVersion: String
-
-  """The last migration at of the database"""
-  lastMigrationAt: DateTime
-
-  """The error message of the database"""
-  errorMessage: String
-}
-
-input TenantDatabaseDeleteRequestDto {
-  """The unique identifier of the tenant database"""
-  id: String!
-}
-
 input CreateUserRequestDto {
   """The name of the user"""
   name: String
@@ -1459,7 +1403,7 @@ input CreateUserRequestDto {
   role: UserRoleEnum!
 
   """The status of the user"""
-  status: StatusEnum!
+  status: UserStatusEnum!
 }
 
 input DeleteUserRequestDto {
@@ -1513,7 +1457,16 @@ enum SubscriptionPlanTypeEnum {
 """The currency"""
 enum CurrencyEnum {
   USD
+  GBP
   EUR
+  JPY
+  KRW
+  CNY
+  INR
+  BRL
+  MXN
+  ARS
+  COP
 }
 
 """The interval of the subscription plan"""
@@ -1585,7 +1538,7 @@ input SubscriptionCreateRequestDto {
   stripeCustomerId: String
 
   """The renewal method of the subscription"""
-  renewalMethod: RenewalMethodEnum!
+  renewalMethod: SubscriptionRenewalMethodEnum!
 }
 
 input SubscriptionUpdateRequestDto {
@@ -1617,7 +1570,7 @@ input SubscriptionUpdateRequestDto {
   stripeCustomerId: String
 
   """The renewal method of the subscription"""
-  renewalMethod: RenewalMethodEnum
+  renewalMethod: SubscriptionRenewalMethodEnum
 }
 
 input SubscriptionDeleteRequestDto {
@@ -1712,7 +1665,7 @@ input SagaInstanceUpdateRequestDto {
   name: String
 
   """The status of the saga instance"""
-  status: SagaStatusEnum
+  status: SagaInstanceStatusEnum
 
   """The start date of the saga instance"""
   startDate: DateTime
@@ -1726,7 +1679,7 @@ input SagaInstanceChangeStatusRequestDto {
   id: String!
 
   """The status of the saga instance"""
-  status: SagaStatusEnum!
+  status: SagaInstanceStatusEnum!
 }
 
 input SagaInstanceDeleteRequestDto {
@@ -1824,4 +1777,48 @@ input SagaLogUpdateRequestDto {
 input SagaLogDeleteRequestDto {
   """The id of the saga log"""
   id: String!
+}
+
+input CreateFeatureRequestDto {
+  """The unique key of the feature"""
+  key: String!
+
+  """The name of the feature"""
+  name: String!
+
+  """The description of the feature"""
+  description: String
+
+  """The status of the feature"""
+  status: String
+}
+
+input UpdateFeatureRequestDto {
+  """The id of the feature"""
+  id: String!
+
+  """The unique key of the feature"""
+  key: String
+
+  """The name of the feature"""
+  name: String
+
+  """The description of the feature"""
+  description: String
+
+  """The status of the feature"""
+  status: String
+}
+
+input DeleteFeatureRequestDto {
+  """The id of the feature"""
+  id: String!
+}
+
+input FeatureChangeStatusRequestDto {
+  """The id of the feature"""
+  id: String!
+
+  """The new status of the feature"""
+  status: String!
 }

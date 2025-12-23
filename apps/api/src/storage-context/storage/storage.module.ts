@@ -16,8 +16,9 @@ import { STORAGE_READ_REPOSITORY_TOKEN } from '@/storage-context/storage/domain/
 import { STORAGE_WRITE_REPOSITORY_TOKEN } from '@/storage-context/storage/domain/repositories/storage-write.repository';
 import { StorageMongoDBMapper } from '@/storage-context/storage/infrastructure/database/mongodb/mappers/storage-mongodb.mapper';
 import { StorageMongoRepository } from '@/storage-context/storage/infrastructure/database/mongodb/repositories/storage-mongodb.repository';
-import { StoragePrismaMapper } from '@/storage-context/storage/infrastructure/database/prisma/mappers/storage-prisma.mapper';
-import { StoragePrismaRepository } from '@/storage-context/storage/infrastructure/database/prisma/repositories/storage-prisma.repository';
+import { StorageTypeormEntity } from '@/storage-context/storage/infrastructure/database/typeorm/entities/storage-typeorm.entity';
+import { StorageTypeormMapper } from '@/storage-context/storage/infrastructure/database/typeorm/mappers/storage-typeorm.mapper';
+import { StorageTypeormRepository } from '@/storage-context/storage/infrastructure/database/typeorm/repositories/storage-typeorm.repository';
 import { S3StorageProviderService } from '@/storage-context/storage/infrastructure/storage-providers/s3/s3-storage-provider.service';
 import { ServerRouteStorageProviderService } from '@/storage-context/storage/infrastructure/storage-providers/server-route/server-route-storage-provider.service';
 import { StorageProviderFactoryService } from '@/storage-context/storage/infrastructure/storage-providers/storage-provider-factory.service';
@@ -28,6 +29,7 @@ import { StorageQueryResolver } from '@/storage-context/storage/transport/graphq
 import { HttpModule } from '@nestjs/axios';
 import { Logger, Module, OnModuleInit } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import { TypeOrmModule } from '@nestjs/typeorm';
 
 const RESOLVERS = [StorageQueryResolver, StorageMutationsResolver];
 
@@ -60,7 +62,7 @@ const EVENT_HANDLERS = [
 const FACTORIES = [StorageAggregateFactory, StorageViewModelFactory];
 
 const MAPPERS = [
-  StoragePrismaMapper,
+  StorageTypeormMapper,
   StorageMongoDBMapper,
   StorageGraphQLMapper,
 ];
@@ -68,7 +70,7 @@ const MAPPERS = [
 const REPOSITORIES = [
   {
     provide: STORAGE_WRITE_REPOSITORY_TOKEN,
-    useClass: StoragePrismaRepository,
+    useClass: StorageTypeormRepository,
   },
   {
     provide: STORAGE_READ_REPOSITORY_TOKEN,
@@ -76,8 +78,10 @@ const REPOSITORIES = [
   },
 ];
 
+const ENTITIES = [StorageTypeormEntity];
+
 @Module({
-  imports: [SharedModule, HttpModule],
+  imports: [SharedModule, HttpModule, TypeOrmModule.forFeature(ENTITIES)],
   controllers: [],
   providers: [
     ...RESOLVERS,

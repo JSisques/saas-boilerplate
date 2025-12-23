@@ -1,15 +1,13 @@
 import { SubscriptionPlanCreateCommand } from '@/billing-context/subscription-plan/application/commands/subscription-plan-create/subscription-plan-create.command';
 import { SubscriptionPlanDeleteCommand } from '@/billing-context/subscription-plan/application/commands/subscription-plan-delete/subscription-plan-delete.command';
 import { SubscriptionPlanUpdateCommand } from '@/billing-context/subscription-plan/application/commands/subscription-plan-update/subscription-plan-update.command';
+import { SubscriptionPlanCurrencyEnum } from '@/billing-context/subscription-plan/domain/enum/subscription-plan-currency/subscription-plan-currency.enum';
+import { SubscriptionPlanIntervalEnum } from '@/billing-context/subscription-plan/domain/enum/subscription-plan-interval/subscription-plan-interval.enum';
+import { SubscriptionPlanTypeEnum } from '@/billing-context/subscription-plan/domain/enum/subscription-plan-type/subscription-plan-type.enum';
 import { SubscriptionPlanCreateRequestDto } from '@/billing-context/subscription-plan/transport/graphql/dtos/requests/subscription-plan-create.request.dto';
 import { SubscriptionPlanDeleteRequestDto } from '@/billing-context/subscription-plan/transport/graphql/dtos/requests/subscription-plan-delete.request.dto';
 import { SubscriptionPlanUpdateRequestDto } from '@/billing-context/subscription-plan/transport/graphql/dtos/requests/subscription-plan-update.request.dto';
 import { SubscriptionPlanMutationsResolver } from '@/billing-context/subscription-plan/transport/graphql/resolvers/subscription-plan-mutations.resolver';
-import {
-  CurrencyEnum,
-  SubscriptionPlanIntervalEnum,
-  SubscriptionPlanTypeEnum,
-} from '@/prisma/master/client';
 import { MutationResponseDto } from '@/shared/transport/graphql/dtos/responses/success-response/success-response.dto';
 import { MutationResponseGraphQLMapper } from '@/shared/transport/graphql/mappers/mutation-response/mutation-response.mapper';
 import { CommandBus } from '@nestjs/cqrs';
@@ -46,7 +44,7 @@ describe('SubscriptionPlanMutationsResolver', () => {
         type: SubscriptionPlanTypeEnum.BASIC,
         description: 'Basic subscription plan',
         priceMonthly: 10.0,
-        currency: CurrencyEnum.USD,
+        currency: SubscriptionPlanCurrencyEnum.USD,
         interval: SubscriptionPlanIntervalEnum.MONTHLY,
         intervalCount: 1,
         trialPeriodDays: 7,
@@ -90,7 +88,7 @@ describe('SubscriptionPlanMutationsResolver', () => {
         type: SubscriptionPlanTypeEnum.BASIC,
         description: null,
         priceMonthly: 10.0,
-        currency: CurrencyEnum.USD,
+        currency: SubscriptionPlanCurrencyEnum.USD,
         interval: SubscriptionPlanIntervalEnum.MONTHLY,
         intervalCount: 1,
         trialPeriodDays: null,
@@ -124,7 +122,7 @@ describe('SubscriptionPlanMutationsResolver', () => {
         type: SubscriptionPlanTypeEnum.BASIC,
         description: null,
         priceMonthly: 10.0,
-        currency: CurrencyEnum.USD,
+        currency: SubscriptionPlanCurrencyEnum.USD,
         interval: SubscriptionPlanIntervalEnum.MONTHLY,
         intervalCount: 1,
         trialPeriodDays: null,
@@ -157,7 +155,7 @@ describe('SubscriptionPlanMutationsResolver', () => {
         type: SubscriptionPlanTypeEnum.PRO,
         description: 'Professional plan',
         priceMonthly: 29.99,
-        currency: CurrencyEnum.EUR,
+        currency: SubscriptionPlanCurrencyEnum.EUR,
         interval: SubscriptionPlanIntervalEnum.YEARLY,
         intervalCount: 1,
         trialPeriodDays: 14,
@@ -190,7 +188,7 @@ describe('SubscriptionPlanMutationsResolver', () => {
       expect(command.type?.value).toBe(SubscriptionPlanTypeEnum.PRO);
       expect(command.description?.value).toBe('Professional plan');
       expect(command.priceMonthly?.value).toBe(29.99);
-      expect(command.currency?.value).toBe(CurrencyEnum.EUR);
+      expect(command.currency?.value).toBe(SubscriptionPlanCurrencyEnum.EUR);
       expect(command.interval?.value).toBe(SubscriptionPlanIntervalEnum.YEARLY);
       expect(command.intervalCount?.value).toBe(1);
       expect(command.trialPeriodDays?.value).toBe(14);
@@ -263,7 +261,7 @@ describe('SubscriptionPlanMutationsResolver', () => {
         type: SubscriptionPlanTypeEnum.BASIC,
         description: null,
         priceMonthly: 10.0,
-        currency: CurrencyEnum.USD,
+        currency: SubscriptionPlanCurrencyEnum.USD,
         interval: SubscriptionPlanIntervalEnum.MONTHLY,
         intervalCount: 1,
         trialPeriodDays: null,

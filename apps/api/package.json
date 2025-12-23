@@ -18,19 +18,11 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
-    "prisma:init": "prisma init",
-    "prisma:generate:master": "prisma generate --schema=prisma/master/schema.prisma",
-    "prisma:generate:tenant": "prisma generate --schema=prisma/tenant/schema.prisma",
-    "prisma:generate:all": "prisma generate --schema=prisma/master/schema.prisma && prisma generate --schema=prisma/tenant/schema.prisma",
-    "prisma:migrate:master": "prisma migrate dev --schema=prisma/master/schema.prisma --create-only",
-    "prisma:migrate:tenant": "prisma migrate dev --schema=prisma/tenant/schema.prisma --create-only",
-    "prisma:studio:master": "prisma studio --schema=prisma/master/schema.prisma",
-    "prisma:seed:master": "prisma db seed --schema=prisma/master/schema.prisma",
-    "prisma:push:master": "prisma db push --schema=prisma/master/schema.prisma",
-    "prisma:format:master": "prisma format --schema=prisma/master/schema.prisma",
-    "provision:tenant": "ts-node -r tsconfig-paths/register src/shared/infrastructure/database/prisma/scripts/provision-tenant.ts",
-    "migrate:tenant": "ts-node -r tsconfig-paths/register src/shared/infrastructure/database/prisma/scripts/migrate-tenant.ts",
-    "migrate:tenant:all": "ts-node -r tsconfig-paths/register src/shared/infrastructure/database/prisma/scripts/migrate-tenant.ts --all",
+    "migration:tenant:generate": "ts-node -r tsconfig-paths/register src/shared/infrastructure/database/typeorm/scripts/generate-tenant-migration/generate-tenant-migration.ts",
+    "migration:tenant:create": "ts-node -r tsconfig-paths/register src/shared/infrastructure/database/typeorm/scripts/create-tenant-migration/create-tenant-migration.ts",
+    "migrate:tenant:typeorm": "ts-node -r tsconfig-paths/register src/shared/infrastructure/database/typeorm/scripts/migrate-tenant/migrate-tenant.ts",
+    "migrate:tenant:typeorm:all": "ts-node -r tsconfig-paths/register src/shared/infrastructure/database/typeorm/scripts/migrate-tenant/migrate-tenant.ts --all",
+    "provision:tenant:typeorm": "ts-node -r tsconfig-paths/register src/shared/infrastructure/database/typeorm/scripts/provision-tenant/provision-tenant.ts",
     "git:clean": "git branch --merged | grep -vE '^*|main|dev' | xargs -n 1 git branch -d"
   },
   "dependencies": {
@@ -50,8 +42,8 @@
     "@nestjs/platform-express": "^10.0.0",
     "@nestjs/swagger": "^11.2.1",
     "@nestjs/terminus": "^11.0.0",
+    "@nestjs/typeorm": "^11.0.0",
     "@supabase/supabase-js": "^2.87.0",
-    "@prisma/client": "^6.18.0",
     "@types/bcrypt": "^6.0.0",
     "axios": "^1.13.2",
     "bcrypt": "^6.0.0",
@@ -64,9 +56,10 @@
     "nest-winston": "^1.10.2",
     "passport": "^0.7.0",
     "passport-jwt": "^4.0.1",
-    "prisma": "^6.18.0",
+    "pg": "^8.16.3",
     "reflect-metadata": "^0.2.0",
     "rxjs": "^7.8.1",
+    "typeorm": "^0.3.28",
     "winston": "^3.19.0",
     "winston-daily-rotate-file": "^5.0.0"
   },
@@ -117,10 +110,16 @@
       "!**/*.primitives.ts"
     ],
     "coverageDirectory": "../coverage",
+    "coverageThreshold": {
+      "global": {
+        "branches": 80,
+        "functions": 80,
+        "lines": 80,
+        "statements": 80
+      }
+    },
     "testEnvironment": "node",
     "moduleNameMapper": {
-      "^@/prisma/master/client$": "<rootDir>/../prisma/master/client/index.js",
-      "^@/prisma/tenant/client$": "<rootDir>/../prisma/tenant/client/index.js",
       "^@/(.*)$": "<rootDir>/$1"
     }
   }

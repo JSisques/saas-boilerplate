@@ -1,3 +1,4 @@
+import { SagaInstanceStatusEnum } from '@/saga-context/saga-instance/domain/enums/saga-instance-status/saga-instance-status.enum';
 import { SagaInstanceViewModel } from '@/saga-context/saga-instance/domain/view-models/saga-instance/saga-instance.view-model';
 import {
   PaginatedSagaInstanceResultDto,
@@ -25,7 +26,7 @@ export class SagaInstanceGraphQLMapper {
     return {
       id: sagaInstance.id,
       name: sagaInstance.name,
-      status: sagaInstance.status,
+      status: sagaInstance.status as SagaInstanceStatusEnum,
       startDate: sagaInstance.startDate,
       endDate: sagaInstance.endDate,
       createdAt: sagaInstance.createdAt,

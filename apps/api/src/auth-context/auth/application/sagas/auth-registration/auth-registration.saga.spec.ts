@@ -2,7 +2,7 @@ import { AuthCreateCommand } from '@/auth-context/auth/application/commands/auth
 import { AuthDeleteCommand } from '@/auth-context/auth/application/commands/auth-delete/auth-delete.command';
 import { AuthRegistrationSaga } from '@/auth-context/auth/application/sagas/auth-registration/auth-registration.saga';
 import { AuthAggregate } from '@/auth-context/auth/domain/aggregate/auth.aggregate';
-import { AuthProviderEnum } from '@/prisma/master/client';
+import { AuthProviderEnum } from '@/auth-context/auth/domain/enums/auth-provider.enum';
 import { SagaInstanceChangeStatusCommand } from '@/saga-context/saga-instance/application/commands/saga-instance-change-status/saga-instance-change-status.command';
 import { SagaInstanceCreateCommand } from '@/saga-context/saga-instance/application/commands/saga-instance-create/saga-instance-create.command';
 import { AuthRegistrationRequestedEvent } from '@/shared/domain/events/auth/auth-registration-requested/auth-registration-requested.event';

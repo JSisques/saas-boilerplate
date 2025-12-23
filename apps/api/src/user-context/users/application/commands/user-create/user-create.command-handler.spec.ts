@@ -1,3 +1,5 @@
+import { UserRoleEnum } from '@/shared/domain/enums/user-context/user/user-role/user-role.enum';
+import { UserStatusEnum } from '@/shared/domain/enums/user-context/user/user-status/user-status.enum';
 import { UserCreatedEvent } from '@/shared/domain/events/users/user-created/user-created.event';
 import { DateValueObject } from '@/shared/domain/value-objects/date/date.vo';
 import { UserUuidValueObject } from '@/shared/domain/value-objects/identifiers/user-uuid/user-uuid.vo';
@@ -5,8 +7,6 @@ import { IUserCreateCommandDto } from '@/user-context/users/application/dtos/com
 import { UserUsernameIsNotUniqueException } from '@/user-context/users/application/exceptions/user-username-is-not-unique/user-username-is-not-unique.exception';
 import { AssertUserUsernameIsUniqueService } from '@/user-context/users/application/services/assert-user-username-is-unique/assert-user-username-is-unique.service';
 import { UserAggregate } from '@/user-context/users/domain/aggregates/user.aggregate';
-import { UserRoleEnum } from '@/user-context/users/domain/enums/user-role/user-role.enum';
-import { UserStatusEnum } from '@/user-context/users/domain/enums/user-status/user-status.enum';
 import { UserAggregateFactory } from '@/user-context/users/domain/factories/user-aggregate/user-aggregate.factory';
 import { UserWriteRepository } from '@/user-context/users/domain/repositories/user-write.repository';
 import { UserRoleValueObject } from '@/user-context/users/domain/value-objects/user-role/user-role.vo';

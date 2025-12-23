@@ -1,3 +1,4 @@
+import { SagaStepStatusEnum } from '@/saga-context/saga-step/domain/enums/saga-step-status/saga-step-status.enum';
 import { SagaStepViewModel } from '@/saga-context/saga-step/domain/view-models/saga-step/saga-step.view-model';
 import {
   PaginatedSagaStepResultDto,
@@ -25,7 +26,7 @@ export class SagaStepGraphQLMapper {
       sagaInstanceId: sagaStep.sagaInstanceId,
       name: sagaStep.name,
       order: sagaStep.order,
-      status: sagaStep.status,
+      status: sagaStep.status as SagaStepStatusEnum,
       startDate: sagaStep.startDate,
       endDate: sagaStep.endDate,
       errorMessage: sagaStep.errorMessage,

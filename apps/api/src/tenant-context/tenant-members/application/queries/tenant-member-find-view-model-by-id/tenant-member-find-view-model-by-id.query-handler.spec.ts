@@ -1,10 +1,10 @@
+import { TenantMemberRoleEnum } from '@/shared/domain/enums/tenant-context/tenant-members/tenant-member-role/tenant-member-role.enum';
 import { TenantMemberUuidValueObject } from '@/shared/domain/value-objects/identifiers/tenant-member-uuid/tenant-member-uuid.vo';
 import { ITenantMemberFindViewModelByIdQueryDto } from '@/tenant-context/tenant-members/application/dtos/queries/tenant-member-find-view-model-by-id/tenant-member-find-view-model-by-id.dto';
 import { TenantMemberNotFoundException } from '@/tenant-context/tenant-members/application/exceptions/tenant-member-not-found/tenant-member-not-found.exception';
 import { FindTenantMemberViewModelByIdQuery } from '@/tenant-context/tenant-members/application/queries/tenant-member-find-view-model-by-id/tenant-member-find-view-model-by-id.query';
 import { FindTenantMemberViewModelByIdQueryHandler } from '@/tenant-context/tenant-members/application/queries/tenant-member-find-view-model-by-id/tenant-member-find-view-model-by-id.query-handler';
 import { AssertTenantMemberViewModelExsistsService } from '@/tenant-context/tenant-members/application/services/assert-tenant-member-view-model-exsits/assert-tenant-member-view-model-exsits.service';
-import { TenantMemberRoleEnum } from '@/tenant-context/tenant-members/domain/enums/tenant-member-role/tenant-member-role.enum';
 import { TenantMemberViewModel } from '@/tenant-context/tenant-members/domain/view-models/tenant-member/tenant-member.view-model';
 
 describe('FindTenantMemberViewModelByIdQueryHandler', () => {

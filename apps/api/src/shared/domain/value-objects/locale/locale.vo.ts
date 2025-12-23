@@ -144,7 +144,10 @@ export class LocaleValueObject extends StringValueObject {
     });
 
     if (options.validateExistence !== false) {
-      this.validateExistence();
+      // Only validate existence if value is not empty or allowEmpty is false
+      if (this.value.length > 0 || options.allowEmpty !== true) {
+        this.validateExistence();
+      }
     }
   }
 

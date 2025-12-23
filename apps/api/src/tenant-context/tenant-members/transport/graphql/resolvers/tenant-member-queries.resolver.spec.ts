@@ -1,8 +1,8 @@
 import { Criteria } from '@/shared/domain/entities/criteria';
 import { PaginatedResult } from '@/shared/domain/entities/paginated-result.entity';
 import { FilterOperator } from '@/shared/domain/enums/filter-operator.enum';
+import { TenantMemberRoleEnum } from '@/shared/domain/enums/tenant-context/tenant-members/tenant-member-role/tenant-member-role.enum';
 import { FindTenantMembersByCriteriaQuery } from '@/tenant-context/tenant-members/application/queries/tenant-member-find-by-criteria/tenant-member-find-by-criteria.query';
-import { TenantMemberRoleEnum } from '@/tenant-context/tenant-members/domain/enums/tenant-member-role/tenant-member-role.enum';
 import { TenantMemberViewModel } from '@/tenant-context/tenant-members/domain/view-models/tenant-member/tenant-member.view-model';
 import { TenantMemberFindByCriteriaRequestDto } from '@/tenant-context/tenant-members/transport/graphql/dtos/requests/tenant-member-find-by-criteria.request.dto';
 import { TenantMemberGraphQLMapper } from '@/tenant-context/tenant-members/transport/graphql/mappers/tenant-member.mapper';

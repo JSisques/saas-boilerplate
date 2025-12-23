@@ -20,13 +20,15 @@ import { PROMPT_READ_REPOSITORY_TOKEN } from '@/llm-context/prompt/domain/reposi
 import { PROMPT_WRITE_REPOSITORY_TOKEN } from '@/llm-context/prompt/domain/repositories/prompt-write/prompt-write.repository';
 import { PromptMongoDBMapper } from '@/llm-context/prompt/infrastructure/database/mongodb/mappers/prompt-mongodb.mapper';
 import { PromptMongoRepository } from '@/llm-context/prompt/infrastructure/database/mongodb/repositories/prompt-mongodb.repository';
-import { PromptPrismaMapper } from '@/llm-context/prompt/infrastructure/database/prisma/mappers/prompt-prisma.mapper';
-import { PromptPrismaRepository } from '@/llm-context/prompt/infrastructure/database/prisma/repositories/prompt-prisma.repository';
+import { PromptTypeormEntity } from '@/llm-context/prompt/infrastructure/database/typeorm/entities/prompt-typeorm.entity';
+import { PromptTypeormMapper } from '@/llm-context/prompt/infrastructure/database/typeorm/mappers/prompt-typeorm.mapper';
+import { PromptTypeormRepository } from '@/llm-context/prompt/infrastructure/database/typeorm/repositories/prompt-typeorm.repository';
 import { PromptGraphQLMapper } from '@/llm-context/prompt/transport/graphql/mappers/prompt.mapper';
 import { PromptMutationsResolver } from '@/llm-context/prompt/transport/graphql/resolvers/prompt-mutations.resolver';
 import { PromptQueryResolver } from '@/llm-context/prompt/transport/graphql/resolvers/prompt-queries.resolver';
 import { SharedModule } from '@/shared/shared.module';
 import { Module } from '@nestjs/common';
+import { TypeOrmModule } from '@nestjs/typeorm';
 
 const RESOLVERS = [PromptQueryResolver, PromptMutationsResolver];
 
@@ -60,12 +62,12 @@ const EVENT_HANDLERS = [
 
 const FACTORIES = [PromptAggregateFactory, PromptViewModelFactory];
 
-const MAPPERS = [PromptPrismaMapper, PromptMongoDBMapper, PromptGraphQLMapper];
+const MAPPERS = [PromptTypeormMapper, PromptMongoDBMapper, PromptGraphQLMapper];
 
 const REPOSITORIES = [
   {
     provide: PROMPT_WRITE_REPOSITORY_TOKEN,
-    useClass: PromptPrismaRepository,
+    useClass: PromptTypeormRepository,
   },
   {
     provide: PROMPT_READ_REPOSITORY_TOKEN,
@@ -73,8 +75,10 @@ const REPOSITORIES = [
   },
 ];
 
+const ENTITIES = [PromptTypeormEntity];
+
 @Module({
-  imports: [SharedModule],
+  imports: [SharedModule, TypeOrmModule.forFeature(ENTITIES)],
   controllers: [],
   providers: [
     ...RESOLVERS,

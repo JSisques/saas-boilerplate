@@ -2,7 +2,7 @@ import { AuthCreateCommandHandler } from '@/auth-context/auth/application/comman
 import { PasswordHashingService } from '@/auth-context/auth/application/services/password-hashing/password-hashing.service';
 import { AuthAggregateFactory } from '@/auth-context/auth/domain/factories/auth-aggregate/auth-aggregate.factory';
 import { AuthAggregate } from '@/auth-context/auth/domain/aggregate/auth.aggregate';
-import { AuthProviderEnum } from '@/prisma/master/client';
+import { AuthProviderEnum } from '@/auth-context/auth/domain/enums/auth-provider.enum';
 import { AuthWriteRepository } from '@/auth-context/auth/domain/repositories/auth-write.repository';
 import { AuthEmailVerifiedValueObject } from '@/auth-context/auth/domain/value-objects/auth-email-verified/auth-email-verified.vo';
 import { AuthEmailValueObject } from '@/auth-context/auth/domain/value-objects/auth-email/auth-email.vo';

@@ -1,9 +1,9 @@
+import { TenantMemberRoleEnum } from '@/shared/domain/enums/tenant-context/tenant-members/tenant-member-role/tenant-member-role.enum';
 import { MutationResponseDto } from '@/shared/transport/graphql/dtos/responses/success-response/success-response.dto';
 import { MutationResponseGraphQLMapper } from '@/shared/transport/graphql/mappers/mutation-response/mutation-response.mapper';
 import { TenantMemberAddCommand } from '@/tenant-context/tenant-members/application/commands/tenant-member-add/tenant-member-add.command';
 import { TenantMemberRemoveCommand } from '@/tenant-context/tenant-members/application/commands/tenant-member-remove/tenant-member-remove.command';
 import { TenantMemberUpdateCommand } from '@/tenant-context/tenant-members/application/commands/tenant-member-update/tenant-member-update.command';
-import { TenantMemberRoleEnum } from '@/tenant-context/tenant-members/domain/enums/tenant-member-role/tenant-member-role.enum';
 import { TenantMemberAddRequestDto } from '@/tenant-context/tenant-members/transport/graphql/dtos/requests/tenant-member-add.request.dto';
 import { TenantMemberRemoveRequestDto } from '@/tenant-context/tenant-members/transport/graphql/dtos/requests/tenant-member-remove.request.dto';
 import { TenantMemberUpdateRequestDto } from '@/tenant-context/tenant-members/transport/graphql/dtos/requests/tenant-member-update.request.dto';

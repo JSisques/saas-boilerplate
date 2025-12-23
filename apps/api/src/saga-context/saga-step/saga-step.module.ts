@@ -20,13 +20,15 @@ import { SAGA_STEP_READ_REPOSITORY_TOKEN } from '@/saga-context/saga-step/domain
 import { SAGA_STEP_WRITE_REPOSITORY_TOKEN } from '@/saga-context/saga-step/domain/repositories/saga-step-write.repository';
 import { SagaStepMongoDBMapper } from '@/saga-context/saga-step/infrastructure/database/mongodb/mappers/saga-step-mongodb.mapper';
 import { SagaStepMongoRepository } from '@/saga-context/saga-step/infrastructure/database/mongodb/repositories/saga-step-mongodb.repository';
-import { SagaStepPrismaMapper } from '@/saga-context/saga-step/infrastructure/database/prisma/mappers/saga-step-prisma.mapper';
-import { SagaStepPrismaRepository } from '@/saga-context/saga-step/infrastructure/database/prisma/repositories/saga-step-prisma.repository';
+import { SagaStepTypeormEntity } from '@/saga-context/saga-step/infrastructure/database/typeorm/entities/saga-step-typeorm.entity';
+import { SagaStepTypeormMapper } from '@/saga-context/saga-step/infrastructure/database/typeorm/mappers/saga-step-typeorm.mapper';
+import { SagaStepTypeormRepository } from '@/saga-context/saga-step/infrastructure/database/typeorm/repositories/saga-step-typeorm.repository';
 import { SagaStepGraphQLMapper } from '@/saga-context/saga-step/transport/graphql/mappers/saga-step.mapper';
 import { SagaStepMutationsResolver } from '@/saga-context/saga-step/transport/graphql/resolvers/saga-step-mutations.resolver';
 import { SagaStepQueryResolver } from '@/saga-context/saga-step/transport/graphql/resolvers/saga-step-queries.resolver';
 import { SharedModule } from '@/shared/shared.module';
 import { Module } from '@nestjs/common';
+import { TypeOrmModule } from '@nestjs/typeorm';
 
 const RESOLVERS = [SagaStepQueryResolver, SagaStepMutationsResolver];
 
@@ -63,7 +65,7 @@ const EVENT_HANDLERS = [
 const FACTORIES = [SagaStepAggregateFactory, SagaStepViewModelFactory];
 
 const MAPPERS = [
-  SagaStepPrismaMapper,
+  SagaStepTypeormMapper,
   SagaStepMongoDBMapper,
   SagaStepGraphQLMapper,
 ];
@@ -71,7 +73,7 @@ const MAPPERS = [
 const REPOSITORIES = [
   {
     provide: SAGA_STEP_WRITE_REPOSITORY_TOKEN,
-    useClass: SagaStepPrismaRepository,
+    useClass: SagaStepTypeormRepository,
   },
   {
     provide: SAGA_STEP_READ_REPOSITORY_TOKEN,
@@ -79,8 +81,10 @@ const REPOSITORIES = [
   },
 ];
 
+const ENTITIES = [SagaStepTypeormEntity];
+
 @Module({
-  imports: [SharedModule],
+  imports: [SharedModule, TypeOrmModule.forFeature(ENTITIES)],
   controllers: [],
   providers: [
     ...RESOLVERS,

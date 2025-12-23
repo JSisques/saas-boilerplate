@@ -4,7 +4,9 @@
     "error": "Error",
     "success": "Success",
     "noData": "No data found",
-    "unknown": "Unknown"
+    "unknown": "Unknown",
+    "cancel": "Cancel",
+    "delete": "Delete"
   },
   "healthPage": {
     "title": "Health Status",
@@ -154,6 +156,49 @@
         "status": "Status",
         "createdAt": "Created At",
         "updatedAt": "Updated At"
+      }
+    }
+  },
+  "featuresPage": {
+    "title": "Features",
+    "description": "Manage and view all feature flags in the system",
+    "actions": {
+      "addFeature": "Add Feature",
+      "exportFeatures": "Export Features",
+      "importFeatures": "Import Features",
+      "deleteFeatures": "Delete Features",
+      "deleteFeaturesConfirmation": "Delete selected features?",
+      "deleteFeaturesDescription": "You are about to delete {count} feature(s). This action cannot be undone."
+    },
+    "organisms": {
+      "featuresTable": {
+        "searchPlaceholder": "Search features by name...",
+        "emptyMessage": "No features found"
+      },
+      "featuresTableColumns": {
+        "key": "Key",
+        "name": "Name",
+        "description": "Description",
+        "status": "Status",
+        "createdAt": "Created At",
+        "updatedAt": "Updated At"
+      },
+      "featureCreateModal": {
+        "title": "Create Feature",
+        "description": "Create a new feature flag",
+        "actions": {
+          "create": "Create",
+          "cancel": "Cancel"
+        },
+        "keyLabel": "Key",
+        "keyPlaceholder": "e.g., advanced-analytics",
+        "keyHint": "Must be unique and in slug format (lowercase, alphanumeric, hyphens)",
+        "nameLabel": "Name",
+        "namePlaceholder": "Enter feature name",
+        "descriptionLabel": "Description",
+        "descriptionPlaceholder": "Enter feature description (optional)",
+        "statusLabel": "Status",
+        "statusPlaceholder": "Select status"
       }
     }
   },

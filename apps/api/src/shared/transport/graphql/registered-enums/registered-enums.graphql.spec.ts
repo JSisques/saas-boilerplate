@@ -1,15 +1,13 @@
-import {
-  CurrencyEnum,
-  PromptStatusEnum,
-  RenewalMethodEnum,
-  StatusEnum,
-  SubscriptionPlanIntervalEnum,
-  SubscriptionPlanTypeEnum,
-  SubscriptionStatusEnum,
-  TenantMemberRoleEnum,
-  TenantStatusEnum,
-  UserRoleEnum,
-} from '@/prisma/master/client';
+import { SubscriptionPlanCurrencyEnum } from '@/billing-context/subscription-plan/domain/enum/subscription-plan-currency/subscription-plan-currency.enum';
+import { SubscriptionPlanIntervalEnum } from '@/billing-context/subscription-plan/domain/enum/subscription-plan-interval/subscription-plan-interval.enum';
+import { SubscriptionPlanTypeEnum } from '@/billing-context/subscription-plan/domain/enum/subscription-plan-type/subscription-plan-type.enum';
+import { SubscriptionRenewalMethodEnum } from '@/billing-context/subscription/domain/enum/subscription-renewal-method.enum';
+import { SubscriptionStatusEnum } from '@/billing-context/subscription/domain/enum/subscription-status.enum';
+import { PromptStatusEnum } from '@/llm-context/prompt/domain/enum/prompt-status.enum';
+import { TenantMemberRoleEnum } from '@/shared/domain/enums/tenant-context/tenant-members/tenant-member-role/tenant-member-role.enum';
+import { TenantStatusEnum } from '@/tenant-context/tenants/domain/enums/tenant-status/tenant-status.enum';
+import { UserRoleEnum } from '@/shared/domain/enums/user-context/user/user-role/user-role.enum';
+import { UserStatusEnum } from '@/shared/domain/enums/user-context/user/user-status/user-status.enum';
 import { FilterOperator } from '@/shared/domain/enums/filter-operator.enum';
 import { SortDirection } from '@/shared/domain/enums/sort-direction.enum';
 
@@ -38,9 +36,9 @@ describe('registered-enums.graphql', () => {
     expect(typeof UserRoleEnum).toBe('object');
   });
 
-  it('should have StatusEnum defined', () => {
-    expect(StatusEnum).toBeDefined();
-    expect(typeof StatusEnum).toBe('object');
+  it('should have UserStatusEnum defined', () => {
+    expect(UserStatusEnum).toBeDefined();
+    expect(typeof UserStatusEnum).toBe('object');
   });
 
   it('should have TenantMemberRoleEnum defined', () => {
@@ -63,9 +61,9 @@ describe('registered-enums.graphql', () => {
     expect(typeof SubscriptionPlanIntervalEnum).toBe('object');
   });
 
-  it('should have CurrencyEnum defined', () => {
-    expect(CurrencyEnum).toBeDefined();
-    expect(typeof CurrencyEnum).toBe('object');
+  it('should have SubscriptionPlanCurrencyEnum defined', () => {
+    expect(SubscriptionPlanCurrencyEnum).toBeDefined();
+    expect(typeof SubscriptionPlanCurrencyEnum).toBe('object');
   });
 
   it('should have SubscriptionStatusEnum defined', () => {
@@ -73,9 +71,9 @@ describe('registered-enums.graphql', () => {
     expect(typeof SubscriptionStatusEnum).toBe('object');
   });
 
-  it('should have RenewalMethodEnum defined', () => {
-    expect(RenewalMethodEnum).toBeDefined();
-    expect(typeof RenewalMethodEnum).toBe('object');
+  it('should have SubscriptionRenewalMethodEnum defined', () => {
+    expect(SubscriptionRenewalMethodEnum).toBeDefined();
+    expect(typeof SubscriptionRenewalMethodEnum).toBe('object');
   });
 
   it('should have PromptStatusEnum defined', () => {
@@ -89,14 +87,14 @@ describe('registered-enums.graphql', () => {
       FilterOperator,
       SortDirection,
       UserRoleEnum,
-      StatusEnum,
+      UserStatusEnum,
       TenantMemberRoleEnum,
       TenantStatusEnum,
       SubscriptionPlanTypeEnum,
       SubscriptionPlanIntervalEnum,
-      CurrencyEnum,
+      SubscriptionPlanCurrencyEnum,
       SubscriptionStatusEnum,
-      RenewalMethodEnum,
+      SubscriptionRenewalMethodEnum,
       PromptStatusEnum,
     ];
 

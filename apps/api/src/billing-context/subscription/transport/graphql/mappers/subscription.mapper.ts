@@ -1,12 +1,10 @@
+import { SubscriptionRenewalMethodEnum } from '@/billing-context/subscription/domain/enum/subscription-renewal-method.enum';
+import { SubscriptionStatusEnum } from '@/billing-context/subscription/domain/enum/subscription-status.enum';
 import { SubscriptionViewModel } from '@/billing-context/subscription/domain/view-models/subscription.view-model';
 import {
   PaginatedSubscriptionResultDto,
   SubscriptionResponseDto,
 } from '@/billing-context/subscription/transport/graphql/dtos/responses/subscription.response.dto';
-import {
-  RenewalMethodEnum,
-  SubscriptionStatusEnum,
-} from '@/prisma/master/client';
 import { PaginatedResult } from '@/shared/domain/entities/paginated-result.entity';
 import { Injectable, Logger } from '@nestjs/common';
 
@@ -28,7 +26,8 @@ export class SubscriptionGraphQLMapper {
       status: subscription.status as SubscriptionStatusEnum,
       stripeSubscriptionId: subscription.stripeSubscriptionId,
       stripeCustomerId: subscription.stripeCustomerId,
-      renewalMethod: subscription.renewalMethod as RenewalMethodEnum,
+      renewalMethod:
+        subscription.renewalMethod as SubscriptionRenewalMethodEnum,
     };
   }
 

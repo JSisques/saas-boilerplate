@@ -1,7 +1,5 @@
-import {
-  RenewalMethodEnum,
-  SubscriptionStatusEnum,
-} from '@/prisma/master/client';
+import { SubscriptionRenewalMethodEnum } from '@/billing-context/subscription/domain/enum/subscription-renewal-method.enum';
+import { SubscriptionStatusEnum } from '@/billing-context/subscription/domain/enum/subscription-status.enum';
 import { Field, InputType } from '@nestjs/graphql';
 import {
   IsDate,
@@ -85,11 +83,11 @@ export class SubscriptionUpdateRequestDto {
   @IsOptional()
   stripeCustomerId: string | null;
 
-  @Field(() => RenewalMethodEnum, {
+  @Field(() => SubscriptionRenewalMethodEnum, {
     description: 'The renewal method of the subscription',
     nullable: true,
   })
-  @IsEnum(RenewalMethodEnum)
+  @IsEnum(SubscriptionRenewalMethodEnum)
   @IsOptional()
-  renewalMethod: RenewalMethodEnum;
+  renewalMethod: SubscriptionRenewalMethodEnum;
 }

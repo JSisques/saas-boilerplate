@@ -4,7 +4,9 @@
     "error": "Error",
     "success": "Éxito",
     "noData": "No se encontraron datos",
-    "unknown": "Desconocido"
+    "unknown": "Desconocido",
+    "cancel": "Cancelar",
+    "delete": "Eliminar"
   },
   "LandingPage": {
     "HeroSection": {
@@ -32,6 +34,49 @@
     "ContactSection": {
       "title": "Contacto",
       "description": "Contacto"
+    }
+  },
+  "featuresPage": {
+    "title": "Features",
+    "description": "Gestiona y visualiza todas las feature flags del sistema",
+    "actions": {
+      "addFeature": "Añadir Feature",
+      "exportFeatures": "Exportar Features",
+      "importFeatures": "Importar Features",
+      "deleteFeatures": "Eliminar Features",
+      "deleteFeaturesConfirmation": "¿Eliminar features seleccionadas?",
+      "deleteFeaturesDescription": "Estás a punto de eliminar {count} feature(s). Esta acción no se puede deshacer."
+    },
+    "organisms": {
+      "featuresTable": {
+        "searchPlaceholder": "Buscar features por nombre...",
+        "emptyMessage": "No se encontraron features"
+      },
+      "featuresTableColumns": {
+        "key": "Clave",
+        "name": "Nombre",
+        "description": "Descripción",
+        "status": "Estado",
+        "createdAt": "Fecha de Creación",
+        "updatedAt": "Fecha de Actualización"
+      },
+      "featureCreateModal": {
+        "title": "Crear Feature",
+        "description": "Crear una nueva feature flag",
+        "actions": {
+          "create": "Crear",
+          "cancel": "Cancelar"
+        },
+        "keyLabel": "Clave",
+        "keyPlaceholder": "ej., advanced-analytics",
+        "keyHint": "Debe ser única y en formato slug (minúsculas, alfanumérico, guiones)",
+        "nameLabel": "Nombre",
+        "namePlaceholder": "Ingresa el nombre de la feature",
+        "descriptionLabel": "Descripción",
+        "descriptionPlaceholder": "Ingresa la descripción de la feature (opcional)",
+        "statusLabel": "Estado",
+        "statusPlaceholder": "Selecciona el estado"
+      }
     }
   },
   "authPage": {

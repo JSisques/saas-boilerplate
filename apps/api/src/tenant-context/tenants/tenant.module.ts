@@ -8,8 +8,6 @@ import { TenantMemberAddedEventHandler } from '@/tenant-context/tenants/applicat
 import { TenantUpdatedEventHandler } from '@/tenant-context/tenants/application/event-handlers/tenant-updated/tenant-updated.event-handler';
 import { FindTenantByIdQueryHandler } from '@/tenant-context/tenants/application/queries/find-tenant-by-id/find-tenant-by-id.query-handler';
 import { FindTenantsByCriteriaQueryHandler } from '@/tenant-context/tenants/application/queries/find-tenants-by-criteria/find-tenants-by-criteria.query-handler';
-import { TenantCreatedProvisionDatabaseSaga } from '@/tenant-context/tenants/application/sagas/tenant-created-provision-database/tenant-created-provision-database.saga';
-import { TenantDeletedCleanupDatabaseSaga } from '@/tenant-context/tenants/application/sagas/tenant-deleted-cleanup-database/tenant-deleted-cleanup-database.saga';
 import { AssertTenantExsistsService } from '@/tenant-context/tenants/application/services/assert-tenant-exsits/assert-tenant-exsits.service';
 import { AssertTenantSlugIsUniqueService } from '@/tenant-context/tenants/application/services/assert-tenant-slug-is-unique/assert-tenant-slug-is-unique.service';
 import { AssertTenantViewModelExsistsService } from '@/tenant-context/tenants/application/services/assert-tenant-view-model-exsits/assert-tenant-view-model-exsits.service';
@@ -19,12 +17,14 @@ import { TENANT_READ_REPOSITORY_TOKEN } from '@/tenant-context/tenants/domain/re
 import { TENANT_WRITE_REPOSITORY_TOKEN } from '@/tenant-context/tenants/domain/repositories/tenant-write.repository';
 import { TenantMongoDBMapper } from '@/tenant-context/tenants/infrastructure/database/mongodb/mappers/tenant-mongodb.mapper';
 import { TenantMongoRepository } from '@/tenant-context/tenants/infrastructure/database/mongodb/repositories/tenant-mongodb.repository';
-import { TenantPrismaMapper } from '@/tenant-context/tenants/infrastructure/database/prisma/mappers/tenant-prisma.mapper';
-import { TenantPrismaRepository } from '@/tenant-context/tenants/infrastructure/database/prisma/repositories/tenant-prisma.repository';
+import { TenantTypeormEntity } from '@/tenant-context/tenants/infrastructure/database/typeorm/entities/tenant-typeorm.entity';
+import { TenantTypeormMapper } from '@/tenant-context/tenants/infrastructure/database/typeorm/mappers/tenant-typeorm.mapper';
+import { TenantTypeormRepository } from '@/tenant-context/tenants/infrastructure/database/typeorm/repositories/tenant-typeorm.repository';
 import { TenantGraphQLMapper } from '@/tenant-context/tenants/transport/graphql/mappers/tenant.mapper';
 import { TenantMutationsResolver } from '@/tenant-context/tenants/transport/graphql/resolvers/tenant-mutations.resolver';
 import { TenantQueryResolver } from '@/tenant-context/tenants/transport/graphql/resolvers/tenant-queries.resolver';
 import { Module } from '@nestjs/common';
+import { TypeOrmModule } from '@nestjs/typeorm';
 
 const RESOLVERS = [TenantQueryResolver, TenantMutationsResolver];
 
@@ -52,19 +52,16 @@ const EVENT_HANDLERS = [
   TenantMemberAddedEventHandler,
 ];
 
-const SAGAS = [
-  TenantCreatedProvisionDatabaseSaga,
-  TenantDeletedCleanupDatabaseSaga,
-];
+const SAGAS = [];
 
 const FACTORIES = [TenantAggregateFactory, TenantViewModelFactory];
 
-const MAPPERS = [TenantPrismaMapper, TenantMongoDBMapper, TenantGraphQLMapper];
+const MAPPERS = [TenantTypeormMapper, TenantMongoDBMapper, TenantGraphQLMapper];
 
 const REPOSITORIES = [
   {
     provide: TENANT_WRITE_REPOSITORY_TOKEN,
-    useClass: TenantPrismaRepository,
+    useClass: TenantTypeormRepository,
   },
   {
     provide: TENANT_READ_REPOSITORY_TOKEN,
@@ -72,8 +69,10 @@ const REPOSITORIES = [
   },
 ];
 
+const ENTITIES = [TenantTypeormEntity];
+
 @Module({
-  imports: [SharedModule],
+  imports: [SharedModule, TypeOrmModule.forFeature(ENTITIES)],
   controllers: [],
   providers: [
     ...RESOLVERS,

@@ -1,12 +1,12 @@
+import { UserRoleEnum } from '@/shared/domain/enums/user-context/user/user-role/user-role.enum';
+import { UserStatusEnum } from '@/shared/domain/enums/user-context/user/user-status/user-status.enum';
 import { UserUuidValueObject } from '@/shared/domain/value-objects/identifiers/user-uuid/user-uuid.vo';
 import { IUserFindByIdQueryDto } from '@/user-context/users/application/dtos/queries/user-find-by-id/user-find-by-id-query.dto';
+import { UserNotFoundException } from '@/user-context/users/application/exceptions/user-not-found/user-not-found.exception';
 import { UserViewModelFindByIdQuery } from '@/user-context/users/application/queries/user-view-model-find-by-id/user-view-model-find-by-id.query';
 import { UserViewModelFindByIdQueryHandler } from '@/user-context/users/application/queries/user-view-model-find-by-id/user-view-model-find-by-id.query-handler';
 import { AssertUserViewModelExsistsService } from '@/user-context/users/application/services/assert-user-view-model-exsits/assert-user-view-model-exsits.service';
-import { UserNotFoundException } from '@/user-context/users/application/exceptions/user-not-found/user-not-found.exception';
 import { IUserCreateViewModelDto } from '@/user-context/users/domain/dtos/view-models/user-create/user-create-view-model.dto';
-import { UserRoleEnum } from '@/user-context/users/domain/enums/user-role/user-role.enum';
-import { UserStatusEnum } from '@/user-context/users/domain/enums/user-status/user-status.enum';
 import { UserViewModel } from '@/user-context/users/domain/view-models/user.view-model';
 
 describe('UserViewModelFindByIdQueryHandler', () => {

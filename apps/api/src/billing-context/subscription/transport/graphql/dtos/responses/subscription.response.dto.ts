@@ -1,7 +1,5 @@
-import {
-  RenewalMethodEnum,
-  SubscriptionStatusEnum,
-} from '@/prisma/master/client';
+import { SubscriptionRenewalMethodEnum } from '@/billing-context/subscription/domain/enum/subscription-renewal-method.enum';
+import { SubscriptionStatusEnum } from '@/billing-context/subscription/domain/enum/subscription-status.enum';
 import { BasePaginatedResultDto } from '@/shared/transport/graphql/dtos/responses/base-paginated-result/base-paginated-result.dto';
 import { Field, ObjectType } from '@nestjs/graphql';
 
@@ -61,11 +59,11 @@ export class SubscriptionResponseDto {
   })
   stripeCustomerId: string | null;
 
-  @Field(() => RenewalMethodEnum, {
+  @Field(() => SubscriptionRenewalMethodEnum, {
     nullable: false,
     description: 'The renewal method of the subscription',
   })
-  renewalMethod: RenewalMethodEnum;
+  renewalMethod: SubscriptionRenewalMethodEnum;
 }
 
 @ObjectType('PaginatedSubscriptionResultDto')

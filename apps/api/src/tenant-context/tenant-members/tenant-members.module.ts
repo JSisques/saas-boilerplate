@@ -21,12 +21,14 @@ import { TENANT_MEMBER_READ_REPOSITORY_TOKEN } from '@/tenant-context/tenant-mem
 import { TENANT_MEMBER_WRITE_REPOSITORY_TOKEN } from '@/tenant-context/tenant-members/domain/repositories/tenant-member-write.repository';
 import { TenantMemberMongoDBMapper } from '@/tenant-context/tenant-members/infrastructure/database/mongodb/mappers/tenant-member-mongodb.mapper';
 import { TenantMemberMongoRepository } from '@/tenant-context/tenant-members/infrastructure/database/mongodb/repositories/tenant-member-mongodb.repository';
-import { TenantMemberPrismaMapper } from '@/tenant-context/tenant-members/infrastructure/database/prisma/mappers/tenant-member-prisma.mapper';
-import { TenantMemberPrismaRepository } from '@/tenant-context/tenant-members/infrastructure/database/prisma/repositories/tenant-member-prisma.repository';
+import { TenantMemberTypeormEntity } from '@/tenant-context/tenant-members/infrastructure/database/typeorm/entities/tenant-member-typeorm.entity';
+import { TenantMemberTypeormMapper } from '@/tenant-context/tenant-members/infrastructure/database/typeorm/mappers/tenant-member-typeorm.mapper';
+import { TenantMemberTypeormRepository } from '@/tenant-context/tenant-members/infrastructure/database/typeorm/repositories/tenant-member-typeorm.repository';
 import { TenantMemberGraphQLMapper } from '@/tenant-context/tenant-members/transport/graphql/mappers/tenant-member.mapper';
 import { TenantMemberMutationsResolver } from '@/tenant-context/tenant-members/transport/graphql/resolvers/tenant-member-mutations.resolver';
 import { TenantMemberQueryResolver } from '@/tenant-context/tenant-members/transport/graphql/resolvers/tenant-member-queries.resolver';
 import { Module } from '@nestjs/common';
+import { TypeOrmModule } from '@nestjs/typeorm';
 
 const RESOLVERS = [TenantMemberQueryResolver, TenantMemberMutationsResolver];
 
@@ -63,7 +65,7 @@ const EVENT_HANDLERS = [
 const FACTORIES = [TenantMemberAggregateFactory, TenantMemberViewModelFactory];
 
 const MAPPERS = [
-  TenantMemberPrismaMapper,
+  TenantMemberTypeormMapper,
   TenantMemberMongoDBMapper,
   TenantMemberGraphQLMapper,
 ];
@@ -71,7 +73,7 @@ const MAPPERS = [
 const REPOSITORIES = [
   {
     provide: TENANT_MEMBER_WRITE_REPOSITORY_TOKEN,
-    useClass: TenantMemberPrismaRepository,
+    useClass: TenantMemberTypeormRepository,
   },
   {
     provide: TENANT_MEMBER_READ_REPOSITORY_TOKEN,
@@ -79,8 +81,10 @@ const REPOSITORIES = [
   },
 ];
 
+const ENTITIES = [TenantMemberTypeormEntity];
+
 @Module({
-  imports: [SharedModule],
+  imports: [SharedModule, TypeOrmModule.forFeature(ENTITIES)],
   controllers: [],
   providers: [
     ...RESOLVERS,

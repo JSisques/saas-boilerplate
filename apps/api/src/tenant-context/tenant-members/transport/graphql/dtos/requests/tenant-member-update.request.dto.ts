@@ -1,4 +1,4 @@
-import { TenantMemberRoleEnum } from '@/prisma/master/client';
+import { TenantMemberRoleEnum } from '@/shared/domain/enums/tenant-context/tenant-members/tenant-member-role/tenant-member-role.enum';
 import { Field, InputType } from '@nestjs/graphql';
 import { IsEnum, IsNotEmpty, IsUUID } from 'class-validator';
 
