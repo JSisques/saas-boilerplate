@@ -13,7 +13,6 @@ import { SortDirection } from '@/shared/domain/enums/sort-direction.enum';
 import { TenantMemberRoleEnum } from '@/shared/domain/enums/tenant-context/tenant-members/tenant-member-role/tenant-member-role.enum';
 import { UserRoleEnum } from '@/shared/domain/enums/user-context/user/user-role/user-role.enum';
 import { UserStatusEnum } from '@/shared/domain/enums/user-context/user/user-status/user-status.enum';
-import { TenantDatabaseStatusEnum } from '@/tenant-context/tenant-database/domain/enums/tenant-database-status/tenant-database-status.enum';
 import { TenantStatusEnum } from '@/tenant-context/tenants/domain/enums/tenant-status/tenant-status.enum';
 import { registerEnumType } from '@nestjs/graphql';
 
@@ -78,11 +77,6 @@ const registeredEnums = [
     enum: PromptStatusEnum,
     name: 'PromptStatusEnum',
     description: 'The status of the prompt',
-  },
-  {
-    enum: TenantDatabaseStatusEnum,
-    name: 'TenantDatabaseStatusEnum',
-    description: 'The status of the tenant database',
   },
   {
     enum: SagaInstanceStatusEnum,

@@ -1,10 +1,10 @@
-import { BaseTypeormEntity } from '@/shared/infrastructure/database/typeorm/entities/base-typeorm.entity';
+import { BaseTypeormWithTenantEntity } from '@/shared/infrastructure/database/typeorm/entities/base-typeorm-with-tenant.entity';
 import { StorageProviderEnum } from '@/storage-context/storage/domain/enums/storage-provider.enum';
 import { Column, Entity, Index } from 'typeorm';
 
 @Entity('storages')
 @Index(['path'])
-export class StorageTypeormEntity extends BaseTypeormEntity {
+export class StorageTypeormEntity extends BaseTypeormWithTenantEntity {
   @Column({ type: 'varchar' })
   fileName: string;
 

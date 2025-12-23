@@ -1,15 +1,12 @@
 import { SubscriptionRenewalMethodEnum } from '@/billing-context/subscription/domain/enum/subscription-renewal-method.enum';
 import { SubscriptionStatusEnum } from '@/billing-context/subscription/domain/enum/subscription-status.enum';
-import { BaseTypeormEntity } from '@/shared/infrastructure/database/typeorm/entities/base-typeorm.entity';
+import { BaseTypeormWithTenantEntity } from '@/shared/infrastructure/database/typeorm/entities/base-typeorm-with-tenant.entity';
 import { Column, Entity, Index } from 'typeorm';
 
 @Entity('subscriptions')
-@Index(['tenantId'], { unique: true })
-export class SubscriptionTypeormEntity extends BaseTypeormEntity {
-  @Column({ type: 'varchar' })
-  tenantId: string;
-
-  @Column({ type: 'varchar' })
+export class SubscriptionTypeormEntity extends BaseTypeormWithTenantEntity {
+  @Column({ type: 'uuid' })
+  @Index(['planId'])
   planId: string;
 
   @Column({ type: 'timestamp' })
