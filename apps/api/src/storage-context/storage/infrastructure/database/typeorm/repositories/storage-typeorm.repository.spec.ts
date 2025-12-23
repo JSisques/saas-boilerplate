@@ -24,13 +24,11 @@ describe('StorageTypeormRepository', () => {
   let mockFindOne: jest.Mock;
   let mockSave: jest.Mock;
   let mockSoftDelete: jest.Mock;
-  let mockGetRepository: jest.Mock;
 
   beforeEach(() => {
     mockFindOne = jest.fn();
     mockSave = jest.fn();
     mockSoftDelete = jest.fn();
-    mockGetRepository = jest.fn();
 
     mockTypeormRepository = {
       findOne: mockFindOne,
@@ -101,12 +99,8 @@ describe('StorageTypeormRepository', () => {
 
       expect(result).toBe(storageAggregate);
       expect(mockTenantContextService.getTenantIdOrThrow).toHaveBeenCalled();
-      expect(mockTypeormMasterService.getRepository).toHaveBeenCalledWith(
-        'test-tenant-id',
-      );
-      expect(mockGetRepository).toHaveBeenCalledWith(StorageTypeormEntity);
       expect(mockFindOne).toHaveBeenCalledWith({
-        where: { id: storageId },
+        where: { id: storageId, tenantId: 'test-tenant-id' },
       });
       expect(mockStorageTypeormMapper.toDomainEntity).toHaveBeenCalledWith(
         typeormEntity,
@@ -123,7 +117,7 @@ describe('StorageTypeormRepository', () => {
 
       expect(result).toBeNull();
       expect(mockFindOne).toHaveBeenCalledWith({
-        where: { id: storageId },
+        where: { id: storageId, tenantId: 'test-tenant-id' },
       });
       expect(mockStorageTypeormMapper.toDomainEntity).not.toHaveBeenCalled();
     });
@@ -169,7 +163,7 @@ describe('StorageTypeormRepository', () => {
 
       expect(result).toBe(storageAggregate);
       expect(mockFindOne).toHaveBeenCalledWith({
-        where: { path },
+        where: { path, tenantId: 'test-tenant-id' },
       });
       expect(mockStorageTypeormMapper.toDomainEntity).toHaveBeenCalledWith(
         typeormEntity,
@@ -186,7 +180,7 @@ describe('StorageTypeormRepository', () => {
 
       expect(result).toBeNull();
       expect(mockFindOne).toHaveBeenCalledWith({
-        where: { path },
+        where: { path, tenantId: 'test-tenant-id' },
       });
       expect(mockStorageTypeormMapper.toDomainEntity).not.toHaveBeenCalled();
     });
@@ -291,7 +285,10 @@ describe('StorageTypeormRepository', () => {
       const result = await repository.delete(storageId);
 
       expect(result).toBe(true);
-      expect(mockSoftDelete).toHaveBeenCalledWith(storageId);
+      expect(mockSoftDelete).toHaveBeenCalledWith({
+        id: storageId,
+        tenantId: 'test-tenant-id',
+      });
       expect(mockSoftDelete).toHaveBeenCalledTimes(1);
     });
   });
