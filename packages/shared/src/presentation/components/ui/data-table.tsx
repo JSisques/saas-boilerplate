@@ -1,6 +1,7 @@
 import { cn } from '@repo/shared/presentation/lib/utils';
 import { ArrowDown, ArrowUp, ArrowUpDown } from 'lucide-react';
 import * as React from 'react';
+import { Checkbox } from './checkbox';
 import { Input } from './input';
 import {
   Table,
@@ -102,6 +103,18 @@ export interface DataTableProps<T> {
    * Callback when a cell is edited
    */
   onCellEdit?: (row: T, columnId: string, newValue: string) => void;
+  /**
+   * Enable row selection with checkboxes
+   */
+  enableRowSelection?: boolean;
+  /**
+   * Selected row IDs
+   */
+  selectedRowIds?: Set<string | number>;
+  /**
+   * Callback when selection changes
+   */
+  onSelectionChange?: (selectedRowIds: Set<string | number>) => void;
 }
 
 /**
@@ -152,12 +165,34 @@ export function DataTable<T extends Record<string, any>>({
   className,
   rowClassName,
   onCellEdit,
+  enableRowSelection = false,
+  selectedRowIds,
+  onSelectionChange,
 }: DataTableProps<T>) {
   const [editingCell, setEditingCell] = React.useState<{
     rowId: string | number;
     columnId: string;
   } | null>(null);
   const [editValue, setEditValue] = React.useState<string>('');
+
+  // Internal state for selection if not controlled
+  const [internalSelectedRowIds, setInternalSelectedRowIds] = React.useState<
+    Set<string | number>
+  >(new Set());
+
+  // Use controlled or internal state
+  const currentSelectedRowIds =
+    selectedRowIds !== undefined ? selectedRowIds : internalSelectedRowIds;
+  const setSelectedRowIds = React.useCallback(
+    (newSelection: Set<string | number>) => {
+      if (onSelectionChange) {
+        onSelectionChange(newSelection);
+      } else {
+        setInternalSelectedRowIds(newSelection);
+      }
+    },
+    [onSelectionChange],
+  );
   const handleSort = (column: ColumnDef<T>) => {
     if (!column.sortable || !onSortChange) return;
 
@@ -284,9 +319,7 @@ export function DataTable<T extends Record<string, any>>({
     setEditValue('');
   };
 
-  const handleCellEditKeyDown = (
-    e: React.KeyboardEvent<HTMLInputElement>,
-  ) => {
+  const handleCellEditKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
       e.preventDefault();
       handleCellEditSave();
@@ -304,10 +337,56 @@ export function DataTable<T extends Record<string, any>>({
     return cn(baseClass, rowClassName);
   };
 
+  // Selection handlers
+  const handleRowSelection = (rowKey: string | number, checked: boolean) => {
+    const newSelection = new Set<string | number>(currentSelectedRowIds);
+    if (checked) {
+      newSelection.add(rowKey);
+    } else {
+      newSelection.delete(rowKey);
+    }
+    setSelectedRowIds(newSelection);
+  };
+
+  const handleSelectAll = (checked: boolean | 'indeterminate') => {
+    const isChecked = checked === true;
+    if (isChecked) {
+      const allRowIds = new Set<string | number>(
+        data.map((row, index) => getRowKey(row, index)),
+      );
+      setSelectedRowIds(allRowIds);
+    } else {
+      setSelectedRowIds(new Set<string | number>());
+    }
+  };
+
+  const isAllSelected =
+    data.length > 0 &&
+    data.every((row, index) => {
+      const rowKey = getRowKey(row, index);
+      return currentSelectedRowIds.has(rowKey);
+    });
+
+  const isIndeterminate =
+    !isAllSelected &&
+    data.some((row, index) => {
+      const rowKey = getRowKey(row, index);
+      return currentSelectedRowIds.has(rowKey);
+    });
+
   return (
     <Table className={className}>
       <TableHeader>
         <TableRow>
+          {enableRowSelection && (
+            <TableHead className="w-12">
+              <Checkbox
+                checked={isAllSelected}
+                onCheckedChange={handleSelectAll}
+                aria-label="Select all rows"
+              />
+            </TableHead>
+          )}
           {columns.map((column) => (
             <TableHead
               key={column.id}
@@ -331,7 +410,7 @@ export function DataTable<T extends Record<string, any>>({
         {data.length === 0 ? (
           <TableRow>
             <TableCell
-              colSpan={columns.length}
+              colSpan={enableRowSelection ? columns.length + 1 : columns.length}
               className="text-center text-muted-foreground"
             >
               {emptyMessage}
@@ -340,12 +419,27 @@ export function DataTable<T extends Record<string, any>>({
         ) : (
           data.map((row, index) => {
             const rowKey = getRowKey(row, index);
+            const isRowSelected = currentSelectedRowIds.has(rowKey);
             return (
-            <TableRow
+              <TableRow
                 key={rowKey}
-              onClick={() => onRowClick?.(row)}
-              className={getRowClassNames(row)}
-            >
+                onClick={() => onRowClick?.(row)}
+                className={getRowClassNames(row)}
+              >
+                {enableRowSelection && (
+                  <TableCell
+                    onClick={(e) => e.stopPropagation()}
+                    onDoubleClick={(e) => e.stopPropagation()}
+                  >
+                    <Checkbox
+                      checked={isRowSelected}
+                      onCheckedChange={(checked: boolean | 'indeterminate') => {
+                        handleRowSelection(rowKey, checked === true);
+                      }}
+                      aria-label={`Select row ${rowKey}`}
+                    />
+                  </TableCell>
+                )}
                 {columns.map((column) => {
                   const isEditing =
                     editingCell?.rowId === rowKey &&
@@ -383,10 +477,10 @@ export function DataTable<T extends Record<string, any>>({
                       ) : (
                         getCellValue(column, row)
                       )}
-                </TableCell>
+                    </TableCell>
                   );
                 })}
-            </TableRow>
+              </TableRow>
             );
           })
         )}

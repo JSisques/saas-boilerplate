@@ -1,4 +1,4 @@
-import { SagaStatusEnum } from '@/prisma/master/client';
+import { SagaInstanceStatusEnum } from '@/saga-context/saga-instance/domain/enums/saga-instance-status/saga-instance-status.enum';
 import { Field, InputType } from '@nestjs/graphql';
 import {
   IsDate,
@@ -27,13 +27,13 @@ export class SagaInstanceUpdateRequestDto {
   @IsOptional()
   name?: string;
 
-  @Field(() => SagaStatusEnum, {
+  @Field(() => SagaInstanceStatusEnum, {
     description: 'The status of the saga instance',
     nullable: true,
   })
-  @IsEnum(SagaStatusEnum)
+  @IsEnum(SagaInstanceStatusEnum)
   @IsOptional()
-  status?: SagaStatusEnum;
+  status?: SagaInstanceStatusEnum;
 
   @Field(() => Date, {
     description: 'The start date of the saga instance',

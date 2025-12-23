@@ -1,6 +1,7 @@
 import { AuthClient } from './auth/client/auth-client.js';
 import type { AuthLogoutInput } from './auth/index.js';
 import { EventClient } from './event/client/event-client.js';
+import { FeatureClient } from './features/client/feature-client.js';
 import { HealthClient } from './health/client/health-client.js';
 import { SagaInstanceClient } from './saga-instance/client/saga-instance-client.js';
 import { SagaLogClient } from './saga-log/client/saga-log-client.js';
@@ -32,6 +33,7 @@ export { WebStorage } from './shared/storage/web-storage.js';
 
 export * from './auth/index.js';
 export * from './event/index.js';
+export * from './features/index.js';
 export * from './health/index.js';
 export * from './saga-instance/index.js';
 export * from './saga-log/index.js';
@@ -52,6 +54,7 @@ export class SDK {
   private subscriptionPlanClient: SubscriptionPlanClient;
   private healthClient: HealthClient;
   private eventClient: EventClient;
+  private featureClient: FeatureClient;
   private sagaInstanceClient: SagaInstanceClient;
   private sagaStepClient: SagaStepClient;
   private sagaLogClient: SagaLogClient;
@@ -66,6 +69,7 @@ export class SDK {
     this.subscriptionPlanClient = new SubscriptionPlanClient(this.client);
     this.healthClient = new HealthClient(this.client);
     this.eventClient = new EventClient(this.client);
+    this.featureClient = new FeatureClient(this.client);
     this.sagaInstanceClient = new SagaInstanceClient(this.client);
     this.sagaStepClient = new SagaStepClient(this.client);
     this.sagaLogClient = new SagaLogClient(this.client);
@@ -286,6 +290,40 @@ export class SDK {
        * Check the health status of the API
        */
       check: this.healthClient.check.bind(this.healthClient),
+    };
+  }
+
+  /**
+   * Features module
+   */
+  get features() {
+    return {
+      /**
+       * Find features by criteria with pagination, filters, and sorting
+       */
+      findByCriteria: this.featureClient.findByCriteria.bind(
+        this.featureClient,
+      ),
+      /**
+       * Find a feature by ID
+       */
+      findById: this.featureClient.findById.bind(this.featureClient),
+      /**
+       * Create a new feature
+       */
+      create: this.featureClient.create.bind(this.featureClient),
+      /**
+       * Update an existing feature
+       */
+      update: this.featureClient.update.bind(this.featureClient),
+      /**
+       * Change the status of a feature
+       */
+      changeStatus: this.featureClient.changeStatus.bind(this.featureClient),
+      /**
+       * Delete a feature
+       */
+      delete: this.featureClient.delete.bind(this.featureClient),
     };
   }
 

@@ -1,8 +1,6 @@
-import {
-  CurrencyEnum,
-  SubscriptionPlanIntervalEnum,
-  SubscriptionPlanTypeEnum,
-} from '@/prisma/master/client';
+import { SubscriptionPlanCurrencyEnum } from '@/billing-context/subscription-plan/domain/enum/subscription-plan-currency/subscription-plan-currency.enum';
+import { SubscriptionPlanIntervalEnum } from '@/billing-context/subscription-plan/domain/enum/subscription-plan-interval/subscription-plan-interval.enum';
+import { SubscriptionPlanTypeEnum } from '@/billing-context/subscription-plan/domain/enum/subscription-plan-type/subscription-plan-type.enum';
 import { Field, InputType } from '@nestjs/graphql';
 import {
   IsArray,
@@ -55,13 +53,13 @@ export class SubscriptionPlanUpdateRequestDto {
   @IsOptional()
   priceMonthly: number | null;
 
-  @Field(() => CurrencyEnum, {
+  @Field(() => SubscriptionPlanCurrencyEnum, {
     description: 'The currency of the subscription plan',
     nullable: true,
   })
-  @IsEnum(CurrencyEnum)
+  @IsEnum(SubscriptionPlanCurrencyEnum)
   @IsOptional()
-  currency: CurrencyEnum | null;
+  currency: SubscriptionPlanCurrencyEnum | null;
 
   @Field(() => SubscriptionPlanIntervalEnum, {
     description: 'The interval of the subscription plan',

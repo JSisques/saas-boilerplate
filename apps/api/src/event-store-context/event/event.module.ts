@@ -10,15 +10,17 @@ import { DomainEventFactory } from '@/event-store-context/event/domain/factories
 import { EventViewModelFactory } from '@/event-store-context/event/domain/factories/event-view-model/event-view-model.factory';
 import { EVENT_READ_REPOSITORY_TOKEN } from '@/event-store-context/event/domain/repositories/event-read.repository';
 import { EVENT_WRITE_REPOSITORY_TOKEN } from '@/event-store-context/event/domain/repositories/event-write.repository';
+import { EventTypeormEntity } from '@/event-store-context/event/infrastructure/database/typeorm/entities/event-typeorm.entity';
+import { EventTypeormMapper } from '@/event-store-context/event/infrastructure/database/typeorm/mappers/event-typeorm.mapper';
+import { EventTypeormRepository } from '@/event-store-context/event/infrastructure/database/typeorm/repositories/event-typeorm.repository';
 import { EventMongoMapper } from '@/event-store-context/event/infrastructure/mongodb/mappers/event-mongodb.mapper';
 import { EventMongoRepository } from '@/event-store-context/event/infrastructure/mongodb/repositories/event-mongodb.repository';
-import { EventPrismaMapper } from '@/event-store-context/event/infrastructure/prisma/mappers/event-prisma.mapper';
-import { EventPrismaRepository } from '@/event-store-context/event/infrastructure/prisma/repositories/event-prisma.repository';
 import { EventGraphQLMapper } from '@/event-store-context/event/transport/graphql/mappers/event.mapper';
 import { EventMutationResolver } from '@/event-store-context/event/transport/graphql/resolvers/event-mutations/event-mutations.resolver';
 import { EventQueryResolver } from '@/event-store-context/event/transport/graphql/resolvers/event-queries/event-queries.resolver';
 import { SharedModule } from '@/shared/shared.module';
 import { Module } from '@nestjs/common';
+import { TypeOrmModule } from '@nestjs/typeorm';
 
 const RESOLVERS = [EventQueryResolver, EventMutationResolver];
 
@@ -42,12 +44,12 @@ const FACTORIES = [
   DomainEventFactory,
 ];
 
-const MAPPERS = [EventPrismaMapper, EventMongoMapper, EventGraphQLMapper];
+const MAPPERS = [EventTypeormMapper, EventMongoMapper, EventGraphQLMapper];
 
 const REPOSITORIES = [
   {
     provide: EVENT_WRITE_REPOSITORY_TOKEN,
-    useClass: EventPrismaRepository,
+    useClass: EventTypeormRepository,
   },
   {
     provide: EVENT_READ_REPOSITORY_TOKEN,
@@ -55,8 +57,10 @@ const REPOSITORIES = [
   },
 ];
 
+const ENTITIES = [EventTypeormEntity];
+
 @Module({
-  imports: [SharedModule],
+  imports: [SharedModule, TypeOrmModule.forFeature(ENTITIES)],
   controllers: [],
   providers: [
     ...RESOLVERS,

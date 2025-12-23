@@ -25,6 +25,7 @@ export default defineConfig({
         },
       ],
       sidebar: [
+        { label: "Getting Started", autogenerate: { directory: "getting-started" } },
         { label: "Admin", autogenerate: { directory: "admin" } },
         { label: "API", autogenerate: { directory: "api" } },
         { label: "Mobile", autogenerate: { directory: "mobile" } },

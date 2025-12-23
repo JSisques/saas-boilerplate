@@ -1,6 +1,6 @@
 import { ROLES_KEY } from '@/auth-context/auth/infrastructure/decorators/roles/roles.decorator';
 import { RolesGuard } from '@/auth-context/auth/infrastructure/guards/roles/roles.guard';
-import { UserRoleEnum } from '@/prisma/master/client';
+import { UserRoleEnum } from '@/shared/domain/enums/user-context/user/user-role/user-role.enum';
 import { ExecutionContext, ForbiddenException } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { GqlExecutionContext } from '@nestjs/graphql';

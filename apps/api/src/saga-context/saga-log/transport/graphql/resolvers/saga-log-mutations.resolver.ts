@@ -1,13 +1,13 @@
 import { JwtAuthGuard } from '@/auth-context/auth/infrastructure/auth/jwt-auth.guard';
 import { Roles } from '@/auth-context/auth/infrastructure/decorators/roles/roles.decorator';
 import { RolesGuard } from '@/auth-context/auth/infrastructure/guards/roles/roles.guard';
-import { UserRoleEnum } from '@/prisma/master/client';
 import { SagaLogCreateCommand } from '@/saga-context/saga-log/application/commands/saga-log-create/saga-log-create.command';
 import { SagaLogDeleteCommand } from '@/saga-context/saga-log/application/commands/saga-log-delete/saga-log-delete.command';
 import { SagaLogUpdateCommand } from '@/saga-context/saga-log/application/commands/saga-log-update/saga-log-update.command';
 import { SagaLogCreateRequestDto } from '@/saga-context/saga-log/transport/graphql/dtos/requests/saga-log-create.request.dto';
 import { SagaLogDeleteRequestDto } from '@/saga-context/saga-log/transport/graphql/dtos/requests/saga-log-delete.request.dto';
 import { SagaLogUpdateRequestDto } from '@/saga-context/saga-log/transport/graphql/dtos/requests/saga-log-update.request.dto';
+import { UserRoleEnum } from '@/shared/domain/enums/user-context/user/user-role/user-role.enum';
 import { MutationResponseDto } from '@/shared/transport/graphql/dtos/responses/success-response/success-response.dto';
 import { MutationResponseGraphQLMapper } from '@/shared/transport/graphql/mappers/mutation-response/mutation-response.mapper';
 import { Logger, UseGuards } from '@nestjs/common';

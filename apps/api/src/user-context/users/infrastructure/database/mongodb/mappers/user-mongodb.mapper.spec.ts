@@ -1,10 +1,10 @@
+import { UserRoleEnum } from '@/shared/domain/enums/user-context/user/user-role/user-role.enum';
+import { UserStatusEnum } from '@/shared/domain/enums/user-context/user/user-status/user-status.enum';
+import { IUserCreateViewModelDto } from '@/user-context/users/domain/dtos/view-models/user-create/user-create-view-model.dto';
 import { UserViewModelFactory } from '@/user-context/users/domain/factories/user-view-model/user-view-model.factory';
 import { UserViewModel } from '@/user-context/users/domain/view-models/user.view-model';
-import { UserMongoDBMapper } from '@/user-context/users/infrastructure/database/mongodb/mappers/user-mongodb.mapper';
 import { UserMongoDbDto } from '@/user-context/users/infrastructure/database/mongodb/dtos/user-mongodb.dto';
-import { UserRoleEnum } from '@/user-context/users/domain/enums/user-role/user-role.enum';
-import { UserStatusEnum } from '@/user-context/users/domain/enums/user-status/user-status.enum';
-import { IUserCreateViewModelDto } from '@/user-context/users/domain/dtos/view-models/user-create/user-create-view-model.dto';
+import { UserMongoDBMapper } from '@/user-context/users/infrastructure/database/mongodb/mappers/user-mongodb.mapper';
 
 describe('UserMongoDBMapper', () => {
   let mapper: UserMongoDBMapper;

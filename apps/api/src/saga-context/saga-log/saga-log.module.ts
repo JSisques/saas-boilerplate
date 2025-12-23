@@ -28,13 +28,15 @@ import { SAGA_LOG_READ_REPOSITORY_TOKEN } from '@/saga-context/saga-log/domain/r
 import { SAGA_LOG_WRITE_REPOSITORY_TOKEN } from '@/saga-context/saga-log/domain/repositories/saga-log-write.repository';
 import { SagaLogMongoDBMapper } from '@/saga-context/saga-log/infrastructure/database/mongodb/mappers/saga-log-mongodb.mapper';
 import { SagaLogMongoRepository } from '@/saga-context/saga-log/infrastructure/database/mongodb/repositories/saga-log-mongodb.repository';
-import { SagaLogPrismaMapper } from '@/saga-context/saga-log/infrastructure/database/prisma/mappers/saga-log-prisma.mapper';
-import { SagaLogPrismaRepository } from '@/saga-context/saga-log/infrastructure/database/prisma/repositories/saga-log-prisma.repository';
+import { SagaLogTypeormEntity } from '@/saga-context/saga-log/infrastructure/database/typeorm/entities/saga-log-typeorm.entity';
+import { SagaLogTypeormMapper } from '@/saga-context/saga-log/infrastructure/database/typeorm/mappers/saga-log-typeorm.mapper';
+import { SagaLogTypeormRepository } from '@/saga-context/saga-log/infrastructure/database/typeorm/repositories/saga-log-typeorm.repository';
 import { SagaLogGraphQLMapper } from '@/saga-context/saga-log/transport/graphql/mappers/saga-log.mapper';
 import { SagaLogMutationsResolver } from '@/saga-context/saga-log/transport/graphql/resolvers/saga-log-mutations.resolver';
 import { SagaLogQueryResolver } from '@/saga-context/saga-log/transport/graphql/resolvers/saga-log-queries.resolver';
 import { SharedModule } from '@/shared/shared.module';
 import { Module } from '@nestjs/common';
+import { TypeOrmModule } from '@nestjs/typeorm';
 
 const RESOLVERS = [SagaLogQueryResolver, SagaLogMutationsResolver];
 
@@ -84,7 +86,7 @@ const EVENT_HANDLERS = [
 const FACTORIES = [SagaLogAggregateFactory, SagaLogViewModelFactory];
 
 const MAPPERS = [
-  SagaLogPrismaMapper,
+  SagaLogTypeormMapper,
   SagaLogMongoDBMapper,
   SagaLogGraphQLMapper,
 ];
@@ -92,7 +94,7 @@ const MAPPERS = [
 const REPOSITORIES = [
   {
     provide: SAGA_LOG_WRITE_REPOSITORY_TOKEN,
-    useClass: SagaLogPrismaRepository,
+    useClass: SagaLogTypeormRepository,
   },
   {
     provide: SAGA_LOG_READ_REPOSITORY_TOKEN,
@@ -100,8 +102,10 @@ const REPOSITORIES = [
   },
 ];
 
+const ENTITIES = [SagaLogTypeormEntity];
+
 @Module({
-  imports: [SharedModule],
+  imports: [SharedModule, TypeOrmModule.forFeature(ENTITIES)],
   controllers: [],
   providers: [
     ...RESOLVERS,

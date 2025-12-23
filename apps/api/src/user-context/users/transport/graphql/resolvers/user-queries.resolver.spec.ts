@@ -1,9 +1,9 @@
 import { Criteria } from '@/shared/domain/entities/criteria';
 import { PaginatedResult } from '@/shared/domain/entities/paginated-result.entity';
+import { UserRoleEnum } from '@/shared/domain/enums/user-context/user/user-role/user-role.enum';
+import { UserStatusEnum } from '@/shared/domain/enums/user-context/user/user-status/user-status.enum';
 import { FindUsersByCriteriaQuery } from '@/user-context/users/application/queries/find-users-by-criteria/find-users-by-criteria.query';
 import { UserViewModelFindByIdQuery } from '@/user-context/users/application/queries/user-view-model-find-by-id/user-view-model-find-by-id.query';
-import { UserRoleEnum } from '@/user-context/users/domain/enums/user-role/user-role.enum';
-import { UserStatusEnum } from '@/user-context/users/domain/enums/user-status/user-status.enum';
 import { UserViewModel } from '@/user-context/users/domain/view-models/user.view-model';
 import { UserFindByCriteriaRequestDto } from '@/user-context/users/transport/graphql/dtos/requests/user-find-by-criteria.request.dto';
 import { UserFindByIdRequestDto } from '@/user-context/users/transport/graphql/dtos/requests/user-find-by-id.request.dto';

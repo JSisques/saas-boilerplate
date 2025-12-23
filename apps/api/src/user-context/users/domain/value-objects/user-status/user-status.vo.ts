@@ -1,5 +1,5 @@
+import { UserStatusEnum } from '@/shared/domain/enums/user-context/user/user-status/user-status.enum';
 import { EnumValueObject } from '@/shared/domain/value-objects/enum/enum.vo';
-import { UserStatusEnum } from '@/user-context/users/domain/enums/user-status/user-status.enum';
 
 /**
  * UserStatusValueObject represents the status of a user.

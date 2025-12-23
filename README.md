@@ -153,6 +153,41 @@ pnpm dev --filter=docs
 - **Admin Panel**: http://localhost:3001 (Next.js default port)
 - **Docs**: http://localhost:4321 (Astro default port)
 
+## 🔄 Using the Boilerplate as a Living Base for Projects
+
+This repository is designed to function as a **living boilerplate**, not as a one-time use template. A project can be created from this repository (for example, using "Use this template" or cloning it and uploading it to a new repo) without preserving the complete Git history of the boilerplate. However, it's still possible to continue receiving future improvements (auth, i18n, layout, global configuration, tooling, etc.) by adding this repository as an additional remote (`boilerplate`).
+
+### Recommended Workflow
+
+1. **Add the boilerplate as a remote:**
+
+   ```bash
+   git remote add boilerplate <url-of-this-repo>
+   git fetch boilerplate
+   ```
+
+2. **First merge (initial integration):**
+
+   ```bash
+   git merge boilerplate/main --allow-unrelated-histories
+   ```
+
+   This flag is necessary because both repositories don't share history. After this initial merge, subsequent merges work in a standard way.
+
+3. **Future updates:**
+   ```bash
+   git fetch boilerplate
+   git merge boilerplate/main
+   ```
+
+### Best Practices
+
+To avoid conflicts, derived projects should:
+
+- ✅ **Develop only new functionality** within domain folders or `features/`
+- ✅ **Keep core and cross-cutting layers** (auth, i18n, layout, configuration, and shared packages) as **exclusive property of the boilerplate**
+- ❌ **Avoid copying and pasting code manually** - all updates should be done via Git to maintain structural coherence and traceability
+
 ## 📜 Available Scripts
 
 ### Global Scripts (project root)

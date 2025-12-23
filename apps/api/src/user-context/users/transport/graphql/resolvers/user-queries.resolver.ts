@@ -2,8 +2,8 @@ import { JwtAuthGuard } from '@/auth-context/auth/infrastructure/auth/jwt-auth.g
 import { Roles } from '@/auth-context/auth/infrastructure/decorators/roles/roles.decorator';
 import { OwnerGuard } from '@/auth-context/auth/infrastructure/guards/owner/owner.guard';
 import { RolesGuard } from '@/auth-context/auth/infrastructure/guards/roles/roles.guard';
-import { UserRoleEnum } from '@/prisma/master/client';
 import { Criteria } from '@/shared/domain/entities/criteria';
+import { UserRoleEnum } from '@/shared/domain/enums/user-context/user/user-role/user-role.enum';
 import { FindUsersByCriteriaQuery } from '@/user-context/users/application/queries/find-users-by-criteria/find-users-by-criteria.query';
 import { UserViewModelFindByIdQuery } from '@/user-context/users/application/queries/user-view-model-find-by-id/user-view-model-find-by-id.query';
 import { UserFindByCriteriaRequestDto } from '@/user-context/users/transport/graphql/dtos/requests/user-find-by-criteria.request.dto';

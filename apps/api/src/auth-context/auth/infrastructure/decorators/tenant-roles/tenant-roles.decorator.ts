@@ -1,4 +1,4 @@
-import { TenantMemberRoleEnum } from '@/prisma/master/client';
+import { TenantMemberRoleEnum } from '@/shared/domain/enums/tenant-context/tenant-members/tenant-member-role/tenant-member-role.enum';
 import { SetMetadata } from '@nestjs/common';
 
 export const TENANT_ROLES_KEY = 'tenantRoles';

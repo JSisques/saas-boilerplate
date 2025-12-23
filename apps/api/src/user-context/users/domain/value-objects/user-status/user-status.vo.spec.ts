@@ -1,5 +1,5 @@
+import { UserStatusEnum } from '@/shared/domain/enums/user-context/user/user-status/user-status.enum';
 import { InvalidEnumValueException } from '@/shared/domain/exceptions/value-objects/invalid-enum-value/invalid-enum-value.exception';
-import { UserStatusEnum } from '@/user-context/users/domain/enums/user-status/user-status.enum';
 import { UserStatusValueObject } from '@/user-context/users/domain/value-objects/user-status/user-status.vo';
 
 describe('UserStatusValueObject', () => {

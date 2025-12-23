@@ -1,9 +1,9 @@
+import { UserRoleEnum } from '@/shared/domain/enums/user-context/user/user-role/user-role.enum';
+import { UserStatusEnum } from '@/shared/domain/enums/user-context/user/user-status/user-status.enum';
 import { DateValueObject } from '@/shared/domain/value-objects/date/date.vo';
 import { UserUuidValueObject } from '@/shared/domain/value-objects/identifiers/user-uuid/user-uuid.vo';
 import { UserAggregate } from '@/user-context/users/domain/aggregates/user.aggregate';
 import { IUserCreateViewModelDto } from '@/user-context/users/domain/dtos/view-models/user-create/user-create-view-model.dto';
-import { UserRoleEnum } from '@/user-context/users/domain/enums/user-role/user-role.enum';
-import { UserStatusEnum } from '@/user-context/users/domain/enums/user-status/user-status.enum';
 import { UserViewModelFactory } from '@/user-context/users/domain/factories/user-view-model/user-view-model.factory';
 import { UserPrimitives } from '@/user-context/users/domain/primitives/user.primitives';
 import { UserAvatarUrlValueObject } from '@/user-context/users/domain/value-objects/user-avatar-url/user-avatar-url.vo';

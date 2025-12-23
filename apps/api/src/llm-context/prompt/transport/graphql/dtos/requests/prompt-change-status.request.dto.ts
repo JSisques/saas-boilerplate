@@ -1,4 +1,4 @@
-import { PromptStatusEnum } from '@/prisma/master/client';
+import { PromptStatusEnum } from '@/llm-context/prompt/domain/enum/prompt-status.enum';
 import { Field, InputType } from '@nestjs/graphql';
 import { IsEnum, IsNotEmpty, IsString } from 'class-validator';
 

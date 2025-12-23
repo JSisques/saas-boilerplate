@@ -1,4 +1,4 @@
-import { TenantMemberRoleEnum } from '@/prisma/master/client';
+import { TenantMemberRoleEnum } from '@/shared/domain/enums/tenant-context/tenant-members/tenant-member-role/tenant-member-role.enum';
 import { EnumValueObject } from '@/shared/domain/value-objects/enum/enum.vo';
 
 /**

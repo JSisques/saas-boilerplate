@@ -1,4 +1,4 @@
-import { SagaStatusEnum } from '@/prisma/master/client';
+import { SagaInstanceStatusEnum } from '@/saga-context/saga-instance/domain/enums/saga-instance-status/saga-instance-status.enum';
 import { BasePaginatedResultDto } from '@/shared/transport/graphql/dtos/responses/base-paginated-result/base-paginated-result.dto';
 import { Field, ObjectType } from '@nestjs/graphql';
 
@@ -10,8 +10,10 @@ export class SagaInstanceResponseDto {
   @Field(() => String, { description: 'The saga instance name' })
   name: string;
 
-  @Field(() => SagaStatusEnum, { description: 'The saga instance status' })
-  status: SagaStatusEnum;
+  @Field(() => SagaInstanceStatusEnum, {
+    description: 'The saga instance status',
+  })
+  status: SagaInstanceStatusEnum;
 
   @Field(() => Date, { description: 'The saga instance start date' })
   startDate: Date;

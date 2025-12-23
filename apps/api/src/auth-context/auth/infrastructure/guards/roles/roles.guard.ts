@@ -1,5 +1,5 @@
 import { ROLES_KEY } from '@/auth-context/auth/infrastructure/decorators/roles/roles.decorator';
-import { UserRoleEnum } from '@/prisma/master/client';
+import { UserRoleEnum } from '@/shared/domain/enums/user-context/user/user-role/user-role.enum';
 import {
   CanActivate,
   ExecutionContext,
