@@ -1,4 +1,4 @@
-import { BaseTypeormMasterRepository } from '@/shared/infrastructure/database/typeorm/base-typeorm/base-typeorm-master/base-typeorm-master.repository';
+import { BaseTypeormTenantRepository } from '@/shared/infrastructure/database/typeorm/base-typeorm/base-typeorm-tenant/base-typeorm-tenant.repository';
 import { TypeormMasterService } from '@/shared/infrastructure/database/typeorm/services/typeorm-master/typeorm-master.service';
 import { TenantContextService } from '@/shared/infrastructure/services/tenant-context/tenant-context.service';
 import { StorageAggregate } from '@/storage-context/storage/domain/aggregate/storage.aggregate';
@@ -15,10 +15,11 @@ import { Injectable, Logger, Scope } from '@nestjs/common';
  * @remarks
  * - Scoped to each request to get tenant context.
  * - Uses a TypeORM service and entity/mapper pattern.
+ * - Extends BaseTypeormTenantRepository which automatically filters all queries by tenantId.
  */
 @Injectable({ scope: Scope.REQUEST })
 export class StorageTypeormRepository
-  extends BaseTypeormMasterRepository<StorageTypeormEntity>
+  extends BaseTypeormTenantRepository<StorageTypeormEntity>
   implements StorageWriteRepository
 {
   /**
@@ -30,24 +31,16 @@ export class StorageTypeormRepository
    */
   constructor(
     typeormMasterService: TypeormMasterService,
-    private readonly tenantContextService: TenantContextService,
+    tenantContextService: TenantContextService,
     private readonly storageTypeormMapper: StorageTypeormMapper,
   ) {
-    super(typeormMasterService, StorageTypeormEntity);
+    super(typeormMasterService, tenantContextService, StorageTypeormEntity);
     this.logger = new Logger(StorageTypeormRepository.name);
   }
 
   /**
-   * Returns the current tenant ID from the tenant context service.
-   *
-   * @throws {Error} Throws if tenant ID is not found.
-   */
-  protected get tenantId(): string {
-    return this.tenantContextService.getTenantIdOrThrow();
-  }
-
-  /**
    * Finds a storage aggregate by its unique ID within the current tenant context.
+   * Tenant filtering is automatically applied by BaseTypeormTenantRepository.
    *
    * @param id - The Storage ID to search for.
    * @returns A StorageAggregate instance if found, otherwise `null`.
@@ -55,8 +48,9 @@ export class StorageTypeormRepository
   async findById(id: string): Promise<StorageAggregate | null> {
     this.logger.log(`Finding storage by id: ${id}`);
 
-    const storageEntity = await this.repository.findOne({
-      where: { id, tenantId: this.tenantId },
+    // Use the base class method which automatically filters by tenantId
+    const storageEntity = await super.findOne({
+      where: { id } as any,
     });
 
     return storageEntity
@@ -66,6 +60,7 @@ export class StorageTypeormRepository
 
   /**
    * Finds a storage aggregate by its path within the current tenant context.
+   * Tenant filtering is automatically applied by BaseTypeormTenantRepository.
    *
    * @param path - The path of the storage to search for.
    * @returns A StorageAggregate instance if found, otherwise `null`.
@@ -73,8 +68,8 @@ export class StorageTypeormRepository
   async findByPath(path: string): Promise<StorageAggregate | null> {
     this.logger.log(`Finding storage by path: ${path}`);
 
-    const storageEntity = await this.repository.findOne({
-      where: { path, tenantId: this.tenantId },
+    const storageEntity = await super.findOne({
+      where: { path } as any,
     });
 
     return storageEntity
@@ -86,6 +81,7 @@ export class StorageTypeormRepository
    * Persists the given StorageAggregate to the database.
    * If the storage entity is new, it will be inserted;
    * otherwise, existing data will be updated.
+   * TenantId is automatically set by BaseTypeormTenantRepository.
    *
    * @param storage - The storage aggregate domain object to be saved.
    * @returns The saved StorageAggregate instance (as persisted to the DB).
@@ -95,12 +91,7 @@ export class StorageTypeormRepository
 
     const storageData = this.storageTypeormMapper.toTypeormEntity(storage);
 
-    // Ensure tenantId is always set
-    if (!storageData.tenantId) {
-      storageData.tenantId = this.tenantId;
-    }
-
-    const result = await this.repository.save(storageData);
+    const result = await super.saveEntity(storageData);
 
     return this.storageTypeormMapper.toDomainEntity(result);
   }
@@ -108,6 +99,7 @@ export class StorageTypeormRepository
   /**
    * Soft deletes a storage aggregate by its ID within the current tenant context.
    * The record is not permanently removed but is marked as deleted.
+   * Tenant filtering is automatically applied by BaseTypeormTenantRepository.
    *
    * @param id - The Storage ID to delete.
    * @returns `true` if the operation was attempted (softDelete does not throw if
@@ -116,7 +108,7 @@ export class StorageTypeormRepository
   async delete(id: string): Promise<boolean> {
     this.logger.log(`Deleting storage by id: ${id}`);
 
-    await this.repository.softDelete({ id, tenantId: this.tenantId });
+    await super.softDelete(id);
 
     return true;
   }
