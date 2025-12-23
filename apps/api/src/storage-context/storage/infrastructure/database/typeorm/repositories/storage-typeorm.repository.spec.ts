@@ -1,4 +1,6 @@
-import { TypeormTenantService } from '@/shared/infrastructure/database/typeorm/services/typeorm-tenant/typeorm-tenant.service';
+import { DateValueObject } from '@/shared/domain/value-objects/date/date.vo';
+import { StorageUuidValueObject } from '@/shared/domain/value-objects/identifiers/storage-uuid/storage-uuid.vo';
+import { TypeormMasterService } from '@/shared/infrastructure/database/typeorm/services/typeorm-master/typeorm-master.service';
 import { TenantContextService } from '@/shared/infrastructure/services/tenant-context/tenant-context.service';
 import { StorageAggregate } from '@/storage-context/storage/domain/aggregate/storage.aggregate';
 import { StorageProviderEnum } from '@/storage-context/storage/domain/enums/storage-provider.enum';
@@ -8,19 +10,16 @@ import { StorageMimeTypeValueObject } from '@/storage-context/storage/domain/val
 import { StoragePathValueObject } from '@/storage-context/storage/domain/value-objects/storage-path/storage-path.vo';
 import { StorageProviderValueObject } from '@/storage-context/storage/domain/value-objects/storage-provider/storage-provider.vo';
 import { StorageUrlValueObject } from '@/storage-context/storage/domain/value-objects/storage-url/storage-url.vo';
-import { StorageUuidValueObject } from '@/shared/domain/value-objects/identifiers/storage-uuid/storage-uuid.vo';
-import { DateValueObject } from '@/shared/domain/value-objects/date/date.vo';
 import { StorageTypeormEntity } from '@/storage-context/storage/infrastructure/database/typeorm/entities/storage-typeorm.entity';
 import { StorageTypeormMapper } from '@/storage-context/storage/infrastructure/database/typeorm/mappers/storage-typeorm.mapper';
 import { StorageTypeormRepository } from '@/storage-context/storage/infrastructure/database/typeorm/repositories/storage-typeorm.repository';
-import { DataSource, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 
 describe('StorageTypeormRepository', () => {
   let repository: StorageTypeormRepository;
-  let mockTypeormTenantService: jest.Mocked<TypeormTenantService>;
   let mockTenantContextService: jest.Mocked<TenantContextService>;
   let mockStorageTypeormMapper: jest.Mocked<StorageTypeormMapper>;
-  let mockDataSource: jest.Mocked<DataSource>;
+  let mockTypeormMasterService: jest.Mocked<TypeormMasterService>;
   let mockTypeormRepository: jest.Mocked<Repository<StorageTypeormEntity>>;
   let mockFindOne: jest.Mock;
   let mockSave: jest.Mock;
@@ -39,13 +38,9 @@ describe('StorageTypeormRepository', () => {
       softDelete: mockSoftDelete,
     } as unknown as jest.Mocked<Repository<StorageTypeormEntity>>;
 
-    mockDataSource = {
-      getRepository: mockGetRepository.mockReturnValue(mockTypeormRepository),
-    } as unknown as jest.Mocked<DataSource>;
-
-    mockTypeormTenantService = {
-      getTenantDataSource: jest.fn().mockResolvedValue(mockDataSource),
-    } as unknown as jest.Mocked<TypeormTenantService>;
+    mockTypeormMasterService = {
+      getRepository: jest.fn().mockReturnValue(mockTypeormRepository),
+    } as unknown as jest.Mocked<TypeormMasterService>;
 
     mockTenantContextService = {
       getTenantIdOrThrow: jest.fn().mockReturnValue('test-tenant-id'),
@@ -57,7 +52,7 @@ describe('StorageTypeormRepository', () => {
     } as unknown as jest.Mocked<StorageTypeormMapper>;
 
     repository = new StorageTypeormRepository(
-      mockTypeormTenantService,
+      mockTypeormMasterService,
       mockTenantContextService,
       mockStorageTypeormMapper,
     );
@@ -106,7 +101,7 @@ describe('StorageTypeormRepository', () => {
 
       expect(result).toBe(storageAggregate);
       expect(mockTenantContextService.getTenantIdOrThrow).toHaveBeenCalled();
-      expect(mockTypeormTenantService.getTenantDataSource).toHaveBeenCalledWith(
+      expect(mockTypeormMasterService.getRepository).toHaveBeenCalledWith(
         'test-tenant-id',
       );
       expect(mockGetRepository).toHaveBeenCalledWith(StorageTypeormEntity);
