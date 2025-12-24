@@ -111,9 +111,7 @@ export class SubscriptionMongoRepository
     const sortQuery = this.buildSortQuery(criteria);
 
     // 02: Calculate pagination
-    const page = criteria.pagination.page || 1;
-    const limit = criteria.pagination.perPage || 10;
-    const skip = (page - 1) * limit;
+    const { page, limit, skip } = await this.calculatePagination(criteria);
 
     // 03: Execute query with pagination
     const [data, total] = await Promise.all([
