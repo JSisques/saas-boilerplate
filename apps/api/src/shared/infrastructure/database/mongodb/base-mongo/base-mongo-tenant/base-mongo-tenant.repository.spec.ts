@@ -1,3 +1,5 @@
+import { Criteria } from '@/shared/domain/entities/criteria';
+import { FilterOperator } from '@/shared/domain/enums/filter-operator.enum';
 import { MongoMasterService } from '@/shared/infrastructure/database/mongodb/services/mongo-master/mongo-master.service';
 import { TenantContextService } from '@/shared/infrastructure/services/tenant-context/tenant-context.service';
 import { Collection } from 'mongodb';
@@ -82,11 +84,11 @@ describe('BaseMongoTenantRepository', () => {
 
   describe('buildMongoQueryWithTenant', () => {
     it('should build query with tenant filter', () => {
-      const criteria = {
-        filters: [{ field: 'name', operator: 'EQUALS', value: 'test' }],
-        sorts: [],
-        pagination: { page: 1, perPage: 10 },
-      };
+      const criteria = new Criteria(
+        [{ field: 'name', operator: FilterOperator.EQUALS, value: 'test' }],
+        [],
+        { page: 1, perPage: 10 },
+      );
 
       const result = repository.testBuildMongoQueryWithTenant(criteria);
 
