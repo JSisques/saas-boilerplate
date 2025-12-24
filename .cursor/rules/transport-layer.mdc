@@ -1,0 +1,632 @@
+---
+alwaysApply: true
+---
+
+# Transport Layer Architecture Rule
+
+Always implement the transport layer following Clean Architecture principles with GraphQL resolvers, DTOs, and mappers. The transport layer handles external communication and converts between external formats and application layer.
+
+## Transport Layer Structure
+
+The transport layer must be organized in the following structure:
+
+```
+transport/
+└── graphql/              # GraphQL transport implementation
+    ├── resolvers/        # GraphQL resolvers (queries and mutations)
+    ├── dtos/             # Data Transfer Objects
+    │   ├── requests/     # Request DTOs (input)
+    │   └── responses/    # Response DTOs (output)
+    └── mappers/          # GraphQL mappers
+```
+
+## GraphQL Resolvers
+
+### Structure
+
+Resolvers handle GraphQL queries and mutations. They must:
+
+- Use `@Resolver()` decorator
+- Inject `QueryBus` or `CommandBus` from `@nestjs/cqrs`
+- Inject mappers for DTO conversion
+- Use guards for authorization (`@UseGuards`, `@Roles`)
+- Be in separate files: `{entity}-queries.resolver.ts` and `{entity}-mutations.resolver.ts`
+
+### Query Resolver
+
+```typescript
+import { Criteria } from '@/shared/domain/entities/criteria';
+import { FindExamplesByCriteriaQuery } from '@/example-context/example/application/queries/find-examples-by-criteria/find-examples-by-criteria.query';
+import { ExampleFindByCriteriaRequestDto } from '@/example-context/example/transport/graphql/dtos/requests/example-find-by-criteria.request.dto';
+import { PaginatedExampleResultDto } from '@/example-context/example/transport/graphql/dtos/responses/example.response.dto';
+import { ExampleGraphQLMapper } from '@/example-context/example/transport/graphql/mappers/example.mapper';
+import { JwtAuthGuard } from '@/auth-context/auth/infrastructure/auth/jwt-auth.guard';
+import { Roles } from '@/auth-context/auth/infrastructure/decorators/roles/roles.decorator';
+import { RolesGuard } from '@/auth-context/auth/infrastructure/guards/roles/roles.guard';
+import { UserRoleEnum } from '@/shared/domain/enums/user-context/user/user-role/user-role.enum';
+import { UseGuards } from '@nestjs/common';
+import { QueryBus } from '@nestjs/cqrs';
+import { Args, Query, Resolver } from '@nestjs/graphql';
+
+@Resolver()
+@UseGuards(JwtAuthGuard, RolesGuard)
+export class ExampleQueryResolver {
+  constructor(
+    private readonly queryBus: QueryBus,
+    private readonly exampleGraphQLMapper: ExampleGraphQLMapper,
+  ) {}
+
+  /**
+   * Finds examples that satisfy specified criteria such as filtering, sorting, and pagination.
+   *
+   * @param input - Optional input parameters containing filters, sorts, and pagination settings.
+   * @returns A promise resolving to paginated results of examples matching the provided criteria.
+   */
+  @Query(() => PaginatedExampleResultDto)
+  @Roles(UserRoleEnum.ADMIN)
+  async examplesFindByCriteria(
+    @Args('input', { nullable: true }) input?: ExampleFindByCriteriaRequestDto,
+  ): Promise<PaginatedExampleResultDto> {
+    // 01: Convert DTO to domain Criteria
+    const criteria = new Criteria(
+      input?.filters,
+      input?.sorts,
+      input?.pagination,
+    );
+
+    // 02: Execute query
+    const result = await this.queryBus.execute(
+      new FindExamplesByCriteriaQuery({ criteria }),
+    );
+
+    // 03: Convert to response DTO
+    return this.exampleGraphQLMapper.toPaginatedResponseDto(result);
+  }
+
+  /**
+   * Finds an example by id.
+   *
+   * @param input - Input containing the example id.
+   * @returns The example if found.
+   */
+  @Query(() => ExampleResponseDto)
+  async exampleFindById(
+    @Args('input') input: ExampleFindByIdRequestDto,
+  ): Promise<ExampleResponseDto> {
+    // 01: Execute query
+    const result = await this.queryBus.execute(
+      new ExampleViewModelFindByIdQuery({ id: input.id }),
+    );
+
+    // 02: Convert to response DTO
+    return this.exampleGraphQLMapper.toResponseDto(result);
+  }
+}
+```
+
+### Mutation Resolver
+
+```typescript
+import { JwtAuthGuard } from '@/auth-context/auth/infrastructure/auth/jwt-auth.guard';
+import { Roles } from '@/auth-context/auth/infrastructure/decorators/roles/roles.decorator';
+import { RolesGuard } from '@/auth-context/auth/infrastructure/guards/roles/roles.guard';
+import { UserRoleEnum } from '@/shared/domain/enums/user-context/user/user-role/user-role.enum';
+import { MutationResponseDto } from '@/shared/transport/graphql/dtos/responses/success-response/success-response.dto';
+import { MutationResponseGraphQLMapper } from '@/shared/transport/graphql/mappers/mutation-response/mutation-response.mapper';
+import { ExampleCreateCommand } from '@/example-context/example/application/commands/example-create/example-create.command';
+import { ExampleUpdateCommand } from '@/example-context/example/application/commands/example-update/example-update.command';
+import { ExampleDeleteCommand } from '@/example-context/example/application/commands/example-delete/example-delete.command';
+import { CreateExampleRequestDto } from '@/example-context/example/transport/graphql/dtos/requests/create-example.request.dto';
+import { UpdateExampleRequestDto } from '@/example-context/example/transport/graphql/dtos/requests/update-example.request.dto';
+import { DeleteExampleRequestDto } from '@/example-context/example/transport/graphql/dtos/requests/delete-example.request.dto';
+import { UseGuards } from '@nestjs/common';
+import { CommandBus } from '@nestjs/cqrs';
+import { Args, Mutation, Resolver } from '@nestjs/graphql';
+
+@Resolver()
+@UseGuards(JwtAuthGuard, RolesGuard)
+export class ExampleMutationsResolver {
+  constructor(
+    private readonly commandBus: CommandBus,
+    private readonly mutationResponseGraphQLMapper: MutationResponseGraphQLMapper,
+  ) {}
+
+  /**
+   * Creates a new example.
+   *
+   * @param input - Input containing example data.
+   * @returns Success response with created example id.
+   */
+  @Mutation(() => MutationResponseDto)
+  @Roles(UserRoleEnum.ADMIN)
+  async createExample(
+    @Args('input') input: CreateExampleRequestDto,
+  ): Promise<MutationResponseDto> {
+    // 01: Send the command to the command bus
+    const createdExampleId = await this.commandBus.execute(
+      new ExampleCreateCommand({
+        name: input.name,
+        status: input.status,
+      }),
+    );
+
+    // 02: Return success response
+    return this.mutationResponseGraphQLMapper.toResponseDto({
+      success: true,
+      message: 'Example created successfully',
+      id: createdExampleId,
+    });
+  }
+
+  /**
+   * Updates an existing example.
+   *
+   * @param input - Input containing example id and data to update.
+   * @returns Success response.
+   */
+  @Mutation(() => MutationResponseDto)
+  @Roles(UserRoleEnum.ADMIN)
+  async updateExample(
+    @Args('input') input: UpdateExampleRequestDto,
+  ): Promise<MutationResponseDto> {
+    // 01: Send the command to the command bus
+    await this.commandBus.execute(
+      new ExampleUpdateCommand({
+        id: input.id,
+        name: input.name,
+        status: input.status,
+      }),
+    );
+
+    // 02: Return success response
+    return this.mutationResponseGraphQLMapper.toResponseDto({
+      success: true,
+      message: 'Example updated successfully',
+      id: input.id,
+    });
+  }
+
+  /**
+   * Deletes an example.
+   *
+   * @param input - Input containing example id.
+   * @returns Success response.
+   */
+  @Mutation(() => MutationResponseDto)
+  @Roles(UserRoleEnum.ADMIN)
+  async deleteExample(
+    @Args('input') input: DeleteExampleRequestDto,
+  ): Promise<MutationResponseDto> {
+    // 01: Send the command to the command bus
+    await this.commandBus.execute(new ExampleDeleteCommand({ id: input.id }));
+
+    // 02: Return success response
+    return this.mutationResponseGraphQLMapper.toResponseDto({
+      success: true,
+      message: 'Example deleted successfully',
+      id: input.id,
+    });
+  }
+}
+```
+
+### Rules
+
+- **Separate queries and mutations** - Use separate resolver files for queries and mutations
+- **Use QueryBus for queries** - Never use CommandBus for queries
+- **Use CommandBus for mutations** - Never use QueryBus for mutations
+- **Convert DTOs to domain objects** - Use Criteria for query inputs
+- **Use mappers for responses** - Always use mappers to convert domain objects to DTOs
+- **Use guards for authorization** - Apply guards at resolver or method level
+- **Number steps with comments** - Use `// 01:`, `// 02:`, etc. to organize logic
+- **Document with TSDoc** - Always document resolver methods
+
+## Request DTOs
+
+### Structure
+
+Request DTOs represent input data from GraphQL clients. They must:
+
+- Be classes (not interfaces) for GraphQL decorators
+- Use `@InputType()` decorator from `@nestjs/graphql`
+- Use `@Field()` decorator for each property
+- Use validation decorators from `class-validator`
+- Be in folder: `dtos/requests/`
+- Follow naming: `{Action}{Entity}RequestDto` or `{Entity}{Action}RequestDto`
+
+### Create Request DTO
+
+```typescript
+import { ExampleStatusEnum } from '@/shared/domain/enums/example-status/example-status.enum';
+import { Field, InputType } from '@nestjs/graphql';
+import { IsEnum, IsOptional, IsString } from 'class-validator';
+
+@InputType('CreateExampleRequestDto')
+export class CreateExampleRequestDto {
+  @Field(() => String, {
+    description: 'The name of the example',
+    nullable: true,
+  })
+  @IsString()
+  @IsOptional()
+  name?: string;
+
+  @Field(() => ExampleStatusEnum, {
+    description: 'The status of the example',
+    nullable: false,
+  })
+  @IsEnum(ExampleStatusEnum)
+  status: ExampleStatusEnum;
+}
+```
+
+### Update Request DTO
+
+```typescript
+import { ExampleStatusEnum } from '@/shared/domain/enums/example-status/example-status.enum';
+import { Field, InputType } from '@nestjs/graphql';
+import { IsEnum, IsOptional, IsString, IsUUID } from 'class-validator';
+
+@InputType('UpdateExampleRequestDto')
+export class UpdateExampleRequestDto {
+  @Field(() => String, { description: 'The id of the example' })
+  @IsUUID()
+  id: string;
+
+  @Field(() => String, {
+    description: 'The name of the example',
+    nullable: true,
+  })
+  @IsString()
+  @IsOptional()
+  name?: string;
+
+  @Field(() => ExampleStatusEnum, {
+    description: 'The status of the example',
+    nullable: true,
+  })
+  @IsEnum(ExampleStatusEnum)
+  @IsOptional()
+  status?: ExampleStatusEnum;
+}
+```
+
+### Find By Criteria Request DTO
+
+```typescript
+import { BaseFindByCriteriaInput } from '@/shared/transport/graphql/dtos/requests/base-find-by-criteria/base-find-by-criteria.input';
+import { InputType } from '@nestjs/graphql';
+
+@InputType('ExampleFindByCriteriaRequestDto')
+export class ExampleFindByCriteriaRequestDto extends BaseFindByCriteriaInput {}
+```
+
+### Rules
+
+- **Use classes** - GraphQL requires classes for decorators
+- **Use @InputType decorator** - Required for GraphQL input types
+- **Use @Field decorator** - Required for each property
+- **Add descriptions** - Always provide descriptions for fields
+- **Use validation decorators** - Use `class-validator` decorators
+- **Extend base classes** - Extend `BaseFindByCriteriaInput` for criteria queries
+- **Mark nullable fields** - Use `nullable: true` for optional fields
+
+## Response DTOs
+
+### Structure
+
+Response DTOs represent output data to GraphQL clients. They must:
+
+- Be classes (not interfaces) for GraphQL decorators
+- Use `@ObjectType()` decorator from `@nestjs/graphql`
+- Use `@Field()` decorator for each property
+- Be in folder: `dtos/responses/`
+- Follow naming: `{Entity}ResponseDto` and `Paginated{Entity}ResultDto`
+
+### Response DTO
+
+```typescript
+import { Field, ObjectType } from '@nestjs/graphql';
+
+@ObjectType('ExampleResponseDto')
+export class ExampleResponseDto {
+  @Field(() => String, { description: 'The id of the example' })
+  id: string;
+
+  @Field(() => String, {
+    nullable: true,
+    description: 'The name of the example',
+  })
+  name?: string;
+
+  @Field(() => String, {
+    nullable: true,
+    description: 'The status of the example',
+  })
+  status?: string;
+
+  @Field(() => Date, {
+    nullable: true,
+    description: 'The created at of the example',
+  })
+  createdAt?: Date;
+
+  @Field(() => Date, {
+    nullable: true,
+    description: 'The updated at of the example',
+  })
+  updatedAt?: Date;
+}
+```
+
+### Paginated Response DTO
+
+```typescript
+import { BasePaginatedResultDto } from '@/shared/transport/graphql/dtos/responses/base-paginated-result/base-paginated-result.dto';
+import { Field, ObjectType } from '@nestjs/graphql';
+
+@ObjectType('PaginatedExampleResultDto')
+export class PaginatedExampleResultDto extends BasePaginatedResultDto {
+  @Field(() => [ExampleResponseDto], {
+    description: 'The examples in the current page',
+  })
+  items: ExampleResponseDto[];
+}
+```
+
+### Rules
+
+- **Use classes** - GraphQL requires classes for decorators
+- **Use @ObjectType decorator** - Required for GraphQL object types
+- **Use @Field decorator** - Required for each property
+- **Add descriptions** - Always provide descriptions for fields
+- **Extend base classes** - Extend `BasePaginatedResultDto` for paginated results
+- **Mark nullable fields** - Use `nullable: true` for optional fields
+
+## Mappers
+
+### Structure
+
+Mappers convert between domain objects (ViewModels, Aggregates) and GraphQL DTOs. They must:
+
+- Use `@Injectable()` decorator
+- Implement methods to convert ViewModels to DTOs
+- Implement methods for paginated results
+- Be in folder: `mappers/`
+
+### Mapper
+
+```typescript
+import { PaginatedResult } from '@/shared/domain/entities/paginated-result.entity';
+import { ExampleViewModel } from '@/example-context/example/domain/view-models/example.view-model';
+import {
+  PaginatedExampleResultDto,
+  ExampleResponseDto,
+} from '@/example-context/example/transport/graphql/dtos/responses/example.response.dto';
+import { Injectable, Logger } from '@nestjs/common';
+
+@Injectable()
+export class ExampleGraphQLMapper {
+  private readonly logger = new Logger(ExampleGraphQLMapper.name);
+
+  /**
+   * Converts an example view model to a response DTO.
+   *
+   * @param example - The example view model to convert
+   * @returns The response DTO
+   */
+  toResponseDto(example: ExampleViewModel): ExampleResponseDto {
+    this.logger.log(`Mapping example view model to response dto: ${example.id}`);
+
+    return {
+      id: example.id,
+      name: example.name,
+      status: example.status,
+      createdAt: example.createdAt,
+      updatedAt: example.updatedAt,
+    };
+  }
+
+  /**
+   * Converts a paginated result to a paginated response DTO.
+   *
+   * @param paginatedResult - The paginated result to convert
+   * @returns The paginated response DTO
+   */
+  toPaginatedResponseDto(
+    paginatedResult: PaginatedResult<ExampleViewModel>,
+  ): PaginatedExampleResultDto {
+    this.logger.log(
+      `Mapping paginated example result to response dto: ${JSON.stringify(paginatedResult)}`,
+    );
+
+    return {
+      items: paginatedResult.items.map((example) =>
+        this.toResponseDto(example),
+      ),
+      total: paginatedResult.total,
+      page: paginatedResult.page,
+      perPage: paginatedResult.perPage,
+      totalPages: paginatedResult.totalPages,
+    };
+  }
+}
+```
+
+### Rules
+
+- **Use ViewModels** - Always convert from ViewModels, not Aggregates
+- **Map paginated results** - Always provide `toPaginatedResponseDto()` method
+- **Log conversions** - Use Logger for debugging
+- **Keep mappers simple** - Only convert data, no business logic
+
+## Best Practices
+
+### ✅ Good Practices
+
+- Separate query and mutation resolvers
+- Use QueryBus for queries and CommandBus for mutations
+- Use mappers for all DTO conversions
+- Use guards for authorization
+- Document resolver methods with TSDoc
+- Use validation decorators on request DTOs
+- Extend base classes for common patterns
+- Number steps with comments in resolvers
+
+### ❌ Bad Practices
+
+- Mixing queries and mutations in the same resolver file
+- Using CommandBus for queries (should use QueryBus)
+- Using QueryBus for mutations (should use CommandBus)
+- Converting domain objects to DTOs directly (should use mappers)
+- Not using guards for authorization
+- Not validating request DTOs
+- Not documenting resolver methods
+- Using interfaces instead of classes for GraphQL DTOs
+
+## Examples
+
+### ✅ Good: Query Resolver
+
+```typescript
+@Resolver()
+@UseGuards(JwtAuthGuard, RolesGuard)
+export class ExampleQueryResolver {
+  constructor(
+    private readonly queryBus: QueryBus,
+    private readonly exampleGraphQLMapper: ExampleGraphQLMapper,
+  ) {}
+
+  @Query(() => ExampleResponseDto)
+  async exampleFindById(
+    @Args('input') input: ExampleFindByIdRequestDto,
+  ): Promise<ExampleResponseDto> {
+    const result = await this.queryBus.execute(
+      new ExampleViewModelFindByIdQuery({ id: input.id }),
+    );
+    return this.exampleGraphQLMapper.toResponseDto(result);
+  }
+}
+```
+
+### ❌ Bad: Query Resolver
+
+```typescript
+@Resolver()
+export class ExampleQueryResolver {
+  constructor(
+    private readonly commandBus: CommandBus, // ❌ Should use QueryBus
+    private readonly exampleRepository: ExampleRepository, // ❌ Should use QueryBus
+  ) {}
+
+  @Query(() => ExampleResponseDto)
+  async exampleFindById(@Args('id') id: string): Promise<ExampleResponseDto> {
+    // ❌ Should use QueryBus and mapper
+    const example = await this.exampleRepository.findById(id);
+    return {
+      id: example.id,
+      name: example.name, // ❌ Should use mapper
+    };
+  }
+}
+```
+
+### ✅ Good: Mutation Resolver
+
+```typescript
+@Resolver()
+@UseGuards(JwtAuthGuard, RolesGuard)
+export class ExampleMutationsResolver {
+  constructor(
+    private readonly commandBus: CommandBus,
+    private readonly mutationResponseGraphQLMapper: MutationResponseGraphQLMapper,
+  ) {}
+
+  @Mutation(() => MutationResponseDto)
+  @Roles(UserRoleEnum.ADMIN)
+  async createExample(
+    @Args('input') input: CreateExampleRequestDto,
+  ): Promise<MutationResponseDto> {
+    const id = await this.commandBus.execute(
+      new ExampleCreateCommand({ name: input.name }),
+    );
+    return this.mutationResponseGraphQLMapper.toResponseDto({
+      success: true,
+      message: 'Example created successfully',
+      id,
+    });
+  }
+}
+```
+
+### ❌ Bad: Mutation Resolver
+
+```typescript
+@Resolver()
+export class ExampleMutationsResolver {
+  constructor(
+    private readonly queryBus: QueryBus, // ❌ Should use CommandBus
+    private readonly exampleRepository: ExampleRepository, // ❌ Should use CommandBus
+  ) {}
+
+  @Mutation(() => ExampleResponseDto)
+  async createExample(@Args('name') name: string): Promise<ExampleResponseDto> {
+    // ❌ Should use CommandBus
+    const example = await this.exampleRepository.create({ name });
+    return {
+      id: example.id,
+      name: example.name, // ❌ Should use mapper
+    };
+  }
+}
+```
+
+### ✅ Good: Request DTO
+
+```typescript
+@InputType('CreateExampleRequestDto')
+export class CreateExampleRequestDto {
+  @Field(() => String, {
+    description: 'The name of the example',
+    nullable: true,
+  })
+  @IsString()
+  @IsOptional()
+  name?: string;
+}
+```
+
+### ❌ Bad: Request DTO
+
+```typescript
+// ❌ Should be a class, not an interface
+export interface CreateExampleRequestDto {
+  name: string; // ❌ Missing GraphQL decorators and validation
+}
+```
+
+### ✅ Good: Response DTO
+
+```typescript
+@ObjectType('ExampleResponseDto')
+export class ExampleResponseDto {
+  @Field(() => String, { description: 'The id of the example' })
+  id: string;
+
+  @Field(() => String, {
+    nullable: true,
+    description: 'The name of the example',
+  })
+  name?: string;
+}
+```
+
+### ❌ Bad: Response DTO
+
+```typescript
+// ❌ Should be a class, not an interface
+export interface ExampleResponseDto {
+  id: string; // ❌ Missing GraphQL decorators
+  name: string;
+}
+```
