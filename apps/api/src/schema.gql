@@ -1111,6 +1111,7 @@ type Mutation {
   storageUploadFile(file: Upload!): MutationResponseDto!
   storageDownloadFiles(input: StorageDownloadFileRequestDto!): [StorageDownloadFileResponseDto!]!
   storageDeleteFile(input: StorageDeleteFileRequestDto!): MutationResponseArrayDto!
+  test: MutationResponseDto!
   sagaInstanceCreate(input: SagaInstanceCreateRequestDto!): MutationResponseDto!
   sagaInstanceUpdate(input: SagaInstanceUpdateRequestDto!): MutationResponseDto!
   sagaInstanceChangeStatus(input: SagaInstanceChangeStatusRequestDto!): MutationResponseDto!
