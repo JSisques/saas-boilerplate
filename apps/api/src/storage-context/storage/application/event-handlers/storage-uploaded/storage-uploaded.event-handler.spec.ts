@@ -7,12 +7,14 @@ import {
   StorageReadRepository,
 } from '@/storage-context/storage/domain/repositories/storage-read.repository';
 import { StorageViewModel } from '@/storage-context/storage/domain/view-models/storage.view-model';
+import { TenantContextService } from '@/shared/infrastructure/services/tenant-context/tenant-context.service';
 import { Test } from '@nestjs/testing';
 
 describe('StorageUploadedEventHandler', () => {
   let handler: StorageUploadedEventHandler;
   let mockStorageReadRepository: jest.Mocked<StorageReadRepository>;
   let mockStorageViewModelFactory: jest.Mocked<StorageViewModelFactory>;
+  let mockTenantContextService: jest.Mocked<TenantContextService>;
 
   beforeEach(async () => {
     mockStorageReadRepository = {
@@ -28,6 +30,10 @@ describe('StorageUploadedEventHandler', () => {
       fromPrimitives: jest.fn(),
     } as unknown as jest.Mocked<StorageViewModelFactory>;
 
+    mockTenantContextService = {
+      getTenantIdOrThrow: jest.fn().mockReturnValue('test-tenant-123'),
+    } as unknown as jest.Mocked<TenantContextService>;
+
     const module = await Test.createTestingModule({
       providers: [
         StorageUploadedEventHandler,
@@ -38,6 +44,10 @@ describe('StorageUploadedEventHandler', () => {
         {
           provide: StorageViewModelFactory,
           useValue: mockStorageViewModelFactory,
+        },
+        {
+          provide: TenantContextService,
+          useValue: mockTenantContextService,
         },
       ],
     }).compile();
@@ -94,6 +104,7 @@ describe('StorageUploadedEventHandler', () => {
 
       const createCall = mockStorageViewModelFactory.create.mock.calls[0][0];
       expect(createCall.id).toBe(storageId);
+      expect(createCall.tenantId).toBe('test-tenant-123');
       expect(createCall.fileName).toBe('test-file.pdf');
       expect(createCall.fileSize).toBe(1024);
       expect(createCall.mimeType).toBe('application/pdf');
@@ -142,6 +153,7 @@ describe('StorageUploadedEventHandler', () => {
 
       const createCall = mockStorageViewModelFactory.create.mock.calls[0][0];
       expect(createCall.id).toBe(storageId);
+      expect(createCall.tenantId).toBe('test-tenant-123');
       expect(createCall.fileName).toBe('test-file.pdf');
       expect(createCall.fileSize).toBe(1024);
       expect(createCall.mimeType).toBe('application/pdf');

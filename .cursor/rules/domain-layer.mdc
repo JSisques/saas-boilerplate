@@ -1,0 +1,564 @@
+---
+alwaysApply: true
+---
+
+# Domain Layer Architecture Rule
+
+Always implement the domain layer following Domain-Driven Design (DDD) principles with aggregates, value objects, repositories, factories, and primitives.
+
+## Domain Layer Structure
+
+The domain layer must be organized in the following structure:
+
+```
+domain/
+├── aggregates/         # Domain aggregates (main entities)
+├── value-objects/      # Value objects (immutable domain concepts)
+├── repositories/       # Repository interfaces (read and write)
+├── factories/          # Aggregate and view model factories
+├── enums/              # Domain enums
+└── primitives/         # Primitive types (DTOs for serialization)
+```
+
+## Aggregates
+
+### Structure
+
+Aggregates must:
+
+- Extend `BaseAggregate` (which extends `AggregateRoot` from `@nestjs/cqrs`)
+- Use private properties with `_` prefix (e.g., `_id`, `_name`)
+- Expose properties via public getters (e.g., `get id()`)
+- Use Value Objects for all properties (never primitives directly)
+- Include `createdAt` and `updatedAt` as `DateValueObject`
+- Implement `toPrimitives()` method for serialization
+- Use domain events via `this.apply()` for state changes
+
+### Constructor Pattern
+
+```typescript
+export class ExampleAggregate extends BaseAggregate {
+  private readonly _id: ExampleUuidValueObject;
+  private _name: ExampleNameValueObject;
+
+  constructor(props: IExampleCreateDto, generateEvent: boolean = true) {
+    super(props.createdAt, props.updatedAt);
+
+    // 01: Set the properties
+    this._id = props.id;
+    this._name = props.name;
+
+    // 02: Apply the creation event
+    if (generateEvent) {
+      this.apply(
+        new ExampleCreatedEvent(
+          {
+            aggregateId: this._id.value,
+            aggregateType: ExampleAggregate.name,
+            eventType: ExampleCreatedEvent.name,
+          },
+          this.toPrimitives(),
+        ),
+      );
+    }
+  }
+
+  public get id(): ExampleUuidValueObject {
+    return this._id;
+  }
+
+  public get name(): ExampleNameValueObject {
+    return this._name;
+  }
+
+  public update(props: IExampleUpdateDto, generateEvent: boolean = true) {
+    this._name = props.name !== undefined ? props.name : this._name;
+    this._updatedAt = new DateValueObject(new Date());
+
+    if (generateEvent) {
+      this.apply(
+        new ExampleUpdatedEvent(
+          {
+            aggregateId: this._id.value,
+            aggregateType: ExampleAggregate.name,
+            eventType: ExampleUpdatedEvent.name,
+          },
+          this.toPrimitives(),
+        ),
+      );
+    }
+  }
+
+  public delete(generateEvent: boolean = true) {
+    if (generateEvent) {
+      this.apply(
+        new ExampleDeletedEvent(
+          {
+            aggregateId: this._id.value,
+            aggregateType: ExampleAggregate.name,
+            eventType: ExampleDeletedEvent.name,
+          },
+          this.toPrimitives(),
+        ),
+      );
+    }
+  }
+
+  public toPrimitives(): ExamplePrimitives {
+    return {
+      id: this._id.value,
+      name: this._name.value,
+      createdAt: this.createdAt.value,
+      updatedAt: this.updatedAt.value,
+    };
+  }
+}
+```
+
+### Rules
+
+- **Never expose private properties directly** - Always use getters
+- **Always validate business rules** in aggregate methods
+- **Always update `_updatedAt`** when modifying state
+- **Use `generateEvent` parameter** to control event generation (useful for bulk operations)
+- **Domain events must include** `aggregateId`, `aggregateType`, and `eventType`
+
+## Value Objects
+
+### Structure
+
+Value Objects must:
+
+- Be immutable (readonly properties)
+- Validate values in constructor
+- Extend base value objects when possible (`StringValueObject`, `EnumValueObject`, `NumberValueObject`, etc.)
+- Throw domain exceptions on validation failure
+- Implement `value` getter to access the primitive value
+
+### String Value Objects
+
+For simple string values, extend `StringValueObject`:
+
+```typescript
+import { StringValueObject } from '@/shared/domain/value-objects/string/string.vo';
+
+/**
+ * ExampleNameValueObject represents a name in the domain.
+ * It extends the StringValueObject to leverage common string functionalities.
+ */
+export class ExampleNameValueObject extends StringValueObject {}
+```
+
+### Enum Value Objects
+
+For enum values, extend `EnumValueObject`:
+
+```typescript
+import { ExampleStatusEnum } from '@/shared/domain/enums/example-status/example-status.enum';
+import { EnumValueObject } from '@/shared/domain/value-objects/enum/enum.vo';
+
+export class ExampleStatusValueObject extends EnumValueObject<
+  typeof ExampleStatusEnum
+> {
+  protected get enumObject(): typeof ExampleStatusEnum {
+    return ExampleStatusEnum;
+  }
+}
+```
+
+### Custom Value Objects
+
+For complex validation, create custom value objects:
+
+```typescript
+import { InvalidExampleException } from '@/shared/domain/exceptions/example/invalid-example.exception';
+
+export class ExampleCustomValueObject {
+  private readonly _value: string;
+
+  constructor(value: string) {
+    this.validate(value);
+    this._value = value;
+  }
+
+  public get value(): string {
+    return this._value;
+  }
+
+  private validate(value: string): void {
+    if (!value || value.trim() === '') {
+      throw new InvalidExampleException('Value cannot be empty');
+    }
+    // Add custom validation logic
+  }
+}
+```
+
+### Rules
+
+- **Always validate in constructor** - Never allow invalid values
+- **Use descriptive exception names** - Follow pattern `Invalid{ValueObjectName}Exception`
+- **Keep value objects focused** - One value object = one concept
+- **Prefer composition over inheritance** when extending base value objects
+
+## Repositories
+
+### Structure
+
+Repositories must:
+
+- Extend `IBaseWriteRepository` or `IBaseReadRepository` from `@/shared/domain/interfaces`
+- Be interfaces or type aliases (not implementations)
+- Separate read and write operations
+- Use `string` for IDs in interface signatures (base interfaces use strings)
+- Follow naming: `{Entity}ReadRepository` and `{Entity}WriteRepository`
+- Include a Symbol token for dependency injection
+
+### Base Interfaces
+
+The base interfaces provide common methods:
+
+**IBaseWriteRepository** provides:
+
+- `findById(id: string): Promise<TEntity | null>`
+- `save(entity: TEntity): Promise<TEntity>`
+- `delete(id: string): Promise<void>`
+
+**IBaseReadRepository** provides:
+
+- `findById(id: string): Promise<TViewModel | null>`
+- `findByCriteria(criteria: Criteria): Promise<PaginatedResult<TViewModel>>`
+- `save(viewModel: TViewModel): Promise<void>`
+- `delete(id: string): Promise<void>`
+
+### Write Repository - Without Additional Methods
+
+If no additional methods are needed, use a **type alias**:
+
+```typescript
+import { ExampleAggregate } from '@/example-context/example/domain/aggregates/example.aggregate';
+import { IBaseWriteRepository } from '@/shared/domain/interfaces/base-write-repository.interface';
+
+export const EXAMPLE_WRITE_REPOSITORY_TOKEN = Symbol('ExampleWriteRepository');
+
+/**
+ * Type alias for the example write repository.
+ * This repository handles write operations (create, update, delete) for examples.
+ *
+ * @type IExampleWriteRepository
+ */
+export type IExampleWriteRepository = IBaseWriteRepository<ExampleAggregate>;
+```
+
+### Write Repository - With Additional Methods
+
+If additional methods are needed, use an **interface** that extends the base:
+
+```typescript
+import { ExampleAggregate } from '@/example-context/example/domain/aggregates/example.aggregate';
+import { IBaseWriteRepository } from '@/shared/domain/interfaces/base-write-repository.interface';
+
+export const EXAMPLE_WRITE_REPOSITORY_TOKEN = Symbol('ExampleWriteRepository');
+
+/**
+ * Write repository interface for Example aggregate.
+ * Extends IBaseWriteRepository with additional query methods.
+ */
+export interface ExampleWriteRepository
+  extends IBaseWriteRepository<ExampleAggregate> {
+  findBySlug(slug: string): Promise<ExampleAggregate | null>;
+  findByKey(key: string): Promise<ExampleAggregate | null>;
+}
+```
+
+### Read Repository - Without Additional Methods
+
+If no additional methods are needed, use a **type alias**:
+
+```typescript
+import { ExampleViewModel } from '@/example-context/example/domain/view-models/example.view-model';
+import { IBaseReadRepository } from '@/shared/domain/interfaces/base-read-repository.interface';
+
+export const EXAMPLE_READ_REPOSITORY_TOKEN = Symbol('ExampleReadRepository');
+
+/**
+ * Type alias for the example read repository.
+ * This repository handles read operations (queries) for examples.
+ *
+ * @type IExampleReadRepository
+ */
+export type IExampleReadRepository = IBaseReadRepository<ExampleViewModel>;
+```
+
+### Read Repository - With Additional Methods
+
+If additional methods are needed, use an **interface** that extends the base:
+
+```typescript
+import { Criteria } from '@/shared/domain/entities/criteria';
+import { PaginatedResult } from '@/shared/domain/entities/paginated-result.entity';
+import { ExampleViewModel } from '@/example-context/example/domain/view-models/example.view-model';
+import { IBaseReadRepository } from '@/shared/domain/interfaces/base-read-repository.interface';
+
+export const EXAMPLE_READ_REPOSITORY_TOKEN = Symbol('ExampleReadRepository');
+
+/**
+ * Read repository interface for Example view model.
+ * Extends IBaseReadRepository with additional query methods.
+ */
+export interface ExampleReadRepository
+  extends IBaseReadRepository<ExampleViewModel> {
+  findBySlug(slug: string): Promise<ExampleViewModel | null>;
+  findByStatus(status: string): Promise<ExampleViewModel[]>;
+}
+```
+
+### Rules
+
+- **Always extend base interfaces** - Use `IBaseWriteRepository` or `IBaseReadRepository`
+- **Type alias when no extra methods** - Use `type` alias if only base methods are needed
+- **Interface when extra methods** - Use `interface` when additional methods are required
+- **Include Symbol token** - Always export a Symbol token for dependency injection
+- **String IDs in interfaces** - Base interfaces use `string` for IDs (convert Value Objects in implementations)
+- **Return Aggregates from write repository** - Return Aggregates from write repository
+- **Return ViewModels from read repository** - Return ViewModels from read repository
+- **Handle null cases** - Methods should return `null` when not found
+
+## Factories
+
+### Structure
+
+Factories must:
+
+- Create aggregates from primitives
+- Create view models from aggregates or primitives
+- Validate data before creation
+- Be in separate files: `{entity}-aggregate.factory.ts` and `{entity}-view-model.factory.ts`
+
+### Aggregate Factory
+
+```typescript
+import { ExampleAggregate } from '@/example-context/example/domain/aggregates/example.aggregate';
+import { ExamplePrimitives } from '@/example-context/example/domain/primitives/example.primitives';
+
+export class ExampleAggregateFactory {
+  static fromPrimitives(primitives: ExamplePrimitives): ExampleAggregate {
+    return new ExampleAggregate(
+      {
+        id: new ExampleUuidValueObject(primitives.id),
+        name: new ExampleNameValueObject(primitives.name),
+        createdAt: new DateValueObject(primitives.createdAt),
+        updatedAt: new DateValueObject(primitives.updatedAt),
+      },
+      false, // Don't generate events when creating from primitives
+    );
+  }
+}
+```
+
+### View Model Factory
+
+```typescript
+import { ExampleAggregate } from '@/example-context/example/domain/aggregates/example.aggregate';
+import { ExampleViewModel } from '@/example-context/example/domain/view-models/example.view-model';
+
+export class ExampleViewModelFactory {
+  static fromAggregate(aggregate: ExampleAggregate): ExampleViewModel {
+    const primitives = aggregate.toPrimitives();
+    return new ExampleViewModel(primitives);
+  }
+
+  static fromPrimitives(primitives: ExamplePrimitives): ExampleViewModel {
+    return new ExampleViewModel(primitives);
+  }
+}
+```
+
+### Rules
+
+- **No event generation in factories** - Set `generateEvent: false` when creating from primitives
+- **Validate before creation** - Factories should validate data integrity
+- **Keep factories simple** - They should only create objects, not contain business logic
+
+## Primitives
+
+### Structure
+
+Primitives are TypeScript interfaces/types that represent the serialized form of aggregates:
+
+```typescript
+export interface ExamplePrimitives {
+  id: string;
+  name: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
+```
+
+### Rules
+
+- **Use primitive types only** - `string`, `number`, `boolean`, `Date`, `null`, arrays, objects
+- **Match aggregate structure** - Primitives should mirror aggregate properties
+- **Include timestamps** - Always include `createdAt` and `updatedAt`
+- **Use for serialization** - Primitives are used for database persistence and API responses
+
+## Enums
+
+### Structure
+
+Domain enums must be in the `enums/` directory:
+
+```typescript
+export enum ExampleStatusEnum {
+  ACTIVE = 'ACTIVE',
+  INACTIVE = 'INACTIVE',
+  DELETED = 'DELETED',
+}
+```
+
+### Rules
+
+- **Use string enums** - Prefer string enums over numeric enums
+- **UPPERCASE values** - Use UPPERCASE for enum values
+- **Group by context** - Organize enums by domain context
+
+## Best Practices
+
+### ✅ Good Practices
+
+- Use Value Objects for all domain properties
+- Validate business rules in aggregates
+- Generate domain events for state changes
+- Keep aggregates focused on a single responsibility
+- Use factories to create complex objects
+- Separate read and write repositories
+- Extend base repository interfaces (`IBaseWriteRepository`, `IBaseReadRepository`)
+- Use type aliases when no additional methods are needed
+- Use primitives only for serialization
+
+### ❌ Bad Practices
+
+- Using primitives directly in aggregates (e.g., `string` instead of `NameValueObject`)
+- Exposing private properties directly
+- Mixing business logic in repositories or factories
+- Creating aggregates without proper validation
+- Skipping domain events for state changes
+- Using database entities directly in domain layer
+- Returning primitives from repositories (should return aggregates or view models)
+- Creating repository interfaces without extending base interfaces
+- Defining repository methods that duplicate base interface methods
+
+## Examples
+
+### ✅ Good: Complete Aggregate with Value Objects
+
+```typescript
+export class UserAggregate extends BaseAggregate {
+  private readonly _id: UserUuidValueObject;
+  private _name: UserNameValueObject;
+  private _status: UserStatusValueObject;
+
+  constructor(props: IUserCreateDto, generateEvent: boolean = true) {
+    super(props.createdAt, props.updatedAt);
+    this._id = props.id;
+    this._name = props.name;
+    this._status = props.status;
+
+    if (generateEvent) {
+      this.apply(new UserCreatedEvent(/* ... */));
+    }
+  }
+
+  public get id(): UserUuidValueObject {
+    return this._id;
+  }
+
+  public toPrimitives(): UserPrimitives {
+    return {
+      id: this._id.value,
+      name: this._name.value,
+      status: this._status.value,
+      createdAt: this.createdAt.value,
+      updatedAt: this.updatedAt.value,
+    };
+  }
+}
+```
+
+### ❌ Bad: Aggregate with Primitives
+
+```typescript
+export class UserAggregate extends BaseAggregate {
+  public id: string; // ❌ Should be UserUuidValueObject
+  public name: string; // ❌ Should be UserNameValueObject
+  public status: string; // ❌ Should be UserStatusValueObject
+
+  constructor(id: string, name: string) {
+    // ❌ Should use DTO
+    super(new Date(), new Date()); // ❌ Should use DateValueObject
+    this.id = id;
+    this.name = name;
+  }
+}
+```
+
+### ✅ Good: Value Object with Validation
+
+```typescript
+export class UserNameValueObject extends StringValueObject {
+  constructor(value: string) {
+    super(value, {
+      minLength: 2,
+      maxLength: 50,
+      allowEmpty: false,
+    });
+  }
+}
+```
+
+### ❌ Bad: Value Object without Validation
+
+```typescript
+export class UserNameValueObject {
+  public value: string; // ❌ Should be private with getter
+
+  constructor(value: string) {
+    this.value = value; // ❌ No validation
+  }
+}
+```
+
+### ✅ Good: Write Repository with Type Alias (No Additional Methods)
+
+```typescript
+import { ExampleAggregate } from '@/example-context/example/domain/aggregates/example.aggregate';
+import { IBaseWriteRepository } from '@/shared/domain/interfaces/base-write-repository.interface';
+
+export const EXAMPLE_WRITE_REPOSITORY_TOKEN = Symbol('ExampleWriteRepository');
+
+export type IExampleWriteRepository = IBaseWriteRepository<ExampleAggregate>;
+```
+
+### ✅ Good: Write Repository with Interface (Additional Methods)
+
+```typescript
+import { ExampleAggregate } from '@/example-context/example/domain/aggregates/example.aggregate';
+import { IBaseWriteRepository } from '@/shared/domain/interfaces/base-write-repository.interface';
+
+export const EXAMPLE_WRITE_REPOSITORY_TOKEN = Symbol('ExampleWriteRepository');
+
+export interface ExampleWriteRepository
+  extends IBaseWriteRepository<ExampleAggregate> {
+  findBySlug(slug: string): Promise<ExampleAggregate | null>;
+}
+```
+
+### ❌ Bad: Repository without Base Interface
+
+```typescript
+export interface ExampleWriteRepository {
+  findById(id: string): Promise<ExampleAggregate | null>; // ❌ Duplicates base method
+  save(aggregate: ExampleAggregate): Promise<ExampleAggregate>; // ❌ Duplicates base method
+  delete(id: string): Promise<void>; // ❌ Duplicates base method
+}
+```

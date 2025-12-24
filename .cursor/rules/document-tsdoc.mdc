@@ -1,0 +1,98 @@
+---
+alwaysApply: true
+---
+
+# TSDoc Documentation Rule
+
+Always document TypeScript/JavaScript code using TSDoc format, except for class properties/attributes and symbol tokens.
+
+## Documentation Requirements
+
+### Must Document (with TSDoc):
+
+- **Classes**: Document the class purpose and usage
+- **Interfaces**: Document the interface purpose
+- **Types**: Document type definitions
+- **Functions/Methods**: Document with `@param`, `@returns`, `@throws` when applicable
+- **Enums**: Document enum purpose and individual enum values if needed
+- **Modules/Namespaces**: Document module purpose
+
+### Must NOT Document:
+
+- **Class properties/attributes**: Do not add TSDoc comments to class fields, properties, or attributes. Only document the class itself and its methods.
+- **Symbol tokens**: Do not add TSDoc comments to symbol tokens used for dependency injection or similar purposes (e.g., `Symbol('TokenName')`).
+
+## TSDoc Format Guidelines
+
+- Use `/** */` for TSDoc comments (not `//` or `/* */`)
+- Start with a brief description
+- Use `@param` for function parameters
+- Use `@returns` for return values
+- Use `@throws` for exceptions
+- Use `@example` for code examples when helpful
+- Use `@see` for related documentation
+- Use `@deprecated` for deprecated code
+
+## Examples
+
+### ✅ Good: Documented class and method (but not properties)
+
+```typescript
+/**
+ * Represents a plant in the system.
+ *
+ * @example
+ * const plant = new Plant({ name: 'Rose', species: 'Rosa' });
+ */
+export class Plant {
+  name: string;
+  species: string;
+  status: PlantStatus;
+
+  /**
+   * Creates a new plant instance.
+   *
+   * @param data - The plant data
+   * @returns A new Plant instance
+   */
+  constructor(data: PlantData) {
+    this.name = data.name;
+    this.species = data.species;
+  }
+
+  /**
+   * Updates the plant status.
+   *
+   * @param newStatus - The new status to set
+   * @throws {Error} If the status transition is invalid
+   */
+  updateStatus(newStatus: PlantStatus): void {
+    // implementation
+  }
+}
+```
+
+### ❌ Bad: Documented class properties
+
+```typescript
+export class Plant {
+  /** The name of the plant */
+  name: string;
+
+  /** The species of the plant */
+  species: string;
+}
+```
+
+### ✅ Good: Symbol token without documentation
+
+```typescript
+export const PLANT_REPOSITORY_TOKEN = Symbol('PlantRepository');
+```
+
+### ❌ Bad: Documented symbol token
+
+```typescript
+/** Token for PlantRepository dependency injection */
+export const PLANT_REPOSITORY_TOKEN = Symbol('PlantRepository');
+```

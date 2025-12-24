@@ -136,4 +136,28 @@ export class StorageMutationsResolver {
       ids: input.ids,
     });
   }
+
+  @Mutation(() => MutationResponseDto)
+  @TenantRoles(
+    TenantMemberRoleEnum.OWNER,
+    TenantMemberRoleEnum.ADMIN,
+    TenantMemberRoleEnum.MEMBER,
+  )
+  async test(): Promise<MutationResponseDto> {
+    this.logger.log('Testing...');
+
+    await this.commandBus.execute(
+      new StorageUploadFileCommand({
+        buffer: Buffer.from('test'),
+        fileName: 'test.txt',
+        mimetype: 'text/plain',
+        size: 100,
+      }),
+    );
+
+    return this.mutationResponseGraphQLMapper.toResponseDto({
+      success: true,
+      message: 'Test successful',
+    });
+  }
 }

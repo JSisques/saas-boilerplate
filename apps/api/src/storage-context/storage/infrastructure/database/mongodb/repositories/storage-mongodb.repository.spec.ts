@@ -1,21 +1,20 @@
 import { StorageMongoRepository } from '@/storage-context/storage/infrastructure/database/mongodb/repositories/storage-mongodb.repository';
 import { StorageMongoDBMapper } from '@/storage-context/storage/infrastructure/database/mongodb/mappers/storage-mongodb.mapper';
 import { StorageViewModel } from '@/storage-context/storage/domain/view-models/storage.view-model';
-import { MongoTenantService } from '@/shared/infrastructure/database/mongodb/services/mongo-tenant/mongo-tenant.service';
+import { MongoMasterService } from '@/shared/infrastructure/database/mongodb/services/mongo-master/mongo-master.service';
 import { TenantContextService } from '@/shared/infrastructure/services/tenant-context/tenant-context.service';
 import { Criteria } from '@/shared/domain/entities/criteria';
 import { PaginatedResult } from '@/shared/domain/entities/paginated-result.entity';
 import { StorageMongoDbDto } from '@/storage-context/storage/infrastructure/database/mongodb/dtos/storage-mongodb.dto';
 import { StorageProviderEnum } from '@/storage-context/storage/domain/enums/storage-provider.enum';
-import { Db, Collection } from 'mongodb';
+import { Collection } from 'mongodb';
 
 describe('StorageMongoRepository', () => {
   let repository: StorageMongoRepository;
-  let mockMongoTenantService: jest.Mocked<MongoTenantService>;
+  let mockMongoMasterService: jest.Mocked<MongoMasterService>;
   let mockTenantContextService: jest.Mocked<TenantContextService>;
   let mockStorageMongoDBMapper: jest.Mocked<StorageMongoDBMapper>;
   let mockCollection: jest.Mocked<Collection>;
-  let mockDb: jest.Mocked<Db>;
 
   beforeEach(async () => {
     mockCollection = {
@@ -30,13 +29,9 @@ describe('StorageMongoRepository', () => {
       toArray: jest.fn(),
     } as unknown as jest.Mocked<Collection>;
 
-    mockDb = {
-      collection: jest.fn().mockReturnValue(mockCollection),
-    } as unknown as jest.Mocked<Db>;
-
-    mockMongoTenantService = {
-      getTenantDatabase: jest.fn().mockResolvedValue(mockDb),
-    } as unknown as jest.Mocked<MongoTenantService>;
+    mockMongoMasterService = {
+      getCollection: jest.fn().mockReturnValue(mockCollection),
+    } as unknown as jest.Mocked<MongoMasterService>;
 
     mockTenantContextService = {
       getTenantIdOrThrow: jest.fn().mockReturnValue('test-tenant-123'),
@@ -48,7 +43,7 @@ describe('StorageMongoRepository', () => {
     } as unknown as jest.Mocked<StorageMongoDBMapper>;
 
     repository = new StorageMongoRepository(
-      mockMongoTenantService,
+      mockMongoMasterService,
       mockTenantContextService,
       mockStorageMongoDBMapper,
     );
@@ -65,6 +60,7 @@ describe('StorageMongoRepository', () => {
 
       const mongoDoc: StorageMongoDbDto = {
         id: storageId,
+        tenantId: 'test-tenant-123',
         fileName: 'test-file.pdf',
         fileSize: 1024,
         mimeType: 'application/pdf',
@@ -93,10 +89,16 @@ describe('StorageMongoRepository', () => {
       const result = await repository.findById(storageId);
 
       expect(result).toBe(storageViewModel);
-      expect(mockDb.collection).toHaveBeenCalledWith('storages');
-      expect(mockCollection.findOne).toHaveBeenCalledWith({ id: storageId });
+      expect(mockMongoMasterService.getCollection).toHaveBeenCalledWith(
+        'storages',
+      );
+      expect(mockCollection.findOne).toHaveBeenCalledWith({
+        id: storageId,
+        tenantId: 'test-tenant-123',
+      });
       expect(mockStorageMongoDBMapper.toViewModel).toHaveBeenCalledWith({
         id: storageId,
+        tenantId: 'test-tenant-123',
         fileName: 'test-file.pdf',
         fileSize: 1024,
         mimeType: 'application/pdf',
@@ -116,7 +118,10 @@ describe('StorageMongoRepository', () => {
       const result = await repository.findById(storageId);
 
       expect(result).toBeNull();
-      expect(mockCollection.findOne).toHaveBeenCalledWith({ id: storageId });
+      expect(mockCollection.findOne).toHaveBeenCalledWith({
+        id: storageId,
+        tenantId: 'test-tenant-123',
+      });
       expect(mockStorageMongoDBMapper.toViewModel).not.toHaveBeenCalled();
     });
   });
@@ -129,6 +134,7 @@ describe('StorageMongoRepository', () => {
       const mongoDocs: StorageMongoDbDto[] = [
         {
           id: '123e4567-e89b-12d3-a456-426614174000',
+          tenantId: 'test-tenant-123',
           fileName: 'file1.pdf',
           fileSize: 1024,
           mimeType: 'application/pdf',
@@ -140,6 +146,7 @@ describe('StorageMongoRepository', () => {
         },
         {
           id: '223e4567-e89b-12d3-a456-426614174001',
+          tenantId: 'test-tenant-123',
           fileName: 'file2.pdf',
           fileSize: 2048,
           mimeType: 'application/pdf',
@@ -231,6 +238,7 @@ describe('StorageMongoRepository', () => {
 
       const mongoData: StorageMongoDbDto = {
         id: storageId,
+        tenantId: 'test-tenant-123',
         fileName: 'test-file.pdf',
         fileSize: 1024,
         mimeType: 'application/pdf',
@@ -256,8 +264,8 @@ describe('StorageMongoRepository', () => {
         storageViewModel,
       );
       expect(mockCollection.replaceOne).toHaveBeenCalledWith(
-        { id: storageId },
-        mongoData,
+        { id: storageId, tenantId: 'test-tenant-123' },
+        { ...mongoData, tenantId: 'test-tenant-123' },
         { upsert: true },
       );
     });
@@ -275,7 +283,10 @@ describe('StorageMongoRepository', () => {
       const result = await repository.delete(storageId);
 
       expect(result).toBe(true);
-      expect(mockCollection.deleteOne).toHaveBeenCalledWith({ id: storageId });
+      expect(mockCollection.deleteOne).toHaveBeenCalledWith({
+        id: storageId,
+        tenantId: 'test-tenant-123',
+      });
     });
   });
 });

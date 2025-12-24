@@ -24,6 +24,7 @@ export class StorageMongoDBMapper {
 
     return this.storageViewModelFactory.create({
       id: doc.id,
+      tenantId: doc.tenantId,
       fileName: doc.fileName,
       fileSize: doc.fileSize,
       mimeType: doc.mimeType,
@@ -48,6 +49,7 @@ export class StorageMongoDBMapper {
 
     return {
       id: storageViewModel.id,
+      tenantId: storageViewModel.tenantId,
       fileName: storageViewModel.fileName,
       fileSize: storageViewModel.fileSize,
       mimeType: storageViewModel.mimeType,
