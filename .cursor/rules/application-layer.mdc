@@ -1,0 +1,689 @@
+---
+alwaysApply: true
+---
+
+# Application Layer Architecture Rule
+
+Always implement the application layer following CQRS (Command Query Responsibility Segregation) pattern with commands, queries, event handlers, services, DTOs, and exceptions.
+
+## Application Layer Structure
+
+The application layer must be organized in the following structure:
+
+```
+application/
+├── commands/            # Command handlers (write operations)
+│   ├── {entity}-create/
+│   ├── {entity}-update/
+│   └── {entity}-delete/
+├── queries/             # Query handlers (read operations)
+│   ├── {entity}-find-by-id/
+│   ├── {entity}-view-model-find-by-id/
+│   └── find-{entities}-by-criteria/
+├── event-handlers/      # Event handlers (async event processing)
+│   ├── {entity}-created/
+│   ├── {entity}-updated/
+│   └── {entity}-deleted/
+├── services/           # Application services (business logic)
+│   ├── assert-{entity}-exists/
+│   ├── assert-{entity}-view-model-exists/
+│   └── assert-{entity}-{property}-is-unique/
+├── dtos/               # Data Transfer Objects
+│   ├── commands/
+│   └── queries/
+└── exceptions/         # Application exceptions
+    └── {entity}-not-found/
+```
+
+## Commands
+
+### Structure
+
+Commands represent write operations that modify state. Each command must:
+
+- Be a class with readonly properties
+- Use Value Objects for all properties (never primitives)
+- Accept a DTO in the constructor
+- Be in a folder: `{entity}-{action}/`
+
+### Command Class
+
+```typescript
+import { ExampleUuidValueObject } from '@/shared/domain/value-objects/identifiers/example-uuid/example-uuid.vo';
+import { ExampleNameValueObject } from '@/example-context/example/domain/value-objects/example-name/example-name.vo';
+import { IExampleCreateCommandDto } from '@/example-context/example/application/dtos/commands/example-create/example-create-command.dto';
+
+export class ExampleCreateCommand {
+  readonly id: ExampleUuidValueObject;
+  readonly name: ExampleNameValueObject;
+
+  constructor(props: IExampleCreateCommandDto) {
+    this.id = new ExampleUuidValueObject();
+    this.name = new ExampleNameValueObject(props.name);
+  }
+}
+```
+
+### Command Handler
+
+Command handlers must:
+
+- Implement `ICommandHandler<CommandType>` from `@nestjs/cqrs`
+- Use `@CommandHandler(CommandClass)` decorator
+- Inject repositories using Symbol tokens
+- Use factories to create aggregates
+- Publish events via `EventBus.publishAll()`
+- Return primitive values (e.g., `string` for IDs)
+
+```typescript
+import { DateValueObject } from '@/shared/domain/value-objects/date/date.vo';
+import { ExampleAggregateFactory } from '@/example-context/example/domain/factories/example-aggregate/example-aggregate.factory';
+import {
+  EXAMPLE_WRITE_REPOSITORY_TOKEN,
+  ExampleWriteRepository,
+} from '@/example-context/example/domain/repositories/example-write.repository';
+import { Inject } from '@nestjs/common';
+import { CommandHandler, EventBus, ICommandHandler } from '@nestjs/cqrs';
+import { ExampleCreateCommand } from './example-create.command';
+
+@CommandHandler(ExampleCreateCommand)
+export class ExampleCreateCommandHandler
+  implements ICommandHandler<ExampleCreateCommand>
+{
+  constructor(
+    @Inject(EXAMPLE_WRITE_REPOSITORY_TOKEN)
+    private readonly exampleWriteRepository: ExampleWriteRepository,
+    private readonly eventBus: EventBus,
+    private readonly exampleAggregateFactory: ExampleAggregateFactory,
+  ) {}
+
+  /**
+   * Executes the example create command
+   *
+   * @param command - The command to execute
+   * @returns The created example id
+   */
+  async execute(command: ExampleCreateCommand): Promise<string> {
+    // 01: Create the example entity
+    const now = new Date();
+    const example = this.exampleAggregateFactory.create({
+      ...command,
+      createdAt: new DateValueObject(now),
+      updatedAt: new DateValueObject(now),
+    });
+
+    // 02: Save the example entity
+    await this.exampleWriteRepository.save(example);
+
+    // 03: Publish all events
+    await this.eventBus.publishAll(example.getUncommittedEvents());
+
+    // 04: Return the example id
+    return example.id.value;
+  }
+}
+```
+
+### Rules
+
+- **Use Value Objects in commands** - Never use primitives directly
+- **Inject repositories with Symbol tokens** - Use `@Inject(REPOSITORY_TOKEN)`
+- **Use factories to create aggregates** - Don't create aggregates directly
+- **Publish events after saving** - Use `eventBus.publishAll(aggregate.getUncommittedEvents())`
+- **Return primitive values** - Return `string` for IDs, not Value Objects
+- **Number steps with comments** - Use `// 01:`, `// 02:`, etc. to organize logic
+
+## Queries
+
+### Structure
+
+Queries represent read operations that don't modify state. Each query must:
+
+- Be a class with readonly properties
+- Use Value Objects for IDs
+- Accept a DTO in the constructor
+- Be in a folder: `{entity}-find-by-{criteria}/`, `{entity}-view-model-find-by-id/`, or `find-{entities}-by-criteria/`
+
+### Query Class
+
+```typescript
+import { ExampleUuidValueObject } from '@/shared/domain/value-objects/identifiers/example-uuid/example-uuid.vo';
+import { IExampleFindByIdQueryDto } from '@/example-context/example/application/dtos/queries/example-find-by-id/example-find-by-id-query.dto';
+
+export class ExampleFindByIdQuery {
+  readonly id: ExampleUuidValueObject;
+
+  constructor(props: IExampleFindByIdQueryDto) {
+    this.id = new ExampleUuidValueObject(props.id);
+  }
+}
+```
+
+### Query Class for ViewModels
+
+For queries that return ViewModels:
+
+```typescript
+import { ExampleUuidValueObject } from '@/shared/domain/value-objects/identifiers/example-uuid/example-uuid.vo';
+import { IExampleFindByIdQueryDto } from '@/example-context/example/application/dtos/queries/example-view-model-find-by-id/example-view-model-find-by-id-query.dto';
+
+export class ExampleViewModelFindByIdQuery {
+  readonly id: ExampleUuidValueObject;
+
+  constructor(props: IExampleFindByIdQueryDto) {
+    this.id = new ExampleUuidValueObject(props.id);
+  }
+}
+```
+
+### Query Handler
+
+Query handlers must:
+
+- Implement `IQueryHandler<QueryType>` from `@nestjs/cqrs`
+- Use `@QueryHandler(QueryClass)` decorator
+- Inject repositories using Symbol tokens
+- Return ViewModels or Aggregates (not primitives)
+- Use read repositories for queries
+
+```typescript
+import { ExampleFindByIdQuery } from '@/example-context/example/application/queries/example-find-by-id/example-find-by-id.query';
+import { AssertExampleExistsService } from '@/example-context/example/application/services/assert-example-exists/assert-example-exists.service';
+import { ExampleAggregate } from '@/example-context/example/domain/aggregates/example.aggregate';
+import { Logger } from '@nestjs/common';
+import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
+
+@QueryHandler(ExampleFindByIdQuery)
+export class ExampleFindByIdQueryHandler
+  implements IQueryHandler<ExampleFindByIdQuery>
+{
+  private readonly logger = new Logger(ExampleFindByIdQueryHandler.name);
+
+  constructor(
+    private readonly assertExampleExistsService: AssertExampleExistsService,
+  ) {}
+
+  /**
+   * Executes the ExampleFindByIdQuery query.
+   *
+   * @param query - The ExampleFindByIdQuery query to execute.
+   * @returns The ExampleAggregate if found.
+   */
+  async execute(query: ExampleFindByIdQuery): Promise<ExampleAggregate> {
+    this.logger.log(`Executing example find by id query: ${query.id.value}`);
+
+    // 01: Find the example by id
+    return await this.assertExampleExistsService.execute(query.id.value);
+  }
+}
+```
+
+### Query Handler for ViewModels
+
+For queries that return ViewModels, use assert services to validate existence:
+
+```typescript
+import { ExampleViewModelFindByIdQuery } from '@/example-context/example/application/queries/example-view-model-find-by-id/example-view-model-find-by-id.query';
+import { AssertExampleViewModelExistsService } from '@/example-context/example/application/services/assert-example-view-model-exists/assert-example-view-model-exists.service';
+import { ExampleViewModel } from '@/example-context/example/domain/view-models/example.view-model';
+import { Logger } from '@nestjs/common';
+import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
+
+@QueryHandler(ExampleViewModelFindByIdQuery)
+export class ExampleViewModelFindByIdQueryHandler
+  implements IQueryHandler<ExampleViewModelFindByIdQuery>
+{
+  private readonly logger = new Logger(
+    ExampleViewModelFindByIdQueryHandler.name,
+  );
+
+  constructor(
+    private readonly assertExampleViewModelExistsService: AssertExampleViewModelExistsService,
+  ) {}
+
+  /**
+   * Executes the ExampleViewModelFindByIdQuery query.
+   *
+   * @param query - The ExampleViewModelFindByIdQuery query to execute.
+   * @returns The ExampleViewModel if found.
+   */
+  async execute(
+    query: ExampleViewModelFindByIdQuery,
+  ): Promise<ExampleViewModel> {
+    this.logger.log(
+      `Executing example view model find by id query: ${query.id.value}`,
+    );
+
+    // 01: Find the example view model by id
+    return await this.assertExampleViewModelExistsService.execute(
+      query.id.value,
+    );
+  }
+}
+```
+
+### Rules
+
+- **Use read repositories for queries** - Never use write repositories for queries
+- **Return ViewModels or Aggregates** - Never return primitives
+- **Use services for validation** - Use assert services to check existence
+- **Use assert-view-model-exists for ViewModel queries** - Always use assert services for ViewModel queries
+- **Log query execution** - Use Logger for debugging
+
+## Event Handlers
+
+### Structure
+
+Event handlers process domain events asynchronously. Each event handler must:
+
+- Implement `IEventHandler<EventType>` from `@nestjs/cqrs`
+- Use `@EventsHandler(EventClass)` decorator
+- Update read models (ViewModels) in MongoDB
+- Be in a folder: `{entity}-{event-action}/`
+
+### Event Handler
+
+```typescript
+import { ExampleCreatedEvent } from '@/shared/domain/events/examples/example-created/example-created.event';
+import { ExampleViewModelFactory } from '@/example-context/example/domain/factories/example-view-model/example-view-model.factory';
+import {
+  EXAMPLE_READ_REPOSITORY_TOKEN,
+  ExampleReadRepository,
+} from '@/example-context/example/domain/repositories/example-read.repository';
+import { ExampleViewModel } from '@/example-context/example/domain/view-models/example.view-model';
+import { Inject, Logger } from '@nestjs/common';
+import { EventsHandler, IEventHandler } from '@nestjs/cqrs';
+
+@EventsHandler(ExampleCreatedEvent)
+export class ExampleCreatedEventHandler
+  implements IEventHandler<ExampleCreatedEvent>
+{
+  private readonly logger = new Logger(ExampleCreatedEventHandler.name);
+
+  constructor(
+    @Inject(EXAMPLE_READ_REPOSITORY_TOKEN)
+    private readonly exampleReadRepository: ExampleReadRepository,
+    private readonly exampleViewModelFactory: ExampleViewModelFactory,
+  ) {}
+
+  /**
+   * Handles the ExampleCreatedEvent event by creating a new example view model.
+   *
+   * @param event - The ExampleCreatedEvent event to handle.
+   */
+  async handle(event: ExampleCreatedEvent) {
+    this.logger.log(`Handling example created event: ${event.aggregateId}`);
+
+    this.logger.debug(
+      `Example created event data: ${JSON.stringify(event.data)}`,
+    );
+
+    // 01: Create the example view model
+    const exampleViewModel: ExampleViewModel =
+      this.exampleViewModelFactory.fromPrimitives(event.data);
+
+    // 02: Save the example view model
+    await this.exampleReadRepository.save(exampleViewModel);
+  }
+}
+```
+
+### Rules
+
+- **Update read models only** - Event handlers update ViewModels, not Aggregates
+- **Use factories to create ViewModels** - Don't create ViewModels directly
+- **Log event handling** - Use Logger for debugging
+- **Handle errors gracefully** - Event handlers should not throw (use try-catch if needed)
+
+## Services
+
+### Structure
+
+Application services contain reusable business logic. Each service must:
+
+- Implement `IBaseService<TInput, TOutput>` from `@/shared/application/services`
+- Use `@Injectable()` decorator
+- Have a single `execute()` method
+- Be in a folder: `assert-{entity}-{action}/`
+
+### Service
+
+```typescript
+import { IBaseService } from '@/shared/application/services/base-service/base-service.interface';
+import { ExampleNotFoundException } from '@/example-context/example/application/exceptions/example-not-found/example-not-found.exception';
+import { ExampleAggregate } from '@/example-context/example/domain/aggregates/example.aggregate';
+import {
+  EXAMPLE_WRITE_REPOSITORY_TOKEN,
+  ExampleWriteRepository,
+} from '@/example-context/example/domain/repositories/example-write.repository';
+import { Inject, Injectable, Logger } from '@nestjs/common';
+
+@Injectable()
+export class AssertExampleExistsService
+  implements IBaseService<string, ExampleAggregate>
+{
+  private readonly logger = new Logger(AssertExampleExistsService.name);
+
+  constructor(
+    @Inject(EXAMPLE_WRITE_REPOSITORY_TOKEN)
+    private readonly exampleWriteRepository: ExampleWriteRepository,
+  ) {}
+
+  /**
+   * Asserts that an example exists by id.
+   *
+   * @param id - The example id
+   * @returns The example aggregate if found
+   * @throws {ExampleNotFoundException} If the example does not exist
+   */
+  async execute(id: string): Promise<ExampleAggregate> {
+    this.logger.log(`Asserting example exists by id: ${id}`);
+
+    // 01: Find the example by id
+    const existingExample = await this.exampleWriteRepository.findById(id);
+
+    // 02: If the example does not exist, throw an error
+    if (!existingExample) {
+      this.logger.error(`Example not found by id: ${id}`);
+      throw new ExampleNotFoundException(id);
+    }
+
+    return existingExample;
+  }
+}
+```
+
+### Service for ViewModels
+
+For services that assert ViewModel existence:
+
+```typescript
+import { IBaseService } from '@/shared/application/services/base-service/base-service.interface';
+import { ExampleNotFoundException } from '@/example-context/example/application/exceptions/example-not-found/example-not-found.exception';
+import {
+  EXAMPLE_READ_REPOSITORY_TOKEN,
+  ExampleReadRepository,
+} from '@/example-context/example/domain/repositories/example-read.repository';
+import { ExampleViewModel } from '@/example-context/example/domain/view-models/example.view-model';
+import { Inject, Injectable, Logger } from '@nestjs/common';
+
+@Injectable()
+export class AssertExampleViewModelExistsService
+  implements IBaseService<string, ExampleViewModel>
+{
+  private readonly logger = new Logger(
+    AssertExampleViewModelExistsService.name,
+  );
+
+  constructor(
+    @Inject(EXAMPLE_READ_REPOSITORY_TOKEN)
+    private readonly exampleReadRepository: ExampleReadRepository,
+  ) {}
+
+  /**
+   * Asserts that an example view model exists by id.
+   *
+   * @param id - The example id
+   * @returns The example view model if found
+   * @throws {ExampleNotFoundException} If the example view model does not exist
+   */
+  async execute(id: string): Promise<ExampleViewModel> {
+    this.logger.log(`Asserting example view model exists by id: ${id}`);
+
+    // 01: Find the example view model by id
+    const existingExampleViewModel =
+      await this.exampleReadRepository.findById(id);
+
+    // 02: If the example view model does not exist, throw an error
+    if (!existingExampleViewModel) {
+      this.logger.error(`Example view model not found by id: ${id}`);
+      throw new ExampleNotFoundException(id);
+    }
+
+    return existingExampleViewModel;
+  }
+}
+```
+
+### Rules
+
+- **Single responsibility** - Each service should do one thing
+- **Use IBaseService interface** - Always implement `IBaseService<TInput, TOutput>`
+- **Use write repository for aggregates** - Use write repository in assert-{entity}-exists services
+- **Use read repository for view models** - Use read repository in assert-{entity}-view-model-exists services
+- **Throw domain exceptions** - Use application exceptions for errors
+- **Log operations** - Use Logger for debugging
+
+## DTOs
+
+### Structure
+
+DTOs (Data Transfer Objects) are interfaces that define the shape of data passed between layers. DTOs must:
+
+- Be interfaces (not classes)
+- Use primitive types only (`string`, `number`, `boolean`, `Date`, `null`)
+- Be in folders: `dtos/commands/{entity}-{action}/` or `dtos/queries/{entity}-{action}/`
+- Follow naming: `I{Entity}{Action}CommandDto` or `I{Entity}{Action}QueryDto`
+
+### Command DTO
+
+```typescript
+/**
+ * Data Transfer Object for creating a new example via command layer.
+ *
+ * @interface IExampleCreateCommandDto
+ * @property {string | null} name - The name of the example. Can be null if not provided.
+ */
+export interface IExampleCreateCommandDto {
+  name: string | null;
+}
+```
+
+### Query DTO
+
+```typescript
+/**
+ * Data Transfer Object for finding an example by id via query layer.
+ *
+ * @interface IExampleFindByIdQueryDto
+ * @property {string} id - The id of the example to find.
+ */
+export interface IExampleFindByIdQueryDto {
+  id: string;
+}
+```
+
+### Rules
+
+- **Primitive types only** - Never use Value Objects or Aggregates in DTOs
+- **Document with TSDoc** - Always document DTOs with property descriptions
+- **Use nullable types** - Use `| null` for optional properties
+- **Separate command and query DTOs** - Keep DTOs in separate folders
+
+## Exceptions
+
+### Structure
+
+Application exceptions represent application-layer errors. Each exception must:
+
+- Extend `BaseApplicationException` from `@/shared/application/exceptions`
+- Be in a folder: `{entity}-{error-type}/`
+- Follow naming: `{Entity}{ErrorType}Exception`
+
+### Exception
+
+```typescript
+import { BaseApplicationException } from '@/shared/application/exceptions/base-application/base-application.exception';
+
+export class ExampleNotFoundException extends BaseApplicationException {
+  constructor(exampleId: string) {
+    super(`Example with id ${exampleId} not found`);
+  }
+}
+```
+
+### Rules
+
+- **Extend BaseApplicationException** - Always extend the base exception
+- **Descriptive messages** - Include relevant context in error messages
+- **One exception per error type** - Don't reuse exceptions for different errors
+
+## Best Practices
+
+### ✅ Good Practices
+
+- Use Value Objects in commands and queries
+- Inject repositories with Symbol tokens
+- Use factories to create aggregates and ViewModels
+- Publish events after saving aggregates
+- Return primitive values from command handlers
+- Return ViewModels or Aggregates from query handlers
+- Use services for reusable business logic
+- Log important operations
+- Document DTOs with TSDoc
+- Use application exceptions for errors
+
+### ❌ Bad Practices
+
+- Using primitives directly in commands/queries (should use Value Objects)
+- Creating aggregates directly (should use factories)
+- Forgetting to publish events after saving
+- Using write repositories for queries (should use read repositories)
+- Returning Value Objects from handlers (should return primitives)
+- Mixing business logic in handlers (should use services)
+- Creating exceptions without extending BaseApplicationException
+- Using classes instead of interfaces for DTOs
+
+## Examples
+
+### ✅ Good: Command Handler
+
+```typescript
+@CommandHandler(ExampleCreateCommand)
+export class ExampleCreateCommandHandler
+  implements ICommandHandler<ExampleCreateCommand>
+{
+  constructor(
+    @Inject(EXAMPLE_WRITE_REPOSITORY_TOKEN)
+    private readonly exampleWriteRepository: ExampleWriteRepository,
+    private readonly eventBus: EventBus,
+    private readonly exampleAggregateFactory: ExampleAggregateFactory,
+  ) {}
+
+  async execute(command: ExampleCreateCommand): Promise<string> {
+    const now = new Date();
+    const example = this.exampleAggregateFactory.create({
+      ...command,
+      createdAt: new DateValueObject(now),
+      updatedAt: new DateValueObject(now),
+    });
+
+    await this.exampleWriteRepository.save(example);
+    await this.eventBus.publishAll(example.getUncommittedEvents());
+
+    return example.id.value;
+  }
+}
+```
+
+### ❌ Bad: Command Handler
+
+```typescript
+@CommandHandler(ExampleCreateCommand)
+export class ExampleCreateCommandHandler {
+  constructor(
+    private readonly exampleWriteRepository: ExampleWriteRepository, // ❌ No Symbol token
+  ) {}
+
+  async execute(
+    command: ExampleCreateCommand,
+  ): Promise<ExampleUuidValueObject> {
+    // ❌ Should return string
+    const example = new ExampleAggregate({
+      // ❌ Should use factory
+      id: command.id,
+      name: command.name, // ❌ Should use Value Objects
+      createdAt: new Date(), // ❌ Should use DateValueObject
+      updatedAt: new Date(),
+    });
+
+    await this.exampleWriteRepository.save(example);
+    // ❌ Missing event publishing
+
+    return example.id; // ❌ Should return primitive
+  }
+}
+```
+
+### ✅ Good: Query Handler
+
+```typescript
+@QueryHandler(ExampleFindByIdQuery)
+export class ExampleFindByIdQueryHandler
+  implements IQueryHandler<ExampleFindByIdQuery>
+{
+  constructor(
+    @Inject(EXAMPLE_READ_REPOSITORY_TOKEN)
+    private readonly exampleReadRepository: ExampleReadRepository,
+  ) {}
+
+  async execute(query: ExampleFindByIdQuery): Promise<ExampleViewModel | null> {
+    return this.exampleReadRepository.findById(query.id.value);
+  }
+}
+```
+
+### ❌ Bad: Query Handler
+
+```typescript
+@QueryHandler(ExampleFindByIdQuery)
+export class ExampleFindByIdQueryHandler {
+  constructor(
+    private readonly exampleWriteRepository: ExampleWriteRepository, // ❌ Should use read repository
+  ) {}
+
+  async execute(query: ExampleFindByIdQuery): Promise<ExamplePrimitives> {
+    // ❌ Should return ViewModel
+    const aggregate = await this.exampleWriteRepository.findById(
+      query.id.value,
+    );
+    return aggregate.toPrimitives(); // ❌ Should return ViewModel, not primitives
+  }
+}
+```
+
+### ✅ Good: Event Handler
+
+```typescript
+@EventsHandler(ExampleCreatedEvent)
+export class ExampleCreatedEventHandler
+  implements IEventHandler<ExampleCreatedEvent>
+{
+  constructor(
+    @Inject(EXAMPLE_READ_REPOSITORY_TOKEN)
+    private readonly exampleReadRepository: ExampleReadRepository,
+    private readonly exampleViewModelFactory: ExampleViewModelFactory,
+  ) {}
+
+  async handle(event: ExampleCreatedEvent) {
+    const viewModel = this.exampleViewModelFactory.fromPrimitives(event.data);
+    await this.exampleReadRepository.save(viewModel);
+  }
+}
+```
+
+### ❌ Bad: Event Handler
+
+```typescript
+@EventsHandler(ExampleCreatedEvent)
+export class ExampleCreatedEventHandler {
+  constructor(
+    private readonly exampleWriteRepository: ExampleWriteRepository, // ❌ Should use read repository
+  ) {}
+
+  async handle(event: ExampleCreatedEvent) {
+    const aggregate = new ExampleAggregate(event.data); // ❌ Should create ViewModel, not Aggregate
+    await this.exampleWriteRepository.save(aggregate); // ❌ Should save ViewModel to read repository
+  }
+}
+```

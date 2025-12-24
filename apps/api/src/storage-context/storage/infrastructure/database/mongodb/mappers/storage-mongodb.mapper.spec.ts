@@ -29,6 +29,7 @@ describe('StorageMongoDBMapper', () => {
 
       const mongoDoc: StorageMongoDbDto = {
         id: storageId,
+        tenantId: 'test-tenant-123',
         fileName: 'test-file.pdf',
         fileSize: 1024,
         mimeType: 'application/pdf',
@@ -51,6 +52,7 @@ describe('StorageMongoDBMapper', () => {
       expect(result).toBe(mockStorageViewModel);
       expect(mockStorageViewModelFactory.create).toHaveBeenCalledWith({
         id: storageId,
+        tenantId: 'test-tenant-123',
         fileName: 'test-file.pdf',
         fileSize: 1024,
         mimeType: 'application/pdf',
@@ -69,6 +71,7 @@ describe('StorageMongoDBMapper', () => {
 
       const mongoDoc: StorageMongoDbDto = {
         id: storageId,
+        tenantId: 'test-tenant-123',
         fileName: 'test-file.pdf',
         fileSize: 1024,
         mimeType: 'application/pdf',
@@ -100,6 +103,7 @@ describe('StorageMongoDBMapper', () => {
 
       const mongoDoc: StorageMongoDbDto = {
         id: storageId,
+        tenantId: 'test-tenant-123',
         fileName: 'test-file.pdf',
         fileSize: 1024,
         mimeType: 'application/pdf',
@@ -134,6 +138,7 @@ describe('StorageMongoDBMapper', () => {
 
       const storageViewModel = new StorageViewModel({
         id: storageId,
+        tenantId: 'test-tenant-123',
         fileName: 'test-file.pdf',
         fileSize: 1024,
         mimeType: 'application/pdf',
@@ -148,6 +153,7 @@ describe('StorageMongoDBMapper', () => {
 
       expect(result).toEqual({
         id: storageId,
+        tenantId: 'test-tenant-123',
         fileName: 'test-file.pdf',
         fileSize: 1024,
         mimeType: 'application/pdf',
@@ -165,6 +171,7 @@ describe('StorageMongoDBMapper', () => {
 
       const storageViewModel = new StorageViewModel({
         id: storageId,
+        tenantId: 'test-tenant-123',
         fileName: 'test-file.pdf',
         fileSize: 1024,
         mimeType: 'application/pdf',

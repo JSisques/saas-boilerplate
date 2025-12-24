@@ -1,7 +1,7 @@
 import { Criteria } from '@/shared/domain/entities/criteria';
 import { PaginatedResult } from '@/shared/domain/entities/paginated-result.entity';
 import { BaseMongoTenantRepository } from '@/shared/infrastructure/database/mongodb/base-mongo/base-mongo-tenant/base-mongo-tenant.repository';
-import { MongoTenantService } from '@/shared/infrastructure/database/mongodb/services/mongo-tenant/mongo-tenant.service';
+import { MongoMasterService } from '@/shared/infrastructure/database/mongodb/services/mongo-master/mongo-master.service';
 import { TenantContextService } from '@/shared/infrastructure/services/tenant-context/tenant-context.service';
 import { StorageReadRepository } from '@/storage-context/storage/domain/repositories/storage-read.repository';
 import { StorageViewModel } from '@/storage-context/storage/domain/view-models/storage.view-model';
@@ -16,11 +16,11 @@ export class StorageMongoRepository
   private readonly collectionName = 'storages';
 
   constructor(
-    mongoTenantService: MongoTenantService,
+    mongoMasterService: MongoMasterService,
     tenantContextService: TenantContextService,
     private readonly storageMongoDBMapper: StorageMongoDBMapper,
   ) {
-    super(mongoTenantService, tenantContextService);
+    super(mongoMasterService, tenantContextService);
     this.logger = new Logger(StorageMongoRepository.name);
   }
 
@@ -33,22 +33,21 @@ export class StorageMongoRepository
   async findById(id: string): Promise<StorageViewModel | null> {
     this.logger.log(`Finding storage by id: ${id}`);
 
-    const database = await this.getTenantDatabase();
-    const storageViewModel = await database
-      .collection(this.collectionName)
-      .findOne({ id });
+    const collection = this.getCollection(this.collectionName);
+    const doc = await this.findOneById(collection, id);
 
-    return storageViewModel
+    return doc
       ? this.storageMongoDBMapper.toViewModel({
-          id: storageViewModel.id,
-          fileName: storageViewModel.fileName,
-          fileSize: storageViewModel.fileSize,
-          mimeType: storageViewModel.mimeType,
-          provider: storageViewModel.provider,
-          url: storageViewModel.url,
-          path: storageViewModel.path,
-          createdAt: storageViewModel.createdAt,
-          updatedAt: storageViewModel.updatedAt,
+          id: doc.id,
+          tenantId: doc.tenantId,
+          fileName: doc.fileName,
+          fileSize: doc.fileSize,
+          mimeType: doc.mimeType,
+          provider: doc.provider,
+          url: doc.url,
+          path: doc.path,
+          createdAt: doc.createdAt,
+          updatedAt: doc.updatedAt,
         })
       : null;
   }
@@ -66,11 +65,10 @@ export class StorageMongoRepository
       `Finding storages by criteria: ${JSON.stringify(criteria)}`,
     );
 
-    const database = await this.getTenantDatabase();
-    const collection = database.collection(this.collectionName);
+    const collection = this.getCollection(this.collectionName);
 
-    // 01: Build MongoDB query from criteria
-    const mongoQuery = this.buildMongoQuery(criteria);
+    // 01: Build MongoDB query from criteria with tenant filter
+    const mongoQuery = this.buildMongoQueryWithTenant(criteria);
     const sortQuery = this.buildSortQuery(criteria);
 
     // 02: Calculate pagination
@@ -79,20 +77,19 @@ export class StorageMongoRepository
     const skip = (page - 1) * limit;
 
     // 03: Execute query with pagination
-    const [data, total] = await Promise.all([
-      collection
-        .find(mongoQuery)
-        .sort(sortQuery)
-        .skip(skip)
-        .limit(limit)
-        .toArray(),
-      collection.countDocuments(mongoQuery),
-    ]);
+    const [data, total] = await this.executeQueryWithPagination(
+      collection,
+      mongoQuery,
+      sortQuery,
+      skip,
+      limit,
+    );
 
-    // 04: Convert MongoDB documents to domain entities
+    // 04: Convert MongoDB documents to view models
     const storages = data.map((doc) =>
       this.storageMongoDBMapper.toViewModel({
         id: doc.id,
+        tenantId: doc.tenantId,
         fileName: doc.fileName,
         fileSize: doc.fileSize,
         mimeType: doc.mimeType,
@@ -117,14 +114,11 @@ export class StorageMongoRepository
       `Saving storage view model with id: ${storageViewModel.id}`,
     );
 
-    const database = await this.getTenantDatabase();
-    const collection = database.collection(this.collectionName);
+    const collection = this.getCollection(this.collectionName);
     const mongoData = this.storageMongoDBMapper.toMongoData(storageViewModel);
 
-    // 01: Use upsert to either insert or update the storage view model
-    await collection.replaceOne({ id: storageViewModel.id }, mongoData, {
-      upsert: true,
-    });
+    // 02: Use upsert to either insert or update the storage view model with tenantId
+    await this.saveWithTenant(collection, storageViewModel.id, mongoData);
   }
 
   /**
@@ -136,11 +130,10 @@ export class StorageMongoRepository
   async delete(id: string): Promise<boolean> {
     this.logger.log(`Deleting storage view model by id: ${id}`);
 
-    const database = await this.getTenantDatabase();
-    const collection = database.collection(this.collectionName);
+    const collection = this.getCollection(this.collectionName);
 
-    // 01: Delete the storage view model from the collection
-    await collection.deleteOne({ id });
+    // 01: Delete the storage view model from the collection with tenant filter
+    await this.deleteById(collection, id);
 
     return true;
   }
